@@ -98,15 +98,22 @@ footer{
     <div class="products" id="products"></div>
 
     <!-- لوحة التحكم -->
-    <div class="dashboard">
-        <h2>لوحة التحكم – إضافة منتج</h2>
-        <input id="name" placeholder="اسم المنتج">
-        <input id="price" placeholder="السعر">
-        <input id="img" placeholder="رابط صورة المنتج">
-        <button onclick="addProduct()">إضافة المنتج</button>
-    </div>
-
+   <!-- تسجيل دخول لوحة التحكم -->
+<div class="dashboard" id="loginBox">
+    <h2>دخول لوحة التحكم</h2>
+    <input id="password" type="password" placeholder="كلمة المرور">
+    <button onclick="login()">دخول</button>
 </div>
+
+<!-- لوحة التحكم -->
+<div class="dashboard" id="adminPanel" style="display:none">
+    <h2>لوحة التحكم – إضافة منتج</h2>
+    <input id="name" placeholder="اسم المنتج">
+    <input id="price" placeholder="السعر">
+    <input id="img" placeholder="رابط صورة المنتج">
+    <button onclick="addProduct()">إضافة المنتج</button>
+</div>
+
 
 <footer>
 © جميع الحقوق محفوظة – شبابيك للستائر
