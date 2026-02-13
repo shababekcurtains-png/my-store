@@ -10,7 +10,7 @@
     <style>
         :root {
             --primary-gold: #d9b382;
-            --dark-brown: #3d2e24; /* اللون القهوائي من ملف Screenshot 2026-02-14 [cite: 58] */
+            --dark-brown: #3d2e24; 
             --white: #ffffff;
             --light-bg: #f9f6f2;
         }
@@ -18,7 +18,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--white); color: var(--dark-brown); scroll-behavior: smooth; overflow-x: hidden; }
 
-        /* البنر العلوي القهوائي [cite: 58] */
+        /* البنر العلوي القهوائي */
         .top-banner { 
             background: var(--dark-brown); 
             color: var(--white); 
@@ -48,7 +48,7 @@
         .nav-menu a { text-decoration: none; color: var(--dark-brown); font-weight: 700; cursor: pointer; font-size: 0.9rem; }
         .btn-calc { background: var(--primary-gold); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
 
-        /* قسم الهيرو - صورة ثابتة فقط بدون أي فيديو [cite: 6] */
+        /* قسم الهيرو - صورة ثابتة فقط */
         .hero { 
             height: 75vh; 
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); 
@@ -58,19 +58,18 @@
         .hero h1 { font-size: clamp(24px, 5vw, 45px); font-weight: 900; margin-bottom: 15px; }
         .hero span { color: var(--primary-gold); }
 
-        /* أيقونات التواصل الاجتماعي في الهيرو  */
         .social-hero { display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap; justify-content: center; }
         .social-hero a { color: var(--white); font-size: 1.6rem; transition: 0.3s; text-decoration: none; }
         .social-hero a:hover { color: var(--primary-gold); transform: translateY(-3px); }
 
-        /* الأقسام والمميزات [cite: 16, 27] */
+        /* الأقسام والمميزات */
         .section-padding { padding: 50px 5%; text-align: center; }
         .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 30px; }
         .cat-card { position: relative; border-radius: 12px; overflow: hidden; height: 220px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; }
         .cat-label { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; }
 
-        /* صفحة تواصل معنا [cite: 67] */
+        /* صفحة تواصل معنا */
         #contactSection { background: var(--white); display: none; }
         .contact-container { max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 20px; text-align: right; }
         .contact-info-box { background: var(--light-bg); padding: 25px; border-radius: 15px; }
@@ -78,7 +77,7 @@
         .contact-info-item i { color: var(--primary-gold); font-size: 1.1rem; }
         .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
 
-        /* الفوتر القهوائي المصحح [cite: 105, 106] */
+        /* الفوتر القهوائي */
         footer { background: var(--dark-brown); color: white; padding: 40px 5% 15px; font-size: 0.85rem; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; }
         .footer-box h3 { color: var(--white); margin-bottom: 12px; font-size: 1rem; }
@@ -97,7 +96,6 @@
             .hero { height: 55vh; }
             .hero h1 { font-size: 22px; }
             .section-padding { padding: 30px 5%; }
-            .contact-container { grid-template-columns: 1fr; }
         }
 
         .page { display: none; }
@@ -130,9 +128,9 @@
         <div id="homePage" class="active">
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من <br> <span>شبابيك منزلك</span></h1>
-                <p>اكتشف أفخم تشكيلة ستائر منزلية بتصاميم عصرية وكلاسيكية [cite: 7]</p>
+                <p>اكتشف أفخم تشكيلة ستائر منزلية بتصاميم عصرية وكلاسيكية</p>
                 <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                    <a href="https://wa.me/9647883002797" class="btn-calc" style="padding:12px 25px; font-size:0.95rem;">احسب سعر ستارتك الآن [cite: 8]</a>
+                    <a href="https://wa.me/9647883002797" class="btn-calc" style="padding:12px 25px; font-size:0.95rem;">احسب سعر ستارتك الآن</a>
                 </div>
 
                 <div class="social-hero">
@@ -148,20 +146,20 @@
             <section class="section-padding" id="categories">
                 <h2>أقسامنا</h2>
                 <div class="categories-grid">
-                    <div class="cat-card"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="cat-label">بلاك أوت [cite: 18]</div></div>
-                    <div class="cat-card"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="cat-label">شفافة [cite: 19]</div></div>
-                    <div class="cat-card"><img src="https://i.ibb.co/JRd7B9dC/42edce8e89a20200950e110c2d8d41b2.jpg"><div class="cat-label">ديكور [cite: 20]</div></div>
-                    <div class="cat-card"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div class="cat-label">رول [cite: 21]</div></div>
+                    <div class="cat-card"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="cat-label">بلاك أوت</div></div>
+                    <div class="cat-card"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="cat-label">شفافة</div></div>
+                    <div class="cat-card"><img src="https://i.ibb.co/JRd7B9dC/42edce8e89a20200950e110c2d8d41b2.jpg"><div class="cat-label">ديكور</div></div>
+                    <div class="cat-card"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div class="cat-label">رول</div></div>
                 </div>
             </section>
 
             <section class="section-padding" style="background:var(--light-bg);">
                 <h2>لماذا شبابيك؟</h2>
                 <div class="categories-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-                    <div class="feature-item"><i class="fa-solid fa-palette"></i><h3>تصاميم حصرية [cite: 28]</h3></div>
-                    <div class="feature-item"><i class="fa-solid fa-ruler-combined"></i><h3>مقاسات مخصصة [cite: 30]</h3></div>
-                    <div class="feature-item"><i class="fa-solid fa-truck-fast"></i><h3>تركيب منزلي [cite: 31]</h3></div>
-                    <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><h3>ضمان الجودة [cite: 35]</h3></div>
+                    <div class="feature-item"><i class="fa-solid fa-palette"></i><h3>تصاميم حصرية</h3></div>
+                    <div class="feature-item"><i class="fa-solid fa-ruler-combined"></i><h3>مقاسات مخصصة</h3></div>
+                    <div class="feature-item"><i class="fa-solid fa-truck-fast"></i><h3>تركيب منزلي</h3></div>
+                    <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><h3>ضمان الجودة</h3></div>
                 </div>
             </section>
         </div>
@@ -177,15 +175,15 @@
             <h2>تواصل معنا</h2>
             <div class="contact-container">
                 <div class="contact-form">
-                    <h3>أرسل لنا رسالة [cite: 69]</h3>
-                    <input type="text" placeholder="اسمك الكريم [cite: 71]">
-                    <textarea rows="4" placeholder="كيف يمكننا مساعدتك ؟ [cite: 73]"></textarea>
-                    <button class="btn-calc" style="width:100%; padding:15px;" onclick="window.location.href='https://wa.me/9647883002797'">إرسال عبر واتساب [cite: 74]</button>
+                    <h3>أرسل لنا رسالة</h3>
+                    <input type="text" placeholder="اسمك الكريم">
+                    <textarea rows="4" placeholder="كيف يمكننا مساعدتك ؟"></textarea>
+                    <button class="btn-calc" style="width:100%; padding:15px;" onclick="window.location.href='https://wa.me/9647883002797'">إرسال عبر واتساب</button>
                 </div>
                 <div class="contact-info-box">
-                    <div class="contact-info-item"><i class="fa-solid fa-location-dot"></i> <div><strong>العنوان [cite: 59]</strong><br>العراق - بغداد</div></div>
-                    <div class="contact-info-item"><i class="fa-solid fa-phone"></i> <div><strong>الهاتف [cite: 60]</strong><br>+964 788 300 2797 [cite: 61]</div></div>
-                    <div class="contact-info-item"><i class="fa-solid fa-clock"></i> <div><strong>ساعات العمل [cite: 64]</strong><br>السبت - الخميس 9 ص - 9 م [cite: 65]</div></div>
+                    <div class="contact-info-item"><i class="fa-solid fa-location-dot"></i> <div><strong>العنوان</strong><br>العراق - بغداد</div></div>
+                    <div class="contact-info-item"><i class="fa-solid fa-phone"></i> <div><strong>الهاتف</strong><br>+964 788 300 2797</div></div>
+                    <div class="contact-info-item"><i class="fa-solid fa-clock"></i> <div><strong>ساعات العمل</strong><br>السبت - الخميس 9 ص - 9 م</div></div>
                 </div>
             </div>
         </section>
@@ -195,24 +193,24 @@
         <div class="footer-grid">
             <div class="footer-box">
                 <h3>شبابيك للستائر</h3>
-                <p>نقدم أفخم تشكيلة ستائر منزلية بأعلى جودة. خبرة طويلة في التصميم والتركيب[cite: 100].</p>
-                <a href="https://wa.me/9647883002797" class="whatsapp-footer-btn"><i class="fab fa-whatsapp"></i> واتساب [cite: 62]</a>
+                <p>نقدم أفخم تشكيلة ستائر منزلية بأعلى جودة. خبرة طويلة في التصميم والتركيب.</p>
+                <a href="https://wa.me/9647883002797" class="whatsapp-footer-btn"><i class="fab fa-whatsapp"></i> واتساب</a>
             </div>
             <div class="footer-box">
-                <h3>روابط سريعة [cite: 99]</h3>
+                <h3>روابط سريعة</h3>
                 <ul class="footer-links">
-                    <li onclick="showSection('home')">الرئيسية [cite: 101]</li>
-                    <li onclick="showSection('categories')">المنتجات [cite: 102]</li>
-                    <li onclick="showSection('about')">من نحن [cite: 103]</li>
+                    <li onclick="showSection('home')">الرئيسية</li>
+                    <li onclick="showSection('categories')">المنتجات</li>
+                    <li onclick="showSection('about')">من نحن</li>
                 </ul>
             </div>
             <div class="footer-box">
-                <h3>تواصل معنا [cite: 106]</h3>
-                <p><i class="fa-solid fa-location-dot"></i> العراق - بغداد [cite: 107]</p>
+                <h3>تواصل معنا</h3>
+                <p><i class="fa-solid fa-location-dot"></i> العراق - بغداد</p>
                 <p><i class="fa-solid fa-phone"></i> +964 788 300 2797</p>
             </div>
         </div>
-        <p style="text-align:center; margin-top:30px; opacity:0.5; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">© 2025 شبابيك للستائر جميع الحقوق محفوظة[cite: 105].</p>
+        <p style="text-align:center; margin-top:30px; opacity:0.5; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">© 2025 شبابيك للستائر جميع الحقوق محفوظة.</p>
     </footer>
 
     <script>
