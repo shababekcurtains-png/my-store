@@ -10,7 +10,6 @@ body {
   font-family: "Segoe UI", sans-serif;
   background-color: #f5f0eb;
   margin: 0;
-  padding: 0;
   color: #4b3a2d;
 }
 
@@ -22,22 +21,20 @@ header {
 }
 
 .container {
-  padding: 20px;
   max-width: 1100px;
   margin: auto;
+  padding: 20px;
 }
 
 .section-title {
   text-align: center;
-  margin: 40px 0 20px;
-  font-size: 1.8em;
+  margin: 30px 0;
   color: #a36a28;
 }
 
-/* المنتجات */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
   gap: 20px;
 }
 
@@ -46,11 +43,6 @@ header {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: 0.3s;
-}
-
-.product:hover {
-  transform: translateY(-5px);
 }
 
 .product img {
@@ -66,22 +58,16 @@ header {
 .price {
   color: #b77b30;
   font-weight: bold;
-  margin-top: 10px;
 }
 
-button {
-  background-color: #d9b382;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
+.whatsapp-btn {
+  display: inline-block;
   margin-top: 10px;
+  background: #25D366;
   color: white;
-  font-weight: bold;
-}
-
-button:hover {
-  background-color: #c79c66;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
 }
 
 /* لوحة التحكم */
@@ -89,26 +75,27 @@ button:hover {
   background: #fff3e6;
   padding: 20px;
   border-radius: 12px;
-  margin-top: 50px;
+  margin-top: 40px;
+  display: none;
 }
 
-.admin-panel input {
+input {
   width: 100%;
   padding: 8px;
-  margin: 5px 0 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  margin: 5px 0;
 }
 
-.whatsapp-btn {
-  display: inline-block;
-  margin-top: 10px;
-  text-decoration: none;
-  background-color: #25D366;
-  padding: 8px 12px;
-  border-radius: 6px;
+button {
+  background: #d9b382;
   color: white;
-  font-weight: bold;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.login-box {
+  text-align: center;
+  margin-top: 20px;
 }
 </style>
 </head>
@@ -116,22 +103,29 @@ button:hover {
 
 <header>
 <h1>شبابيك للستائر</h1>
-<p>حيث تتحول النوافذ إلى لوحات فنية</p>
+<p>معرض المنتجات</p>
 </header>
 
 <div class="container">
 
-<h2 class="section-title">🖼 معرض وكتالوج المنتجات</h2>
+<div class="login-box" id="loginBox">
+<input type="password" id="password" placeholder="ادخل كلمة المرور">
+<button onclick="login()">تسجيل الدخول</button>
+<button onclick="logout()">تسجيل الخروج</button>
+</div>
+
+<h2 class="section-title">الكتالوج</h2>
 
 <div class="products" id="products"></div>
 
-<!-- لوحة التحكم -->
-<div class="admin-panel">
-<h2>🔐 لوحة التحكم (إضافة منتج)</h2>
+<div class="admin-panel" id="adminPanel">
 
-<input type="text" id="name" placeholder="اسم المنتج">
-<input type="text" id="price" placeholder="السعر">
-<input type="text" id="image" placeholder="رابط صورة المنتج">
+<h2>لوحة التحكم</h2>
+
+<input id="name" placeholder="اسم المنتج">
+<input id="price" placeholder="السعر">
+<input id="image" placeholder="رابط الصورة">
+
 <button onclick="addProduct()">إضافة المنتج</button>
 
 </div>
@@ -139,50 +133,19 @@ button:hover {
 </div>
 
 <script>
+
+const ADMIN_PASSWORD = "1234";
+
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
 function renderProducts() {
   const container = document.getElementById("products");
   container.innerHTML = "";
 
-  products.forEach((product, index) => {
+  products.forEach(product => {
     container.innerHTML += `
       <div class="product">
-        <img src="${product.image}" alt="">
+        <img src="${product.image}">
         <div class="product-info">
           <h3>${product.name}</h3>
-          <div class="price">${product.price} دينار</div>
-          <a class="whatsapp-btn" 
-             href="https://wa.me/9647883002797?text=أرغب بشراء ${product.name} بسعر ${product.price} دينار"
-             target="_blank">
-             اطلب عبر واتساب
-          </a>
-        </div>
-      </div>
-    `;
-  });
-}
-
-function addProduct() {
-  const name = document.getElementById("name").value;
-  const price = document.getElementById("price").value;
-  const image = document.getElementById("image").value;
-
-  if(name && price && image) {
-    products.push({name, price, image});
-    localStorage.setItem("products", JSON.stringify(products));
-    renderProducts();
-
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("image").value = "";
-  } else {
-    alert("يرجى ملء جميع الحقول");
-  }
-}
-
-renderProducts();
-</script>
-
-</body>
-</html>
+          <div cla
