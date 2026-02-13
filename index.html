@@ -10,7 +10,7 @@
     <style>
         :root {
             --primary-gold: #d9b382;
-            --dark-brown: #3d2e24;
+            --dark-brown: #3d2e24; /* اللون القهوائي المطلوب */
             --light-bg: #f9f6f2;
             --white: #ffffff;
         }
@@ -18,137 +18,228 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--white); color: var(--dark-brown); scroll-behavior: smooth; }
 
-        /* شريط التنبيه العلوي */
-        .top-bar { background: var(--dark-brown); color: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; font-size: 14px; align-items: center; }
+        /* البنر العلوي القهوائي المطلوب [cite: 1, 10, 57] */
+        .top-banner { 
+            background: var(--dark-brown); 
+            color: var(--white); 
+            padding: 12px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 14px; 
+        }
+        .whatsapp-link-top { color: var(--white); text-decoration: none; font-weight: bold; }
 
-        /* الهيدر */
-        header { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
+        /* الهيدر [cite: 2, 4, 5, 11] */
+        header { 
+            background: rgba(255, 255, 255, 0.98); 
+            backdrop-filter: blur(10px); 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05); 
+        }
         .logo-img { height: 60px; cursor: pointer; }
-        .nav-menu { display: flex; gap: 30px; list-style: none; }
-        .nav-menu a { text-decoration: none; color: var(--dark-brown); font-weight: 700; font-size: 1.1rem; }
-        .btn-header-calc { background: var(--primary-gold); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .nav-menu { display: flex; gap: 20px; list-style: none; }
+        .nav-menu a { text-decoration: none; color: var(--dark-brown); font-weight: 700; cursor: pointer; }
+        .btn-calc { background: var(--primary-gold); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* قسم الهيرو */
+        /* قسم الهيرو [cite: 6, 7, 8, 9] */
         .hero { 
-            height: 85vh; 
+            height: 80vh; 
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); 
             background-size: cover; background-position: center; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 20px;
         }
-        .hero h1 { font-size: clamp(32px, 7vw, 65px); font-weight: 900; line-height: 1.2; margin-bottom: 25px; }
+        .hero h1 { font-size: clamp(30px, 6vw, 55px); font-weight: 900; margin-bottom: 20px; }
         .hero span { color: var(--primary-gold); }
-        .hero p { font-size: 1.3rem; max-width: 800px; margin-bottom: 35px; opacity: 0.95; }
-        .hero-btns { display: flex; gap: 20px; }
-        .btn-gold-lg { background: var(--primary-gold); color: white; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: 0.3s; }
-        .btn-outline-lg { border: 2px solid white; color: white; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: 0.3s; }
 
-        /* الأقسام */
+        /* قسم الأقسام الضرورية [cite: 16, 17, 18, 19, 20, 21] */
         .section-padding { padding: 80px 5%; text-align: center; }
-        .section-title { font-size: 2.8rem; font-weight: 900; margin-bottom: 15px; }
-        .section-subtitle { color: #777; font-size: 1.1rem; margin-bottom: 50px; }
-        
-        .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .cat-card { position: relative; border-radius: 20px; overflow: hidden; height: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
+        .cat-card { position: relative; border-radius: 20px; overflow: hidden; height: 350px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; }
-        .cat-overlay { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; padding: 30px; text-align: right; }
-        .cat-overlay h3 { font-size: 1.8rem; }
+        .cat-label { position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.6); color: white; padding: 5px 15px; border-radius: 5px; }
 
-        /* المميزات */
-        .features-bg { background-color: var(--light-bg); padding: 100px 5%; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
-        .feature-box { background: white; padding: 50px 30px; border-radius: 20px; text-align: center; transition: 0.3s; }
-        .feature-box:hover { transform: translateY(-10px); }
-        .feature-box i { font-size: 3rem; color: var(--primary-gold); margin-bottom: 25px; }
-        .feature-box h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        /* قسم من نحن */
+        #aboutSection { background: var(--light-bg); display: none; }
+        .about-content { max-width: 900px; margin: auto; line-height: 2; font-size: 1.1rem; }
 
-        /* الفوتر */
-        footer { background: var(--dark-brown); color: white; padding: 100px 5% 50px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 50px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 60px; }
-        .footer-h3 { color: var(--primary-gold); font-size: 1.8rem; margin-bottom: 25px; }
-        .footer-p { line-height: 1.8; opacity: 0.8; font-size: 1.1rem; }
-        .whatsapp-btn { background: #25D366; color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 12px; padding: 15px 30px; border-radius: 50px; font-weight: bold; margin-top: 25px; font-size: 1.2rem; }
+        /* قسم المميزات [cite: 27, 28, 30, 31, 35] */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 50px; }
+        .feature-item { background: white; padding: 30px; border-radius: 15px; text-align: center; }
+        .feature-item i { font-size: 2.5rem; color: var(--primary-gold); margin-bottom: 20px; }
 
-        /* الإدارة */
+        /* الفوتر [cite: 43, 50, 53, 54, 55] */
+        footer { background: var(--dark-brown); color: white; padding: 60px 5% 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+        .whatsapp-btn { background: #25D366; color: white; text-decoration: none; padding: 12px 25px; border-radius: 50px; display: inline-block; margin-top: 20px; font-weight: bold; }
+
         .page { display: none; }
         .active { display: block; }
-        .admin-form { background: #eee; padding: 50px; border-radius: 20px; max-width: 600px; margin: 100px auto; color: #333; }
-        input { width: 100%; padding: 15px; margin: 12px 0; border-radius: 10px; border: 1px solid #ccc; font-size: 1.1rem; }
-
-        @media (max-width: 768px) {
-            .nav-menu { display: none; }
-            header { justify-content: space-between; }
-            .hero h1 { font-size: 40px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
+    <div class="top-banner">
         <div>مرحباً بكم في شبابيك للستائر</div>
-        <div><i class="fa-solid fa-phone"></i> +964 788 300 2797</div>
+        <a href="https://wa.me/9647883002797" class="whatsapp-link-top">اطلب عبر الواتساب <i class="fab fa-whatsapp"></i></a>
     </div>
 
     <header>
-        <button class="btn-header-calc" onclick="location.href='https://wa.me/9647883002797'">احسب سعر ستارتك</button>
-        <ul class="nav-menu">
-            <li><a href="#home">الرئيسية</a></li>
-            <li><a href="#sections">المنتجات</a></li>
-            <li><a href="#about">من نحن</a></li>
-            <li><a href="#contact">تواصل معنا</a></li>
-        </ul>
+        <button class="btn-calc" onclick="location.href='https://wa.me/9647883002797'">احسب سعر ستارتك</button>
+        <nav>
+            <ul class="nav-menu">
+                <li><a onclick="showSection('home')">الرئيسية</a></li>
+                <li><a onclick="showSection('categories')">المنتجات</a></li>
+                <li><a onclick="showSection('about')">من نحن</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+            </ul>
+        </nav>
         <div onclick="checkAdminClick()">
-            <img src="https://i.ibb.co/3y1ZNCk0/1.png" alt="شعار شبابيك" class="logo-img">
+            <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" alt="شبابيك">
         </div>
     </header>
 
-    <div id="userPage" class="page active">
-        <section class="hero" id="home">
+    <main id="homePage" class="active">
+        <section class="hero">
             <h1>فخامة التفاصيل تبدأ من <br> <span>شبابيك منزلك</span></h1>
-            <p>اكتشف أفخم تشكيلة ستائر منزلية بتصاميم عصرية وكلاسيكية تناسب ذوقك الرفيع وتضفي لمسة جمالية على بيتك.</p>
-            <div class="hero-btns">
-                <a href="https://wa.me/9647883002797" class="btn-gold-lg">احسب سعر ستارتك الآن</a>
-                <a href="https://wa.me/9647883002797" class="btn-outline-lg">طلب استشارة منزلية</a>
+            <p>اكتشف أفخم تشكيلة ستائر منزلية بتصاميم عصرية وكلاسيكية[cite: 6, 7].</p>
+            <div style="display:flex; gap:15px; margin-top:20px;">
+                <a href="https://wa.me/9647883002797" class="btn-calc" style="padding:15px 30px;">احسب سعر ستارتك الآن</a>
+                <a href="https://wa.me/9647883002797" class="btn-calc" style="background:none; border:2px solid white; padding:15px 30px;">طلب استشارة منزلية</a>
             </div>
         </section>
 
-        <section class="section-padding" id="sections">
-            <h2 class="section-title">أقسامنا</h2>
-            <p class="section-subtitle">اختر من بين مجموعتنا المتنوعة والأنيقة</p>
-            <div class="categories-grid" id="mainProductsGrid">
+        <section class="section-padding" id="categories">
+            <h2>أقسامنا</h2>
+            <p>اختر من بين مجموعتنا المتنوعة</p>
+            <div class="categories-grid" id="mainGrid">
                 </div>
         </section>
 
-        <div class="features-bg">
-            <div class="section-padding">
-                <h2 class="section-title">لماذا شبابيك؟</h2>
-                <p class="section-subtitle">مميزات تجعلنا الخيار الأول لعملائنا</p>
-                <div class="features-grid">
-                    <div class="feature-box"><i class="fa-solid fa-palette"></i><h3>تصاميم حصرية</h3><p>مجموعة متنوعة من التصاميم العصرية والكلاسيكية.</p></div>
-                    <div class="feature-box"><i class="fa-solid fa-ruler-combined"></i><h3>مقاسات مخصصة</h3><p>تفصيل على حسب مقاسات نوافذك بدقة عالية.</p></div>
-                    <div class="feature-box"><i class="fa-solid fa-truck-fast"></i><h3>تركيب منزلي</h3><p>فريق متخصص لتركيب الستائر في منزلك باحترافية.</p></div>
-                    <div class="feature-box"><i class="fa-solid fa-shield-halved"></i><h3>ضمان الجودة</h3><p>ضمان شامل على جميع منتجاتنا وخدماتنا المقدمة.</p></div>
-                </div>
+        <section class="section-padding" style="background:#f9f6f2;">
+            <h2>لماذا شبابيك؟</h2>
+            <div class="features-grid">
+                <div class="feature-item"><i class="fa-solid fa-palette"></i><h3>تصاميم حصرية</h3><p>مجموعة من التصاميم العصرية والكلاسيكية[cite: 28, 29].</p></div>
+                <div class="feature-item"><i class="fa-solid fa-ruler-combined"></i><h3>مقاسات مخصصة</h3><p>تفصيل على حسب مقاسات نوافذك بدقة[cite: 30].</p></div>
+                <div class="feature-item"><i class="fa-solid fa-truck-fast"></i><h3>تركيب منزلي</h3><p>فريق متخصص لتركيب الستائر في منزلك[cite: 31, 32].</p></div>
+                <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><h3>ضمان الجودة</h3><p>ضمان شامل على جميع منتجاتنا وخدماتنا[cite: 35, 36].</p></div>
+            </div>
+        </section>
+    </main>
+
+    <section id="aboutSection" class="section-padding">
+        <div class="about-content">
+            <h2 style="margin-bottom:30px;">من نحن</h2>
+            <p>تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
+            <p>نقدم مجموعة واسعة تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية.</p>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-grid">
+            <div>
+                <h3>شبابيك للستائر</h3>
+                <p>تقدم أفخم تشكيلة من الستائر المنزلية بأعلى جودة وأفضل الأسعار[cite: 43].</p>
+                <a href="https://wa.me/9647883002797" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</a>
+            </div>
+            <div>
+                <h3>روابط سريعة</h3>
+                <p>الرئيسية | المنتجات | من نحن [cite: 51, 52]</p>
+            </div>
+            <div>
+                <h3>تواصل معنا</h3>
+                <p>العراق - بغداد [cite: 55]</p>
+                <p>+964 788 300 2797 [cite: 57]</p>
             </div>
         </div>
+        <p style="text-align:center; margin-top:40px; opacity:0.6;">© 2025 شبابيك للستائر. جميع الحقوق محفوظة[cite: 53].</p>
+    </footer>
 
-        <footer id="contact">
-            <div class="footer-grid">
-                <div class="footer-box">
-                    <h3 class="footer-h3">شبابيك للستائر</h3>
-                    <p class="footer-p">نقدم أفخم تشكيلة من الستائر المنزلية بأعلى جودة وأفضل الأسعار، خبرة طويلة في عالم التصميم والتركيب نضعها بين أيديكم.</p>
-                    <a href="https://wa.me/9647883002797" class="whatsapp-btn">
-                        <i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب
-                    </a>
+    <div id="adminPage" class="page" style="padding: 100px 5%; text-align: center;">
+        <div style="background:#eee; padding:40px; border-radius:15px; max-width:500px; margin:auto;">
+            <h2>لوحة الإدارة</h2>
+            <input type="text" id="pName" placeholder="اسم القسم" style="width:100%; padding:10px; margin:10px 0;">
+            <input type="text" id="pImage" placeholder="رابط الصورة" style="width:100%; padding:10px; margin:10px 0;">
+            <button onclick="addSection()" class="btn-calc" style="width:100%;">إضافة القسم</button>
+            <div id="adminList" style="margin-top:20px; text-align:right;"></div>
+            <button onclick="location.reload()" style="margin-top:20px; color:red; border:none; background:none; cursor:pointer;">خروج</button>
+        </div>
+    </div>
+
+    <script>
+        // الأقسام الأساسية المطلوبة 
+        let sections = JSON.parse(localStorage.getItem("shababik_sections")) || [
+            {name: "ستائر بلاك أوت", img: "https://i.ibb.co/BDZvwyX3/curtain-blackout-BDZvwyX3.jpg"},
+            {name: "ستائر شفافة", img: "https://i.ibb.co/B6H5yJXx/curtain-sheer-B6H5yJXx.jpg"},
+            {name: "ستائر ديكور", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38"},
+            {name: "ستائر رول", img: "https://i.ibb.co/5c189CRe/curtain-roller-5c189CRe.jpg"}
+        ];
+
+        function showSection(id) {
+            document.getElementById('homePage').style.display = (id === 'home' || id === 'categories') ? 'block' : 'none';
+            document.getElementById('aboutSection').style.display = (id === 'about') ? 'block' : 'none';
+            if(id === 'categories') window.location.hash = 'categories';
+        }
+
+        let clicks = 0;
+        function checkAdminClick() {
+            clicks++;
+            if(clicks >= 5) {
+                let p = prompt("كلمة المرور:");
+                if(p === "1234") {
+                    document.getElementById('homePage').style.display = 'none';
+                    document.getElementById('aboutSection').style.display = 'none';
+                    document.getElementById('adminPage').classList.add('active');
+                    renderAdmin();
+                }
+                clicks = 0;
+            }
+        }
+
+        function renderSite() {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = sections.map(s => `
+                <div class="cat-card">
+                    <img src="${s.img}" alt="${s.name}">
+                    <div class="cat-label">${s.name}</div>
                 </div>
-                <div class="footer-box">
-                    <h3 class="footer-h3">روابط سريعة</h3>
-                    <ul style="list-style:none; line-height:2;">
-                        <li><a href="#" style="color:white; text-decoration:none;">الرئيسية</a></li>
-                        <li><a href="#sections" style="color:white; text-decoration:none;">المنتجات</a></li>
-                        <li><a href="#" style="color:white; text-decoration:none;">من نحن</a></li>
-                        <li><a href="#contact" style="color:white; text-decoration:none;">تواصل معنا</a></li>
-                    </ul>
+            `).join('');
+        }
+
+        function addSection() {
+            const n = document.getElementById('pName').value;
+            const i = document.getElementById('pImage').value;
+            if(n && i) {
+                sections.push({name: n, img: i});
+                localStorage.setItem("shababik_sections", JSON.stringify(sections));
+                renderSite(); renderAdmin();
+                document.getElementById('pName').value = ''; document.getElementById('pImage').value = '';
+            }
+        }
+
+        function renderAdmin() {
+            const list = document.getElementById('adminList');
+            list.innerHTML = sections.map((s, i) => `
+                <div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #ccc;">
+                    <span>${s.name}</span>
+                    <button onclick="remove(${i})" style="color:red; cursor:pointer;">حذف</button>
                 </div>
-                <div class="footer-box">
-                    <h3 class="footer-h3">تواصل معنا</h3>
-                    <p class="footer-
+            `).join('');
+        }
+
+        function remove(index) {
+            sections.splice(index, 1);
+            localStorage.setItem("shababik_sections", JSON.stringify(sections));
+            renderAdmin(); renderSite();
+        }
+
+        window.onload = renderSite;
+    </script>
+</body>
+</html>
