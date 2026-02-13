@@ -42,14 +42,14 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            filter: brightness(0.4);
+            filter: brightness(0.4); /* تعتيم الفيديو لبروز المنتجات */
         }
 
         /* الهيدر المحسن */
         header {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(15px);
-            padding: 15px 5%;
+            padding: 10px 5%;
             display: flex;
             justify-content: space-between; 
             align-items: center;
@@ -59,9 +59,8 @@
             z-index: 1000;
         }
 
-        /* اسم المتجر في المنتصف */
         .store-name {
-            font-size: 32px;
+            font-size: clamp(20px, 5vw, 32px);
             font-weight: 900;
             color: var(--main-gold);
             text-shadow: 0 0 15px rgba(217, 179, 130, 0.5);
@@ -71,4 +70,193 @@
             user-select: none;
         }
 
-        /* الصورة في جهة اليسار (تم تكبيرها) */
+        .side-logo {
+            height: 130px; 
+            width: auto;
+            object-fit: contain;
+            transition: 0.3s;
+        }
+
+        /* زر الواتساب في جهة اليسار أسفل الصفحة */
+        .cart-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px; 
+            background: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            cursor: pointer;
+            z-index: 999;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cart-btn:hover { transform: scale(1.05); }
+
+        /* تنسيق الصفحات */
+        .page { display: none; padding: 40px 5%; max-width: 1400px; margin: auto; color: white; }
+        .active { display: block; animation: fadeIn 0.8s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h1 { font-size: 2.2rem; text-align: center; margin-bottom: 40px; }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.4s;
+        }
+
+        .product-card img { width: 100%; height: 350px; object-fit: cover; }
+        .p-info { padding: 20px; text-align: center; }
+        .p-price { color: var(--main-gold); font-size: 1.8rem; font-weight: 900; margin: 10px 0; }
+        
+        .add-to-cart {
+            width: 100%;
+            background: var(--main-gold);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .admin-box { background: white; padding: 30px; border-radius: 20px; color: #333; max-width: 500px; margin: auto; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+<div class="video-container">
+    <video class="video-background" autoplay muted loop playsinline>
+        <source src="https://files.fm/u/ptvc6q7chh?ak=5324f" type="video/mp4">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-white-curtains-blowing-in-the-wind-2266-large.mp4" type="video/mp4">
+    </video>
+</div>
+
+<header>
+    <div style="width: 130px;"></div> 
+    <div class="store-name" id="adminTrigger" onclick="checkAdminClick()">شبابيك للستائر</div>
+    <img src="https://i.ibb.co/fGr3rT3s/image.png" class="side-logo" alt="شبابيك">
+</header>
+
+<div class="cart-btn" onclick="sendWhatsApp()">
+    <span id="cartCount" style="background:white; color:#25D366; padding:2px 10px; border-radius:50%;">0</span>
+    <span>اطلب عبر الواتساب</span>
+</div>
+
+<div id="userPage" class="page active">
+    <h1>أرقى موديلات الستائر</h1>
+    <div class="products-grid" id="userProducts"></div>
+</div>
+
+<div id="adminPage" class="page">
+    <div class="admin-box">
+        <h2 style="text-align: center;">إدارة المنتجات</h2>
+        <input id="name" placeholder="اسم الستارة">
+        <input id="price" type="number" placeholder="السعر">
+        <input id="image" placeholder="رابط صورة المنتج">
+        <button onclick="addProduct()" style="width:100%; padding:15px; background:var(--main-gold); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">نشر المنتج</button>
+        <hr>
+        <div id="adminProductsGrid"></div>
+        <button onclick="logout()" style="width:100%; margin-top:10px; background:#f4f4f4; border:none; padding:10px; cursor:pointer;">خروج</button>
+    </div>
+</div>
+
+<script>
+    let products = JSON.parse(localStorage.getItem("shababik_v4")) || [];
+    let cart = [];
+    let clickCount = 0;
+
+    function checkAdminClick() {
+        clickCount++;
+        if (clickCount === 5) {
+            let pass = prompt("رمز الدخول:");
+            if (pass === "1234") showPage('adminPage');
+            clickCount = 0;
+        }
+        setTimeout(() => clickCount = 0, 3000);
+    }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if(pageId === 'userPage') renderUser();
+        if(pageId === 'adminPage') renderAdmin();
+    }
+
+    function addProduct() {
+        const name = document.getElementById("name").value;
+        const price = document.getElementById("price").value;
+        const image = document.getElementById("image").value;
+        if(!name || !price || !image) return alert("يرجى ملء كافة الحقول");
+        products.push({ id: Date.now(), name, price, image });
+        localStorage.setItem("shababik_v4", JSON.stringify(products));
+        renderAdmin();
+        alert("تم الحفظ بنجاح");
+    }
+
+    function renderUser() {
+        const container = document.getElementById("userProducts");
+        container.innerHTML = products.length ? products.map(p => `
+            <div class="product-card">
+                <img src="${p.image}" onerror="this.src='https://via.placeholder.com/300x400?text=Error'">
+                <div class="p-info">
+                    <h3>${p.name}</h3>
+                    <div class="p-price">${p.price} د.ع</div>
+                    <button class="add-to-cart" onclick="addToCart('${p.name}')">إضافة للسلة</button>
+                </div>
+            </div>
+        `).join('') : '<p style="text-align:center; width:100%;">لا توجد منتجات حالياً</p>';
+    }
+
+    function renderAdmin() {
+        const container = document.getElementById("adminProductsGrid");
+        container.innerHTML = products.map(p => `
+            <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee; color:#333;">
+                <span>${p.name}</span>
+                <button onclick="deleteProduct(${p.id})" style="color:red; background:none; border:none; cursor:pointer;">حذف</button>
+            </div>
+        `).join('');
+    }
+
+    function deleteProduct(id) {
+        products = products.filter(p => p.id !== id);
+        localStorage.setItem("shababik_v4", JSON.stringify(products));
+        renderAdmin();
+    }
+
+    function addToCart(name) {
+        cart.push(name);
+        document.getElementById("cartCount").innerText = cart.length;
+    }
+
+    function sendWhatsApp() {
+        if(cart.length === 0) return alert("السلة فارغة");
+        let msg = "طلب جديد من شبابيك:\n" + cart.join("\n");
+        window.open(`https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`);
+    }
+
+    function logout() { showPage('userPage'); }
+    window.onload = renderUser;
+</script>
+
+</body>
+</html>
