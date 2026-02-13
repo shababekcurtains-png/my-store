@@ -151,12 +151,12 @@
 
 <div class="video-container">
     <video class="video-background" autoplay muted loop playsinline>
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-white-curtains-blowing-in-the-wind-2266-large.mp4" type="video/mp4">
+        <source src="https://pixabay.com/videos/download/x-231685_medium.mp4" type="video/mp4">
     </video>
 </div>
 
 <header>
-    <div class="logo" id="mainLogo" onclick="checkAdminClick()">شبابيك للستائر ✨</div>
+    <div class="logo" id="mainLogo" onclick="checkAdminClick()">شبابيك للستائر</div>
 </header>
 
 <div class="cart-btn" onclick="sendWhatsApp()">
@@ -232,7 +232,7 @@
     function renderAdmin() {
         const container = document.getElementById("adminProductsGrid");
         container.innerHTML = products.map(p => `
-            <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee; color: #333;">
                 <span>${p.name}</span>
                 <button onclick="deleteProduct(${p.id})" style="color:red; background:none; border:none; cursor:pointer;">حذف</button>
             </div>
