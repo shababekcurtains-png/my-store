@@ -4,96 +4,185 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>شبابيك للستائر</title>
+
 <style>
-  body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f0eb;
-    margin: 0;
-    padding: 0;
-    color: #4b3a2d;
-  }
-  header {
-    background-color: #d9b382;
-    padding: 20px;
-    text-align: center;
-    color: white;
-  }
-  header h1 {
-    margin: 0;
-    font-size: 2em;
-  }
-  .container {
-    padding: 20px;
-    max-width: 800px;
-    margin: auto;
-  }
-  .features {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-    margin: 20px 0;
-  }
-  .feature {
-    background-color: #fff3e6;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(75, 58, 45, 0.2);
-  }
-  .feature h3 {
-    margin-top: 0;
-    color: #a36a28;
-  }
-  .cta {
-    text-align: center;
-    margin-top: 30px;
-  }
-  .cta a {
-    text-decoration: none;
-    background-color: #d9b382;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-  .cta a:hover {
-    background-color: #c79c66;
-  }
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f5f0eb;
+  margin: 0;
+  padding: 0;
+  color: #4b3a2d;
+}
+
+header {
+  background-color: #d9b382;
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.section-title {
+  text-align: center;
+  margin: 40px 0 20px;
+  font-size: 1.8em;
+  color: #a36a28;
+}
+
+/* المنتجات */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.product {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.product:hover {
+  transform: translateY(-5px);
+}
+
+.product img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.price {
+  color: #b77b30;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+button {
+  background-color: #d9b382;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #c79c66;
+}
+
+/* لوحة التحكم */
+.admin-panel {
+  background: #fff3e6;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 50px;
+}
+
+.admin-panel input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  background-color: #25D366;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>شبابيك للستائر</h1>
-  <p>حيث تتحول النوافذ إلى لوحات فنية!</p>
+<h1>شبابيك للستائر</h1>
+<p>حيث تتحول النوافذ إلى لوحات فنية</p>
 </header>
 
 <div class="container">
-  <p>هل تبحث عن ستائر تضيف لمسة أناقة ودفء لمنزلك أو مكتبك؟ في متجر <strong>شبابيك</strong> نقدم لك تشكيلة واسعة من الستائر عالية الجودة التي تناسب جميع الأذواق والمساحات.</p>
-  
-  <div class="features">
-    <div class="feature">
-      <h3>💛 تصاميم متنوعة</h3>
-      <p>ستائر كلاسيكية، مودرن، وستائر رول لتلائم كل غرفة.</p>
-    </div>
-    <div class="feature">
-      <h3>💛 خامات فاخرة</h3>
-      <p>قماش متين، ألوان ثابتة، وخامات صديقة للبيئة.</p>
-    </div>
-    <div class="feature">
-      <h3>💛 تخصيص حسب الطلب</h3>
-      <p>اختر المقاس، اللون، والنمط الذي يناسب ديكورك تمامًا.</p>
-    </div>
-    <div class="feature">
-      <h3>💛 خدمة سريعة ومريحة</h3>
-      <p>توصيل سريع، وتركيب احترافي عند الطلب.</p>
-    </div>
-  </div>
 
-  <div class="cta">
-    <a href="https://wa.me/9647883002797" target="_blank">📲 تواصل عبر واتساب</a>
-  </div>
+<h2 class="section-title">🖼 معرض وكتالوج المنتجات</h2>
+
+<div class="products" id="products"></div>
+
+<!-- لوحة التحكم -->
+<div class="admin-panel">
+<h2>🔐 لوحة التحكم (إضافة منتج)</h2>
+
+<input type="text" id="name" placeholder="اسم المنتج">
+<input type="text" id="price" placeholder="السعر">
+<input type="text" id="image" placeholder="رابط صورة المنتج">
+<button onclick="addProduct()">إضافة المنتج</button>
+
 </div>
+
+</div>
+
+<script>
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+function renderProducts() {
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  products.forEach((product, index) => {
+    container.innerHTML += `
+      <div class="product">
+        <img src="${product.image}" alt="">
+        <div class="product-info">
+          <h3>${product.name}</h3>
+          <div class="price">${product.price} دينار</div>
+          <a class="whatsapp-btn" 
+             href="https://wa.me/9647883002797?text=أرغب بشراء ${product.name} بسعر ${product.price} دينار"
+             target="_blank">
+             اطلب عبر واتساب
+          </a>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function addProduct() {
+  const name = document.getElementById("name").value;
+  const price = document.getElementById("price").value;
+  const image = document.getElementById("image").value;
+
+  if(name && price && image) {
+    products.push({name, price, image});
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("image").value = "";
+  } else {
+    alert("يرجى ملء جميع الحقول");
+  }
+}
+
+renderProducts();
+</script>
 
 </body>
 </html>
