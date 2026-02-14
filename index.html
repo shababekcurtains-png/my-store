@@ -29,11 +29,10 @@
         .nav-menu a { text-decoration: none; color: var(--dark-brown); font-weight: 700; cursor: pointer; font-size: 1rem; }
         .nav-menu a:hover { color: var(--primary-gold); }
 
-        /* التنقل بين الصفحات */
         .page-section { display: none; }
         .active-page { display: block; }
 
-        /* قسم الهيرو الرئيسي */
+        /* الهيرو الرئيسي */
         .hero { 
             height: 75vh; 
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); 
@@ -48,7 +47,7 @@
         .social-hero a { color: var(--white); font-size: 1.8rem; transition: 0.3s; text-decoration: none; }
         .social-hero a:hover { color: var(--primary-gold); transform: translateY(-5px); }
 
-        /* أقسامنا - كتالوج تفاعلي بخط واحد */
+        /* الأقسام - كتالوج تفاعلي بخط واحد */
         .catalog-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 40px 5%; max-width: 1200px; margin: auto; scrollbar-width: none; }
         .catalog-grid::-webkit-scrollbar { display: none; }
         .catalog-card { flex: 0 0 calc(25% - 15px); position: relative; border-radius: 20px; overflow: hidden; height: 350px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s ease; }
@@ -65,17 +64,19 @@
         .feature-icon-wrapper { width: 70px; height: 70px; background-color: var(--primary-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; }
         .feature-icon-wrapper i { color: var(--white); font-size: 1.8rem; }
 
+        /* صفحة من نحن المحدثة */
+        .about-container { max-width: 1100px; margin: auto; padding: 80px 5%; text-align: center; }
+        .about-content-text { max-width: 900px; margin: 0 auto 60px; line-height: 2; color: #555; font-size: 1.15rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .stat-card { background-color: #eee9e3; padding: 40px 20px; border-radius: 15px; text-align: center; }
+        .stat-number { font-size: 2.5rem; font-weight: 900; color: var(--primary-gold); margin-bottom: 10px; }
+
         /* صفحة تواصل معنا */
         .contact-container { max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 60px 5%; text-align: right; }
         .contact-info-box { background: var(--light-bg); padding: 30px; border-radius: 15px; }
-        .contact-info-item { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
-
-        /* صفحة من نحن */
-        .about-text { max-width: 900px; margin: auto; padding: 60px 5%; line-height: 2; text-align: justify; font-size: 1.2rem; }
 
         /* الفوتر المحدث */
         .footer-section { background-color: var(--dark-brown); color: var(--white); padding: 60px 5% 30px; text-align: center; }
-        .footer-cta h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 15px; }
         .cta-btns { display: flex; justify-content: center; gap: 15px; margin-bottom: 60px; }
         .btn-catalog-footer { background-color: var(--primary-gold); color: white; border: none; padding: 12px 35px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-whatsapp-footer { background: transparent; border: 1px solid white; color: white; padding: 12px 35px; border-radius: 8px; font-weight: bold; cursor: pointer; }
@@ -87,6 +88,7 @@
             .catalog-card { flex: 0 0 75%; }
             .main-footer-grid { grid-template-columns: 1fr; text-align: center; }
             .cta-btns { flex-direction: column; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -129,7 +131,6 @@
 
             <section id="categories" style="padding-top: 80px;">
                 <h2 style="text-align:center; font-size:2.5rem; font-weight:900;">أقسامنا</h2>
-                <p style="text-align:center; opacity:0.7; margin-bottom:20px;">اختر من بين مجموعتنا المتنوعة</p>
                 <div class="catalog-grid">
                     <div class="catalog-card"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="catalog-label">بلاك أوت</div></div>
                     <div class="catalog-card"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="catalog-label">شفافة</div></div>
@@ -140,7 +141,6 @@
 
             <section class="features-section">
                 <h2>لماذا شبابيك؟</h2>
-                <p class="features-subtitle">مميزات تجعلنا الخيار الأول</p>
                 <div class="features-grid">
                     <div class="feature-card"><div class="feature-icon-wrapper"><i class="fa-solid fa-shield-halved"></i></div><h3>ضمان الجودة</h3><p>ضمان شامل على جميع منتجاتنا وخدماتنا</p></div>
                     <div class="feature-card"><div class="feature-icon-wrapper"><i class="fa-solid fa-truck-fast"></i></div><h3>تركيب منزلي</h3><p>فريق متخصص لتركيب الستائر في منزلك</p></div>
@@ -154,10 +154,17 @@
             <section class="hero" style="height:40vh; background-image: url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png');">
                 <h1>من نحن</h1>
             </section>
-            <div class="about-text">
-                <h2>شبابيك للستائر</h2>
-                <p>تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
-                <p>نقدم تشكيلة متنوعة تشمل البلاك أوت والشفافة وستائر الرول، بخدمات تفصيل وتركيب احترافية.</p>
+            <div class="about-container">
+                <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 40px;">شبابيك للستائر</h2>
+                <div class="about-content-text">
+                    <p>تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر عنصر أساسي يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
+                    <p>نقدم مجموعة واسعة من الستائر، بخدمات تفصيل وتركيب احترافية، ورؤيتنا أن نكون الوجهة الأولى للستائر الفاخرة.</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><span class="stat-number">+500</span><span class="stat-label">عميل سعيد</span></div>
+                    <div class="stat-card"><span class="stat-number">+50</span><span class="stat-label">تصميم حصري</span></div>
+                    <div class="stat-card"><span class="stat-number">+10</span><span class="stat-label">سنوات خبرة</span></div>
+                </div>
             </div>
         </div>
 
@@ -172,8 +179,7 @@
                     <div class="contact-info-item"><i class="fa-solid fa-clock"></i><div><strong>ساعات العمل:</strong> السبت - الخميس 9ص - 9م</div></div>
                 </div>
                 <div style="background:var(--white); padding:30px; border-radius:15px; border:1px solid #ddd; text-align:center;">
-                    <h3>أرسل لنا رسالة</h3>
-                    <button onclick="location.href='https://wa.me/9647883002797'" style="width:100%; padding:15px; background:#25D366; color:white; border:none; border-radius:10px; font-weight:bold; margin-top:20px; cursor:pointer;">تواصل معنا عبر واتساب <i class="fa-brands fa-whatsapp"></i></button>
+                    <button onclick="location.href='https://wa.me/9647883002797'" style="width:100%; padding:15px; background:#25D366; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">تواصل عبر واتساب <i class="fa-brands fa-whatsapp"></i></button>
                 </div>
             </div>
         </div>
@@ -182,34 +188,16 @@
     <footer class="footer-section">
         <div class="footer-cta">
             <h2>جاهز لتجديد ستائر منزلك؟</h2>
-            <p>تواصل معنا الآن واحصل على استشارة مجانية وعرض سعر خاص</p>
             <div class="cta-btns">
                 <button class="btn-catalog-footer" onclick="showPage('categories')">تصفح المنتجات</button>
                 <button class="btn-whatsapp-footer" onclick="location.href='https://wa.me/9647883002797'">تواصل عبر واتساب</button>
             </div>
         </div>
-
         <div class="main-footer-grid">
-            <div>
-                <h3>شبابيك للستائر</h3>
-                <p style="opacity:0.8; line-height:1.6;">نقدم أفخم تشكيلة ستائر منزلية بأعلى جودة وأفضل الأسعار.</p>
-            </div>
-            <div>
-                <h3>روابط سريعة</h3>
-                <ul class="footer-links-list">
-                    <li onclick="showPage('home')">الرئيسية</li>
-                    <li onclick="showPage('categories')">المنتجات</li>
-                    <li onclick="showPage('about')">من نحن</li>
-                </ul>
-            </div>
-            <div>
-                <h3>تواصل معنا</h3>
-                <p style="opacity:0.8;">العراق - بغداد</p>
-                <p onclick="location.href='https://wa.me/9647883002797'" style="cursor:pointer; opacity:0.8;">واتساب</p>
-            </div>
-            <div style="font-weight:bold; display:flex; align-items:center; justify-content:flex-end;">
-                <p dir="ltr">+964 788 300 2797</p>
-            </div>
+            <div><h3>شبابيك للستائر</h3><p>نقدم أفخم تشكيلة من الستائر المنزلية بأعلى جودة وأفضل الأسعار.</p></div>
+            <div><h3>روابط سريعة</h3><ul class="footer-links-list"><li onclick="showPage('home')">الرئيسية</li><li onclick="showPage('categories')">المنتجات</li><li onclick="showPage('about')">من نحن</li></ul></div>
+            <div><h3>تواصل معنا</h3><p>العراق - بغداد</p></div>
+            <div style="font-weight:bold; display:flex; align-items:center; justify-content:flex-end;"><p dir="ltr">+964 788 300 2797</p></div>
         </div>
         <p style="text-align:center; margin-top:40px; opacity:0.5;">© 2025 شبابيك للستائر جميع الحقوق محفوظة.</p>
     </footer>
@@ -225,8 +213,6 @@
                 window.scrollTo(0,0);
             }
         }
-
-        let clicks = 0;
         function checkAdminClick() {
             clicks++; if(clicks >= 5) { alert("لوحة الإدارة قيد التفعيل"); clicks = 0; }
         }
