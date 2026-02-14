@@ -18,8 +18,8 @@
         .logo { height: 45px; cursor: pointer; }
         .nav-menu { display: flex; gap: 20px; list-style: none; }
         .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .nav-menu a:hover { color: var(--gold); }
 
+        /* التحكم في عرض الصفحات */
         .page { display: none; }
         .active { display: block; }
 
@@ -36,12 +36,10 @@
         .social-hero a:hover { color: var(--gold); transform: translateY(-5px); }
 
         /* الأقسام */
-        .section-title { text-align: center; margin: 60px 0 30px; font-size: 2.5rem; font-weight: 900; }
-        .catalog-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 0 5% 40px; max-width: 1200px; margin: auto; scrollbar-width: none; }
-        .catalog-grid::-webkit-scrollbar { display: none; }
+        .catalog-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 40px 5%; max-width: 1200px; margin: auto; scrollbar-width: none; }
         .cat-card { flex: 0 0 calc(25% - 15px); position: relative; border-radius: 20px; overflow: hidden; height: 350px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s; }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; }
-        .cat-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 8px 20px; border-radius: 10px; font-weight: bold; font-size: 0.9rem; }
+        .cat-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 8px 20px; border-radius: 10px; font-weight: bold; }
 
         /* لماذا شبابيك */
         .features-section { background: var(--bg); padding: 80px 5%; text-align: center; }
@@ -49,40 +47,44 @@
         .f-card { background: var(--white); padding: 40px 20px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
         .f-icon { width: 70px; height: 70px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; color: white; font-size: 1.8rem; }
 
-        /* الحاسبة الذكية للمنتج */
+        /* الحاسبة الذكية */
         .product-view { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px 5%; max-width: 1200px; margin: auto; }
         .calc-box { text-align: right; }
-        .price-tag { color: var(--gold); font-size: 1.8rem; font-weight: 900; margin: 20px 0; }
         .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
         .input-row input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-size: 1.1rem; }
-        .whatsapp-btn { background: var(--gold); color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .whatsapp-btn { background: var(--gold); color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem; }
         .total-box { background: var(--brown); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-size: 1.3rem; }
 
         /* من نحن */
         .about-container { max-width: 1100px; margin: auto; padding: 80px 5%; text-align: center; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
         .stat-card { background-color: #eee9e3; padding: 40px 20px; border-radius: 15px; text-align: center; }
-        .stat-number { font-size: 2.5rem; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
+        .stat-number { font-size: 2.5rem; font-weight: 900; color: var(--gold); }
 
-        /* الفوتر */
-        footer { background: var(--brown); color: white; padding: 60px 5% 20px; text-align: center; }
+        /* تواصل معنا */
+        .contact-page-box { background: var(--bg); padding: 40px; border-radius: 20px; text-align: right; max-width: 800px; margin: 40px auto; }
+
+        /* الفوتر القهوائي العريض */
+        footer { background: var(--brown); color: white; padding: 60px 5% 30px; text-align: center; }
+        .footer-cta h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 15px; }
         .footer-grid { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1.5fr; gap: 40px; text-align: right; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 50px; margin-top: 50px; }
+        .footer-links-list { list-style: none; opacity: 0.8; line-height: 2; }
+        .footer-links-list li { cursor: pointer; transition: 0.3s; }
+        .footer-links-list li:hover { color: var(--gold); }
 
         /* تحسينات الجوال */
         @media (max-width: 768px) {
             .catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); flex-wrap: wrap; gap: 10px; }
             .cat-card { flex: none; height: 180px; }
             .product-view { grid-template-columns: 1fr; }
-            .hero-img { order: -1; }
             .footer-grid, .stats-grid { grid-template-columns: 1fr; text-align: center; }
-            .nav-menu { gap: 10px; font-size: 0.8rem; }
+            .hero-img { order: -1; }
         }
 
-        /* لوحة التحكم السرية */
+        /* إدارة المتجر */
         .admin-form { max-width: 600px; margin: 40px auto; background: #f4f4f4; padding: 30px; border-radius: 15px; }
         .admin-form input, .admin-form select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; }
         .admin-list-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ddd; align-items: center; }
-        .del-btn { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -109,7 +111,6 @@
         <div id="homePage" class="page active">
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من <br> <span>شبابيك منزلك</span></h1>
-                <p>اكتشف أفخم تشكيلة ستائر منزلية بتصاميم عصرية</p>
                 <div class="social-hero">
                     <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -121,7 +122,7 @@
             </section>
 
             <section id="categories">
-                <h2 class="section-title">أقسامنا</h2>
+                <h2 style="text-align:center; margin-top:40px; font-size: 2.5rem; font-weight: 900;">أقسامنا</h2>
                 <div class="catalog-grid">
                     <div class="cat-card" onclick="openCat('بلاك أوت')"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="cat-label">بلاك أوت</div></div>
                     <div class="cat-card" onclick="openCat('شفافة')"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="cat-label">شفافة</div></div>
@@ -133,34 +134,33 @@
             <section class="features-section">
                 <h2>لماذا شبابيك؟</h2>
                 <div class="features-grid">
-                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>ضمان الجودة</h3><p>ضمان شامل على جميع خدماتنا</p></div>
-                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-truck-fast"></i></div><h3>تركيب منزلي</h3><p>فريق متخصص للتركيب في منزلك</p></div>
-                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-ruler-combined"></i></div><h3>مقاسات مخصصة</h3><p>تفصيل حسب مقاسات نافذتك</p></div>
-                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-palette"></i></div><h3>تصاميم حصرية</h3><p>مجموعة متنوعة من التصاميم</p></div>
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>ضمان الجودة</h3></div>
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-truck-fast"></i></div><h3>تركيب منزلي</h3></div>
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-ruler-combined"></i></div><h3>مقاسات مخصصة</h3></div>
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-palette"></i></div><h3>تصاميم حصرية</h3></div>
                 </div>
             </section>
         </div>
 
         <div id="categoryView" class="page">
-            <h2 id="catTitle" class="section-title"></h2>
-            <div class="grid" id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 0 5%;"></div>
+            <h2 id="catTitle" style="text-align:center; padding: 40px 0; font-size: 2rem; font-weight: 800;"></h2>
+            <div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 0 5%;"></div>
         </div>
 
         <div id="productCalculator" class="page">
             <div class="product-view">
                 <div class="calc-box">
                     <h1 id="pName"></h1>
-                    <div class="price-tag"><span id="pPrice"></span> د.ع / م²</div>
+                    <div style="color:var(--gold); font-size: 1.8rem; font-weight: 900; margin: 20px 0;"><span id="pPrice"></span> د.ع / م²</div>
                     <div class="input-row">
                         <div><label>العرض (سم)</label><input type="number" id="wIn" placeholder="200" oninput="updatePrice()"></div>
                         <div><label>الطول (سم)</label><input type="number" id="hIn" placeholder="260" oninput="updatePrice()"></div>
                     </div>
                     <label style="display:flex; align-items:center; justify-content:flex-end; gap:10px; margin:20px 0; background:var(--bg); padding:12px; border-radius:10px; cursor:pointer;">
-                        <span>طلب خدمة التركيب مع المنتج</span>
-                        <input type="checkbox" id="instIn" style="width:22px; height:22px;">
+                        <span>طلب خدمة التركيب</span><input type="checkbox" id="instIn" style="width:22px; height:22px;">
                     </label>
                     <div class="total-box"><strong>الإجمالي التقديري: </strong> <span id="resPrice">0</span> د.ع</div>
-                    <button class="whatsapp-btn" onclick="orderNow()">اطلب عبر واتساب <i class="fab fa-whatsapp"></i></button>
+                    <button class="whatsapp-btn" style="padding: 15px;" onclick="orderNow()">اطلب عبر واتساب <i class="fab fa-whatsapp"></i></button>
                 </div>
                 <div class="hero-img">
                     <img id="pImg" src="" style="width:100%; border-radius:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
@@ -171,7 +171,7 @@
         <div id="aboutPage" class="page">
             <div class="about-container">
                 <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 30px;">شبابيك للستائر</h2>
-                <p style="max-width: 900px; margin: 0 auto 40px; line-height: 2;">تأسست شبابيك للستائر لتقديم أفضل الحلول الفاخرة لتصميم منزلك بأرقى الأقمشة العالمية.</p>
+                <p style="max-width: 900px; margin: 0 auto 40px; line-height: 2;">تأسست شبابيك للستائر لتقديم أفضل الحلول الفاخرة لتصميم منزلك بأرقى الأقمشة.</p>
                 <div class="stats-grid">
                     <div class="stat-card"><div class="stat-number">+500</div><p>عميل سعيد</p></div>
                     <div class="stat-card"><div class="stat-number">+50</div><p>تصميم حصري</p></div>
@@ -181,3 +181,130 @@
         </div>
 
         <div id="contactPage" class="page">
+            <div class="contact-page-box">
+                <h3 style="margin-bottom:20px; font-size: 1.8rem;">تواصل معنا</h3>
+                <p style="margin-bottom:15px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</p>
+                <p style="margin-bottom:15px;"><i class="fa-solid fa-phone"></i> +964 788 300 2797</p>
+                <p><i class="fa-solid fa-clock"></i> السبت - الخميس (9ص - 9م)</p>
+                <a href="https://wa.me/9647883002797" class="whatsapp-btn" style="margin-top:20px; background:#25D366; text-decoration:none;">تواصل عبر واتساب مباشر</a>
+            </div>
+        </div>
+
+        <div id="adminPanel" class="page">
+            <div class="admin-form">
+                <h2>إدارة منتجات الأقسام</h2>
+                <select id="aCat"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
+                <input type="text" id="aName" placeholder="اسم المنتج">
+                <input type="number" id="aPrice" placeholder="السعر لكل م²">
+                <input type="text" id="aImg" placeholder="رابط الصورة">
+                <button class="whatsapp-btn" onclick="saveProd()">إضافة للمتجر</button>
+                <div id="adminList" style="margin-top:30px; border-top: 1px solid #ccc; padding-top: 20px;"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-cta">
+            <h2>جاهز لتجديد ستائر منزلك؟</h2>
+            <div style="display:flex; justify-content:center; gap:15px; margin-top: 20px;">
+                <button class="whatsapp-btn" style="width:auto; padding:12px 40px;" onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView()">تصفح المنتجات</button>
+                <button style="background:transparent; border: 1px solid white; color:white; padding:12px 40px; border-radius:10px; cursor:pointer; font-weight:bold;" onclick="location.href='https://wa.me/9647883002797'">تواصل عبر واتساب</button>
+            </div>
+        </div>
+        <div class="footer-grid">
+            <div>
+                <h3>شبابيك للستائر</h3>
+                <p style="opacity:0.8; font-size: 0.9rem; line-height: 1.6;">نقدم أفخم أنواع الستائر المنزلية بجودة عالية وأسعار منافسة. خبرة طويلة في التصميم والتركيب.</p>
+            </div>
+            <div>
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links-list">
+                    <li onclick="showPage('homePage')">الرئيسية</li>
+                    <li onclick="showPage('aboutPage')">من نحن</li>
+                    <li onclick="showPage('contactPage')">تواصل معنا</li>
+                </ul>
+            </div>
+            <div>
+                <h3>تواصل معنا</h3>
+                <p style="opacity:0.8; font-size: 0.9rem;">العراق - بغداد</p>
+                <p onclick="location.href='https://wa.me/9647883002797'" style="cursor:pointer; opacity:0.8; font-size: 0.9rem;">واتساب</p>
+            </div>
+            <div style="font-weight:bold; display:flex; align-items:center; justify-content:flex-end;">
+                <p dir="ltr" style="font-size: 1.1rem;">+964 788 300 2797</p>
+            </div>
+        </div>
+        <p style="text-align:center; margin-top:40px; opacity:0.5; font-size: 0.8rem;">© 2025 شبابيك للستائر جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('sh_db_vfinal_fix')) || [];
+        let cur = null;
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function openCat(name) {
+            document.getElementById('catTitle').innerText = 'منتجات ' + name;
+            const items = db.filter(i => i.category === name);
+            const grid = document.getElementById('catGrid');
+            grid.innerHTML = items.map(i => `
+                <div style="background:white; border-radius:15px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.1); cursor:pointer;" onclick='openCalc(${JSON.stringify(i)})'>
+                    <img src="${i.img}" style="width:100%; height:250px; object-fit:cover;">
+                    <div style="padding:15px; text-align:center;"><h3>${i.name}</h3><p>${i.price} د.ع / م²</p></div>
+                </div>
+            `).join('') || '<p style="text-align:center; grid-column:1/-1;">لا توجد منتجات حالياً.</p>';
+            showPage('categoryView');
+        }
+
+        function openCalc(p) {
+            cur = p;
+            document.getElementById('pName').innerText = p.name;
+            document.getElementById('pPrice').innerText = p.price;
+            document.getElementById('pImg').src = p.img;
+            document.getElementById('resPrice').innerText = "0";
+            showPage('productCalculator');
+        }
+
+        function doCalc() {
+            const w = document.getElementById('wIn').value / 100;
+            const h = document.getElementById('hIn').value / 100;
+            if(w && h) document.getElementById('resPrice').innerText = Math.round(w * h * cur.price).toLocaleString();
+        }
+
+        function orderNow() {
+            const w = document.getElementById('wIn').value;
+            const h = document.getElementById('hIn').value;
+            const total = document.getElementById('resPrice').innerText;
+            const inst = document.getElementById('instIn').checked ? 'نعم' : 'لا';
+            if(!w || !h) return alert("يرجى إدخال المقاسات");
+            const msg = `طلب جديد:\nالمنتج: ${cur.name}\nالمقاس: ${w}x${h}\nالسعر: ${total} د.ع\nالتركيب: ${inst}`;
+            window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
+        }
+
+        function checkAdmin() {
+            window.aclicks = (window.aclicks || 0) + 1;
+            if(window.aclicks >= 5) {
+                if(prompt("الرمز:") === "1234") { showAdminList(); showPage('adminPanel'); }
+                window.aclicks = 0;
+            }
+        }
+
+        function saveProd() {
+            db.push({id: Date.now(), category: document.getElementById('aCat').value, name: document.getElementById('aName').value, price: document.getElementById('aPrice').value, img: document.getElementById('aImg').value});
+            localStorage.setItem('sh_db_vfinal_fix', JSON.stringify(db));
+            alert("تم الحفظ!"); showAdminList();
+        }
+
+        function showAdminList() {
+            document.getElementById('adminList').innerHTML = db.map(i => `<div class="admin-list-item"><span>${i.name}</span><button onclick="delProd(${i.id})" style="color:red; border:none; background:none; cursor:pointer;">حذف</button></div>`).join('');
+        }
+
+        function delProd(id) {
+            if(confirm("حذف؟")) { db = db.filter(i => i.id !== id); localStorage.setItem('sh_db_vfinal_fix', JSON.stringify(db)); showAdminList(); }
+        }
+    </script>
+</body>
+</html>
