@@ -1,56 +1,90 @@
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شبابيك للستائر - Shababek Curtains</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-<script>
-    // إعدادات مشروعك الخاصة (تم استخراجها من صورتك المرفقة)
-    const firebaseConfig = {
-        apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE",
-        authDomain: "shababekcurtain.firebaseapp.com",
-        databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/",
-        projectId: "shababekcurtain",
-        storageBucket: "shababekcurtain.firebasestorage.app",
-        messagingSenderId: "413811779922",
-        appId: "1:413811779922:web:ace21e11450748eb5fb28b"
-    };
+    <style>
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; }
 
-    // تشغيل الاتصال
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const dbRef = firebase.database().ref('products');
+        /* البنر العلوي */
+        .top-banner { background: var(--brown); color: white; padding: 8px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .phone-fix { direction: ltr; font-weight: bold; }
 
-    // وظيفة زر حفظ ونشر المنتج المصلحة
-    function saveProd() {
-        const name = document.getElementById('aName').value;
-        const price = document.getElementById('aPrice').value;
-        const img = document.getElementById('aImg').value;
-        const category = document.getElementById('aCat').value;
+        /* الهيدر المطور */
+        header { background: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .brand-text { font-size: 1.9rem; font-weight: 900; color: var(--brown); line-height: 1; text-align: right; flex: 1; }
+        .logo-center { flex: 1; display: flex; justify-content: center; }
+        .logo-img { height: 95px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .logo-img:hover { transform: scale(1.1) rotate(2deg); }
 
-        if(!name || !price || !img) {
-            alert("يرجى ملء كافة الحقول (الاسم، السعر، ورابط الصورة)");
-            return;
+        /* تفاعلية السلة والواتساب */
+        .header-left-actions { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 20px; }
+        .whatsapp-link { text-decoration: none; color: #25D366; font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; transition: 0.3s; }
+        .whatsapp-link:hover { transform: translateY(-3px); opacity: 0.8; }
+        
+        .cart-icon { font-size: 1.6rem; color: var(--brown); cursor: pointer; position: relative; transition: 0.3s; }
+        .cart-icon:hover { transform: scale(1.2) rotate(-5deg); color: var(--gold); }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--gold); color: white; font-size: 0.75rem; padding: 2px 7px; border-radius: 50%; font-weight: 900; }
+
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; }
+        .nav-menu { display: flex; gap: 45px; list-style: none; justify-content: center; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1.05rem; transition: 0.3s; position: relative; }
+        .nav-menu a::after { content: ''; width: 0; height: 2px; background: var(--gold); position: absolute; bottom: -5px; right: 0; transition: 0.3s; }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a:hover::after { width: 100%; }
+
+        .page { display: none; }
+        .active { display: block; }
+
+        /* الهيرو المطور */
+        .hero { 
+            height: 85vh; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.15)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); 
+            background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 20px;
         }
+        .hero h1 { font-size: clamp(35px, 7vw, 60px); font-weight: 900; margin-bottom: 15px; }
+        .hero h1 span { color: var(--gold); }
 
-        const newProd = {
-            id: Date.now(),
-            category: category,
-            name: name,
-            price: price,
-            img: img
-        };
+        .hero-btns { display: flex; gap: 20px; margin-top: 35px; flex-wrap: wrap; justify-content: center; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 38px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(217, 179, 130, 0.4); }
+        .btn-gold:hover { transform: translateY(-5px); background: #c5a172; box-shadow: 0 8px 25px rgba(217, 179, 130, 0.6); }
+        
+        .btn-outline { background: rgba(0,0,0,0.3); border: 2px solid white; color: white; padding: 16px 38px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px); }
+        .btn-outline:hover { background: white; color: var(--brown); transform: translateY(-5px); }
 
-        // إرسال البيانات للسحابة
-        dbRef.push(newProd)
-            .then(() => {
-                alert("✅ تم حفظ ونشر المنتج بنجاح في السحابة!");
-                // تفريغ الحقول بعد الحفظ
-                document.getElementById('aName').value = "";
-                document.getElementById('aPrice').value = "";
-                document.getElementById('aImg').value = "";
-                if(typeof showAdminList === 'function') showAdminList();
-            })
-            .catch((error) => {
-                alert("❌ خطأ في الحفظ: " + error.message);
-            });
-    }
-</script>
+        /* تفاعلية أيقونات التواصل */
+        .social-hero { display: flex; gap: 22px; margin-top: 25px; }
+        .social-hero a { color: var(--white); font-size: 1.9rem; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
+        .social-hero a:hover { color: var(--gold); transform: translateY(-8px) scale(1.2); }
+
+        /* أقسامنا */
+        .catalog-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 40px 5%; max-width: 1300px; margin: auto; scrollbar-width: none; }
+        .cat-card { flex: 0 0 calc(25% - 15px); position: relative; border-radius: 20px; overflow: hidden; height: 380px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.5s; }
+        .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
+        .cat-card:hover img { transform: scale(1.15); }
+        .cat-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 10px 25px; border-radius: 10px; font-weight: 900; z-index: 5; transition: 0.3s; }
+        .cat-card:hover .cat-label { background: var(--brown); padding: 12px 30px; }
+
+        /* لماذا شبابيك */
+        .features-section { background: var(--bg); padding: 80px 5%; text-align: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: auto; }
+        .f-card { background: var(--white); padding: 45px 25px; border-radius: 20px; box-shadow: 0 4px 25px rgba(0,0,0,0.05); transition: 0.3s; }
+        .f-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .f-icon { width: 85px; height: 85px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; color: white; font-size: 2.2rem; transition: 0.5s; }
+        .f-card:hover .f-icon { transform: rotateY(360deg); background: var(--brown); }
+
+        /* من نحن */
+        .about-container { max-width: 1100px; margin: auto; padding: 80px 5%; text-align: center; }
+        .about-text-content { max-width: 900px; margin: 0 auto 50px; line-height: 2.2; font-size: 1.2rem; color: #444; text-align: justify; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; margin-top: 55px; }
+        .stat-card { background-color: #eee
