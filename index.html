@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شبابيك للستائر</title>
+    <title>شبابيك للستائر | فخامة تليق بمنزلك</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
@@ -13,98 +13,97 @@
             --dark-brown: #3d2e24; 
             --white: #ffffff;
             --light-bg: #f9f6f2;
+            --transition: all 0.3s ease;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--white); color: var(--dark-brown); scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--white); color: var(--dark-brown); scroll-behavior: smooth; overflow-x: hidden; line-height: 1.8; }
 
-        /* البنر العلوي القهوائي */
-        .top-banner { background: var(--dark-brown); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+        /* البنر العلوي */
+        .top-banner { background: var(--dark-brown); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; font-size: 14px; border-bottom: 1px solid var(--primary-gold); }
         .whatsapp-link-top { color: var(--white); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px; }
 
         /* الهيدر */
-        header { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 45px; cursor: pointer; }
+        header { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
+        .logo-img { height: 50px; cursor: pointer; transition: var(--transition); }
+        .logo-img:hover { transform: scale(1.05); }
+        
         .nav-menu { display: flex; gap: 20px; list-style: none; }
-        .nav-menu a { text-decoration: none; color: var(--dark-brown); font-weight: 700; cursor: pointer; font-size: 1rem; }
+        .nav-menu a { text-decoration: none; color: var(--dark-brown); font-weight: 700; cursor: pointer; font-size: 1rem; transition: var(--transition); }
         .nav-menu a:hover { color: var(--primary-gold); }
 
-        .page-section { display: none; }
-        .active-page { display: block; }
+        /* الأزرار العامة */
+        .btn-main { background: var(--primary-gold); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: var(--transition); font-family: 'Cairo'; }
+        .btn-main:hover { background: var(--dark-brown); transform: translateY(-2px); }
 
-        /* الهيرو الرئيسي */
+        /* تحكم الصفحات */
+        .page-section { display: none; animation: fadeIn 0.6s ease; }
+        .active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* قسم الهيرو */
         .hero { 
-            height: 75vh; 
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); 
+            height: 70vh; 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); 
             background-size: cover; background-position: center; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 20px;
         }
-        .hero h1 { font-size: clamp(28px, 6vw, 55px); font-weight: 900; margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(30px, 6vw, 55px); font-weight: 900; margin-bottom: 15px; }
         .hero span { color: var(--primary-gold); }
-
-        /* أيقونات التواصل في الهيرو */
         .social-hero { display: flex; gap: 20px; margin-top: 25px; }
-        .social-hero a { color: var(--white); font-size: 1.8rem; transition: 0.3s; text-decoration: none; }
+        .social-hero a { color: var(--white); font-size: 1.8rem; transition: var(--transition); }
         .social-hero a:hover { color: var(--primary-gold); transform: translateY(-5px); }
 
-        /* الأقسام - كتالوج تفاعلي بخط واحد */
-        .catalog-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 40px 5%; max-width: 1200px; margin: auto; scrollbar-width: none; }
+        /* الأقسام والكتالوج */
+        .section-title { text-align: center; font-size: 2.5rem; font-weight: 900; margin-bottom: 10px; padding-top: 60px; }
+        .catalog-grid { display: flex; gap: 20px; overflow-x: auto; padding: 40px 5%; scrollbar-width: none; }
         .catalog-grid::-webkit-scrollbar { display: none; }
-        .catalog-card { flex: 0 0 calc(25% - 15px); position: relative; border-radius: 20px; overflow: hidden; height: 350px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s ease; }
-        .catalog-card:hover { transform: scale(1.03); }
+        .catalog-card { flex: 0 0 280px; position: relative; border-radius: 20px; overflow: hidden; height: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .catalog-card img { width: 100%; height: 100%; object-fit: cover; }
-        .catalog-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 8px 20px; border-radius: 10px; font-weight: bold; white-space: nowrap; font-size: 0.9rem; }
+        .catalog-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 25px; border-radius: 10px; font-weight: bold; }
 
-        /* لماذا شبابيك؟ المحدث */
-        .features-section { background: var(--light-bg); padding: 80px 5%; text-align: center; }
-        .features-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
-        .features-subtitle { color: #888; margin-bottom: 50px; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
-        .feature-card { background: var(--white); padding: 40px 20px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); text-align: center; }
-        .feature-icon-wrapper { width: 70px; height: 70px; background-color: var(--primary-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; }
-        .feature-icon-wrapper i { color: var(--white); font-size: 1.8rem; }
+        /* قسم من نحن المطور */
+        .about-container { max-width: 1000px; margin: auto; padding: 80px 5%; }
+        .about-card { background: var(--light-bg); padding: 50px; border-radius: 30px; border-right: 8px solid var(--primary-gold); }
+        .about-card h2 { color: var(--dark-brown); font-size: 2.2rem; margin-bottom: 25px; font-weight: 900; }
+        .about-card p { margin-bottom: 20px; font-size: 1.15rem; text-align: justify; }
+        .vision-box { background: var(--dark-brown); color: white; padding: 30px; border-radius: 20px; margin-top: 40px; }
+        .vision-box h3 { color: var(--primary-gold); margin-bottom: 15px; }
 
-        /* صفحة من نحن المحدثة */
-        .about-container { max-width: 1100px; margin: auto; padding: 80px 5%; text-align: center; }
-        .about-content-text { max-width: 900px; margin: 0 auto 60px; line-height: 2; color: #555; font-size: 1.15rem; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
-        .stat-card { background-color: #eee9e3; padding: 40px 20px; border-radius: 15px; text-align: center; }
-        .stat-number { font-size: 2.5rem; font-weight: 900; color: var(--primary-gold); margin-bottom: 10px; }
+        /* تواصل معنا */
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 60px 5%; max-width: 1200px; margin: auto; }
+        .contact-item { background: var(--light-bg); padding: 30px; border-radius: 15px; text-align: center; transition: var(--transition); }
+        .contact-item:hover { transform: translateY(-5px); background: #eeeae4; }
+        .contact-item i { font-size: 2.5rem; color: var(--primary-gold); margin-bottom: 15px; }
 
-        /* صفحة تواصل معنا */
-        .contact-container { max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 60px 5%; text-align: right; }
-        .contact-info-box { background: var(--light-bg); padding: 30px; border-radius: 15px; }
-
-        /* الفوتر المحدث */
-        .footer-section { background-color: var(--dark-brown); color: var(--white); padding: 60px 5% 30px; text-align: center; }
-        .cta-btns { display: flex; justify-content: center; gap: 15px; margin-bottom: 60px; }
-        .btn-catalog-footer { background-color: var(--primary-gold); color: white; border: none; padding: 12px 35px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .btn-whatsapp-footer { background: transparent; border: 1px solid white; color: white; padding: 12px 35px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .main-footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; text-align: right; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 50px; }
-        .footer-links-list { list-style: none; opacity: 0.8; line-height: 2; }
-        .footer-links-list li { cursor: pointer; }
+        /* الفوتر */
+        footer { background: var(--dark-brown); color: white; padding: 60px 5% 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 40px; }
+        .footer-col h3 { color: var(--primary-gold); margin-bottom: 20px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; cursor: pointer; opacity: 0.8; transition: 0.3s; }
+        .footer-col ul li:hover { opacity: 1; color: var(--primary-gold); }
 
         @media (max-width: 768px) {
-            .catalog-card { flex: 0 0 75%; }
-            .main-footer-grid { grid-template-columns: 1fr; text-align: center; }
-            .cta-btns { flex-direction: column; }
-            .stats-grid { grid-template-columns: 1fr; }
+            .nav-menu { display: none; }
+            .about-card { padding: 30px; }
+            .catalog-card { flex: 0 0 80%; }
         }
     </style>
 </head>
 <body>
 
     <div class="top-banner">
-        <div>مرحباً بكم في شبابيك للستائر</div>
-        <a href="https://wa.me/9647883002797" class="whatsapp-link-top">تواصل معنا عبر واتساب <i class="fa-brands fa-whatsapp"></i></a>
+        <div>مرحباً بكم في شبابيك للستائر - فخامة التفاصيل</div>
+        <a href="https://wa.me/9647883002797" class="whatsapp-link-top">تواصل معنا <i class="fa-brands fa-whatsapp"></i></a>
     </div>
 
     <header>
-        <button onclick="location.href='https://wa.me/9647883002797'" style="background:var(--primary-gold); color:white; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;">احسب سعر ستارتك</button>
+        <button onclick="location.href='https://wa.me/9647883002797'" class="btn-main">احسب سعر ستارتك</button>
         <nav>
             <ul class="nav-menu">
                 <li><a onclick="showPage('home')">الرئيسية</a></li>
-                <li><a onclick="showPage('categories')">المنتجات</a></li>
+                <li><a onclick="showPage('home', 'categories')">المنتجات</a></li>
                 <li><a onclick="showPage('about')">من نحن</a></li>
                 <li><a onclick="showPage('contact')">تواصل معنا</a></li>
             </ul>
@@ -115,22 +114,22 @@
     </header>
 
     <main id="mainContainer">
+        
         <div id="homePage" class="page-section active-page">
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من <br> <span>شبابيك منزلك</span></h1>
-                <p>اكتشف أفخم تشكيلة ستائر منزلية بتصاميم عصرية وكلاسيكية</p>
+                <p>اكتشف أفخم تشكيلة ستائر منزلية بتصاميم عصرية وكلاسيكية لعام 2026</p>
                 <div class="social-hero">
                     <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://youtube.com/@shababek.curtains" target="_blank"><i class="fab fa-youtube"></i></a>
                     <a href="https://www.snapchat.com/add/shababek.curtains" target="_blank"><i class="fab fa-snapchat"></i></a>
                 </div>
             </section>
 
-            <section id="categories" style="padding-top: 80px;">
-                <h2 style="text-align:center; font-size:2.5rem; font-weight:900;">أقسامنا</h2>
+            <section id="categories">
+                <h2 class="section-title">أقسامنا</h2>
                 <div class="catalog-grid">
                     <div class="catalog-card"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="catalog-label">بلاك أوت</div></div>
                     <div class="catalog-card"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="catalog-label">شفافة</div></div>
@@ -138,83 +137,102 @@
                     <div class="catalog-card"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div class="catalog-label">رول</div></div>
                 </div>
             </section>
-
-            <section class="features-section">
-                <h2>لماذا شبابيك؟</h2>
-                <div class="features-grid">
-                    <div class="feature-card"><div class="feature-icon-wrapper"><i class="fa-solid fa-shield-halved"></i></div><h3>ضمان الجودة</h3><p>ضمان شامل على جميع منتجاتنا وخدماتنا</p></div>
-                    <div class="feature-card"><div class="feature-icon-wrapper"><i class="fa-solid fa-truck-fast"></i></div><h3>تركيب منزلي</h3><p>فريق متخصص لتركيب الستائر في منزلك</p></div>
-                    <div class="feature-card"><div class="feature-icon-wrapper"><i class="fa-solid fa-ruler-combined"></i></div><h3>مقاسات مخصصة</h3><p>تفصيل على حسب مقاسات نوافذك بدقة عالية</p></div>
-                    <div class="feature-card"><div class="feature-icon-wrapper"><i class="fa-solid fa-palette"></i></div><h3>تصاميم حصرية</h3><p>مجموعة متنوعة من التصاميم العصرية والكلاسيكية</p></div>
-                </div>
-            </section>
         </div>
 
         <div id="aboutPage" class="page-section">
-            <section class="hero" style="height:40vh; background-image: url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png');">
-                <h1>من نحن</h1>
-            </section>
             <div class="about-container">
-                <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 40px;">شبابيك للستائر</h2>
-                <div class="about-content-text">
-                    <p>تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر عنصر أساسي يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
-                    <p>نقدم مجموعة واسعة من الستائر، بخدمات تفصيل وتركيب احترافية، ورؤيتنا أن نكون الوجهة الأولى للستائر الفاخرة.</p>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card"><span class="stat-number">+500</span><span class="stat-label">عميل سعيد</span></div>
-                    <div class="stat-card"><span class="stat-number">+50</span><span class="stat-label">تصميم حصري</span></div>
-                    <div class="stat-card"><span class="stat-number">+10</span><span class="stat-label">سنوات خبرة</span></div>
+                <div class="about-card">
+                    <h2>شبابيك للستائر</h2>
+                    <p>تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
+                    <p>نقدم مجموعة واسعة من الستائر تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية. كما نوفر خدمة التفصيل حسب المقاسات وخدمة التركيب المنزلي بأيدي فنيين متخصصين.</p>
+                    
+                    <div class="vision-box">
+                        <h3>رؤيتنا</h3>
+                        <p>رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق، ونسعى دائماً لتحقيق رضا عملائنا من خلال الجودة العالية والأسعار المنافسة والخدمة المتميزة.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="contactPage" class="page-section">
-            <section class="hero" style="height:40vh; background-image: url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png');">
-                <h1>تواصل معنا</h1>
-            </section>
-            <div class="contact-container">
-                <div class="contact-info-box">
-                    <div class="contact-info-item"><i class="fa-solid fa-location-dot"></i><div><strong>العنوان:</strong> العراق - بغداد</div></div>
-                    <div class="contact-info-item"><i class="fa-brands fa-whatsapp"></i><div><strong>واتساب:</strong> تواصل عبر واتساب</div></div>
-                    <div class="contact-info-item"><i class="fa-solid fa-clock"></i><div><strong>ساعات العمل:</strong> السبت - الخميس 9ص - 9م</div></div>
+            <h2 class="section-title">تواصل معنا</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <h3>موقعنا</h3>
+                    <p>العراق - بغداد</p>
                 </div>
-                <div style="background:var(--white); padding:30px; border-radius:15px; border:1px solid #ddd; text-align:center;">
-                    <button onclick="location.href='https://wa.me/9647883002797'" style="width:100%; padding:15px; background:#25D366; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">تواصل عبر واتساب <i class="fa-brands fa-whatsapp"></i></button>
+                <div class="contact-item" onclick="location.href='https://wa.me/9647883002797'" style="cursor:pointer;">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <h3>واتساب</h3>
+                    <p>تحدث معنا الآن مباشرة</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <h3>ساعات العمل</h3>
+                    <p>السبت - الخميس: 9ص - 9م</p>
                 </div>
             </div>
         </div>
+
     </main>
 
-    <footer class="footer-section">
-        <div class="footer-cta">
-            <h2>جاهز لتجديد ستائر منزلك؟</h2>
-            <div class="cta-btns">
-                <button class="btn-catalog-footer" onclick="showPage('categories')">تصفح المنتجات</button>
-                <button class="btn-whatsapp-footer" onclick="location.href='https://wa.me/9647883002797'">تواصل عبر واتساب</button>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>شبابيك</h3>
+                <p>نصنع الجمال لنوافذ منزلك بأعلى المعايير العالمية.</p>
+            </div>
+            <div class="footer-col">
+                <h3>روابط هامة</h3>
+                <ul>
+                    <li onclick="showPage('home')">الرئيسية</li>
+                    <li onclick="showPage('about')">من نحن</li>
+                    <li onclick="showPage('contact')">تواصل معنا</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>تابعنا</h3>
+                <div class="social-hero" style="justify-content: flex-start; margin-top: 10px;">
+                    <a href="https://www.facebook.com/profile.php?id=61587692021311"><i class="fab fa-facebook" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://www.instagram.com/shababek.curtains/"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://www.tiktok.com/@shababek.curtains"><i class="fab fa-tiktok" style="font-size: 1.2rem;"></i></a>
+                </div>
             </div>
         </div>
-        <div class="main-footer-grid">
-            <div><h3>شبابيك للستائر</h3><p>نقدم أفخم تشكيلة من الستائر المنزلية بأعلى جودة وأفضل الأسعار.</p></div>
-            <div><h3>روابط سريعة</h3><ul class="footer-links-list"><li onclick="showPage('home')">الرئيسية</li><li onclick="showPage('categories')">المنتجات</li><li onclick="showPage('about')">من نحن</li></ul></div>
-            <div><h3>تواصل معنا</h3><p>العراق - بغداد</p></div>
-            <div style="font-weight:bold; display:flex; align-items:center; justify-content:flex-end;"><p dir="ltr">+964 788 300 2797</p></div>
-        </div>
-        <p style="text-align:center; margin-top:40px; opacity:0.5;">© 2025 شبابيك للستائر جميع الحقوق محفوظة.</p>
+        <p style="text-align: center; opacity: 0.6; font-size: 0.9rem;">© 2026 شبابيك للستائر. جميع الحقوق محفوظة.</p>
     </footer>
 
     <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
-            if(pageId === 'categories') {
-                document.getElementById('homePage').classList.add('active-page');
-                document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+        function showPage(pageId, anchorId = null) {
+            // إخفاء كل الصفحات
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            
+            // إظهار الصفحة المطلوبة
+            const targetPage = document.getElementById(pageId + 'Page');
+            if (targetPage) {
+                targetPage.classList.add('active-page');
+            }
+
+            // إذا كان هناك مرسى (مثل الأقسام في الرئيسية)
+            if (anchorId) {
+                setTimeout(() => {
+                    document.getElementById(anchorId).scrollIntoView({ behavior: 'smooth' });
+                }, 100);
             } else {
-                document.getElementById(pageId + 'Page').classList.add('active-page');
-                window.scrollTo(0,0);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
+
+        let clicks = 0;
         function checkAdminClick() {
-            clicks++; if(clicks >= 5) { alert("لوحة الإدارة قيد التفعيل"); clicks = 0; }
+            clicks++;
+            if (clicks >= 5) {
+                alert("نظام الإدارة قيد التفعيل لعام 2026");
+                clicks = 0;
+            }
         }
     </script>
 </body>
