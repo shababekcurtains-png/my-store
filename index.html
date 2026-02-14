@@ -18,54 +18,47 @@
 
         .top-banner { background: var(--brown); color: white; padding: 8px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         header { background: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 95px; cursor: pointer; transition: 0.4s; }
+        .logo-center { flex: 1; display: flex; justify-content: center; }
+        .logo-img { height: 95px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .logo-img:hover { transform: scale(1.1) rotate(2deg); }
 
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; }
         .nav-menu { display: flex; gap: 45px; list-style: none; justify-content: center; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1.05rem; transition: 0.3s; position: relative; }
-        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; transition: 0.3s; }
 
         .hero { height: 85vh; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.15)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
-        .hero h1 { font-size: clamp(35px, 7vw, 60px); font-weight: 900; margin-bottom: 15px; }
         .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 38px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-outline { background: rgba(0,0,0,0.3); border: 2px solid white; color: white; padding: 16px 38px; border-radius: 8px; font-weight: bold; cursor: pointer; backdrop-filter: blur(5px); }
-
-        .social-hero { display: flex; gap: 22px; margin-top: 25px; }
-        .social-hero a { color: var(--white); font-size: 1.9rem; transition: 0.4s; display: inline-block; }
-        .social-hero a:hover { color: var(--gold); transform: translateY(-8px) scale(1.2); }
 
         .catalog-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 40px 5%; max-width: 1300px; margin: auto; scrollbar-width: none; }
         .cat-card { flex: 0 0 280px; position: relative; border-radius: 20px; overflow: hidden; height: 380px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .cat-card:hover img { transform: scale(1.15); }
         .cat-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 10px 25px; border-radius: 10px; font-weight: 900; }
 
+        .features-section { background: var(--bg); padding: 80px 5%; text-align: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1200px; margin: auto; }
+        .f-card { background: var(--white); padding: 45px 25px; border-radius: 20px; box-shadow: 0 4px 25px rgba(0,0,0,0.05); transition: 0.3s; }
+        .f-icon { width: 85px; height: 85px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; color: white; font-size: 2.2rem; transition: 0.5s; }
+        .f-card:hover .f-icon { transform: rotateY(360deg); background: var(--brown); }
+
         .about-container { max-width: 1100px; margin: auto; padding: 80px 5%; text-align: center; }
+        .about-text-content { max-width: 900px; margin: 0 auto 50px; line-height: 2.2; font-size: 1.2rem; color: #444; text-align: justify; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; margin-top: 55px; }
         .stat-card { background-color: #eee9e3; padding: 45px 25px; border-radius: 15px; }
         .stat-number { font-size: 2.6rem; font-weight: 900; color: var(--gold); }
 
-        /* الفوتر القهوائي المعتمد */
-        footer { background: var(--brown); color: white; padding: 70px 5% 35px; text-align: center; margin-top: 50px; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; text-align: right; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; margin-top: 40px; }
-        .footer-logo { font-weight: 900; font-size: 1.7rem; color: var(--gold); margin-bottom: 10px; }
+        footer { background: var(--brown); color: white; padding: 70px 5% 35px; text-align: center; }
+        .footer-logo { font-weight: 900; font-size: 1.7rem; color: var(--gold); }
 
         .page { display: none; }
         .active { display: block; }
-        .admin-box { max-width: 600px; margin: 50px auto; background: #f4f4f4; padding: 30px; border-radius: 15px; text-align: right; }
-        .admin-box input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: 'Cairo'; }
     </style>
 </head>
 <body>
 
-    <div class="top-banner">
-        <span>مرحباً بكم في شبابيك للستائر</span>
-        <span style="direction:ltr; font-weight:bold;">+964 788 300 2797 <i class="fa-solid fa-phone"></i></span>
-    </div>
-
     <header>
-        <div style="font-size: 1.9rem; font-weight: 900;">شبابيك<br><span style="color: var(--gold); font-size: 1.2rem;">للستائر</span></div>
-        <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="checkAdmin()">
+        <div style="font-size: 1.9rem; font-weight: 900; flex: 1;">شبابيك<br><span style="color: var(--gold); font-size: 1.2rem;">للستائر</span></div>
+        <div class="logo-center"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="checkAdmin()"></div>
         <div style="flex: 1; display: flex; justify-content: flex-end; gap: 20px;">
             <a href="https://wa.me/9647883002797" style="color: #25D366; font-size: 1.6rem;"><i class="fab fa-whatsapp"></i></a>
             <div onclick="openCart()" style="cursor: pointer; position: relative;"><i class="fas fa-shopping-basket" style="font-size: 1.6rem;"></i><span id="globalCartCount" style="position: absolute; top: -8px; right: -10px; background: var(--gold); color: white; font-size: 0.75rem; padding: 2px 7px; border-radius: 50%;">0</span></div>
@@ -85,10 +78,7 @@
         <div id="homePage" class="page active">
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من <br> <span>شبابيك منزلك</span></h1>
-                <div class="hero-btns">
-                    <button class="btn-gold" onclick="document.getElementById('categories').scrollIntoView()">احسب سعر ستارتك الآن</button>
-                    <button class="btn-outline" onclick="window.location.href='https://wa.me/9647883002797'">طلب استشارة منزلية</button>
-                </div>
+                <div class="hero-btns"><button class="btn-gold" onclick="document.getElementById('categories').scrollIntoView()">احسب سعر ستارتك الآن</button></div>
                 <div class="social-hero">
                     <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -100,7 +90,7 @@
             </section>
 
             <section id="categories">
-                <h2 style="text-align:center; margin-top:50px; font-size: 2.5rem; font-weight: 900;">أقسامنا</h2>
+                <h2 style="text-align:center; margin-top:50px; font-size: 2.6rem; font-weight: 900;">أقسامنا</h2>
                 <div class="catalog-grid">
                     <div class="cat-card" onclick="openCat('بلاك أوت')"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="cat-label">بلاك أوت</div></div>
                     <div class="cat-card" onclick="openCat('شفافة')"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="cat-label">شفافة</div></div>
@@ -108,12 +98,24 @@
                     <div class="cat-card" onclick="openCat('رول')"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div class="cat-label">رول</div></div>
                 </div>
             </section>
+
+            <section class="features-section">
+                <h2>لماذا شبابيك؟</h2>
+                <div class="features-grid">
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>ضمان الجودة</h3><p>أرقى الأقمشة مع ضمان حقيقي.</p></div>
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-truck-fast"></i></div><h3>تركيب منزلي</h3><p>فريق فني متخصص للقياس والتركيب.</p></div>
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-ruler-combined"></i></div><h3>مقاسات مخصصة</h3><p>تفصيل حسب طلبك بدقة.</p></div>
+                    <div class="f-card"><div class="f-icon"><i class="fa-solid fa-palette"></i></div><h3>تصاميم حصرية</h3><p>موديلات تناسب ذوقك الرفيع.</p></div>
+                </div>
+            </section>
         </div>
 
         <div id="aboutPage" class="page">
             <div class="about-container">
-                <h2 style="font-size: 2.6rem; font-weight: 800; margin: 45px 0;">شبابيك للستائر</h2>
-                <p style="margin: 30px 0; line-height: 2;">نحن الوجهة الأولى للستائر الفاخرة في العراق، نقدم الجودة والتميز في كل نافذة.</p>
+                <h2>شبابيك للستائر</h2>
+                <div class="about-text-content">
+                    <p>تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
+                </div>
                 <div class="stats-grid">
                     <div class="stat-card"><div class="stat-number">+500</div><p>عميل سعيد</p></div>
                     <div class="stat-card"><div class="stat-number">+50</div><p>تصميم حصري</p></div>
@@ -121,16 +123,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="contactPage" class="page">
-            <div style="text-align:center; padding: 100px 5%;">
-                <h2>تواصل معنا</h2>
-                <p style="margin: 20px 0; font-size: 1.2rem;">بغداد - العراق</p>
-                <a href="https://wa.me/9647883002797" class="btn-gold" style="text-decoration:none; display:inline-block;">تحدث معنا عبر واتساب</a>
-            </div>
-        </div>
-
-        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding: 45px 0;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 0 5%;"></div></div>
 
         <div id="productCalculator" class="page">
             <div style="max-width: 1200px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 5%;">
@@ -147,30 +139,24 @@
         </div>
 
         <div id="adminPanel" class="page">
-            <div class="admin-box">
-                <h3>إدارة المنتجات السحابية</h3>
-                <select id="aCat" style="width:100%; padding:12px; margin:10px 0;"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
-                <input type="text" id="aName" placeholder="اسم المنتج">
-                <input type="number" id="aPrice" placeholder="السعر">
-                <input type="text" id="aImg" placeholder="رابط الصورة">
-                <button onclick="saveProd()" class="btn-gold" style="width:100%">نشر للموقع</button>
-                <div id="adminList" style="margin-top:20px;"></div>
+            <div style="max-width: 500px; margin: 50px auto; background: #eee; padding: 30px; border-radius: 15px; text-align: right;">
+                <h3>لوحة الإدارة السحابية</h3>
+                <select id="aCat" style="width:100%; padding:10px; margin:10px 0;"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
+                <input type="text" id="aName" placeholder="اسم المنتج" style="width:100%; padding:10px;">
+                <input type="number" id="aPrice" placeholder="السعر" style="width:100%; padding:10px; margin:10px 0;">
+                <input type="text" id="aImg" placeholder="رابط الصورة" style="width:100%; padding:10px;">
+                <button onclick="saveProd()" style="width:100%; background:var(--gold); color:white; padding:15px; border:none; margin-top:10px; cursor:pointer;">نشر للموقع</button>
+                <div id="adminList"></div>
             </div>
         </div>
     </main>
 
     <footer>
         <div class="footer-logo">شبابيك</div>
-        <div class="footer-grid">
-            <div><h3>شبابيك للستائر</h3><p>نقدم أرقى حلول الستائر المنزلية في العراق بأعلى معايير الجودة.</p></div>
-            <div><h3>روابط سريعة</h3><ul style="list-style:none; line-height:2.2; opacity:0.8;"><li onclick="showPage('homePage')">الرئيسية</li><li onclick="showPage('aboutPage')">من نحن</li><li onclick="showPage('contactPage')">تواصل معنا</li></ul></div>
-            <div><h3>تواصل معنا</h3><p>بغداد - العراق</p><p style="direction:ltr;">+964 788 300 2797</p></div>
-        </div>
-        <p style="text-align:center; margin-top:50px; opacity:0.4; font-size:0.85rem;">© 2026 جميع الحقوق محفوظة لشبابيك للستائر</p>
+        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر</p>
     </footer>
 
     <script>
-        // إعدادات Firebase السحابية
         const firebaseConfig = {
             apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE",
             authDomain: "shababekcurtain.firebaseapp.com",
@@ -182,56 +168,13 @@
 
         let cur = null; let cart = []; let adminClicks = 0;
 
-        function showPage(id) { 
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
-            document.getElementById(id).classList.add('active'); 
-            window.scrollTo(0,0); 
-        }
-        
-        function checkAdmin() { 
-            adminClicks++; 
-            if(adminClicks >= 5) { 
-                if(prompt("الرمز:") === "1234") { showPage('adminPanel'); showAdminList(); } 
-                adminClicks = 0; 
-            } else { showPage('homePage'); }
-        }
-
-        function saveProd() {
-            const data = { category: document.getElementById('aCat').value, name: document.getElementById('aName').value, price: document.getElementById('aPrice').value, img: document.getElementById('aImg').value };
-            dbRef.push(data).then(() => { alert("تم النشر في السحابة!"); showAdminList(); });
-        }
-
-        function openCat(name) {
-            document.getElementById('catTitle').innerText = 'منتجات ' + name;
-            const grid = document.getElementById('catGrid');
-            grid.innerHTML = '<p style="text-align:center;">جاري التحميل من السحابة...</p>';
-            dbRef.on('value', (snap) => {
-                const data = snap.val();
-                const items = data ? Object.values(data).filter(i => i.category === name) : [];
-                grid.innerHTML = items.map(i => `
-                    <div style="background:white; border-radius:18px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.1); cursor:pointer;" onclick='openCalc(${JSON.stringify(i)})'>
-                        <img src="${i.img}" style="width:100%; height:290px; object-fit:cover;">
-                        <div style="padding:22px; text-align:center;"><h3>${i.name}</h3><p>${i.price} د.ع</p></div>
-                    </div>`).join('') || '<p style="text-align:center;">لا توجد منتجات حالياً.</p>';
-            });
-            showPage('categoryView');
-        }
-
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+        function checkAdmin() { adminClicks++; if(adminClicks >= 5) { if(prompt("الرمز:") === "1234") { showPage('adminPanel'); showAdminList(); } adminClicks = 0; } }
+        function saveProd() { const data = { category: document.getElementById('aCat').value, name: document.getElementById('aName').value, price: document.getElementById('aPrice').value, img: document.getElementById('aImg').value }; dbRef.push(data).then(() => { alert("تم النشر!"); showAdminList(); }); }
+        function openCat(name) { dbRef.on('value', (snap) => { const items = snap.val() ? Object.values(snap.val()).filter(i => i.category === name) : []; document.getElementById('catGrid').innerHTML = items.map(i => `<div style="background:white; border-radius:18px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.1); cursor:pointer;" onclick='openCalc(${JSON.stringify(i)})'><img src="${i.img}" style="width:100%; height:290px; object-fit:cover;"><div style="padding:22px; text-align:center;"><h3>${i.name}</h3><p>${i.price} د.ع</p></div></div>`).join(''); }); showPage('categoryView'); }
         function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = p.price; document.getElementById('pImg').src = p.img; document.getElementById('resPrice').innerText = "0"; showPage('productCalculator'); }
         function doCalc() { const w = document.getElementById('wIn').value/100; const h = document.getElementById('hIn').value/100; if(w && h) document.getElementById('resPrice').innerText = Math.round(w*h*cur.price).toLocaleString(); }
-        function addToCart() { cart.push({ n: cur.name, p: document.getElementById('resPrice').innerText }); document.getElementById('globalCartCount').innerText = cart.length; alert("تمت الإضافة للسلة"); }
-        function openCart() { 
-            if(cart.length === 0) return alert("السلة فارغة");
-            let msg = "طلب جديد من شبابيك:\n"; cart.forEach(i => msg += `- ${i.n}: ${i.p} د.ع\n`);
-            window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`; 
-        }
-
-        function showAdminList() {
-            dbRef.once('value', (snap) => {
-                const items = snap.val() ? Object.entries(snap.val()) : [];
-                document.getElementById('adminList').innerHTML = items.map(([key, i]) => `<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #ddd;"><span>${i.name}</span><button onclick="delProd('${key}')" style="color:red; border:none; cursor:pointer;">حذف</button></div>`).join('');
-            });
-        }
+        function showAdminList() { dbRef.once('value', (snap) => { const items = snap.val() ? Object.entries(snap.val()) : []; document.getElementById('adminList').innerHTML = items.map(([key, i]) => `<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #ddd;"><span>${i.name}</span><button onclick="delProd('${key}')" style="color:red; border:none; cursor:pointer;">حذف</button></div>`).join(''); }); }
         function delProd(key) { if(confirm("حذف؟")) dbRef.child(key).remove().then(() => showAdminList()); }
     </script>
 </body>
