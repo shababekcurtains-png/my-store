@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شبابيك للستائر - Shababek Curtains</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
@@ -17,38 +16,45 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* الهيدر المطور والتفاعلية */
+        /* الهيدر المطور */
         header { background: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 95px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .logo-img { height: 95px; cursor: pointer; transition: 0.4s; }
         .logo-img:hover { transform: scale(1.1) rotate(2deg); }
 
-        /* الهيرو وزر الاستشارة المنزلية */
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; }
+        .nav-menu { display: flex; gap: 45px; list-style: none; justify-content: center; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1.05rem; transition: 0.3s; }
+        .nav-menu a:hover { color: var(--gold); }
+
+        /* الهيرو المطور */
         .hero { height: 85vh; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.15)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 20px; }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 38px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(217,179,130,0.4); }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 38px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .btn-gold:hover { transform: translateY(-5px); background: #c5a172; }
         .btn-outline { background: rgba(0,0,0,0.3); border: 2px solid white; color: white; padding: 16px 38px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px); }
-        .btn-outline:hover { background: white; color: var(--brown); transform: translateY(-5px); }
 
-        /* أيقونات التواصل الستة التفاعلية */
+        /* أيقونات التواصل الستة */
         .social-hero { display: flex; gap: 22px; margin-top: 25px; }
-        .social-hero a { color: var(--white); font-size: 1.9rem; transition: 0.4s; display: inline-block; }
-        .social-hero a:hover { color: var(--gold); transform: translateY(-8px) scale(1.2); }
+        .social-hero a { color: var(--white); font-size: 1.9rem; transition: 0.4s; }
+        .social-hero a:hover { color: var(--gold); transform: translateY(-8px); }
 
-        /* أبعاد صور الأقسام المصلحة */
+        /* أقسامنا المصلحة */
         .catalog-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 40px 5%; max-width: 1300px; margin: auto; scrollbar-width: none; }
         .cat-card { flex: 0 0 calc(25% - 15px); position: relative; border-radius: 20px; overflow: hidden; height: 380px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
         .cat-card:hover img { transform: scale(1.15); }
-
-        /* الفوتر القهوائي المعتمد */
-        footer { background: var(--brown); color: white; padding: 70px 5% 35px; text-align: center; }
-        .footer-logo { font-weight: 900; font-size: 1.7rem; color: var(--gold); margin-top: 20px; }
+        .cat-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 10px 25px; border-radius: 10px; font-weight: 900; }
 
         .page { display: none; }
         .active { display: block; }
 
-        .admin-box { max-width: 500px; margin: 50px auto; background: #eee; padding: 30px; border-radius: 15px; text-align: right; }
-        .admin-box input, .admin-box select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-family: 'Cairo'; }
+        /* من نحن */
+        .about-container { max-width: 1100px; margin: auto; padding: 80px 5%; text-align: center; }
+        .about-text-content { max-width: 900px; margin: 0 auto 50px; line-height: 2.2; font-size: 1.2rem; color: #444; text-align: justify; }
+
+        footer { background: var(--brown); color: white; padding: 70px 5% 35px; text-align: center; }
+        .footer-logo { font-weight: 900; font-size: 1.7rem; color: var(--gold); margin-top: 20px; }
+
+        @media (max-width: 768px) { .cat-card { flex: 0 0 85%; } }
     </style>
 </head>
 <body>
@@ -57,10 +63,19 @@
         <div style="font-size:1.9rem; font-weight:900; color:var(--brown); flex:1;">شبابيك<br><span style="font-size:1.2rem; color:var(--gold);">للستائر</span></div>
         <div class="logo-center"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="checkAdmin()"></div>
         <div style="flex:1; display:flex; justify-content:flex-end; align-items:center; gap:20px;">
-            <a href="https://wa.me/9647883002797" style="color:#25D366;"><i class="fab fa-whatsapp" style="font-size:1.6rem;"></i></a>
+            <a href="https://wa.me/9647883002797" style="color:#25D366; text-decoration:none;"><i class="fab fa-whatsapp" style="font-size:1.6rem;"></i></a>
             <div onclick="openCart()" style="cursor:pointer; position:relative;"><i class="fas fa-shopping-basket" style="font-size:1.6rem;"></i><span id="globalCartCount" style="position:absolute; top:-8px; right:-10px; background:var(--gold); color:white; font-size:0.7rem; padding:2px 6px; border-radius:50%;">0</span></div>
         </div>
     </header>
+
+    <div class="nav-bar">
+        <ul class="nav-menu">
+            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
+            <li><a onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView()">المنتجات</a></li>
+            <li><a onclick="showPage('aboutPage')">من نحن</a></li>
+            <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
+        </ul>
+    </div>
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
@@ -83,80 +98,41 @@
             <section id="categories">
                 <h2 style="text-align:center; margin-top:50px; font-size:2.6rem; font-weight:900;">أقسامنا</h2>
                 <div class="catalog-grid">
-                    <div class="cat-card" onclick="openCat('بلاك أوت')"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:10px; font-weight:900;">بلاك أوت</div></div>
-                    <div class="cat-card" onclick="openCat('شفافة')"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:10px; font-weight:900;">شفافة</div></div>
-                    <div class="cat-card" onclick="openCat('ديكور')"><img src="https://i.ibb.co/JRd7B9dC/42edce8e89a20200950e110c2d8d41b2.jpg"><div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:10px; font-weight:900;">ديكور</div></div>
-                    <div class="cat-card" onclick="openCat('رول')"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:10px; font-weight:900;">رول</div></div>
+                    <div class="cat-card" onclick="openCat('بلاك أوت')"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="cat-label">بلاك أوت</div></div>
+                    <div class="cat-card" onclick="openCat('شفافة')"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="cat-label">شفافة</div></div>
+                    <div class="cat-card" onclick="openCat('ديكور')"><img src="https://i.ibb.co/JRd7B9dC/42edce8e89a20200950e110c2d8d41b2.jpg"><div class="cat-label">ديكور</div></div>
+                    <div class="cat-card" onclick="openCat('رول')"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div class="cat-label">رول</div></div>
                 </div>
             </section>
         </div>
 
-        <div id="adminPanel" class="page">
-            <div class="admin-box">
-                <h3>إضافة منتج سحابي</h3>
-                <select id="aCat"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
-                <input type="text" id="aName" placeholder="اسم المنتج">
-                <input type="number" id="aPrice" placeholder="السعر لكل م²">
-                <input type="text" id="aImg" placeholder="رابط الصورة المباشر">
-                <button onclick="saveProd()" style="width:100%; background:var(--gold); color:white; padding:15px; border:none; margin-top:10px; cursor:pointer; font-weight:bold; border-radius:8px;">نشر للمستخدمين فوراً</button>
+        <div id="aboutPage" class="page">
+            <div class="about-container">
+                <h2>شبابيك للستائر</h2>
+                <div class="about-text-content">
+                    <p>تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
+                    <p style="margin-top:20px;">نقدم مجموعة واسعة من الستائر تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية.</p>
+                </div>
             </div>
         </div>
 
-        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding: 45px 0;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 25px; padding: 0 5%;"></div></div>
-    </main>
+        <div id="contactPage" class="page">
+            <div style="text-align:center; padding:100px 5%;">
+                <h2>تواصل معنا</h2>
+                <p style="margin:20px 0;">بغداد - العراق</p>
+                <button class="btn-gold" onclick="window.location.href='https://wa.me/9647883002797'">واتساب مباشر</button>
+            </div>
+        </div>
 
-    <footer>
-        <div class="footer-logo">شبابيك</div>
-        <p>© 2026 شبابيك للستائر - جميع الحقوق محفوظة</p>
-    </footer>
+        <div id="adminPanel" class="page">
+            <div style="max-width:500px; margin:50px auto; background:#eee; padding:30px; border-radius:15px; text-align:right;">
+                <h3>إضافة منتج سحابي</h3>
+                <select id="aCat" style="width:100%; padding:10px; margin:10px 0;"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
+                <input type="text" id="aName" placeholder="اسم المنتج" style="width:100%; padding:10px;">
+                <input type="number" id="aPrice" placeholder="السعر" style="width:100%; padding:10px; margin:10px 0;">
+                <input type="text" id="aImg" placeholder="رابط الصورة المباشر" style="width:100%; padding:10px;">
+                <button onclick="saveProd()" style="width:100%; background:var(--gold); color:white; padding:15px; border:none; margin-top:10px; cursor:pointer;">نشر للزبائن</button>
+            </div>
+        </div>
 
-    <script>
-        // إعدادات Firebase الخاصة بك
-        const firebaseConfig = {
-            apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE",
-            authDomain: "shababekcurtain.firebaseapp.com",
-            databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/",
-            projectId: "shababekcurtain"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const dbRef = firebase.database().ref('products');
-
-        let adminClicks = 0;
-        function checkAdmin() {
-            adminClicks++;
-            if(adminClicks >= 5) { if(prompt("الرمز:") === "1234") showPage('adminPanel'); adminClicks = 0; }
-            else { showPage('homePage'); }
-        }
-
-        function saveProd() {
-            const data = {
-                category: document.getElementById('aCat').value,
-                name: document.getElementById('aName').value,
-                price: document.getElementById('aPrice').value,
-                img: document.getElementById('aImg').value,
-                id: Date.now()
-            };
-            dbRef.push(data).then(() => { alert("تم النشر بنجاح! سيظهر للزبائن الآن."); location.reload(); });
-        }
-
-        function openCat(name) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('categoryView').classList.add('active');
-            dbRef.once('value', (snap) => {
-                const items = snap.val() ? Object.values(snap.val()).filter(i => i.category === name) : [];
-                document.getElementById('catGrid').innerHTML = items.map(i => `
-                    <div style="background:white; border-radius:18px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.1); cursor:pointer;">
-                        <img src="${i.img}" style="width:100%; height:290px; object-fit:cover;">
-                        <div style="padding:22px; text-align:center;"><h3>${i.name}</h3><p>${i.price} د.ع</p></div>
-                    </div>`).join('') || '<p style="text-align:center; grid-column:1/-1;">لا توجد منتجات حالياً.</p>';
-            });
-        }
-
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0,0);
-        }
-    </script>
-</body>
-</html>
+        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding: 45px 0;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(290px
