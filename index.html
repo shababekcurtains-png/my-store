@@ -13,50 +13,55 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
+        /* ثبات الهوية البصرية */
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --red: #ff4d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
+        body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* التصميم الثابت للموقع (لا تغيير هنا) */
-        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 90px; transition: 0.3s; cursor: pointer; }
-        .logo-img:hover { transform: scale(1.1); }
-        
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; width: 100%; justify-content: center; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; transition: 0.3s; }
+        /* الهيدر واللوجو الأصلي */
+        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: 110px; }
+        .logo-img { height: 95px; transition: 0.4s ease; cursor: pointer; }
+        .logo-img:hover { transform: scale(1.1); filter: drop-shadow(0 0 10px var(--gold)); }
+
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 15px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+        .nav-menu { display: inline-flex; gap: 30px; list-style: none; padding: 0 25px; width: 100%; justify-content: center; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1.1rem; }
         .nav-menu a:hover { color: var(--gold); }
 
         .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
         .active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- تطوير صفحة دكتور ديكور فقط --- */
-        .doc-category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; padding: 20px; }
-        .doc-cat-btn { background: var(--brown); color: white; padding: 25px 15px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.4s; font-weight: 900; }
-        .doc-cat-btn:hover { background: var(--gold); transform: translateY(-5px); }
+        /* الزووم والملحقات الذهبية (من نحن) */
+        .zoom-card { transition: 0.4s ease; cursor: pointer; border-radius: 25px; overflow: hidden; background: white; border: 1px solid transparent; }
+        .zoom-card:hover { transform: scale(1.05); border-color: var(--gold); box-shadow: 0 15px 35px rgba(217,179,130,0.2); }
+        .stat-card { background: #f4f1ed; padding: 40px 20px; border-radius: 25px; text-align: center; transition: 0.4s; flex: 1; min-width: 250px; }
+        .stat-card:hover { background: var(--gold); color: white; transform: translateY(-10px); }
+        .stat-num { font-size: 3rem; font-weight: 900; color: var(--gold); display: block; }
+        .stat-card:hover .stat-num { color: white; }
 
-        .reel-container { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; margin-bottom: 30px; }
+        /* صفحة دكتور ديكور المطورة حصرياً */
+        .doc-cat-btn { background: var(--brown); color: white; padding: 25px; border-radius: 20px; text-align: center; cursor: pointer; transition: 0.4s; font-weight: 900; font-size: 1.2rem; }
+        .doc-cat-btn:hover { background: var(--gold); transform: scale(1.05); }
+        .reel-box { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; margin-bottom: 30px; }
         .reel-video { width: 100%; height: 500px; object-fit: cover; background: #000; }
-        .interaction-row { padding: 15px 20px; border-top: 1px solid #eee; }
-        .heart-icon { color: #ccc; cursor: pointer; font-size: 1.8rem; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .heart-icon { font-size: 1.8rem; color: #ccc; cursor: pointer; transition: 0.3s; }
         .heart-icon.active { color: var(--red); transform: scale(1.2); }
-        
-        .comment-box { margin-top: 10px; background: #f9f9f9; padding: 10px; border-radius: 10px; font-size: 0.9rem; max-height: 100px; overflow-y: auto; }
-        .comment-input-row { display: flex; gap: 10px; margin-top: 10px; }
-        .comment-input-row input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ddd; outline: none; }
 
-        /* لوحة المراقبة (الإدارة) */
-        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
-        .live-activity { background: #fff; border-left: 4px solid var(--gold); padding: 10px; margin-top: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        /* تواصل معنا */
+        .contact-box { padding: 80px 5%; max-width: 900px; margin: 40px auto; background: var(--bg); border-radius: 50px; text-align: center; }
+
+        /* لوحة التحكم (المراقبة) */
+        .admin-box { background: white; padding: 20px; border-radius: 20px; border: 1px solid #ddd; margin-bottom: 20px; text-align: right; }
+        .btn-adm { background: var(--gold); color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: 900; }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="font-weight:900; line-height:1; flex:1;">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
-        <div class="logo-center" onclick="handleLogoClick()"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img"></div>
-        <div style="flex:1; text-align:left;"><i class="fas fa-shopping-basket" style="font-size:1.8rem; cursor:pointer;" onclick="showPage('paymentPage')"></i></div>
+        <div style="font-weight:900;">شبابيك</div>
+        <div onclick="handleLogoClick()"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img"></div>
+        <div><i class="fas fa-shopping-basket" style="font-size:1.8rem;"></i></div>
     </header>
 
     <div class="nav-bar">
@@ -70,7 +75,7 @@
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
-            <section style="height:60vh; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; color: white;">
+            <section style="height:65vh; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; color: white;">
                 <h1 style="font-size: 2.5rem; font-weight: 900;">ظل وذوق في كل زاوية</h1>
             </section>
         </div>
@@ -78,46 +83,52 @@
         <div id="doctorPage" class="page">
             <div style="padding: 40px 5%;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">بوابة دكتور ديكور التفاعلية</h2>
-                <div id="docSections" class="doc-category-grid"></div>
+                <div id="docSections" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;"></div>
             </div>
         </div>
 
-        <div id="docTopicsPage" class="page">
+        <div id="docTopicsView" class="page">
             <div style="padding: 40px 5%; max-width: 600px; margin: auto;">
-                <h2 id="currentSectionTitle" style="text-align:center; margin-bottom:30px; font-weight:900; color:var(--gold);"></h2>
-                <div id="topicsContainer"></div>
-                <button onclick="showPage('doctorPage')" style="width:100%; padding:15px; border-radius:15px; background:var(--brown); color:white; border:none; font-weight:900; cursor:pointer;">العودة للقائمة</button>
+                <h2 id="secHeader" style="text-align:center; margin-bottom:30px; color:var(--gold);"></h2>
+                <div id="topicsList"></div>
+                <button onclick="showPage('doctorPage')" class="btn-adm" style="background:var(--brown);">العودة للأقسام</button>
+            </div>
+        </div>
+
+        <div id="aboutPage" class="page">
+            <div style="padding: 80px 5%; max-width: 1100px; margin: auto;">
+                <h2 style="font-weight:900; font-size:3.2rem; margin-bottom:40px; text-align:center;">شبابيك للستائر</h2>
+                <p style="font-size:1.4rem; line-height:2.4; color:#444; text-align:justify; margin-bottom:50px;">تأسست شبابيك لتقديم أفخم الحلول المنزلية...</p>
+                <div style="display:flex; flex-wrap:wrap; gap:25px; justify-content:center;">
+                    <div class="stat-card"><span class="stat-num">500+</span><b>عميل سعيد</b></div>
+                    <div class="stat-card"><span class="stat-num">50+</span><b>تصميم حصري</b></div>
+                    <div class="stat-card"><span class="stat-num">10+</span><b>سنوات خبرة</b></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contactPage" class="page">
+            <div class="contact-box">
+                <h2 style="margin-bottom:30px; font-weight:900;">نحن بانتظارك</h2>
+                <p style="font-size:1.6rem; margin-bottom:10px;"><i class="fas fa-phone"></i> 07883002797</p>
+                <a href="https://wa.me/9647883002797" class="btn-adm" style="width:100%; max-width:400px; display:inline-block; text-decoration:none;">واتساب مباشر</a>
             </div>
         </div>
 
         <div id="adminPanel" class="page">
-            <div style="padding: 40px 5%; max-width: 850px; margin: auto;">
-                <h2 style="text-align:center; font-weight:900; margin-bottom:40px;">لوحة مراقبة نشاط دكتور ديكور</h2>
-                
+            <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
+                <h2 style="text-align:center; margin-bottom:30px;">لوحة مراقبة نشاط الزبائن</h2>
                 <div class="admin-box">
-                    <h3>١. نشاط الزبائن المباشر (صامت)</h3>
-                    <div id="liveActivityFeed" style="max-height: 250px; overflow-y: auto; padding: 10px; background: #eee; border-radius: 10px;"></div>
+                    <h3>نشاط حي (إعجابات وتعليقات)</h3>
+                    <div id="liveFeed" style="max-height: 250px; overflow-y: auto; background: #f9f9f9; padding: 10px;"></div>
                 </div>
-
                 <div class="admin-box">
-                    <h3>٢. إدارة محتوى دكتور ديكور</h3>
-                    <select id="admSecSelect" style="width:100%; padding:10px; margin-bottom:10px;"></select>
-                    <input type="text" id="admTopicTitle" placeholder="العنوان">
-                    <input type="text" id="admTopicMedia" placeholder="رابط فيديو أو صورة">
-                    <select id="admTopicType" style="width:100%; padding:10px; margin-bottom:10px;"><option value="vid">فيديو (Reel)</option><option value="img">صورة</option></select>
-                    <button onclick="publishToDoc()" style="width:100%; padding:15px; background:var(--gold); border:none; color:white; border-radius:10px; font-weight:900; cursor:pointer;">نشر الموضوع</button>
-                </div>
-                
-                <div class="admin-box">
-                    <h3>٣. إضافة قسم جديد (ميمز، قبل وبعد...)</h3>
-                    <input type="text" id="newSecName" placeholder="اسم القسم الجديد">
-                    <button onclick="db.ref('docSections').push({name: document.getElementById('newSecName').value})" style="width:100%; padding:10px; margin-top:5px;">إضافة القسم</button>
+                    <h3>إدارة دكتور ديكور</h3>
+                    <input type="text" id="newSec" placeholder="اسم قسم جديد">
+                    <button onclick="db.ref('docSections').push({name: document.getElementById('newSec').value})" class="btn-adm">إضافة قسم</button>
                 </div>
             </div>
         </div>
-
-        <div id="aboutPage" class="page"><div style="padding:60px 5%; text-align:center;"><h2>من نحن</h2><p>قصة شبابيك للستائر...</p></div></div>
-        <div id="contactPage" class="page"><div style="padding:60px 5%; text-align:center;"><h2>تواصل معنا</h2><p>07883002797</p></div></div>
     </main>
 
     <script>
@@ -129,74 +140,48 @@
         function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
         function handleLogoClick() { adminClicks++; if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } else { showPage('homePage'); } }
 
-        // --- إدارة دكتور ديكور الحصرية ---
+        // دكتور ديكور (حصراً)
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
             document.getElementById('docSections').innerHTML = Object.values(data).map(s => `<div onclick="openDocSec('${s.name}')" class="doc-cat-btn">${s.name}</div>`).join('');
-            document.getElementById('admSecSelect').innerHTML = Object.values(data).map(s => `<option>${s.name}</option>`).join('');
         });
 
         function openDocSec(name) {
-            document.getElementById('currentSectionTitle').innerText = "قسم: " + name;
+            document.getElementById('secHeader').innerText = "قسم: " + name;
             db.ref('docTopics').once('value', snap => {
                 const topics = Object.entries(snap.val() || {}).filter(([k,v]) => v.section === name);
-                document.getElementById('topicsContainer').innerHTML = topics.map(([k,v]) => `
-                    <div class="reel-container">
+                document.getElementById('topicsList').innerHTML = topics.map(([k,v]) => `
+                    <div class="reel-box">
                         ${v.type==='vid' ? `<video src="${v.media}" class="reel-video" autoplay muted loop playsinline></video>` : `<img src="${v.media}" style="width:100%;">`}
-                        <div class="interaction-row">
+                        <div style="padding:15px;">
                             <h3>${v.title}</h3>
-                            <div class="heart-icon" onclick="silentLike('${k}', '${v.title}', this)"><i class="fas fa-heart"></i> <span>${v.likes || 0}</span></div>
-                            <div class="comment-input-row">
-                                <input type="text" id="in-${k}" placeholder="اكتب رأيك...">
-                                <button onclick="silentComment('${k}', '${v.title}')" style="background:var(--gold); border:none; color:white; padding:10px; border-radius:8px;">ارسال</button>
-                            </div>
-                            <div id="comm-${k}" class="comment-box"></div>
+                            <i class="fas fa-heart heart-icon" onclick="silentLike('${k}', '${v.title}', this)"></i> <span>${v.likes || 0}</span>
+                            <div style="margin-top:10px;"><input type="text" id="in-${k}" placeholder="تعليق صامت..." style="width:70%; padding:8px;"><button onclick="silentComm('${k}', '${v.title}')" style="background:var(--gold); border:none; padding:8px 15px; color:white;">ارسال</button></div>
                         </div>
                     </div>`).join('');
-                topics.forEach(([k,v]) => loadComments(k));
-                showPage('docTopicsPage');
+                showPage('docTopicsView');
             });
         }
 
-        function silentLike(key, title, btn) {
+        function silentLike(k, t, btn) {
             if(btn.classList.contains('active')) return;
-            db.ref('docTopics').child(key).transaction(t => { if(t) t.likes = (t.likes || 0) + 1; return t; });
-            db.ref('liveActivity').push({ msg: `إعجاب بـ (${title})`, time: Date.now() });
+            db.ref('docTopics').child(k).transaction(v => { if(v) v.likes = (v.likes || 0) + 1; return v; });
+            db.ref('liveActivity').push({ msg: `إعجاب بـ ${t}`, time: Date.now() });
             btn.classList.add('active');
             confetti({ particleCount: 50, spread: 60, colors: ['#ff4d4d', '#d9b382'] });
         }
 
-        function silentComment(key, title) {
-            const txt = document.getElementById('in-'+key).value;
+        function silentComm(k, t) {
+            const txt = document.getElementById('in-'+k).value;
             if(!txt) return;
-            db.ref('comments/'+key).push({ text: txt });
-            db.ref('liveActivity').push({ msg: `تعليق على (${title}): "${txt}"`, time: Date.now() });
-            document.getElementById('in-'+key).value = '';
-            alert("تمت مشاركة رأيك بنجاح!");
+            db.ref('comments/'+k).push({ text: txt });
+            db.ref('liveActivity').push({ msg: `تعليق على ${t}: ${txt}`, time: Date.now() });
+            document.getElementById('in-'+k).value = '';
+            alert("شكراً لمشاركتك!");
         }
 
-        function loadComments(key) {
-            db.ref('comments/'+key).on('value', snap => {
-                const data = snap.val() || {};
-                document.getElementById('comm-'+key).innerHTML = Object.values(data).map(c => `<div>• ${c.text}</div>`).join('') || 'لا توجد تعليقات';
-            });
-        }
-
-        function publishToDoc() {
-            db.ref('docTopics').push({
-                section: document.getElementById('admSecSelect').value,
-                title: document.getElementById('admTopicTitle').value,
-                media: document.getElementById('admTopicMedia').value,
-                type: document.getElementById('admTopicType').value,
-                likes: 0
-            }).then(() => alert("تم النشر في دكتور ديكور!"));
-        }
-
-        // مراقبة النشاط (في اللوحة فقط)
         db.ref('liveActivity').limitToLast(10).on('child_added', snap => {
-            const act = snap.val();
-            const feed = document.getElementById('liveActivityFeed');
-            feed.insertAdjacentHTML('afterbegin', `<div class="live-activity"><b>${new Date(act.time).toLocaleTimeString()}</b>: ${act.msg}</div>`);
+            document.getElementById('liveFeed').insertAdjacentHTML('afterbegin', `<div><b>${new Date(snap.val().time).toLocaleTimeString()}</b>: ${snap.val().msg}</div>`);
         });
     </script>
 </body>
