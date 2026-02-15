@@ -16,95 +16,69 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
 
-        /* الهيدر الأصلي الفاخر */
-        .top-banner { background: var(--brown); color: white; padding: 8px 5%; text-align: center; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
-        header { background: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-center { flex: 1; display: flex; justify-content: center; }
-        .logo-img { height: 95px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .logo-img:hover { transform: scale(1.1) rotate(2deg); }
-        
-        .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 20px; }
-        .search-trigger { font-size: 1.4rem; color: var(--brown); cursor: pointer; }
-        .cart-icon { font-size: 1.6rem; position: relative; cursor: pointer; color: var(--brown); }
-        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--gold); color: white; font-size: 0.75rem; padding: 2px 7px; border-radius: 50%; font-weight: 900; }
+        .top-banner { background: var(--brown); color: white; padding: 8px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .wa-top { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
 
-        /* شريط البحث المدمج */
-        #searchBox { display: none; padding: 15px 5%; background: var(--bg); border-bottom: 1px solid #ddd; }
-        #searchBox input { width: 100%; padding: 12px 20px; border-radius: 25px; border: 1px solid #ccc; outline: none; font-size: 1rem; }
+        header { background: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .logo-img { height: 75px; cursor: pointer; transition: 0.3s; }
+        
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .cart-icon { font-size: 1.6rem; position: relative; cursor: pointer; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--gold); color: white; font-size: 0.75rem; padding: 2px 7px; border-radius: 50%; }
+
+        #searchBox { display: none; padding: 15px 5%; background: var(--bg); }
+        #searchBox input { width: 100%; padding: 12px; border-radius: 25px; border: 1px solid #ccc; outline: none; }
 
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; }
-        .nav-menu { display: inline-flex; gap: 35px; list-style: none; padding: 0 5%; width: 100%; justify-content: center; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; font-size: 1rem; cursor: pointer; white-space: nowrap; transition: 0.3s; }
-        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 5%; width: 100%; justify-content: center; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; white-space: nowrap; }
 
         .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* قسم الهيرو مع الأيقونات الستة */
-        .hero { height: 75vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
-        .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
-        
-        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; margin-bottom: 30px; }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(217,179,130,0.4); }
-        .btn-transparent { background: transparent; color: white; border: 2px solid white; padding: 16px 35px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 1.1rem; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-        .btn-transparent:hover { background: white; color: var(--brown); }
+        .hero { height: 65vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 15px 35px; border-radius: 8px; font-weight: 900; cursor: pointer; }
 
-        .social-hero { display: flex; gap: 22px; }
-        .social-hero a { color: var(--white); font-size: 1.9rem; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .social-hero a:hover { color: var(--gold); transform: translateY(-10px) scale(1.2); }
+        .catalog-grid { display: flex; gap: 15px; padding: 20px 5%; overflow-x: auto; scrollbar-width: none; }
+        .cat-card { flex: 0 0 250px; position: relative; border-radius: 20px; overflow: hidden; height: 350px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .cat-card img { width: 100%; height: 100%; object-fit: cover; }
+        .cat-label { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 8px 20px; border-radius: 10px; font-weight: 900; }
 
-        .catalog-grid { display: flex; gap: 20px; padding: 40px 5%; overflow-x: auto; scrollbar-width: none; }
-        .cat-card { flex: 0 0 280px; position: relative; border-radius: 20px; overflow: hidden; height: 400px; box-shadow: 0 12px 30px rgba(0,0,0,0.1); cursor: pointer; transition: 0.4s; }
-        .cat-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-        .cat-card:hover img { transform: scale(1.1); }
-        .cat-label { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 12px 30px; border-radius: 12px; font-weight: 900; }
+        /* حاسبة الجوال المطورة */
+        .mobile-calc { padding: 20px 5%; max-width: 600px; margin: auto; }
+        .mobile-calc img { width: 100%; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .input-group { margin-bottom: 15px; text-align: right; }
+        .input-group input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #ddd; font-size: 1.1rem; }
+        .res-box { background: var(--brown); color: white; padding: 20px; border-radius: 15px; text-align: center; font-size: 1.4rem; margin: 20px 0; }
 
-        .features-section { background: var(--bg); padding: 80px 5%; text-align: center; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; max-width: 1200px; margin: auto; }
-        .f-card { background: white; padding: 45px 25px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
-        .f-icon { font-size: 2.5rem; color: var(--gold); margin-bottom: 25px; }
+        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin: 20px 5%; text-align: right; }
+        .admin-box input, .admin-box select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; }
 
-        /* صفحة دكتور ديكور المخصصة */
-        .doctor-post { background: white; border-radius: 25px; overflow: hidden; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-right: 6px solid var(--gold); }
-        .doctor-post-content { padding: 30px; }
-
-        /* صفحة طرق الدفع */
-        .payment-item { background: white; padding: 25px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #eee; display: flex; align-items: center; gap: 25px; }
-        .payment-item i { font-size: 2.5rem; color: var(--gold); }
-
-        footer { background: var(--brown); color: white; padding: 70px 5% 40px; text-align: center; }
-        .footer-logo { font-size: 2.2rem; font-weight: 900; color: var(--gold); margin-bottom: 15px; }
-
-        @media (min-width: 768px) {
-            .hero-btns { flex-direction: row; max-width: 700px; gap: 20px; }
-            .btn-gold, .btn-transparent { width: 300px; }
-            .catalog-grid { justify-content: center; }
-            .cat-card { flex: 0 0 23%; }
-        }
+        footer { background: var(--brown); color: white; padding: 40px 5%; text-align: center; }
     </style>
 </head>
 <body>
 
     <div class="top-banner">
-        <span>أهلاً بكم في شبابيك للستائر - ظل وذوق</span>
-        <span style="direction:ltr; font-weight:700;">+964 788 300 2797</span>
+        <span>شبابيك للستائر - ظل وذوق</span>
+        <a href="https://wa.me/9647883002797" class="wa-top"><i class="fab fa-whatsapp"></i> تواصل عبر الواتساب</a>
     </div>
 
     <header>
-        <div style="font-weight:900; line-height:1; flex:1;">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
-        <div class="logo-center"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="checkAdmin()" alt="شبابيك للستائر"></div>
+        <div style="font-weight:900;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">للستائر</span></div>
+        <div class="logo-center"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="checkAdmin()" alt="Logo"></div>
         <div class="header-left">
-            <i class="fa fa-search search-trigger" onclick="toggleSearch()"></i>
+            <i class="fa fa-search" onclick="toggleSearch()"></i>
             <div class="cart-icon" onclick="openCart()"><i class="fas fa-shopping-basket"></i><span class="cart-count" id="globalCartCount">0</span></div>
         </div>
     </header>
 
-    <div id="searchBox"><input type="text" id="searchInput" placeholder="ابحث عن موديلات ستائر شبابيك..." oninput="liveSearch()"></div>
+    <div id="searchBox"><input type="text" id="searchInput" placeholder="ابحث عن موديل..." oninput="liveSearch()"></div>
 
     <div class="nav-bar">
         <ul class="nav-menu">
-            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
+            <li><a onclick="showHomePage()">الرئيسية</a></li>
             <li><a onclick="showPage('doctorPage')">دكتور ديكور</a></li>
             <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
             <li><a onclick="showPage('aboutPage')">من نحن</a></li>
@@ -115,23 +89,12 @@
     <main id="mainContainer">
         <div id="homePage" class="page active">
             <section class="hero">
-                <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <div class="hero-btns">
-                    <button class="btn-gold" onclick="document.getElementById('categories').scrollIntoView()">احسب سعرك الآن</button>
-                    <a href="https://wa.me/9647883002797?text=أريد استشارة مجانية بخصوص ديكور الستائر" class="btn-transparent"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
-                </div>
-                <div class="social-hero">
-                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.snapchat.com/add/shababek.curtains" target="_blank"><i class="fab fa-snapchat"></i></a>
-                </div>
+                <h1>فخامة شبابيك منزلك تبدأ هنا</h1>
+                <button class="btn-gold" onclick="document.getElementById('categories').scrollIntoView()">استعراض الأقسام</button>
             </section>
 
             <section id="categories">
-                <h2 style="text-align:center; margin-top:50px; font-weight:900; font-size:2.2rem;">أقسامنا المميزة</h2>
+                <h2 style="text-align:center; margin-top:30px; font-weight:900;">الأقسام</h2>
                 <div class="catalog-grid">
                     <div class="cat-card" onclick="openCat('بلاك أوت')"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="cat-label">بلاك أوت</div></div>
                     <div class="cat-card" onclick="openCat('شفافة')"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="cat-label">شفافة</div></div>
@@ -139,97 +102,52 @@
                     <div class="cat-card" onclick="openCat('رول')"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div class="cat-label">رول</div></div>
                 </div>
             </section>
-
-            <section class="features-section">
-                <h2 style="margin-bottom:50px; font-weight:900;">لماذا شبابيك؟</h2>
-                <div class="features-grid">
-                    <div class="f-card"><i class="fa-solid fa-shield-halved f-icon"></i><h3>ضمان الجودة</h3><p>أرقى الأقمشة مع ضمان حقيقي.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-truck-fast f-icon"></i><h3>تركيب منزلي</h3><p>فريق فني متخصص للقياس والتركيب.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-ruler-combined f-icon"></i><h3>مقاسات مخصصة</h3><p>تفصيل حسب طلبك بدقة.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-palette f-icon"></i><h3>تصاميم حصرية</h3><p>موديلات تناسب ذوقك الرفيع.</p></div>
-                </div>
-            </section>
         </div>
 
-        <div id="doctorPage" class="page">
-            <div style="padding: 60px 5%; max-width: 1000px; margin: auto;">
-                <h2 style="margin-bottom:40px; color:var(--gold); font-weight:900;"><i class="fa-solid fa-wand-magic-sparkles"></i> ركن دكتور ديكور</h2>
-                <div class="doctor-post">
-                    <img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg" style="width:100%;">
-                    <div class="doctor-post-content">
-                        <h3>قاعدة الارتفاع المثالي</h3>
-                        <p>للحصول على مظهر فندقي فاخر، قم بتركيب قضيب الستارة من السقف مباشرة بدلاً من حافة النافذة؛ هذا يعطي إيحاءً بأن الغرفة أكثر ارتفاعاً واتساعاً.</p>
-                    </div>
-                </div>
-                <div class="doctor-post">
-                    <div class="doctor-post-content">
-                        <h3>نصيحة دكتور ديكور للألوان</h3>
-                        <p>إذا كانت الغرفة تحتوي على أثاث بألوان داكنة، يفضل اختيار ستائر شفافة (Voile) مع بلاك أوت بلون فاتح لكسر حدة الألوان وجلب الإضاءة الطبيعية.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="paymentPage" class="page">
-            <div style="padding: 80px 5%; text-align: center; max-width: 800px; margin: auto;">
-                <h2 style="margin-bottom:40px; font-weight:900;">طرق الدفع المحلية الآمنة</h2>
-                <div class="payment-item"><i class="fa-solid fa-truck-ramp-box"></i><div style="text-align:right;"><h3>الدفع عند الاستلام</h3><p>نوفر خدمة القياس والتركيب، ويمكنك الدفع للفني المختص نقداً بعد التأكد من جودة العمل.</p></div></div>
-                <div class="payment-item"><i class="fa-solid fa-mobile-screen"></i><div style="text-align:right;"><h3>زين كاش / آسيا حوالة</h3><p>ندعم الدفع السريع عبر المحفظة الإلكترونية لضمان سرعة تأكيد الحجز.</p></div></div>
-                <div class="payment-item"><i class="fa-solid fa-credit-card"></i><div style="text-align:right;"><h3>البطاقات المصرفية</h3><p>نقبل كافة أنواع الماستر كارد والفيزا العراقية.</p></div></div>
-            </div>
-        </div>
-
-        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap:25px; padding:0 5%;"></div></div>
         <div id="productCalculator" class="page">
-            <div style="max-width: 1100px; margin: 50px auto; padding: 0 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-                <img id="pImg" src="" style="width:100%; border-radius:25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
-                <div class="calc-box">
-                    <h2 id="pName" style="font-weight: 900; margin-bottom: 10px;"></h2>
-                    <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom: 25px;"><span id="pPrice"></span> د.ع / متر</div>
-                    <label>أدخل الطول بالمتر:</label>
-                    <input type="number" id="hIn" placeholder="2.5" oninput="doCalc()" style="width:100%; padding:15px; border-radius:12px; border:1px solid #ddd; margin:10px 0;">
-                    <label style="display:flex; align-items:center; gap:12px; margin:20px 0; background:var(--bg); padding:15px; border-radius:15px; font-weight:bold; cursor:pointer;"><input type="checkbox" id="instIn"> <span>أرغب في خدمة تركيب</span></label>
-                    <div style="background:var(--brown); color:white; padding:25px; border-radius:20px; text-align:center; font-size:1.5rem;">الإجمالي: <span id="resPrice">0</span> د.ع</div>
-                    <button class="btn-gold" style="width:100%;" onclick="addToCart()">إضافة إلى السلة</button>
+            <div class="mobile-calc">
+                <img id="pImg" src="">
+                <h2 id="pName" style="font-weight:900; margin-bottom:10px;"></h2>
+                <div style="color:var(--gold); font-size:1.6rem; font-weight:900; margin-bottom:20px;"><span id="pPrice"></span> د.ع / م</div>
+                
+                <div class="input-group">
+                    <label>الطول المطلوب بالمتر:</label>
+                    <input type="number" id="hIn" placeholder="أدخل الطول (مثال: 2.8)" oninput="doCalc()" inputmode="decimal">
                 </div>
+
+                <label style="display:flex; align-items:center; gap:12px; background:var(--bg); padding:15px; border-radius:12px; font-weight:bold; cursor:pointer;">
+                    <input type="checkbox" id="instIn"> <span>أرغب في خدمة التركيب</span>
+                </label>
+
+                <div class="res-box">الإجمالي: <br> <span id="resPrice" style="font-size:2rem;">0</span> د.ع</div>
+                <button class="btn-gold" style="width:100%; padding:20px;" onclick="addToCart()">إضافة المنتج للسلة</button>
             </div>
         </div>
 
-        <div id="aboutPage" class="page">
-            <div class="about-container">
-                <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 30px;">من هي شبابيك؟</h2>
-                <div class="about-text">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</div>
-                <div class="features-grid" style="margin-top:50px;">
-                    <div class="f-card"><h2>+500</h2><p>عميل سعيد</p></div>
-                    <div class="f-card"><h2>+50</h2><p>تصميم حصري</p></div>
-                    <div class="f-card"><h2>+10</h2><p>سنوات خبرة</p></div>
-                </div>
+        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:30px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px; padding:0 5%;"></div></div>
+
+        <div id="adminPanel" class="page">
+            <div class="admin-box">
+                <h3 style="margin-bottom:15px;">إدارة المنتجات</h3>
+                <select id="aCat"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
+                <input type="text" id="aName" placeholder="اسم المنتج">
+                <input type="number" id="aPrice" placeholder="السعر لكل متر">
+                <input type="text" id="aImg" placeholder="رابط الصورة">
+                <button class="btn-gold" style="width:100%" onclick="saveProd()">حفظ ونشر</button>
+                <div id="adminList" style="margin-top:20px;"></div>
             </div>
         </div>
 
-        <div id="contactPage" class="page">
-            <div style="padding: 80px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 50px 5%;">
-                <h2 style="margin-bottom: 30px; font-weight: 900;">تواصل معنا الآن</h2>
-                <p style="font-size: 1.3rem;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</p>
-                <p style="font-size: 1.3rem; margin: 25px 0; direction: ltr;">+964 788 300 2797 <i class="fa-solid fa-phone"></i></p>
-                <a href="https://wa.me/9647883002797" class="btn-gold" style="background:var(--whatsapp); text-decoration:none; display:inline-block; width:auto;">تواصل واتساب مباشر</a>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="footer-logo">شبابيك للستائر</div>
-        <p>© 2026 جميع الحقوق محفوظة - شبابيك: ظل وذوق</p>
-    </footer>
+        </main>
 
     <script>
-        // إعدادات Firebase والـ History API
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
         firebase.initializeApp(firebaseConfig);
         const dbRef = firebase.database().ref('products');
 
-        let cur = null; let cart = [];
+        let cur = null; let cart = []; let adminClicks = 0;
 
+        // نظام History API للرجوع السلس
         function showPage(id, push = true) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -237,33 +155,45 @@
             if(push) history.pushState({pageId: id}, null, "");
         }
 
+        function showHomePage() { showPage('homePage'); } // إصلاح زر الرئيسية
+
         window.onpopstate = function(event) {
             if(event.state) showPage(event.state.pageId, false);
-            else showPage('homePage', false);
+            else showHomePage();
         };
 
-        function toggleSearch() { const b = document.getElementById('searchBox'); b.style.display = b.style.display === 'block' ? 'none' : 'block'; }
-        function liveSearch() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            if(q.length < 2) return;
-            dbRef.once('value', snap => {
-                const res = Object.values(snap.val() || {}).filter(p => p.name.toLowerCase().includes(q));
-                renderGrid('نتائج البحث', res);
-            });
+        function checkAdmin() {
+            adminClicks++;
+            if(adminClicks >= 5) {
+                const pass = prompt("رمز الإدارة:");
+                if(pass === "1234") { showPage('adminPanel'); showAdminList(); }
+                adminClicks = 0;
+            }
         }
 
-        function openCat(name) { dbRef.on('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === name); renderGrid('ستائر ' + name, items); }); }
-        function renderGrid(title, items) {
-            document.getElementById('catTitle').innerText = title;
-            document.getElementById('catGrid').innerHTML = items.map(i => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(i)})'><img src="${i.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:15px; text-align:center;"><h3>${i.name}</h3><p style="color:var(--gold); font-weight:900;">${parseInt(i.price).toLocaleString()} د.ع / م</p></div></div>`).join('');
-            showPage('categoryView');
+        function toggleSearch() { const b = document.getElementById('searchBox'); b.style.display = b.style.display === 'block' ? 'none' : 'block'; }
+        
+        function openCat(name) {
+            dbRef.on('value', snap => {
+                const items = Object.values(snap.val() || {}).filter(i => i.category === name);
+                document.getElementById('catTitle').innerText = 'ستائر ' + name;
+                document.getElementById('catGrid').innerHTML = items.map(i => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(i)})'><img src="${i.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:15px; text-align:center;"><h3>${i.name}</h3><p style="color:var(--gold); font-weight:900;">${i.price} د.ع / م</p></div></div>`).join('');
+                showPage('categoryView');
+            });
         }
 
         function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('resPrice').innerText = "0"; document.getElementById('hIn').value = ""; document.getElementById('instIn').checked = false; showPage('productCalculator'); }
         function doCalc() { const h = document.getElementById('hIn').value; if(h) document.getElementById('resPrice').innerText = Math.round(h * cur.price).toLocaleString(); }
-        function addToCart() { const h = document.getElementById('hIn').value; const t = document.getElementById('resPrice').innerText; if(!h || t === "0") return alert("أدخل الطول"); cart.push({n: cur.name, h: h, p: t}); document.getElementById('globalCartCount').innerText = cart.length; alert("تمت الإضافة للسلة!"); }
+        function addToCart() { const h = document.getElementById('hIn').value; const t = document.getElementById('resPrice').innerText; if(!h || t === "0") return alert("أدخل الطول"); cart.push({n: cur.name, h: h, p: t}); document.getElementById('globalCartCount').innerText = cart.length; alert("تمت الإضافة!"); }
         function openCart() { if(cart.length === 0) return alert("السلة فارغة"); let msg = "طلب جديد من شبابيك:\n"; cart.forEach(i => msg += `- ${i.n}: ${i.p}د.ع\n`); window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`; }
-        function checkAdmin() { /* تفعيل لوحة الإدارة كما في الكود السابق */ }
+
+        function saveProd() {
+            const n = document.getElementById('aName').value; const p = document.getElementById('aPrice').value; const im = document.getElementById('aImg').value; const c = document.getElementById('aCat').value;
+            if(!n || !p || !im) return alert("املأ الحقول");
+            dbRef.push({ id: Date.now(), category: c, name: n, price: p, img: im }).then(() => { alert("تم!"); showAdminList(); });
+        }
+        function showAdminList() { dbRef.once('value', snap => { const items = Object.entries(snap.val() || {}); document.getElementById('adminList').innerHTML = items.map(([k, i]) => `<div>${i.name} <button onclick="delProd('${k}')">حذف</button></div>`).join(''); }); }
+        function delProd(k) { if(confirm("حذف؟")) dbRef.child(k).remove().then(() => showAdminList()); }
     </script>
 </body>
 </html>
