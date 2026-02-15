@@ -17,73 +17,67 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
 
-        /* تعديل الشريط العلوي */
         .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 14px; }
+        .wa-link-head { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
 
-        header { background: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: 110px; }
         .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
         .logo-img { height: 95px; transition: 0.3s; }
         
         .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
-        /* السلة باللون الأبيض وحجم أكبر */
-        .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 10px; }
-        .cart-count { position: absolute; top: 0; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
+        /* تصميم السلة الجديد الموسط والأبيض */
+        .cart-icon-box { background: white; padding: 12px; border-radius: 15px; border: 1px solid #eee; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; transition: 0.3s; }
+        .cart-icon-box i { font-size: 1.8rem; color: var(--brown); }
+        .cart-filled { background: var(--gold) !important; } /* يتغير اللون عند الامتلاء */
+        .cart-filled i { color: white !important; }
+        .cart-count-badge { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.8rem; padding: 2px 7px; border-radius: 50%; font-weight: 900; }
 
-        /* شريط رئيسي قابل للتحريك بمرونة عالية */
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 15px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
-        .nav-menu { display: inline-flex; gap: 30px; list-style: none; padding: 0 20px; width: 100%; justify-content: center; }
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 15px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; display: flex; justify-content: center; }
+        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 15px; }
         .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1.1rem; }
 
         .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
         .active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* سلة المشتريات Modal */
         #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
-        .cart-modal { background: var(--white); width: 90%; max-width: 550px; border-radius: 30px; padding: 35px; position: relative; }
-        .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; font-weight: 600; }
+        .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
 
         .hero { height: 75vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
         .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
-        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; margin-bottom: 30px; }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; }
+        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; }
+        
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 18px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; }
         .btn-trans { background: transparent; color: white; border: 2px solid white; padding: 16px 35px; border-radius: 12px; font-weight: 900; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
-        /* لماذا شبابيك */
-        .features-section { background: var(--bg); padding: 80px 5%; text-align: center; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; max-width: 1200px; margin: auto; }
-        .f-card { background: white; padding: 45px 25px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
-
         /* الفوتر المطور */
-        .footer-cta { background: var(--brown); color: white; padding: 60px 5%; text-align: center; border-radius: 40px 40px 0 0; }
-        .btn-footer-wa { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 15px 40px; border-radius: 10px; text-decoration: none; display: inline-block; margin: 10px; font-weight: 600; }
-        .btn-footer-prod { background: var(--gold); color: white; padding: 15px 40px; border-radius: 10px; text-decoration: none; display: inline-block; margin: 10px; font-weight: 600; }
-        
-        footer { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-cta { background: var(--brown); color: white; padding: 70px 5%; text-align: center; border-radius: 50px 50px 0 0; }
+        .btn-footer-wa { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 15px 40px; border-radius: 10px; text-decoration: none; display: inline-block; margin: 10px; font-weight: 700; }
+        .btn-footer-prod { background: var(--gold); color: white; padding: 15px 40px; border-radius: 10px; text-decoration: none; display: inline-block; margin: 10px; font-weight: 700; }
 
-        @media (max-width: 768px) {
-            .nav-menu { justify-content: flex-start; }
-            .logo-img { height: 80px; }
-        }
+        .admin-box { background: #f4f4f4; padding: 25px; border-radius: 20px; margin-bottom: 25px; text-align: right; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; font-family: 'Cairo'; }
+
+        footer { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
 
     <div class="top-banner">
         <span>شبابيك للستائر - ظل وذوق</span>
-        <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> تواصل عبر الواتساب</a>
+        <a href="https://wa.me/9647883002797" class="wa-link-head"><i class="fab fa-whatsapp"></i> تواصل عبر الواتساب</a>
     </div>
 
     <header>
         <div style="font-weight:900; line-height:1; flex:1;">شبابيك<br><span style="color:var(--gold); font-size:0.9rem;">للستائر</span></div>
-        <div class="logo-center" onclick="showPage('homePage')">
+        <div class="logo-center" onclick="handleLogoClick()">
             <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" alt="Logo">
         </div>
         <div class="header-left">
-            <div class="cart-icon" onclick="toggleCartModal()">
+            <div id="cartBtn" class="cart-icon-box" onclick="toggleCartModal()">
                 <i class="fas fa-shopping-basket"></i>
-                <span id="globalCartCount" class="cart-count">0</span>
+                <span id="globalCartCount" class="cart-count-badge">0</span>
             </div>
         </div>
     </header>
@@ -104,7 +98,7 @@
             <div id="cartItemsList"></div>
             <div style="margin-top:30px;">
                 <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
-                <p onclick="toggleCartModal()" style="margin-top:20px; text-align:center; color:#999; cursor:pointer; font-weight:bold;">إغلاق وحفظ السلة</p>
+                <p onclick="toggleCartModal()" style="margin-top:20px; text-align:center; color:#999; cursor:pointer; font-weight:bold;">إغلاق السلة</p>
             </div>
         </div>
     </div>
@@ -117,14 +111,6 @@
                     <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold">احسب سعر ستائرك الآن</button>
                     <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
                 </div>
-                <div style="display:flex; gap:25px; font-size:2.2rem; margin-top:20px;">
-                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" style="color:white;"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank" style="color:white;"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" style="color:white;"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank" style="color:white;"><i class="fab fa-youtube"></i></a>
-                    <a href="https://x.com/ShababekCurtain" target="_blank" style="color:white;"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en-IQ" target="_blank" style="color:white;"><i class="fab fa-snapchat"></i></a>
-                </div>
             </section>
 
             <section id="categories" style="padding: 40px 0;">
@@ -136,57 +122,42 @@
                     <div onclick="openCat('رول')" style="flex:0 0 260px; height:380px; position:relative; border-radius:25px; overflow:hidden; cursor:pointer;"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg" style="width:100%; height:100%; object-fit:cover;"><div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:12px 30px; border-radius:12px; font-weight:900;">رول</div></div>
                 </div>
             </section>
-
-            <section class="features-section">
-                <h2 style="margin-bottom:50px; font-weight:900;">لماذا شبابيك؟</h2>
-                <div class="features-grid">
-                    <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:3rem; margin-bottom:20px;"></i><h3>ضمان حقيقي</h3><p>أرقى الأقمشة بضمان رسمي.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:3rem; margin-bottom:20px;"></i><h3>قياس منزلي</h3><p>نصلكم للقياس مجاناً.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:3rem; margin-bottom:20px;"></i><h3>تفصيل دقيق</h3><p>خياطة احترافية حسب الطلب.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-palette" style="color:var(--gold); font-size:3rem; margin-bottom:20px;"></i><h3>ذوق رفيع</h3><p>أحدث الموديلات العصرية.</p></div>
-                </div>
-            </section>
         </div>
 
-        <div id="doctorPage" class="page"><div id="doctorContent" style="padding: 50px 5%; max-width: 900px; margin: auto;"></div></div>
-        <div id="paymentPage" class="page"><div id="paymentList" style="padding: 50px 5%; max-width: 800px; margin: auto;"></div></div>
-        
-        <div id="contactPage" class="page">
-            <div style="padding: 80px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;">
-                <h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.5rem;">تواصل معنا</h2>
-                <div style="font-size: 1.5rem; margin-bottom: 20px;"><i class="fa-solid fa-phone"></i> 07883002797</div>
-                <div style="font-size: 1.5rem; margin-bottom: 40px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div>
-                <a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none;">مراسلة واتساب مباشر</a>
-            </div>
-        </div>
-
-        <div id="aboutPage" class="page">
-            <div style="padding: 60px 5%; max-width: 1100px; margin: auto;">
-                <h2 style="font-weight:900; font-size:2.8rem; margin-bottom:30px;">شبابيك للستائر</h2>
-                <p style="font-size:1.3rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي يعكس ذوق أصحابه.</p>
-                <div class="stat-grid">
-                    <div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div>
-                    <div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div>
-                    <div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div>
+        <div id="adminPanel" class="page">
+            <div style="padding: 40px 5%; max-width: 800px; margin: auto; text-align: right;">
+                <h2 style="text-align:center; margin-bottom:30px;">لوحة الإدارة السحابية</h2>
+                <div class="admin-box">
+                    <h3>١. إضافة منتج</h3>
+                    <select id="aCat"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
+                    <input type="text" id="aName" placeholder="اسم الموديل">
+                    <input type="number" id="aPrice" placeholder="السعر لكل متر">
+                    <input type="text" id="aImg" placeholder="رابط الصورة">
+                    <button onclick="saveItem('products', {category:v('aCat'), name:v('aName'), price:v('aPrice'), img:v('aImg')})" style="background:var(--brown); color:white; padding:12px; border-radius:8px; width:100%; cursor:pointer;">نشر المنتج</button>
                 </div>
             </div>
         </div>
 
-        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:50px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
-        
         <div id="productCalculator" class="page">
             <div style="padding:30px 5%; max-width:600px; margin:auto; text-align:center;">
-                <img id="pImg" src="" style="width:100%; border-radius:30px; margin-bottom:25px; box-shadow: 0 15px 40px rgba(0,0,0,0.15);">
-                <h2 id="pName" style="font-weight:900; margin-bottom:15px;"></h2>
-                <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div>
-                <input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="width:100%; padding:18px; border-radius:15px; border:2px solid #eee; font-size:1.2rem; margin-bottom:25px; outline:none; text-align:center;">
-                <button onclick="addToCart()" class="btn-gold" style="width:100%; padding:22px; font-size:1.3rem;">إضافة للسلة</button>
+                <img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <h2 id="pName" style="font-weight:900; margin-bottom:10px;"></h2>
+                <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:20px;"><span id="pPrice"></span> د.ع / متر</div>
+                <input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="width:100%; padding:15px; border-radius:12px; border:1px solid #ddd; margin-bottom:20px; text-align:center;">
+                <button onclick="addToCart()" class="btn-gold" style="width:100%; margin-bottom:10px;">إضافة للسلة</button>
+                <button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:15px; border-radius:12px; font-weight:900;">إتمام الطلب الآن</button>
             </div>
         </div>
+
+        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:25px; padding:0 5%;"></div></div>
+        <div id="doctorPage" class="page"><div id="doctorContent" style="padding: 50px 5%;"></div></div>
+        <div id="paymentPage" class="page"><div id="paymentList" style="padding: 50px 5%;"></div></div>
+        <div id="aboutPage" class="page"><div style="padding: 80px 5%; text-align: center;"><h2>شبابيك للستائر</h2><p>ظل وذوق.. فخامة التفاصيل.</p></div></div>
+        <div id="contactPage" class="page"><div style="padding: 80px 5%; text-align: center;"><h2>تواصل معنا</h2><p>بغداد - العراق</p></div></div>
     </main>
 
     <div class="footer-cta">
-        <h2 style="font-weight:900; font-size:2.2rem; margin-bottom:15px;">جاهز لتجديد ستائر منزلك؟</h2>
+        <h2>جاهز لتجديد ستائر منزلك؟</h2>
         <p style="margin-bottom:30px; opacity:0.9; font-size:1.1rem;">تواصل معنا الآن واحصل على استشارة مجانية وعرض سعر خاص.</p>
         <div style="display:flex; justify-content:center; flex-wrap:wrap;">
             <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
@@ -194,15 +165,16 @@
         </div>
     </div>
 
-    <footer><div style="font-size:2rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
+    <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر</p></footer>
 
     <script>
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        let cur = null, cart = [];
+        let cur = null, cart = [], adminClicks = 0;
 
-        // نظام التنقل المتسلسل History API
+        function v(id) { return document.getElementById(id).value; }
+        
         function showPage(id, push = true) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -211,19 +183,36 @@
         }
         window.onpopstate = e => showPage(e.state ? e.state.pageId : 'homePage', false);
 
-        // احتفالية بألوان الهوية وكثيفة
+        function handleLogoClick() {
+            adminClicks++;
+            if(adminClicks >= 5) {
+                if(prompt("الرمز") === "1234") showPage('adminPanel');
+                adminClicks = 0;
+            } else {
+                showPage('homePage');
+            }
+        }
+
         function fireConfetti() {
-            confetti({ particleCount: 200, spread: 90, origin: { y: 0.7 }, colors: ['#d9b382', '#3d2e24', '#ffffff'] });
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d9b382', '#3d2e24', '#ffffff'] });
         }
 
         function addToCart() {
             const h = document.getElementById('hIn').value;
-            if(!h || h === "0") return alert("يرجى إدخال الطول المطلوب");
+            if(!h || h === "0") return alert("يرجى إدخال الطول");
             const total = Math.round(h * cur.price).toLocaleString();
             cart.push({n: cur.name, p: total});
-            document.getElementById('globalCartCount').innerText = cart.length;
+            updateCartUI();
             fireConfetti();
             alert("تمت الإضافة بنجاح!");
+        }
+
+        function updateCartUI() {
+            const count = cart.length;
+            document.getElementById('globalCartCount').innerText = count;
+            const btn = document.getElementById('cartBtn');
+            if(count > 0) btn.classList.add('cart-filled');
+            else btn.classList.remove('cart-filled');
         }
 
         function toggleCartModal() {
@@ -235,7 +224,7 @@
         function renderCartItems() {
             const list = document.getElementById('cartItemsList');
             list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join('');
-            if(cart.length === 0) list.innerHTML = "<p style='text-align:center; padding:20px; opacity:0.5;'>السلة فارغة حالياً</p>";
+            if(cart.length === 0) list.innerHTML = "<p style='text-align:center;'>السلة فارغة</p>";
         }
 
         function sendOrder() {
@@ -244,17 +233,20 @@
             cart.forEach((i, index) => msg += `${index+1}- ${i.n}: ${i.p} د.ع\n`);
             window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
             cart = [];
-            document.getElementById('globalCartCount').innerText = "0";
+            updateCartUI();
             toggleCartModal();
             fireConfetti();
         }
 
+        function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => { alert("تم الحفظ!"); location.reload(); }); }
+        
         function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); renderGrid('ستائر ' + n, items); }); }
-        function renderGrid(t, i) { document.getElementById('catTitle').innerText = t; document.getElementById('catGrid').innerHTML = i.map(x => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:20px; text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold); font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع / م</p></div></div>`).join(''); showPage('categoryView'); }
+        function renderGrid(t, i) { document.getElementById('catTitle').innerText = t; document.getElementById('catGrid').innerHTML = i.map(x => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:15px; text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold); font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع / م</p></div></div>`).join(''); showPage('categoryView'); }
         function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('hIn').value = ""; showPage('productCalculator'); }
 
-        db.ref('doctor').on('value', snap => { const d = snap.val(); document.getElementById('doctorContent').innerHTML = d ? Object.values(d).map(i => `<div style="background:white; border-radius:25px; overflow:hidden; margin-bottom:30px; box-shadow:0 10px 30px rgba(0,0,0,0.05); border-right:6px solid var(--gold); padding:30px;">${i.type === 'vid' ? `<video src="${i.media}" autoplay muted loop style="width:100%; border-radius:15px;"></video>` : `<img src="${i.media}" style="width:100%; border-radius:15px;">`}<h3>${i.title}</h3><p>${i.desc}</p></div>`).join('') : ''; });
-        db.ref('payments').on('value', snap => { const p = snap.val(); document.getElementById('paymentList').innerHTML = p ? Object.values(p).map(i => `<div style="background:white; padding:40px; border-radius:25px; margin-bottom:20px; text-align:center; border:1px solid #eee;"><h3>${i.name}</h3><img src="${i.qr}" style="width:250px; margin-top:20px; border-radius:15px;"></div>`).join('') : ''; });
+        // تحميل الميديا (دكتور ديكور وطرق دفع)
+        db.ref('doctor').on('value', snap => { const d = snap.val(); document.getElementById('doctorContent').innerHTML = d ? Object.values(d).map(i => `<div style="background:white; border-radius:25px; overflow:hidden; margin-bottom:30px; box-shadow:0 10px 30px rgba(0,0,0,0.05); padding:30px;">${i.type === 'vid' ? `<video src="${i.media}" autoplay muted loop style="width:100%; border-radius:15px;"></video>` : `<img src="${i.media}" style="width:100%; border-radius:15px;">`}<h3>${i.title}</h3><p>${i.desc}</p></div>`).join('') : ''; });
+        db.ref('payments').on('value', snap => { const p = snap.val(); document.getElementById('paymentList').innerHTML = p ? Object.values(p).map(i => `<div style="background:white; padding:30px; border-radius:20px; margin-bottom:15px; text-align:center; border:1px solid #eee;"><h3>${i.name}</h3><img src="${i.qr}" style="width:220px; margin-top:15px; border-radius:10px;"></div>`).join('') : ''; });
     </script>
 </body>
 </html>
