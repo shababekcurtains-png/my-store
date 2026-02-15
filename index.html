@@ -16,12 +16,19 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
 
-        /* الهيدر والقوائم */
         .top-banner { background: var(--brown); color: white; padding: 8px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+
         header { background: var(--white); padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 95px; cursor: pointer; transition: 0.4s; }
+        .logo-center { flex: 1; display: flex; justify-content: center; }
+        .logo-img { height: 95px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 20px; }
         .cart-icon { font-size: 1.6rem; position: relative; cursor: pointer; }
-        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--gold); color: white; font-size: 0.75rem; padding: 2px 7px; border-radius: 50%; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--gold); color: white; font-size: 0.75rem; padding: 2px 7px; border-radius: 50%; font-weight: 900; }
+
+        #searchBox { display: none; padding: 15px 5%; background: var(--bg); border-bottom: 1px solid #ddd; }
+        #searchBox input { width: 100%; padding: 12px 20px; border-radius: 25px; border: 1px solid #ccc; outline: none; }
 
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; }
         .nav-menu { display: inline-flex; gap: 30px; list-style: none; padding: 0 5%; width: 100%; justify-content: center; }
@@ -31,38 +38,64 @@
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* المظهر الأصلي الفاخر */
         .hero { height: 75vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
-        .social-hero { display: flex; gap: 22px; margin-top: 20px; }
-        .social-hero a { color: var(--white); font-size: 1.9rem; transition: 0.4s; }
+        .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
+        
+        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; margin-bottom: 30px; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(217, 179, 130, 0.4); }
+        .btn-trans { background: transparent; color: white; border: 2px solid white; padding: 16px 35px; border-radius: 8px; font-weight: 900; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
-        /* دكتور ديكور ميديا */
+        .social-hero { display: flex; gap: 22px; }
+        .social-hero a { color: var(--white); font-size: 1.9rem; transition: 0.4s; }
+        .social-hero a:hover { color: var(--gold); transform: translateY(-10px) scale(1.2); }
+
+        .catalog-grid { display: flex; gap: 20px; padding: 40px 5%; overflow-x: auto; scrollbar-width: none; }
+        .cat-card { flex: 0 0 280px; position: relative; border-radius: 20px; overflow: hidden; height: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); cursor: pointer; }
+        .cat-card img { width: 100%; height: 100%; object-fit: cover; }
+        .cat-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 10px 25px; border-radius: 12px; font-weight: 900; }
+
+        .features-section { background: var(--bg); padding: 60px 5%; text-align: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
+        .f-card { background: white; padding: 35px 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .f-icon { font-size: 2.2rem; color: var(--gold); margin-bottom: 15px; }
+
+        /* حاسبة الهاتف */
+        .phone-calc { padding: 20px 5%; max-width: 600px; margin: auto; }
+        .phone-calc img { width: 100%; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .res-banner { background: var(--brown); color: white; padding: 25px; border-radius: 20px; text-align: center; font-size: 1.5rem; margin: 25px 0; }
+
+        /* دكتور ديكور */
         .doc-card { background: white; border-radius: 20px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-right: 6px solid var(--gold); }
         .doc-media { width: 100%; max-height: 450px; object-fit: cover; }
 
-        /* لوحة التحكم الاحترافية */
         .admin-section { background: #eee; padding: 20px; border-radius: 15px; margin-bottom: 30px; text-align: right; }
-        .admin-section h3 { margin-bottom: 15px; color: var(--brown); border-bottom: 2px solid var(--gold); display: inline-block; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ccc; font-family: 'Cairo'; }
-
         footer { background: var(--brown); color: white; padding: 60px 5% 30px; text-align: center; }
+
+        @media (min-width: 768px) {
+            .hero-btns { flex-direction: row; max-width: 700px; gap: 20px; }
+            .btn-gold, .btn-trans { width: 300px; }
+            .catalog-grid { justify-content: center; }
+            .cat-card { flex: 0 0 22%; }
+        }
     </style>
 </head>
 <body>
 
     <div class="top-banner">
         <span>شبابيك للستائر - ظل وذوق</span>
-        <a href="https://wa.me/9647883002797" style="color:var(--whatsapp); text-decoration:none; font-weight:bold;"><i class="fab fa-whatsapp"></i> تواصل واتساب</a>
+        <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> تواصل واتساب</a>
     </div>
 
     <header>
         <div style="font-weight:900; line-height:1; flex:1;">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
-        <div class="logo-center"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="checkAdmin()"></div>
+        <div class="logo-center"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" id="adminTrigger"></div>
         <div class="header-left">
             <i class="fa fa-search" style="font-size:1.4rem; cursor:pointer;" onclick="toggleSearch()"></i>
             <div class="cart-icon" onclick="openCart()"><i class="fas fa-shopping-basket"></i><span class="cart-count" id="globalCartCount">0</span></div>
         </div>
     </header>
+
+    <div id="searchBox"><input type="text" id="searchInput" placeholder="ابحث عن موديلات ستائر..." oninput="liveSearch()"></div>
 
     <div class="nav-bar">
         <ul class="nav-menu">
@@ -78,145 +111,114 @@
         <div id="homePage" class="page active">
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <div style="display:flex; flex-direction:column; gap:15px; width:300px;">
-                    <button onclick="document.getElementById('categories').scrollIntoView()" style="background:var(--gold); color:white; border:none; padding:15px; border-radius:8px; font-weight:900; cursor:pointer;">احسب سعرك الآن</button>
-                    <a href="https://wa.me/9647883002797" style="background:transparent; color:white; border:2px solid white; padding:15px; border-radius:8px; text-decoration:none; font-weight:900;">استشارة مجانية</a>
+                <div class="hero-btns">
+                    <button class="btn-gold" onclick="document.getElementById('categories').scrollIntoView()">احسب سعرك الآن</button>
+                    <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
                 </div>
                 <div class="social-hero">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/shababek.curtains/"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en" target="_blank"><i class="fab fa-snapchat"></i></a>
                 </div>
             </section>
-            <section id="categories" style="text-align:center; padding:50px 5%;">
-                <h2 style="font-weight:900; margin-bottom:30px;">أقسامنا</h2>
-                <div id="catGridMain" class="catalog-grid" style="display:flex; overflow-x:auto; gap:20px;">
-                    </div>
+
+            <section id="categories">
+                <h2 style="text-align:center; margin-top:50px; font-weight:900; font-size:2.2rem;">أقسامنا المميزة</h2>
+                <div class="catalog-grid">
+                    <div class="cat-card" onclick="openCat('بلاك أوت')"><img src="https://i.ibb.co/dsyqws88/curtain-blackout-BDZvwy-X3.jpg"><div class="cat-label">بلاك أوت</div></div>
+                    <div class="cat-card" onclick="openCat('شفافة')"><img src="https://i.ibb.co/23ypfxBq/curtain-sheer-B6-H5y-JXx.jpg"><div class="cat-label">شفافة</div></div>
+                    <div class="cat-card" onclick="openCat('ديكور')"><img src="https://i.ibb.co/JRd7B9dC/42edce8e89a20200950e110c2d8d41b2.jpg"><div class="cat-label">ديكور</div></div>
+                    <div class="cat-card" onclick="openCat('رول')"><img src="https://i.ibb.co/d4GXf0HM/curtain-roller-5c189-CRe.jpg"><div class="cat-label">رول</div></div>
+                </div>
             </section>
         </div>
 
         <div id="doctorPage" class="page">
             <div style="padding: 40px 5%; max-width: 1000px; margin: auto;">
                 <h2 style="color:var(--gold); margin-bottom:30px;"><i class="fa-solid fa-wand-magic-sparkles"></i> نصائح دكتور ديكور</h2>
-                <div id="doctorContent">
-                    <p style="text-align:center;">جاري تحميل النصائح الفنية...</p>
-                </div>
+                <div id="doctorContent"><p style="text-align:center;">جاري التحميل...</p></div>
             </div>
         </div>
 
         <div id="paymentPage" class="page">
             <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
-                <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">طرق الدفع المتوفرة</h2>
-                <div id="paymentList">
-                    <p style="text-align:center;">جاري تحميل بيانات الدفع...</p>
-                </div>
+                <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">طرق الدفع والباركودات</h2>
+                <div id="paymentList"><p style="text-align:center;">جاري التحميل...</p></div>
             </div>
         </div>
 
         <div id="adminPanel" class="page">
             <div style="padding: 40px 5%; max-width: 900px; margin: auto;">
-                <h2 style="margin-bottom:30px; text-align:center;">لوحة إدارة المتجر السحابية</h2>
-                
+                <h2 style="margin-bottom:30px; text-align:center;">لوحة الإدارة السحابية</h2>
                 <div class="admin-section">
-                    <h3>١. إضافة منتج جديد</h3>
+                    <h3>١. إضافة منتج</h3>
                     <select id="aCat"><option>بلاك أوت</option><option>شفافة</option><option>ديكور</option><option>رول</option></select>
-                    <input type="text" id="aName" placeholder="اسم الموديل">
+                    <input type="text" id="aName" placeholder="اسم المنتج">
                     <input type="number" id="aPrice" placeholder="السعر لكل متر">
-                    <input type="text" id="aImg" placeholder="رابط صورة المنتج">
-                    <button onclick="saveItem('products', {category:v('aCat'), name:v('aName'), price:v('aPrice'), img:v('aImg')})" style="background:var(--brown); color:white; width:100%; padding:10px; border-radius:8px; cursor:pointer;">نشر المنتج</button>
+                    <input type="text" id="aImg" placeholder="رابط الصورة">
+                    <button onclick="saveItem('products', {category:v('aCat'), name:v('aName'), price:v('aPrice'), img:v('aImg')})" style="background:var(--brown); color:white; width:100%; padding:10px; border-radius:8px;">نشر</button>
                 </div>
-
                 <div class="admin-section">
-                    <h3>٢. إضافة موضوع في دكتور ديكور</h3>
-                    <input type="text" id="dTitle" placeholder="عنوان الموضوع">
-                    <textarea id="dDesc" placeholder="شرح النصيحة أو المقال" rows="3"></textarea>
-                    <input type="text" id="dMedia" placeholder="رابط (صورة أو فيديو mp4)">
-                    <select id="dType"><option value="img">صورة</option><option value="vid">فيديو (يعمل تلقائياً)</option></select>
-                    <button onclick="saveItem('doctor', {title:v('dTitle'), desc:v('dDesc'), media:v('dMedia'), type:v('dType')})" style="background:var(--gold); color:white; width:100%; padding:10px; border-radius:8px; cursor:pointer;">نشر النصيحة</button>
+                    <h3>٢. نصيحة دكتور ديكور</h3>
+                    <input type="text" id="dTitle" placeholder="العنوان">
+                    <textarea id="dDesc" placeholder="الوصف" rows="3" style="width:100%; padding:10px; margin:10px 0; border-radius:8px;"></textarea>
+                    <input type="text" id="dMedia" placeholder="رابط صورة أو فيديو">
+                    <select id="dType"><option value="img">صورة</option><option value="vid">فيديو (Autoplay)</option></select>
+                    <button onclick="saveItem('doctor', {title:v('dTitle'), desc:v('dDesc'), media:v('dMedia'), type:v('dType')})" style="background:var(--gold); color:white; width:100%; padding:10px; border-radius:8px;">نشر</button>
                 </div>
-
                 <div class="admin-section">
-                    <h3>٣. إضافة طريقة دفع / باركود</h3>
-                    <input type="text" id="payName" placeholder="اسم الطريقة (مثل: زين كاش)">
-                    <input type="text" id="payDesc" placeholder="تفاصيل (مثل: رقم المحفظة)">
+                    <h3>٣. إضافة باركود دفع</h3>
+                    <input type="text" id="payName" placeholder="الاسم (زين كاش)">
                     <input type="text" id="payQR" placeholder="رابط صورة الباركود">
-                    <button onclick="saveItem('payments', {name:v('payName'), desc:v('payDesc'), qr:v('payQR')})" style="background:var(--whatsapp); color:white; width:100%; padding:10px; border-radius:8px; cursor:pointer;">إضافة الطريقة</button>
+                    <button onclick="saveItem('payments', {name:v('payName'), qr:v('payQR')})" style="background:var(--whatsapp); color:white; width:100%; padding:10px; border-radius:8px;">حفظ</button>
                 </div>
             </div>
         </div>
-        
-        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:30px 0;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px; padding:0 5%;"></div></div>
+
+        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px; padding:0 5%;"></div></div>
         <div id="productCalculator" class="page">
-            <div style="padding:20px 5%; max-width:600px; margin:auto; text-align:right;">
-                <img id="pImg" src="" style="width:100%; border-radius:20px; margin-bottom:20px;">
-                <h2 id="pName" style="font-weight:900;"></h2>
-                <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:20px;"><span id="pPrice"></span> د.ع / م</div>
-                <label>الطول المطلوب (بالمتر):</label>
-                <input type="number" id="hIn" placeholder="2.5" oninput="doCalc()" style="width:100%; padding:15px; border-radius:12px; border:1px solid #ddd; font-size:1.2rem; margin:10px 0;">
-                <div style="background:var(--brown); color:white; padding:20px; border-radius:15px; text-align:center; font-size:1.5rem; margin:20px 0;">الإجمالي: <span id="resPrice">0</span> د.ع</div>
-                <button onclick="addToCart()" style="background:var(--gold); color:white; border:none; width:100%; padding:20px; border-radius:12px; font-weight:900; cursor:pointer;">إضافة للسلة</button>
+            <div class="phone-calc">
+                <img id="pImg" src="">
+                <h2 id="pName" style="font-weight:900; margin-bottom:10px;"></h2>
+                <div style="color:var(--gold); font-size:1.6rem; font-weight:900; margin-bottom:20px;"><span id="pPrice"></span> د.ع / م</div>
+                <input type="number" id="hIn" placeholder="أدخل الطول بالمتر" oninput="doCalc()" style="width:100%; padding:15px; border-radius:12px; border:1px solid #ddd; font-size:1.1rem;">
+                <div class="res-banner">الإجمالي: <br> <span id="resPrice" style="font-size:2rem;">0</span> د.ع</div>
+                <button onclick="addToCart()" style="background:var(--gold); color:white; border:none; width:100%; padding:20px; border-radius:12px; font-weight:900;">إضافة للسلة</button>
             </div>
         </div>
     </main>
+
+    <footer><div class="footer-logo">شبابيك للستائر</div><p>© 2026 ظل وذوق - جميع الحقوق محفوظة</p></footer>
 
     <script>
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        let cur = null, cart = [];
+        let cur = null, cart = [], adminClicks = 0;
 
         function v(id) { return document.getElementById(id).value; }
-
-        function showPage(id, push = true) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0,0);
-            if(push) history.pushState({pageId: id}, null, "");
-        }
-
+        function showPage(id, push = true) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); if(push) history.pushState({pageId: id}, null, ""); }
         window.onpopstate = e => showPage(e.state ? e.state.pageId : 'homePage', false);
 
-        // وظائف جلب البيانات السحابية
-        function loadDoctor() {
-            db.ref('doctor').on('value', snap => {
-                const data = snap.val();
-                document.getElementById('doctorContent').innerHTML = data ? Object.values(data).map(i => `
-                    <div class="doc-card">
-                        ${i.type === 'vid' ? `<video class="doc-media" src="${i.media}" autoplay muted loop playsinline></video>` : `<img class="doc-media" src="${i.media}">`}
-                        <div style="padding:25px;"><h3>${i.title}</h3><p>${i.desc}</p></div>
-                    </div>`).join('') : 'لا توجد نصائح حالياً.';
-            });
-        }
+        function loadDoctor() { db.ref('doctor').on('value', snap => { const d = snap.val(); document.getElementById('doctorContent').innerHTML = d ? Object.values(d).map(i => `<div class="doc-card">${i.type === 'vid' ? `<video class="doc-media" src="${i.media}" autoplay muted loop playsinline></video>` : `<img class="doc-media" src="${i.media}">`}<div style="padding:25px;"><h3>${i.title}</h3><p>${i.desc}</p></div></div>`).join('') : 'لا توجد نصائح حالياً.'; }); }
+        function loadPayments() { db.ref('payments').on('value', snap => { const p = snap.val(); document.getElementById('paymentList').innerHTML = p ? Object.values(p).map(i => `<div style="background:white; padding:20px; border-radius:15px; margin-bottom:15px; text-align:center; border:1px solid #eee;"><h3>${i.name}</h3><img src="${i.qr}" style="width:200px; margin-top:15px; border-radius:10px;"></div>`).join('') : 'جاري إضافة البيانات...'; }); }
+        function saveItem(ref, obj) { if(Object.values(obj).some(x => !x)) return alert("أكمل الحقول"); db.ref(ref).push(obj).then(() => { alert("تم!"); location.reload(); }); }
 
-        function loadPayments() {
-            db.ref('payments').on('value', snap => {
-                const data = snap.val();
-                document.getElementById('paymentList').innerHTML = data ? Object.values(data).map(i => `
-                    <div class="payment-card">
-                        <img src="${i.qr}" style="width:100px; height:100px; border-radius:10px;">
-                        <div style="text-align:right;"><h3>${i.name}</h3><p>${i.desc}</p></div>
-                    </div>`).join('') : 'جاري إضافة طرق الدفع...';
-            });
-        }
+        document.getElementById('adminTrigger').onclick = () => { adminClicks++; if(adminClicks>=5) { if(prompt("الرمز")==="1234") showPage('adminPanel'); adminClicks=0; } };
 
-        function saveItem(ref, obj) {
-            if(Object.values(obj).some(x => !x)) return alert("يرجى ملء جميع الحقول");
-            db.ref(ref).push(obj).then(() => { alert("✅ تم النشر بنجاح!"); location.reload(); });
-        }
-
-        // تشغيل التحميل التلقائي
-        loadDoctor(); loadPayments();
-
-        function checkAdmin() { let c = 0; return function() { c++; if(c>=5) { if(prompt("الرمز")==="1234") showPage('adminPanel'); c=0; } } }();
-        document.querySelector('.logo-img').onclick = checkAdmin();
-
-        // الحاسبة والبحث والمنتجات
-        function openCat(name) { db.ref('products').on('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === name); renderGrid('ستائر ' + name, items); }); }
-        function renderGrid(title, items) { document.getElementById('catTitle').innerText = title; document.getElementById('catGrid').innerHTML = items.map(i => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(i)})'><img src="${i.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:15px; text-align:center;"><h3>${i.name}</h3><p style="color:var(--gold); font-weight:900;">${parseInt(i.price).toLocaleString()} د.ع / م</p></div></div>`).join(''); showPage('categoryView'); }
+        function openCat(n) { db.ref('products').on('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); renderGrid('ستائر ' + n, items); }); }
+        function renderGrid(t, i) { document.getElementById('catTitle').innerText = t; document.getElementById('catGrid').innerHTML = i.map(x => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:15px; text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold); font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع / م</p></div></div>`).join(''); showPage('categoryView'); }
         function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('resPrice').innerText = "0"; document.getElementById('hIn').value = ""; showPage('productCalculator'); }
         function doCalc() { const h = v('hIn'); if(h) document.getElementById('resPrice').innerText = Math.round(h * cur.price).toLocaleString(); }
         function addToCart() { cart.push({n: cur.name, p: document.getElementById('resPrice').innerText}); document.getElementById('globalCartCount').innerText = cart.length; alert("تمت الإضافة!"); }
         function openCart() { if(cart.length === 0) return alert("السلة فارغة"); let msg = "طلب جديد:\n"; cart.forEach(i => msg += `- ${i.n}: ${i.p}د.ع\n`); window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`; }
+        function toggleSearch() { const b = document.getElementById('searchBox'); b.style.display = b.style.display === 'block' ? 'none' : 'block'; }
+        function liveSearch() { const q = v('searchInput').toLowerCase(); if(q.length < 2) return; db.ref('products').once('value', snap => { const res = Object.values(snap.val() || {}).filter(p => p.name.toLowerCase().includes(q)); renderGrid('نتائج البحث', res); }); }
+
+        loadDoctor(); loadPayments();
     </script>
 </body>
 </html>
