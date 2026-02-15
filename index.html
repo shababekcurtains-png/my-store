@@ -18,9 +18,11 @@
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
 
         .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
-        .logo-img { height: 90px; }
+        .logo-img { height: 90px; transition: 0.3s; }
         
         .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
         .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); }
@@ -46,22 +48,19 @@
         #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 30px; max-height: 90vh; overflow-y: auto; }
 
-        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 10px; overflow: hidden; font-size: 0.85rem; }
-        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
-
+        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; }
+        
         .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
         footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
-        
-        #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; }
+        #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; display: none; }
     </style>
 </head>
 <body>
 
     <div class="top-banner">
         <span>شبابيك للستائر - ظل وذوق</span>
-        <a href="https://wa.me/9647883002797" style="color:var(--whatsapp); text-decoration:none;"><i class="fab fa-whatsapp"></i> تواصل معنا</a>
+        <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> تواصل عبر الواتساب</a>
     </div>
 
     <header>
@@ -102,9 +101,9 @@
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
-            <section style="height:70vh; background:linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size:cover; background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:white; padding:20px;">
-                <h1 style="font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight:900;">فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold" style="margin-top:20px;">احسب سعر ستائرك الآن</button>
+            <section class="hero">
+                <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
+                <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold">احسب سعر ستائرك الآن</button>
                 <div class="social-hero" style="display:flex; gap:20px; font-size:1.8rem; margin-top:30px;">
                     <a href="https://facebook.com" target="_blank" style="color:white;"><i class="fab fa-facebook"></i></a>
                     <a href="https://instagram.com" target="_blank" style="color:white;"><i class="fab fa-instagram"></i></a>
@@ -115,6 +114,14 @@
             <section id="categories" style="padding: 40px 0;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
                 <div id="categoriesList" style="display:flex; overflow-x:auto; gap:20px; padding:20px 5%; scrollbar-width:none;"></div>
+            </section>
+            <section class="features-section">
+                <h2 style="margin-bottom:35px; font-weight:900; text-align:center;">لماذا شبابيك؟</h2>
+                <div class="features-grid">
+                    <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ضمان حقيقي</h3></div>
+                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>قياس منزلي</h3></div>
+                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>تفصيل دقيق</h3></div>
+                </div>
             </section>
         </div>
 
@@ -146,7 +153,7 @@
                     <input type="text" id="docT" placeholder="العنوان">
                     <textarea id="docD" placeholder="الشرح"></textarea>
                     <input type="text" id="docM" placeholder="رابط يوتيوب أو صورة">
-                    <select id="docY"><option value="img">صورة</option><option value="vid">يوتيوب عادي (عرضي)</option><option value="shorts">يوتيوب شورتس (طولي)</option></select>
+                    <select id="docY"><option value="img">صورة</option><option value="vid">يوتيوب عادي</option><option value="shorts">يوتيوب شورتس</option></select>
                     <select id="docMode"><option value="closed">مقالة (بالضغط)</option><option value="open">مباشر (ريلز)</option></select>
                     <button onclick="saveItem('docTopics', {section:v('selectDocSec'), title:v('docT'), desc:v('docD'), media:v('docM'), type:v('docY'), mode:v('docMode')})" class="btn-gold">نشر</button>
                     <table class="admin-table"><tbody id="admDocTopicList"></tbody></table>
@@ -154,6 +161,7 @@
                 <div class="admin-box">
                     <h3>١. إدارة الأقسام والمنتجات</h3>
                     <table class="admin-table"><tbody id="admCatList"></tbody></table>
+                    <table class="admin-table"><tbody id="admProdList"></tbody></table>
                 </div>
                 <div class="admin-box">
                     <h3>٤. طرق الدفع</h3>
@@ -164,15 +172,16 @@
 
         <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
         <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px;"><h2 id="pName" style="margin:15px 0;"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:20px;"><span id="pPrice"></span> د.ع / م</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="width:100%; margin-top:10px; background:transparent; border:2px solid var(--gold); color:var(--gold); padding:15px; border-radius:12px; font-weight:900;">إتمام الطلب الآن</button></div></div>
-        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2>من نحن</h2><p>قصة شبابيك للستائر...</p></div></div>
+        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2>من نحن</h2><p>تأسست شبابيك للستائر لتقديم أفضل الحلول...</p></div></div>
         <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align:center;"><h2>تواصل معنا</h2><p>07883002797</p></div></div>
+        <div id="paymentPage" class="page"><div id="paymentList" style="padding: 40px 5%; max-width: 850px; margin: auto;"></div></div>
     </main>
 
     <div class="footer-cta">
         <h2>جاهز لتجديد ستائر منزلك؟</h2>
         <div style="display:flex; justify-content:center; gap:10px; margin-top:15px;">
-            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a onclick="showPage('homePage')" class="btn-footer-prod">تصفح المنتجات</a>
+            <a href="https://wa.me/9647883002797" class="wa-link" style="color:white; border:1px solid white; padding:10px 20px; border-radius:8px; text-decoration:none;">تواصل عبر واتساب</a>
+            <a onclick="showPage('homePage')" style="background:var(--gold); color:white; padding:10px 20px; border-radius:8px; cursor:pointer;">تصفح المنتجات</a>
         </div>
     </div>
     <footer>شبابيك © 2026 - جميع الحقوق محفوظة</footer>
@@ -209,10 +218,21 @@
             document.getElementById('prodCat').innerHTML = Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
         });
 
+        db.ref('products').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admProdList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+        });
+
+        db.ref('payments').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admPayList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+            document.getElementById('paymentList').innerHTML = Object.values(data).map(p => `<div style="text-align:center;margin-bottom:30px;"><h3>${p.name}</h3><img src="${p.qr}" style="width:250px;border-radius:20px;"></div>`).join('');
+        });
+
         // دكتور ديكور
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
-            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:25px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">${s.name}</div>`).join('');
+            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">${s.name}</div>`).join('');
             document.getElementById('selectDocSec').innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
             document.getElementById('admDocSecList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('docSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         });
@@ -249,26 +269,24 @@
             document.querySelectorAll('.auto-video').forEach(v => obs.observe(v));
         }
 
-        // نظام الطلبات
-        function toggleOrderForm() {
-            const f = document.getElementById('orderFinal');
-            const b = document.getElementById('mainOrderBtn');
-            if(f.style.display === 'none') { f.style.display = 'block'; b.innerText = "تأكيد وإرسال"; } else { sendOrder(); }
+        function handleSearch() {
+            const query = v('searchInput').toLowerCase();
+            const resBox = document.getElementById('searchRes');
+            if(query.length < 2) { resBox.style.display = 'none'; return; }
+            db.ref('products').once('value', snap => {
+                const data = snap.val() || {};
+                const found = Object.values(data).filter(p => p.name.toLowerCase().includes(query));
+                resBox.innerHTML = found.map(p => `<div onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none"' style="padding:15px; border-bottom:1px solid #eee; cursor:pointer;">${p.name}</div>`).join('') || '<p style="padding:15px;">لا توجد نتائج</p>';
+                resBox.style.display = 'block';
+            });
         }
 
-        function sendOrder() {
-            if(cart.length === 0) return;
-            const city = v('uCity'), pay = v('uPay');
-            let msg = `طلب جديد من شبابيك\n📍 المحافظة: ${city}\n💰 الدفع: ${pay}\n📦 المنتجات:\n`;
-            cart.forEach((i,x) => msg += `${x+1}- ${i.n}: ${i.p} د.ع\n`);
-            window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
-        }
-
+        function toggleCartModal() { const o = document.getElementById('cartOverlay'); o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; const list = document.getElementById('cartItemsList'); list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join(''); document.getElementById('orderFinal').style.display='none'; document.getElementById('mainOrderBtn').innerText="متابعة الطلب"; }
+        function addToCart() { const h = v('hIn'); if(!h || h<=0) return; cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); document.getElementById('globalCartCount').innerText = cart.length; confetti({particleCount:150, spread:70, origin:{y:0.6}}); alert("تمت الإضافة!"); }
+        function prepareOrder() { const f = document.getElementById('orderFinal'); if(f.style.display === 'none') { f.style.display = 'block'; document.getElementById('mainOrderBtn').innerText = "تأكيد وإرسال"; } else { sendOrder(); } }
+        function sendOrder() { const city = v('uCity'), pay = v('uPay'); let msg = `طلب جديد من شبابيك\n📍 المحافظة: ${city}\n💰 الدفع: ${pay}\n📦 المنتجات:\n`; cart.forEach((i,x) => msg += `${x+1}- ${i.n}: ${i.p} د.ع\n`); window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`; }
         function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); document.getElementById('catTitle').innerText = n; document.getElementById('catGrid').innerHTML = items.map(x => `<div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%;height:250px;object-fit:cover;"><div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join(''); showPage('categoryView'); }); }
         function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('hIn').value = ""; showPage('productCalculator'); }
-        function addToCart() { const h = v('hIn'); if(!h || h<=0) return; cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); document.getElementById('globalCartCount').innerText = cart.length; confetti({particleCount:150, spread:70, origin:{y:0.6}}); alert("تمت الإضافة!"); }
-        function toggleCartModal() { const o = document.getElementById('cartOverlay'); o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; const list = document.getElementById('cartItemsList'); list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join(''); document.getElementById('orderFinal').style.display='none'; document.getElementById('mainOrderBtn').innerText="متابعة الطلب"; }
-        function handleSearch() { /* بحث بسيط */ }
     </script>
 </body>
 </html>
