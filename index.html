@@ -18,16 +18,147 @@
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
 
         .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
-        .logo-img { height: 90px; transition: 0.3s; }
+        .logo-img { height: 90px; cursor: pointer; }
         
-        .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
-        .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
-        .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; width: 100%; justify-content: center; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; }
 
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
-        .nav-
+        .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
+        .active { display: block !important; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .doc-btn { background: var(--brown); color: white; padding: 25px; border-radius: 20px; text-align: center; cursor: pointer; font-weight: 900; }
+        .reel-box { background: white; border-radius: 25px; overflow: hidden; margin-bottom: 30px; border: 1px solid #eee; }
+        .heart-icon { font-size: 1.8rem; color: #ccc; cursor: pointer; transition: 0.3s; }
+        .heart-icon.active { color: var(--red); transform: scale(1.2); }
+
+        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; }
+
+        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="font-weight:900;">شبابيك</div>
+        <div onclick="handleLogoClick()"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img"></div>
+        <div><i class="fas fa-shopping-basket" style="font-size:1.8rem;"></i></div>
+    </header>
+
+    <div class="nav-bar">
+        <ul class="nav-menu">
+            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
+            <li><a onclick="showPage('doctorPage')">دكتور ديكور</a></li>
+            <li><a onclick="showPage('aboutPage')">من نحن</a></li>
+            <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
+        </ul>
+    </div>
+
+    <main id="mainContainer">
+        <div id="homePage" class="page active">
+            <section class="hero">
+                <h1 style="font-size:2.5rem; font-weight:900;">فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
+                <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold" style="margin-top:20px;">احسب سعر ستائرك الآن</button>
+            </section>
+            <section id="categories" style="padding: 40px 0;">
+                <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
+                <div id="categoriesList" style="display:flex; overflow-x:auto; gap:20px; padding:20px 5%; scrollbar-width:none;"></div>
+            </section>
+        </div>
+
+        <div id="doctorPage" class="page">
+            <div style="padding: 40px 5%;">
+                <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور 🩺✨</h2>
+                <div id="docSections" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;"></div>
+            </div>
+        </div>
+
+        <div id="docInside" class="page">
+            <div style="padding: 40px 5%; max-width: 600px; margin: auto;">
+                <h2 id="docSTitle" style="text-align:center; margin-bottom:30px; font-weight:900; color:var(--gold);"></h2>
+                <div id="docTopicsList"></div>
+                <button onclick="showPage('doctorPage')" style="width:100%; padding:15px; border-radius:15px; background:var(--brown); color:white; border:none; font-weight:900; cursor:pointer;">العودة للقائمة</button>
+            </div>
+        </div>
+
+        <div id="adminPanel" class="page">
+            <div style="padding: 40px 5%; max-width: 900px; margin: auto;">
+                <h2 style="text-align:center; font-weight:900; margin-bottom:40px;">لوحة الإدارة السحابية</h2>
+                <div class="admin-box">
+                    <h3>١. إضافة محتوى (ريلز أو صور)</h3>
+                    <select id="admDocSecSelect"></select>
+                    <input type="text" id="admTopicT" placeholder="العنوان">
+                    <input type="text" id="admTopicM" placeholder="رابط يوتيوب أو صورة">
+                    <select id="admTopicY"><option value="vid">فيديو (Shorts)</option><option value="img">صورة</option></select>
+                    <button onclick="saveItem('docTopics', {section:v('admDocSecSelect'), title:v('admTopicT'), media:v('admTopicM'), type:v('admTopicY'), likes:0})" style="background:var(--brown); color:white; width:100%; border-radius:10px; padding:12px; cursor:pointer;">نشر الآن</button>
+                </div>
+                <div class="admin-box">
+                    <h3>٢. إدارة الأقسام الفرعية</h3>
+                    <input type="text" id="admDocSecN" placeholder="اسم القسم الجديد">
+                    <button onclick="saveItem('docSections', {name:v('admDocSecN')})" class="btn-gold" style="width:100%;">إضافة قسم</button>
+                    <table class="admin-table"><thead><tr><th>القسم</th><th>إجراء</th></tr></thead><tbody id="admDocSecTable"></tbody></table>
+                </div>
+                <div class="admin-box">
+                    <h3>٣. نشاط الزبائن المباشر</h3>
+                    <div id="activityFeed" style="max-height: 200px; overflow-y: auto; background: white; padding: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        let adminClicks = 0;
+
+        function v(id) { return document.getElementById(id).value; }
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+        function handleLogoClick() { adminClicks++; if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } else { showPage('homePage'); } }
+        function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => { alert("تم الحفظ!"); }); }
+
+        function extractYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        db.ref('docSections').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('docSections').innerHTML = Object.values(data).map(s => `<div onclick="openDocSec('${s.name}')" class="doc-btn">${s.name}</div>`).join('');
+            document.getElementById('admDocSecSelect').innerHTML = Object.values(data).map(s => `<option>${s.name}</option>`).join('');
+            document.getElementById('admDocSecTable').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="db.ref('docSections').child('${k}').remove()">حذف</button></td></tr>`).join('');
+        });
+
+        function openDocSec(name) {
+            document.getElementById('docSTitle').innerText = "قسم: " + name;
+            db.ref('docTopics').on('value', snap => {
+                const topics = Object.entries(snap.val() || {}).filter(([k,v]) => v.section === name);
+                document.getElementById('docTopicsList').innerHTML = topics.map(([k,v]) => {
+                    let mediaHtml = v.type === 'vid' ? `<div style="position:relative; padding-top:177%; background:#000;"><iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${extractYoutubeId(v.media)}?autoplay=1&mute=1&loop=1&playlist=${extractYoutubeId(v.media)}&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>` : `<img src="${v.media}" style="width:100%;">`;
+                    return `<div class="reel-box">${mediaHtml}<div style="padding:15px;"><h3>${v.title}</h3><i class="fas fa-heart heart-icon" onclick="silentLike('${k}','${v.title}',this)"></i> <span>${v.likes || 0}</span><div style="margin-top:10px; display:flex; gap:5px;"><input type="text" id="in-${k}" placeholder="تعليق..." style="flex:1; padding:8px;"><button onclick="silentComment('${k}','${v.title}')" style="background:var(--gold); border:none; padding:8px; color:white;">ارسال</button></div><div id="comm-${k}" style="font-size:0.8rem; margin-top:10px;"></div></div></div>`;
+                }).join('');
+                topics.forEach(([k,v]) => loadComments(k));
+                showPage('docInside');
+            });
+        }
+
+        function silentLike(k, t, btn) { if(!btn.classList.contains('active')) { db.ref('docTopics').child(k).transaction(v => { if(v) v.likes = (v.likes || 0) + 1; return v; }); db.ref('liveActivity').push({ msg: `إعجاب بـ ${t}`, time: Date.now() }); btn.classList.add('active'); confetti({ particleCount: 50, colors: ['#ff4d4d', '#d9b382'] }); } }
+        function silentComment(k, t) { const txt = document.getElementById('in-'+k).value; if(txt) { db.ref('comments/'+k).push({ text: txt }); db.ref('liveActivity').push({ msg: `تعليق على ${t}: ${txt}`, time: Date.now() }); document.getElementById('in-'+k).value = ''; alert("تم بنجاح!"); } }
+        function loadComments(k) { db.ref('comments/'+k).on('value', snap => { const d = snap.val() || {}; document.getElementById('comm-'+k).innerHTML = Object.values(d).map(c => `<div>• ${c.text}</div>`).join('') || 'لا توجد تعليقات'; }); }
+        
+        db.ref('categories').on('value', snap => {
+            const cats = snap.val() || {};
+            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div class="stat-card" style="flex:0 0 250px; height:350px; position:relative; padding:0; overflow:hidden;"><img src="${c.img}" style="width:100%; height:100%; object-fit:cover;"><div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:12px;">${c.name}</div></div>`).join('');
+        });
+
+        db.ref('liveActivity').limitToLast(10).on('child_added', snap => { document.getElementById('activityFeed').insertAdjacentHTML('afterbegin', `<div><b>${new Date(snap.val().time).toLocaleTimeString()}</b>: ${snap.val().msg}</div>`); });
+    </script>
+</body>
+</html>
