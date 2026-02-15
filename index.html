@@ -38,19 +38,23 @@
         .active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .stat-card { background: #f4f1ed; padding: 25px; border-radius: 20px; text-align: center; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 1200px; margin: auto; }
-        .f-card { background: white; padding: 25px 15px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
-
+        /* مشغلات الفيديو */
         .vid-frame-wide { position: relative; padding-top: 56.25%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
-        .vid-frame-shorts { position: relative; padding-top: 177.7%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
+        .vid-frame-shorts { position: relative; padding-top: 177.7%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; width: 100%; max-width: 400px; margin-inline: auto; }
         .auto-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 30px; max-height: 90vh; overflow-y: auto; }
 
+        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 10px; overflow: hidden; font-size: 0.85rem; }
+        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
+
         .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
         footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
+        
+        #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -69,7 +73,7 @@
         </div>
     </header>
     
-    <div id="searchRes" style="position:absolute; top:110px; left:5%; width:90%; background:white; z-index:5000; box-shadow:0 10px 30px rgba(0,0,0,0.1); border-radius:20px; display:none;"></div>
+    <div id="searchRes"></div>
 
     <div class="nav-bar">
         <ul class="nav-menu">
@@ -91,8 +95,8 @@
                 <label>طريقة الدفع:</label>
                 <select id="uPay"><option>نقد عند الاستلام</option><option>زين كاش</option><option>كي كارد</option></select>
             </div>
-            <button class="btn-gold" id="confirmBtn" style="width:100%; margin-top:20px; padding:15px;" onclick="finalizeOrder()">متابعة الطلب</button>
-            <p onclick="toggleCartModal()" style="margin-top:15px; text-align:center; color:#999; cursor:pointer;">إلغاء</p>
+            <button class="btn-gold" id="mainOrderBtn" style="width:100%; margin-top:20px; padding:15px;" onclick="prepareOrder()">متابعة الطلب</button>
+            <p onclick="toggleCartModal()" style="margin-top:15px; text-align:center; color:#999; cursor:pointer;">إغلاق</p>
         </div>
     </div>
 
@@ -112,20 +116,12 @@
                 <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
                 <div id="categoriesList" style="display:flex; overflow-x:auto; gap:20px; padding:20px 5%; scrollbar-width:none;"></div>
             </section>
-            <section class="features-section">
-                <h2 style="margin-bottom:35px; font-weight:900; text-align:center;">لماذا شبابيك؟</h2>
-                <div class="features-grid">
-                    <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ضمان حقيقي</h3></div>
-                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>قياس منزلي</h3></div>
-                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>تفصيل دقيق</h3></div>
-                </div>
-            </section>
         </div>
 
         <div id="doctorPage" class="page">
             <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور 🩺</h2>
-                <div id="docSectionsNav" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;"></div>
+                <div id="docSectionsNav" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:30px;"></div>
             </div>
         </div>
 
@@ -140,20 +136,6 @@
         <div id="adminPanel" class="page">
             <div style="padding: 40px 5%; max-width: 900px; margin: auto;">
                 <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">لوحة الإدارة السحابية</h2>
-                <div class="admin-box">
-                    <h3>١. إدارة الأقسام والمنتجات</h3>
-                    <input type="text" id="catName" placeholder="اسم القسم">
-                    <input type="text" id="catImg" placeholder="رابط صورة القسم">
-                    <button onclick="saveItem('categories', {name:v('catName'), img:v('catImg')})" class="btn-gold">حفظ القسم</button>
-                    <table class="admin-table"><tbody id="admCatList"></tbody></table>
-                    <hr style="margin:20px 0;">
-                    <select id="prodCat"></select>
-                    <input type="text" id="prodName" placeholder="اسم الموديل">
-                    <input type="number" id="prodPrice" placeholder="السعر">
-                    <input type="text" id="prodImg" placeholder="رابط الصورة">
-                    <button onclick="saveItem('products', {category:v('prodCat'), name:v('prodName'), price:v('prodPrice'), img:v('prodImg')})" class="btn-gold">نشر المنتج</button>
-                    <table class="admin-table"><tbody id="admProdList"></tbody></table>
-                </div>
                 <div class="admin-box" style="border:2px solid var(--gold);">
                     <h3>⭐ إدارة دكتور ديكور</h3>
                     <input type="text" id="newDocSec" placeholder="اسم القسم الفرعي">
@@ -164,26 +146,26 @@
                     <input type="text" id="docT" placeholder="العنوان">
                     <textarea id="docD" placeholder="الشرح"></textarea>
                     <input type="text" id="docM" placeholder="رابط يوتيوب أو صورة">
-                    <select id="docY"><option value="img">صورة</option><option value="vid">يوتيوب عادي</option><option value="shorts">يوتيوب شورتس</option></select>
+                    <select id="docY"><option value="img">صورة</option><option value="vid">يوتيوب عادي (عرضي)</option><option value="shorts">يوتيوب شورتس (طولي)</option></select>
                     <select id="docMode"><option value="closed">مقالة (بالضغط)</option><option value="open">مباشر (ريلز)</option></select>
                     <button onclick="saveItem('docTopics', {section:v('selectDocSec'), title:v('docT'), desc:v('docD'), media:v('docM'), type:v('docY'), mode:v('docMode')})" class="btn-gold">نشر</button>
                     <table class="admin-table"><tbody id="admDocTopicList"></tbody></table>
                 </div>
                 <div class="admin-box">
+                    <h3>١. إدارة الأقسام والمنتجات</h3>
+                    <table class="admin-table"><tbody id="admCatList"></tbody></table>
+                </div>
+                <div class="admin-box">
                     <h3>٤. طرق الدفع</h3>
-                    <input type="text" id="pMethod" placeholder="اسم الطريقة">
-                    <input type="text" id="pQR" placeholder="رابط الباركود">
-                    <button onclick="saveItem('payments', {name:v('pMethod'), qr:v('pQR')})" class="btn-gold">حفظ</button>
                     <table class="admin-table"><tbody id="admPayList"></tbody></table>
                 </div>
             </div>
         </div>
 
-        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر لتقديم أفضل الحلول المنزلية...</p></div></div>
-        <div id="contactPage" class="page"><div style="padding:60px 5%; text-align:center;"><h2>تواصل معنا</h2><p>07883002797</p></div></div>
         <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
         <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px;"><h2 id="pName" style="margin:15px 0;"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:20px;"><span id="pPrice"></span> د.ع / م</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="width:100%; margin-top:10px; background:transparent; border:2px solid var(--gold); color:var(--gold); padding:15px; border-radius:12px; font-weight:900;">إتمام الطلب الآن</button></div></div>
-        <div id="paymentPage" class="page"><div id="paymentList" style="padding: 40px 5%; max-width: 850px; margin: auto;"></div></div>
+        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2>من نحن</h2><p>قصة شبابيك للستائر...</p></div></div>
+        <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align:center;"><h2>تواصل معنا</h2><p>07883002797</p></div></div>
     </main>
 
     <div class="footer-cta">
@@ -227,21 +209,10 @@
             document.getElementById('prodCat').innerHTML = Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
         });
 
-        db.ref('products').on('value', snap => {
-            const data = snap.val() || {};
-            document.getElementById('admProdList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-        });
-
-        db.ref('payments').on('value', snap => {
-            const data = snap.val() || {};
-            document.getElementById('admPayList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-            document.getElementById('paymentList').innerHTML = Object.values(data).map(p => `<div style="text-align:center;margin-bottom:30px;"><h3>${p.name}</h3><img src="${p.qr}" style="width:250px;border-radius:20px;"></div>`).join('');
-        });
-
         // دكتور ديكور
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
-            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">${s.name}</div>`).join('');
+            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:25px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">${s.name}</div>`).join('');
             document.getElementById('selectDocSec').innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
             document.getElementById('admDocSecList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('docSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         });
@@ -254,8 +225,8 @@
                     let media = "";
                     if(v.type === 'vid' || v.type === 'shorts') {
                         const id = extractYoutubeId(v.media);
-                        const wrapClass = v.type === 'shorts' ? 'vid-frame-shorts' : 'vid-frame-wide';
-                        media = `<div class="${wrapClass}"><iframe class="auto-video" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&playlist=${id}&loop=1&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
+                        const wrap = v.type === 'shorts' ? 'vid-frame-shorts' : 'vid-frame-wide';
+                        media = `<div class="${wrap}"><iframe class="auto-video" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&playlist=${id}&loop=1&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
                     } else if(v.type === 'img') { media = `<img src="${v.media}" style="width:100%; border-radius:20px; margin-bottom:15px;">`; }
                     const isOpen = v.mode === 'open';
                     return `<div style="background:white; border-radius:25px; overflow:hidden; margin-bottom:20px; border:1px solid #eee; padding:20px;">
@@ -278,25 +249,26 @@
             document.querySelectorAll('.auto-video').forEach(v => obs.observe(v));
         }
 
-        // وظائف البحث والسلة
-        function handleSearch() {
-            const query = v('searchInput').toLowerCase();
-            const resBox = document.getElementById('searchRes');
-            if(query.length < 2) { resBox.style.display = 'none'; return; }
-            db.ref('products').once('value', snap => {
-                const data = snap.val() || {};
-                const found = Object.values(data).filter(p => p.name.toLowerCase().includes(query));
-                resBox.innerHTML = found.map(p => `<div onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none"' style="padding:15px; border-bottom:1px solid #eee; cursor:pointer;">${p.name}</div>`).join('') || '<p style="padding:15px;">لا توجد نتائج</p>';
-                resBox.style.display = 'block';
-            });
+        // نظام الطلبات
+        function toggleOrderForm() {
+            const f = document.getElementById('orderFinal');
+            const b = document.getElementById('mainOrderBtn');
+            if(f.style.display === 'none') { f.style.display = 'block'; b.innerText = "تأكيد وإرسال"; } else { sendOrder(); }
         }
 
-        function toggleCartModal() { const o = document.getElementById('cartOverlay'); o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; const list = document.getElementById('cartItemsList'); list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join(''); document.getElementById('orderFinalize').style.display='none'; }
-        function addToCart() { const h = v('hIn'); if(!h || h<=0) return; cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); document.getElementById('globalCartCount').innerText = cart.length; confetti({particleCount:150, spread:70, origin:{y:0.6}}); alert("تمت الإضافة!"); }
-        function toggleOrderForm() { const f = document.getElementById('orderFinal'); const b = document.getElementById('mainOrderBtn'); if(f.style.display === 'none') { f.style.display = 'block'; b.innerText = "تأكيد وإرسال"; } else { sendOrder(); } }
-        function sendOrder() { const city = v('uCity'), pay = v('uPay'); let msg = `طلب جديد من شبابيك\n📍 المحافظة: ${city}\n💰 الدفع: ${pay}\n📦 المنتجات:\n`; cart.forEach((i,x) => msg += `${x+1}- ${i.n}: ${i.p} د.ع\n`); window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`; }
+        function sendOrder() {
+            if(cart.length === 0) return;
+            const city = v('uCity'), pay = v('uPay');
+            let msg = `طلب جديد من شبابيك\n📍 المحافظة: ${city}\n💰 الدفع: ${pay}\n📦 المنتجات:\n`;
+            cart.forEach((i,x) => msg += `${x+1}- ${i.n}: ${i.p} د.ع\n`);
+            window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
+        }
+
         function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); document.getElementById('catTitle').innerText = n; document.getElementById('catGrid').innerHTML = items.map(x => `<div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%;height:250px;object-fit:cover;"><div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join(''); showPage('categoryView'); }); }
         function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('hIn').value = ""; showPage('productCalculator'); }
+        function addToCart() { const h = v('hIn'); if(!h || h<=0) return; cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); document.getElementById('globalCartCount').innerText = cart.length; confetti({particleCount:150, spread:70, origin:{y:0.6}}); alert("تمت الإضافة!"); }
+        function toggleCartModal() { const o = document.getElementById('cartOverlay'); o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; const list = document.getElementById('cartItemsList'); list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join(''); document.getElementById('orderFinal').style.display='none'; document.getElementById('mainOrderBtn').innerText="متابعة الطلب"; }
+        function handleSearch() { /* بحث بسيط */ }
     </script>
 </body>
 </html>
