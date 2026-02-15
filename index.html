@@ -28,31 +28,77 @@
         .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
 
+        .search-box { position: relative; width: 40px; height: 40px; transition: 0.4s; overflow: hidden; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; }
+        .search-box:hover, .search-box:focus-within { width: 180px; border-color: var(--gold); }
+        .search-box input { border: none; outline: none; background: transparent; padding: 10px; width: 140px; font-size: 0.9rem; }
+        .search-box i { padding: 10px; color: var(--brown); cursor: pointer; }
+
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
         .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        .nav-menu a:hover { color: var(--gold); }
 
         .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
         .active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+        .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; }
+        .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+
         .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
         .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
+        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; margin-bottom: 30px; }
         .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+        .btn-trans { background: transparent; color: white; border: 2px solid white; padding: 16px 35px; border-radius: 12px; font-weight: 900; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+
         .social-hero { display: flex; gap: 20px; }
         .social-hero a { color: var(--white); font-size: 1.8rem; transition: 0.4s; }
         .social-hero a:hover { color: var(--gold); transform: translateY(-8px) scale(1.2); }
 
         .features-section { background: var(--bg); padding: 50px 5%; text-align: center; }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 1200px; margin: auto; }
-        .f-card { background: white; padding: 25px 15px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
+        .f-card { background: white; padding: 25px 15px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: 0.3s; }
+        .f-card:hover { transform: translateY(-5px); border: 1px solid var(--gold); }
 
-        .vid-frame-wide { position: relative; padding-top: 56.25%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
-        .vid-frame-shorts { position: relative; padding-top: 177.7%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; width: 100%; max-width: 360px; margin-inline: auto; }
-        .vid-frame-shorts iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: scale(1.1); border: none; }
+        .stat-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+        .stat-card { background: #f4f1ed; padding: 25px; border-radius: 20px; text-align: center; }
+        .stat-num { font-size: 2.2rem; font-weight: 900; color: var(--gold); display: block; }
 
         .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
+        .footer-cta h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 10px; }
+        .btn-footer-wa { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; font-size: 0.9rem; }
+        .btn-footer-prod { background: var(--gold); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; font-size: 0.9rem; }
+
+        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 10px; overflow: hidden; font-size: 0.85rem; }
+        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
+
         footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
+        
+        .vid-frame-wide { position: relative; padding-top: 56.25%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; }
+        
+        /* تكبير الشورتس 90% */
+        .vid-frame-shorts { 
+            position: relative; 
+            padding-top: 177.7%; 
+            background: #000; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            margin-bottom: 15px; 
+            width: 100%; 
+            max-width: 400px; 
+            margin-inline: auto; 
+        }
+        .vid-frame-shorts iframe { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            transform: scale(1.1); /* تكبير إضافي لملء الإطار */
+            border: none; 
+        }
+
+        .auto-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -66,24 +112,42 @@
         <div style="font-weight:900; line-height:1; flex:1;">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
         <div class="logo-center" onclick="handleLogoClick()"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img"></div>
         <div class="header-left">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="ابحث.." onkeyup="handleSearch()"></div>
             <div class="cart-icon" onclick="toggleCartModal()"><i class="fas fa-shopping-basket"></i><span id="globalCartCount" class="cart-count">0</span></div>
         </div>
     </header>
+    
+    <div id="searchRes"></div>
 
     <div class="nav-bar">
         <ul class="nav-menu">
             <li><a onclick="showPage('homePage')">الرئيسية</a></li>
             <li><a onclick="showPage('doctorPage')">دكتور ديكور</a></li>
+            <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
             <li><a onclick="showPage('aboutPage')">من نحن</a></li>
             <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
         </ul>
+    </div>
+
+    <div id="cartOverlay">
+        <div class="cart-modal">
+            <h2 style="margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:10px; font-weight:900;">سلة المشتريات</h2>
+            <div id="cartItemsList"></div>
+            <div style="margin-top:30px;">
+                <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
+                <p onclick="toggleCartModal()" style="margin-top:20px; text-align:center; color:#999; cursor:pointer; font-weight:bold;">إغلاق</p>
+            </div>
+        </div>
     </div>
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold" style="margin-bottom:30px;">احسب سعر ستائرك الآن</button>
+                <div class="hero-btns">
+                    <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold">احسب سعر ستائرك الآن</button>
+                    <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
+                </div>
                 <div class="social-hero">
                     <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -93,12 +157,10 @@
                     <a href="https://www.snapchat.com/add/shababekcurtin" target="_blank"><i class="fab fa-snapchat"></i></a>
                 </div>
             </section>
-
             <section id="categories" style="padding: 40px 0;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
                 <div id="categoriesList" style="display:flex; overflow-x:auto; gap:20px; padding:20px 5%; scrollbar-width:none;"></div>
             </section>
-
             <section class="features-section">
                 <h2 style="margin-bottom:35px; font-weight:900;">لماذا شبابيك؟</h2>
                 <div class="features-grid">
@@ -113,58 +175,84 @@
         <div id="doctorPage" class="page">
             <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور 🩺</h2>
-                <div style="display:flex; gap:10px; margin-bottom:20px; justify-content:center;">
-                    <button onclick="filterDoc('open')" class="btn-gold" style="padding:10px 20px; font-size:0.9rem;">ريلز شبابيك</button>
-                    <button onclick="filterDoc('closed')" class="btn-gold" style="padding:10px 20px; font-size:0.9rem; background:var(--brown);">تعلم معنا</button>
+                <div id="docSectionsNav" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:30px;"></div>
+            </div>
+        </div>
+
+        <div id="docInsidePage" class="page"><div style="padding: 40px 5%; max-width: 600px; margin: auto;"><h2 id="currentDocTitle" style="text-align:center; margin-bottom:30px; color:var(--gold);"></h2><div id="docTopicsList"></div><button onclick="showPage('doctorPage')" class="btn-gold" style="width:100%; margin-top:20px; background:var(--brown);">العودة</button></div></div>
+
+        <div id="adminPanel" class="page">
+            <div style="padding: 40px 5%; max-width: 900px; margin: auto;">
+                <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">لوحة الإدارة السحابية</h2>
+                <div class="admin-box">
+                    <h3>١. إدارة الأقسام والمنتجات</h3>
+                    <input type="text" id="catName" placeholder="اسم القسم">
+                    <input type="text" id="catImg" placeholder="رابط صورة القسم">
+                    <button onclick="saveItem('categories', {name:v('catName'), img:v('catImg')})" class="btn-gold">حفظ القسم</button>
+                    <table class="admin-table"><tbody id="admCatList"></tbody></table>
+                    <hr style="margin:20px 0;">
+                    <select id="prodCat"></select>
+                    <input type="text" id="prodName" placeholder="اسم الموديل">
+                    <input type="number" id="prodPrice" placeholder="السعر">
+                    <input type="text" id="prodImg" placeholder="رابط الصورة">
+                    <button onclick="saveItem('products', {category:v('prodCat'), name:v('prodName'), price:v('prodPrice'), img:v('prodImg')})" class="btn-gold">نشر المنتج</button>
+                    <table class="admin-table"><tbody id="admProdList"></tbody></table>
                 </div>
-                <div id="docSectionsNav" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;"></div>
-            </div>
-        </div>
-
-        <div id="contactPage" class="page">
-            <div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;">
-                <h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2>
-                <div><i class="fa-solid fa-phone"></i> 07883002797</div>
-                <div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div>
-                <a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a>
-            </div>
-        </div>
-
-        <div id="aboutPage" class="page">
-            <div style="padding: 60px 5%; max-width: 1100px; margin: auto;">
-                <h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2>
-                <p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة...</p>
-                <div style="display:flex; gap:15px; margin-top:30px; justify-content:center;">
-                    <div style="background:#f4f1ed; padding:25px; border-radius:20px; text-align:center; flex:1;"><span style="font-size:2.2rem; font-weight:900; color:var(--gold);">500+</span><p>عميل سعيد</p></div>
-                    <div style="background:#f4f1ed; padding:25px; border-radius:20px; text-align:center; flex:1;"><span style="font-size:2.2rem; font-weight:900; color:var(--gold);">50+</span><p>تصميم حصري</p></div>
+                <div class="admin-box" style="border:2px solid var(--gold);">
+                    <h3>⭐ إدارة دكتور ديكور</h3>
+                    <input type="text" id="newDocSec" placeholder="اسم القسم الفرعي">
+                    <button onclick="saveItem('docSections', {name:v('newDocSec')})" class="btn-gold">إضافة قسم</button>
+                    <table class="admin-table"><tbody id="admDocSecList"></tbody></table>
+                    <hr>
+                    <select id="selectDocSec"></select>
+                    <input type="text" id="docT" placeholder="العنوان">
+                    <textarea id="docD" placeholder="الشرح"></textarea>
+                    <input type="text" id="docM" placeholder="رابط يوتيوب أو صورة">
+                    <select id="docY"><option value="img">صورة</option><option value="vid">يوتيوب عادي</option><option value="shorts">يوتيوب شورتس</option></select>
+                    <select id="docMode"><option value="closed">مقالة (بالضغط)</option><option value="open">مباشر (ريلز)</option></select>
+                    <button onclick="saveItem('docTopics', {section:v('selectDocSec'), title:v('docT'), desc:v('docD'), media:v('docM'), type:v('docY'), mode:v('docMode')})" class="btn-gold">نشر</button>
+                    <table class="admin-table"><tbody id="admDocTopicList"></tbody></table>
+                </div>
+                <div class="admin-box">
+                    <h3>٤. طرق الدفع</h3>
+                    <input type="text" id="pMethod" placeholder="اسم الطريقة">
+                    <input type="text" id="pQR" placeholder="رابط الباركود">
+                    <button onclick="saveItem('payments', {name:v('pMethod'), qr:v('pQR')})" class="btn-gold">حفظ</button>
+                    <table class="admin-table"><tbody id="admPayList"></tbody></table>
                 </div>
             </div>
         </div>
 
-        <div id="docInsidePage" class="page"><div style="padding: 20px 5%; max-width: 600px; margin: auto;"><h2 id="currentDocTitle" style="text-align:center; margin-bottom:20px; color:var(--gold);"></h2><div id="docTopicsList"></div><button onclick="showPage('doctorPage')" class="btn-gold" style="width:100%; margin-top:20px; background:var(--brown);">العودة</button></div></div>
+        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة...</p></div></div>
+        <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;"><h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2><div><i class="fa-solid fa-phone"></i> 07883002797</div><div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a></div></div>
         <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
+        <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button></div></div>
     </main>
 
     <div class="footer-cta">
         <h2>جاهز لتجديد ستائر منزلك؟</h2>
-        <div style="display:flex; justify-content:center; gap:10px; margin-top:15px;">
-            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a onclick="showPage('homePage')" class="btn-footer-prod" style="cursor:pointer;">تصفح المنتجات</a>
+        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
+            <a href="https://wa.me/9647883002797" class="wa-link" style="color:white; border:1px solid white; padding:10px 20px; border-radius:8px; text-decoration:none;">تواصل عبر واتساب</a>
+            <a onclick="showPage('homePage')" class="btn-footer-prod" style="cursor:pointer; background:var(--gold); color:white; padding:10px 20px; border-radius:8px;">تصفح المنتجات</a>
         </div>
     </div>
-    <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
+    <footer>شبابيك © 2026 - جميع الحقوق محفوظة</footer>
 
     <script>
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        let globalDocTopics = {};
+        let cur = null, cart = [], adminClicks = 0;
 
+        function v(id) { return document.getElementById(id).value; }
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             window.scrollTo(0,0);
         }
+        function handleLogoClick() { adminClicks++; if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } else { showPage('homePage'); } }
+        function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => alert("تم بنجاح!")); }
+        function deleteItem(ref, key) { if(confirm("حذف؟")) db.ref(ref).child(key).remove(); }
 
         function extractYoutubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
@@ -174,44 +262,48 @@
 
         db.ref('categories').on('value', snap => {
             const cats = snap.val() || {};
-            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div onclick="openCat('${c.name}')" style="flex:0 0 250px; height:350px; position:relative; overflow:hidden; border-radius:20px; cursor:pointer;"><img src="${c.img}" style="width:100%; height:100%; object-fit:cover;"><div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:12px; font-weight:900;">${c.name}</div></div>`).join('');
+            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div onclick="openCat('${c.name}')" class="stat-card" style="flex:0 0 250px;height:350px;position:relative;padding:0;overflow:hidden;cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
+            document.getElementById('admCatList').innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+            document.getElementById('prodCat').innerHTML = Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
+        });
+
+        db.ref('products').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admProdList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+        });
+
+        db.ref('payments').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admPayList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         });
 
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
-            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown); color:white; padding:20px; border-radius:15px; text-align:center; cursor:pointer; font-weight:900;">${s.name}</div>`).join('');
+            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" class="doc-list-btn">${s.name}</div>`).join('');
+            document.getElementById('selectDocSec').innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
+            document.getElementById('admDocSecList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('docSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         });
-
-        db.ref('docTopics').on('value', snap => { globalDocTopics = snap.val() || {}; });
 
         function openDocInside(secName) {
             document.getElementById('currentDocTitle').innerText = secName;
-            renderDocList(secName, 'open');
-            showPage('docInsidePage');
-        }
-
-        function filterDoc(mode) {
-            const secName = document.getElementById('currentDocTitle').innerText;
-            renderDocList(secName, mode);
-        }
-
-        function renderDocList(secName, mode) {
-            const topics = Object.entries(globalDocTopics).filter(([k,v]) => v.section === secName && v.mode === mode);
-            document.getElementById('docTopicsList').innerHTML = topics.map(([k,v]) => {
-                let media = "";
-                const id = extractYoutubeId(v.media);
-                if(v.type === 'shorts') {
-                    media = `<div class="vid-frame-shorts"><iframe class="auto-video" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&playlist=${id}&loop=1&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
-                } else if(v.type === 'vid') {
-                    media = `<div class="vid-frame-wide"><iframe src="https://www.youtube.com/embed/${id}?controls=1" frameborder="0" allowfullscreen></iframe></div>`;
-                } else { media = `<img src="${v.media}" style="width:100%; border-radius:20px; margin-bottom:15px;">`; }
-                const isDirect = mode === 'open';
-                return `<div style="background:white; border-radius:25px; overflow:hidden; margin-bottom:20px; border:1px solid #eee; padding:20px;">
-                    <h3 onclick="${isDirect ? '' : "this.nextElementSibling.style.display='block'"}" style="cursor:pointer; color:var(--brown); font-weight:900;">${v.title}</h3>
-                    <div style="display:${isDirect ? 'block' : 'none'}; margin-top:15px;">${media}<p>${v.desc}</p></div>
-                </div>`;
-            }).join('') || '<p style="text-align:center; padding:20px;">قريباً..</p>';
-            if(mode === 'open') initObserver();
+            db.ref('docTopics').on('value', snap => {
+                const topics = Object.entries(snap.val() || {}).filter(([k,v]) => v.section === secName);
+                document.getElementById('docTopicsList').innerHTML = topics.map(([k,v]) => {
+                    let media = "";
+                    if(v.type === 'vid' || v.type === 'shorts') {
+                        const id = extractYoutubeId(v.media);
+                        const wrap = v.type === 'shorts' ? 'vid-frame-shorts' : 'vid-frame-wide';
+                        media = `<div class="${wrap}"><iframe class="auto-video" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&playlist=${id}&loop=1&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
+                    } else if(v.type === 'img') { media = `<img src="${v.media}" style="width:100%; border-radius:20px; margin-bottom:15px;">`; }
+                    const isOpen = v.mode === 'open';
+                    return `<div style="background:white; border-radius:25px; overflow:hidden; margin-bottom:20px; border:1px solid #eee; padding:20px;">
+                        <h3 onclick="${isOpen ? '' : "this.nextElementSibling.style.display='block'"}" style="cursor:pointer; color:var(--brown); font-weight:900;">${v.title}</h3>
+                        <div style="display:${isOpen ? 'block' : 'none'}; margin-top:15px;">${media}<p>${v.desc}</p></div>
+                    </div>`;
+                }).join('');
+                initObserver();
+                showPage('docInsidePage');
+            });
         }
 
         function initObserver() {
@@ -224,9 +316,12 @@
             document.querySelectorAll('.auto-video').forEach(v => obs.observe(v));
         }
 
-        function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); document.getElementById('catTitle').innerText = n; document.getElementById('catGrid').innerHTML = items.map(x => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);"><img src="${x.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:20px; text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold); font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join(''); showPage('categoryView'); }); }
-        function handleLogoClick() { /* تحكم */ }
-        function toggleCartModal() { /* سلة */ }
+        function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); document.getElementById('catTitle').innerText = n; document.getElementById('catGrid').innerHTML = items.map(x => `<div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%;height:250px;object-fit:cover;"><div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join(''); showPage('categoryView'); }); }
+        function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('hIn').value = ""; showPage('productCalculator'); }
+        function addToCart() { const h = v('hIn'); if(!h || h<=0) return; cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); document.getElementById('globalCartCount').innerText = cart.length; confetti({particleCount:150, spread:70, origin:{y:0.6}}); alert("تمت الإضافة!"); }
+        function toggleCartModal() { const o = document.getElementById('cartOverlay'); o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; const list = document.getElementById('cartItemsList'); list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join(''); }
+        function sendOrder() { let msg = "طلب جديد:\n"; cart.forEach((i,x) => msg += `${x+1}- ${i.n}: ${i.p}\n`); window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`; }
+        function handleSearch() { /* بحث بسيط */ }
     </script>
 </body>
 </html>
