@@ -28,7 +28,7 @@
         .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
 
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
         .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.3s; }
         .nav-menu a:hover { color: var(--gold); }
@@ -37,32 +37,41 @@
         .active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* ستايل دكتور ديكور المطور */
-        .doc-cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; padding: 20px; }
-        .doc-btn { background: var(--brown); color: white; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; font-weight: 900; transition: 0.3s; }
-        .doc-btn:hover { background: var(--gold); transform: translateY(-5px); }
+        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
+        .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
+        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; margin-bottom: 30px; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+        .btn-trans { background: transparent; color: white; border: 2px solid white; padding: 16px 35px; border-radius: 12px; font-weight: 900; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+
+        .social-hero { display: flex; gap: 20px; }
+        .social-hero a { color: var(--white); font-size: 1.8rem; transition: 0.4s; }
+        .social-hero a:hover { color: var(--gold); transform: translateY(-8px) scale(1.2); }
+
+        .features-section { background: var(--bg); padding: 50px 5%; text-align: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 1200px; margin: auto; }
+        .f-card { background: white; padding: 25px 15px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: 0.3s; }
+        .f-card:hover { transform: translateY(-5px); border: 1px solid var(--gold); }
+
+        .stat-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+        .stat-card { background: #f4f1ed; padding: 25px; border-radius: 20px; text-align: center; }
+        .stat-num { font-size: 2.2rem; font-weight: 900; color: var(--gold); display: block; }
+
+        /* استعادة ستايل الفوتر الأصلي */
+        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
+        .footer-cta h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 10px; }
+        .btn-footer-wa { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; font-size: 0.9rem; }
+        .btn-footer-prod { background: var(--gold); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; font-size: 0.9rem; }
+        footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
+
         .reel-box { background: white; border-radius: 25px; overflow: hidden; margin-bottom: 30px; border: 1px solid #eee; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
         .heart-icon { font-size: 1.8rem; color: #ccc; cursor: pointer; transition: 0.3s; }
         .heart-icon.active { color: var(--red); transform: scale(1.2); }
 
-        /* الأقسام تفاعلية */
-        .stat-card { background: #f4f1ed; padding: 25px; border-radius: 20px; text-align: center; transition: 0.3s; }
-        .stat-num { font-size: 2.2rem; font-weight: 900; color: var(--gold); display: block; }
-        
-        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
-        .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; }
-        
-        .features-section { background: var(--bg); padding: 50px 5%; text-align: center; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 1200px; margin: auto; }
-        .f-card { background: white; padding: 25px 15px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
-
         .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; font-size: 0.85rem; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 10px; overflow: hidden; font-size: 0.85rem; }
+        .admin-table th { background: #eee; padding: 10px; }
         .admin-table td { padding: 10px; border-bottom: 1px solid #eee; }
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
-        
-        footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
         
         #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; }
@@ -95,17 +104,17 @@
         <div id="homePage" class="page active">
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <div class="hero-btns" style="display: flex; gap: 15px; margin-bottom: 20px;">
+                <div class="hero-btns">
                     <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold">احسب سعر ستائرك الآن</button>
-                    <a href="https://wa.me/9647883002797" class="btn-trans" style="border:2px solid white; color:white; padding:15px; border-radius:12px; text-decoration:none;">استشارة مجانية</a>
+                    <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
                 </div>
-                <div class="social-hero" style="display:flex; gap:20px; font-size:1.8rem;">
-                    <a href="#" style="color:white;"><i class="fab fa-facebook"></i></a>
-                    <a href="#" style="color:white;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="color:white;"><i class="fab fa-tiktok"></i></a>
-                    <a href="#" style="color:white;"><i class="fab fa-youtube"></i></a>
-                    <a href="#" style="color:white;"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" style="color:white;"><i class="fab fa-snapchat"></i></a>
+                <div class="social-hero">
+                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en-IQ" target="_blank"><i class="fab fa-snapchat"></i></a>
                 </div>
             </section>
 
@@ -117,17 +126,18 @@
             <section class="features-section">
                 <h2 style="margin-bottom:35px; font-weight:900;">لماذا شبابيك؟</h2>
                 <div class="features-grid">
-                    <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:2.2rem;"></i><h3>ضمان حقيقي</h3></div>
-                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:2.2rem;"></i><h3>قياس منزلي</h3></div>
-                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:2.2rem;"></i><h3>تفصيل دقيق</h3></div>
+                    <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ضمان حقيقي</h3><p>أرقى الأقمشة بضمان رسمي.</p></div>
+                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>قياس منزلي</h3><p>نصلكم للقياس مجاناً.</p></div>
+                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>تفصيل دقيق</h3><p>خياطة احترافية حسب الطلب.</p></div>
+                    <div class="f-card"><i class="fa-solid fa-palette" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ذوق رفيع</h3><p>أحدث الموديلات العصرية.</p></div>
                 </div>
             </section>
         </div>
 
         <div id="doctorPage" class="page">
-            <div style="padding: 40px 5%; max-width: 1000px; margin: auto;">
+            <div style="padding: 40px 5%;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور 🩺</h2>
-                <div id="docSectionsNav" class="doc-cat-grid"></div>
+                <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px;"></div>
             </div>
         </div>
 
@@ -141,43 +151,61 @@
 
         <div id="adminPanel" class="page">
             <div style="padding: 40px 5%; max-width: 900px; margin: auto;">
-                <h2 style="text-align:center; font-weight:900; margin-bottom:40px;">لوحة الإدارة السحابية (8496)</h2>
+                <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">لوحة الإدارة السحابية</h2>
                 
                 <div class="admin-box">
                     <h3>١. إدارة الأقسام والمنتجات</h3>
-                    <input type="text" id="catName" placeholder="اسم القسم الرئيسي">
+                    <input type="text" id="catName" placeholder="اسم القسم">
                     <input type="text" id="catImg" placeholder="رابط صورة القسم">
                     <button onclick="saveItem('categories', {name:v('catName'), img:v('catImg')})" class="btn-gold">حفظ القسم</button>
                     <table class="admin-table"><tbody id="admCatList"></tbody></table>
+                    <hr style="margin:20px 0;">
+                    <select id="prodCat"></select>
+                    <input type="text" id="prodName" placeholder="اسم الموديل">
+                    <input type="number" id="prodPrice" placeholder="السعر">
+                    <input type="text" id="prodImg" placeholder="رابط الصورة">
+                    <button onclick="saveItem('products', {category:v('prodCat'), name:v('prodName'), price:v('prodPrice'), img:v('prodImg')})" class="btn-gold">نشر المنتج</button>
+                    <table class="admin-table"><tbody id="admProdList"></tbody></table>
                 </div>
 
                 <div class="admin-box" style="border: 2px solid var(--gold);">
-                    <h3 style="color:var(--gold);">⭐ إدارة دكتور ديكور</h3>
+                    <h3>⭐ إدارة دكتور ديكور</h3>
                     <input type="text" id="newDocSec" placeholder="اسم القسم (ميمز، نصائح..)">
                     <button onclick="saveItem('docSections', {name:v('newDocSec')})" class="btn-gold">إضافة قسم</button>
-                    <table class="admin-table"><tbody id="admDocSecTable"></tbody></table>
-                    
+                    <table class="admin-table"><tbody id="admDocSecList"></tbody></table>
                     <hr style="margin:20px 0;">
-                    <select id="selectDocSec"><option disabled selected>اختر القسم للموضوع</option></select>
+                    <select id="selectDocSec"></select>
                     <input type="text" id="docT" placeholder="العنوان">
                     <textarea id="docD" placeholder="الوصف"></textarea>
                     <input type="text" id="docM" placeholder="رابط يوتيوب أو صورة">
-                    <select id="docY"><option value="img">صورة</option><option value="vid">فيديو</option></select>
-                    <button onclick="saveItem('docTopics', {section:v('selectDocSec'), title:v('docT'), desc:v('docD'), media:v('docM'), type:v('docY'), likes:0})" class="btn-gold" style="background:var(--brown);">نشر</button>
+                    <select id="docY"><option value="img">صورة</option><option value="vid">فيديو ريلز</option></select>
+                    <button onclick="saveItem('docTopics', {section:v('selectDocSec'), title:v('docT'), desc:v('docD'), media:v('docM'), type:v('docY'), likes:0})" class="btn-gold">نشر</button>
+                    <table class="admin-table"><tbody id="admDocTopicList"></tbody></table>
+                </div>
+
+                <div class="admin-box">
+                    <h3>٤. طرق الدفع</h3>
+                    <input type="text" id="pMethod" placeholder="اسم الطريقة">
+                    <input type="text" id="pQR" placeholder="رابط الباركود">
+                    <button onclick="saveItem('payments', {name:v('pMethod'), qr:v('pQR')})" class="btn-gold">حفظ</button>
+                    <table class="admin-table"><tbody id="admPayList"></tbody></table>
                 </div>
             </div>
         </div>
 
         <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto; text-align:center;"><h2>شبابيك للستائر</h2><p>تأسست شبابيك لتقديم أفخم الحلول المنزلية...</p><div class="stat-grid" style="display:flex; gap:15px; justify-content:center;"><div class="stat-card"><span class="stat-num">500+</span><b>عميل سعيد</b></div></div></div></div>
         <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align:center; background:var(--bg); margin:40px 5%; border-radius:40px;"><h2>تواصل معنا</h2><p>07883002797</p><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">واتساب مباشر</a></div></div>
-        <div id="paymentPage" class="page"><div id="paymentList" style="padding: 40px 5%; max-width: 850px; margin: auto;"></div></div>
+        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0;"></h2><div id="catGrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:25px; padding:0 5%;"></div></div>
     </main>
 
     <div class="footer-cta">
         <h2>جاهز لتجديد ستائر منزلك؟</h2>
-        <a href="https://wa.me/9647883002797" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; border-radius:8px; display:inline-block; margin-top:15px;">واتساب مباشر</a>
+        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
+            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
+            <a href="#categories" onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView()" class="btn-footer-prod">تصفح المنتجات</a>
+        </div>
     </div>
-    <footer>شبابيك © 2026 - جميع الحقوق محفوظة</footer>
+    <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
 
     <script>
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
@@ -186,9 +214,15 @@
         let adminClicks = 0;
 
         function v(id) { return document.getElementById(id).value; }
-        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+        function showPage(id, push = true) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
+            if(push) history.pushState({pageId: id}, null, "");
+        }
+        window.onpopstate = e => showPage(e.state ? e.state.pageId : 'homePage', false);
         function handleLogoClick() { adminClicks++; if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } else { showPage('homePage'); } }
-        function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => alert("تم الحفظ بنجاح!")); }
+        function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => alert("تم بنجاح!")); }
 
         function extractYoutubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
@@ -196,12 +230,12 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // مزامنة دكتور ديكور مع التكرار والاطفاء عند التمرير
+        // مزامنة دكتور ديكور
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
-            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" class="doc-btn">${s.name}</div>`).join('');
+            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">${s.name}</div>`).join('');
             document.getElementById('selectDocSec').innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
-            document.getElementById('admDocSecTable').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="db.ref('docSections').child('${k}').remove()" style="color:red;">حذف</button></td></tr>`).join('');
+            document.getElementById('admDocSecList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="db.ref('docSections').child('${k}').remove()" style="color:red;">حذف</button></td></tr>`).join('');
         });
 
         function openDocInside(secName) {
@@ -212,38 +246,58 @@
                     let media = "";
                     if(v.type === 'vid') {
                         const id = extractYoutubeId(v.media);
-                        media = `<div style="position:relative;padding-top:177%;background:#000;border-radius:20px;overflow:hidden;margin-bottom:15px;"><iframe class="auto-video" style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${id}&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
+                        media = `<div style="position:relative;padding-top:177%;background:#000;border-radius:20px;overflow:hidden;margin-bottom:15px;"><iframe class="auto-video" style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&playlist=${id}&loop=1&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
                     } else if(v.type === 'img') {
                         media = `<img src="${v.media}" style="width:100%;border-radius:20px;margin-bottom:15px;">`;
                     }
-                    return `<div class="reel-box"><div style="padding:20px;">${media}<h3>${v.title}</h3><i class="fas fa-heart heart-icon" onclick="this.classList.toggle('active');db.ref('docTopics/${k}').child('likes').transaction(l=>(l||0)+1)"></i> <span>${v.likes || 0}</span><p>${v.desc}</p></div></div>`;
+                    return `<div class="reel-box"><div style="padding:20px;">${media}<h3>${v.title}</h3><div style="display:flex;gap:15px;align-items:center;"><i class="fas fa-heart heart-icon" onclick="this.classList.toggle('active');db.ref('docTopics/${k}/likes').transaction(l=>(l||0)+1)"></i> <span>${v.likes || 0}</span></div><p style="margin-top:10px;font-size:0.9rem;">${v.desc}</p></div></div>`;
                 }).join('');
-                initAutoStop(); // تفعيل ميزة الإيقاف عند التمرير
+                initAutoScroll();
                 showPage('docInsidePage');
             });
         }
 
-        function initAutoStop() {
+        function initAutoScroll() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const iframe = entry.target;
-                    if (entry.isIntersecting) {
-                        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                    } else {
-                        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                    if (iframe.contentWindow) {
+                        if (entry.isIntersecting) {
+                            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                        } else {
+                            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                        }
                     }
                 });
-            }, { threshold: 0.5 });
+            }, { threshold: 0.6 });
             document.querySelectorAll('.auto-video').forEach(vid => observer.observe(vid));
         }
 
-        // المزامنة الأصلية للأقسام
+        // المزامنة الشاملة (الأقسام، المنتجات، الدفع)
         db.ref('categories').on('value', snap => {
             const cats = snap.val() || {};
             document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div onclick="openCat('${c.name}')" class="stat-card" style="flex:0 0 250px;height:350px;position:relative;padding:0;overflow:hidden;cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
-            document.getElementById('admCatList').innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="db.ref('categories').child('${k}').remove()">حذف</button></td></tr>`).join('');
+            document.getElementById('admCatList').innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="db.ref('categories').child('${k}').remove()" style="color:red;border:none;background:none;cursor:pointer;">حذف</button></td></tr>`).join('');
+            document.getElementById('prodCat').innerHTML = Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
         });
 
+        db.ref('products').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admProdList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="db.ref('products').child('${k}').remove()" style="color:red;border:none;background:none;cursor:pointer;">حذف</button></td></tr>`).join('');
+        });
+
+        db.ref('payments').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admPayList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="db.ref('payments').child('${k}').remove()" style="color:red;border:none;background:none;cursor:pointer;">حذف</button></td></tr>`).join('');
+            document.getElementById('paymentList').innerHTML = Object.values(data).map(p => `<div style="text-align:center;margin-bottom:30px;"><h3>${p.name}</h3><img src="${p.qr}" style="width:250px;border-radius:20px;"></div>`).join('');
+        });
+
+        db.ref('docTopics').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admDocTopicList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.title}</td><td><button onclick="db.ref('docTopics').child('${k}').remove()" style="color:red;border:none;background:none;cursor:pointer;">حذف</button></td></tr>`).join('');
+        });
+
+        function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); document.getElementById('catTitle').innerText = n; document.getElementById('catGrid').innerHTML = items.map(x => `<div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 15px rgba(0,0,0,0.05);"><img src="${x.img}" style="width:100%;height:250px;object-fit:cover;"><div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join(''); showPage('categoryView'); }); }
         function toggleCartModal() { const o = document.getElementById('cartOverlay'); o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; }
     </script>
 </body>
