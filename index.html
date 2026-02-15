@@ -203,11 +203,7 @@
             </div>
         </div>
 
-        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.
-
-نقدم مجموعة واسعة من الستائر تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية. كما نوفر خدمة التفصيل حسب المقاسات وخدمة التركيب المنزلي بأيدي فنيين متخصصين.
-
-رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق، ونسعى دائماً لتحقيق رضا عملائنا من خلال الجودة العالية والأسعار المنافسة والخدمة المتميزة....</p><div class="stat-grid"><div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div><div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div><div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div></div></div></div>
+        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة. رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق...</p><div class="stat-grid"><div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div><div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div><div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div></div></div></div>
         <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;"><h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2><div><i class="fa-solid fa-phone"></i> 07883002797</div><div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a></div></div>
         <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
         <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button></div></div>
@@ -231,8 +227,15 @@
         const db = firebase.database();
         let cur = null, cart = [], adminClicks = 0;
 
+        // إعداد الأصوات
+        const clickSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+        const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+        const sendSound = new Audio('https://assets.mixkit.co/active_storage/sfx/1360/1360-preview.mp3');
+        clickSound.volume = 0.2; successSound.volume = 0.3; sendSound.volume = 0.3;
+
         function v(id) { return document.getElementById(id).value; }
         function showPage(id, push = true) {
+            clickSound.play();
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             window.scrollTo(0,0);
@@ -248,21 +251,19 @@
             } else { showPage('homePage'); }
         }
 
-        function fireConfetti() {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d9b382', '#3d2e24', '#ffffff'] });
-        }
-
         function addToCart() {
             const h = document.getElementById('hIn').value;
             if(!h || h <= 0) return alert("يرجى إدخال الطول المطلوب");
+            successSound.play();
             const total = Math.round(h * cur.price).toLocaleString();
             cart.push({n: cur.name, p: total});
             document.getElementById('globalCartCount').innerText = cart.length;
-            fireConfetti();
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d9b382', '#3d2e24'] });
             alert("تمت الإضافة بنجاح!");
         }
 
         function toggleCartModal() {
+            clickSound.play();
             const overlay = document.getElementById('cartOverlay');
             overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
             const list = document.getElementById('cartItemsList');
@@ -272,21 +273,19 @@
 
         function sendOrder() {
             if(cart.length === 0) return alert("السلة فارغة");
+            sendSound.play();
             let msg = "طلب جديد من شبابيك للستائر:\n\n";
             cart.forEach((i, index) => msg += `${index+1}- ${i.n}: ${i.p} د.ع\n`);
             window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
         }
 
         function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => { alert("تم الحفظ!"); location.reload(); }); }
-        
         function deleteItem(ref, key) { if(confirm("حذف هذا العنصر؟")) db.ref(ref).child(key).remove(); }
-        
         function editItem(ref, key, currentVal) {
             const newVal = prompt("تعديل الاسم/العنوان:", currentVal);
             if(newVal) db.ref(ref).child(key).update({ name: newVal, title: newVal });
         }
 
-        // دالة استخراج ID يوتيوب
         function extractYoutubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
             const match = url.match(regExp);
@@ -298,13 +297,7 @@
                 const data = snap.val() || {};
                 const list = document.getElementById(listId);
                 list.innerHTML = Object.entries(data).map(([key, val]) => `
-                    <tr>
-                        <td>${val.name || val.title}</td>
-                        <td style="white-space:nowrap;">
-                            <button class="btn-edit" onclick="editItem('${ref}', '${key}', '${val.name || val.title}')">تعديل</button>
-                            <button class="btn-del" onclick="deleteItem('${ref}', '${key}')">حذف</button>
-                        </td>
-                    </tr>`).join('');
+                    <tr><td>${val.name || val.title}</td><td style="white-space:nowrap;"><button class="btn-edit" onclick="editItem('${ref}', '${key}', '${val.name || val.title}')">تعديل</button><button class="btn-del" onclick="deleteItem('${ref}', '${key}')">حذف</button></td></tr>`).join('');
             });
         }
 
@@ -320,33 +313,4 @@
             if(cats) {
                 grid.innerHTML = Object.values(cats).map(c => `
                     <div onclick="openCat('${c.name}')" class="stat-card" style="flex:0 0 250px; height:350px; position:relative; padding:0; overflow:hidden; cursor:pointer;">
-                        <img src="${c.img}" style="width:100%; height:100%; object-fit:cover;">
-                        <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:12px; font-weight:900;">${c.name}</div>
-                    </div>`).join('');
-                select.innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
-            }
-        });
-
-        function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); renderGrid('ستائر ' + n, items); }); }
-        function renderGrid(t, i) { document.getElementById('catTitle').innerText = t; document.getElementById('catGrid').innerHTML = i.map(x => `<div style="background:white; border-radius:20px; overflow:hidden; box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%; height:250px; object-fit:cover;"><div style="padding:22px; text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold); font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع / م</p></div></div>`).join(''); showPage('categoryView'); }
-        function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('hIn').value = ""; showPage('productCalculator'); }
-
-        // التعديل هنا لعرض فيديوهات يوتيوب
-        db.ref('doctor').on('value', snap => {
-            const d = snap.val();
-            document.getElementById('doctorContent').innerHTML = d ? Object.values(d).map(i => {
-                let mediaTag = "";
-                if(i.type === 'vid') {
-                    const videoId = extractYoutubeId(i.media);
-                    mediaTag = `<div style="position:relative; padding-top:177.77%; background:#000; border-radius:20px; overflow:hidden;"><iframe style="position:absolute; top:0; left:0; width:100%; height:100%;" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
-                } else {
-                    mediaTag = `<img src="${i.media}" style="width:100%; border-radius:20px;">`;
-                }
-                return `<div class="stat-card" style="margin-bottom:30px; text-align:right; padding:25px; background:white; border:1px solid #eee;">${mediaTag}<h3>${i.title}</h3><p>${i.desc}</p></div>`;
-            }).join('') : '';
-        });
-
-        db.ref('payments').on('value', snap => { const p = snap.val(); document.getElementById('paymentList').innerHTML = p ? Object.values(p).map(i => `<div class="stat-card" style="margin-bottom:20px; text-align:center; background:white; border:1px solid #eee;"><h3>${i.name}</h3><img src="${i.qr}" style="width:250px; margin-top:15px; border-radius:20px;"></div>`).join('') : ''; });
-    </script>
-</body>
-</html>
+                        <img src
