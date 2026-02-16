@@ -392,5 +392,77 @@
             });
         }
     </script>
+    // ==========================================
+// قسم الرفع المباشر لصور شبابيك (ImgBB)
+// ==========================================
+
+const IMGBB_KEY = "8c910c592194477f91663705e636a65c";
+
+// دالة الرفع الأساسية
+async function uploadImg(file) {
+    if(!file) return "";
+    let formData = new FormData();
+    formData.append("image", file);
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, { 
+        method: "POST", 
+        body: formData 
+    });
+    const data = await res.json();
+    return data.data.url;
+}
+
+// دالة حفظ الأقسام المصلحة
+async function publishCat() {
+    const fileInput = document.getElementById('admCatFile');
+    const nameInput = document.getElementById('admCatName'); 
+    
+    if(!fileInput.files[0] || !nameInput.value) {
+        return alert("يرجى كتابة اسم القسم واختيار صورة");
+    }
+
+    alert("جاري رفع صورة القسم... يرجى الانتظار");
+
+    try {
+        const imageUrl = await uploadImg(fileInput.files[0]);
+        db.ref('categories').push({
+            name: nameInput.value,
+            img: imageUrl
+        }).then(() => {
+            alert("تم حفظ القسم بنجاح!");
+            location.reload();
+        });
+    } catch (error) {
+        alert("خطأ في الاتصال، حاول مرة أخرى");
+    }
+}
+
+// دالة حفظ المنتجات المصلحة (لكي تعمل بنفس الطريقة)
+async function publishProd() {
+    const fileInput = document.getElementById('admProdFile');
+    const nameInput = document.getElementById('admProdName');
+    const priceInput = document.getElementById('admProdPrice');
+    const catSelect = document.getElementById('admProdCatSelect');
+
+    if(!fileInput.files[0] || !nameInput.value || !priceInput.value) {
+        return alert("يرجى إكمال بيانات المنتج واختيار الصورة");
+    }
+
+    alert("جاري رفع صورة المنتج...");
+
+    try {
+        const imageUrl = await uploadImg(fileInput.files[0]);
+        db.ref('products').push({
+            category: catSelect.value,
+            name: nameInput.value,
+            price: priceInput.value,
+            img: imageUrl
+        }).then(() => {
+            alert("تم نشر المنتج بنجاح!");
+            location.reload();
+        });
+    } catch (error) {
+        alert("فشل رفع صورة المنتج");
+    }
+}
 </body>
 </html>
