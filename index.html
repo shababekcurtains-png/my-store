@@ -28,7 +28,6 @@
         .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
         
-        /* ستايل خانة البحث */
         .search-box { position: relative; width: 40px; height: 40px; transition: 0.4s; overflow: hidden; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; }
         .search-box:hover, .search-box:focus-within { width: 180px; border-color: var(--gold); }
         .search-box input { border: none; outline: none; background: transparent; padding: 10px; width: 140px; font-size: 0.9rem; }
@@ -44,7 +43,7 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
-        .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; }
+        .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; max-height: 90vh; overflow-y: auto; }
         .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
 
         .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
@@ -82,7 +81,6 @@
         .reel-container { position: relative; padding-top: 177.7%; background: #000; border-radius: 20px; overflow: hidden; }
         .reel-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         
-        /* نتائج البحث */
         #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; }
     </style>
 </head>
@@ -124,7 +122,39 @@
         <div class="cart-modal">
             <h2 style="margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:10px; font-weight:900;">سلة المشتريات</h2>
             <div id="cartItemsList"></div>
-            <div style="margin-top:30px;">
+            
+            <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
+                <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
+                <select id="userCity">
+                    <option value="بغداد">بغداد</option>
+                    <option value="البصرة">البصرة</option>
+                    <option value="نينوى">نينوى</option>
+                    <option value="أربيل">أربيل</option>
+                    <option value="النجف">النجف</option>
+                    <option value="كربلاء">كربلاء</option>
+                    <option value="بابل">بابل</option>
+                    <option value="الأنبار">الأنبار</option>
+                    <option value="ذي قار">ذي قار</option>
+                    <option value="ديالى">ديالى</option>
+                    <option value="ميسان">ميسان</option>
+                    <option value="واسط">واسط</option>
+                    <option value="المثنى">المثنى</option>
+                    <option value="كركوك">كركوك</option>
+                    <option value="صلاح الدين">صلاح الدين</option>
+                    <option value="دهوك">دهوك</option>
+                    <option value="السليمانية">السليمانية</option>
+                    <option value="القادسية">القادسية</option>
+                </select>
+                
+                <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
+                <select id="userPayment">
+                    <option value="نقد عند الاستلام">نقد عند الاستلام</option>
+                    <option value="زين كاش">زين كاش</option>
+                    <option value="كي كارد">كي كارد / فيزا</option>
+                </select>
+            </div>
+
+            <div style="margin-top:20px;">
                 <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
                 <p onclick="toggleCartModal()" style="margin-top:20px; text-align:center; color:#999; cursor:pointer; font-weight:bold;">إغلاق</p>
             </div>
@@ -276,7 +306,6 @@
                 let html = '<h3 style="padding:10px; font-weight:900; border-bottom:1px solid #eee;">نتائج البحث</h3><div style="max-height:400px; overflow-y:auto;">';
                 let found = false;
 
-                // بحث في المنتجات
                 Object.values(data.products || {}).forEach(p => {
                     if(p.name.toLowerCase().includes(query)) {
                         html += `<div onclick='openCalc(${JSON.stringify(p)}); hideSearch()' style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; display:flex; gap:10px; align-items:center;">
@@ -300,7 +329,7 @@
             const total = Math.round(h * cur.price).toLocaleString();
             cart.push({n: cur.name, p: total});
             document.getElementById('globalCartCount').innerText = cart.length;
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d9b382', '#3d2e24'] });
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d9b382', '#3d2e24', '#ffffff'] });
             alert("تمت الإضافة بنجاح!");
         }
 
@@ -312,21 +341,64 @@
             if(cart.length === 0) list.innerHTML = "<p style='text-align:center; padding:20px; opacity:0.5;'>السلة فارغة حالياً</p>";
         }
 
+        // --- دالة إرسال الطلب المحدثة ---
         function sendOrder() {
             if(cart.length === 0) return alert("السلة فارغة");
-            let msg = "طلب جديد من شبابيك للستائر:\n\n";
+            
+            const city = document.getElementById('userCity').value;
+            const pay = document.getElementById('userPayment').value;
+            
+            let msg = `طلب جديد من شبابيك للستائر 🪟\n\n`;
+            msg += `📍 المحافظة: ${city}\n`;
+            msg += `💰 طريقة الدفع: ${pay}\n\n`;
+            msg += `📦 المنتجات:\n`;
+            
             cart.forEach((i, index) => msg += `${index+1}- ${i.n}: ${i.p} د.ع\n`);
+            
+            // فتح واتساب
             window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
+            
+            // تصفير السلة والاحتفال بعد العودة (أو مباشرة)
+            setTimeout(() => {
+                cart = [];
+                document.getElementById('globalCartCount').innerText = "0";
+                toggleCartModal();
+                // احتفالية كبرى
+                confetti({
+                    particleCount: 200,
+                    spread: 100,
+                    origin: { y: 0.5 },
+                    colors: ['#d9b382', '#3d2e24', '#ffffff']
+                });
+                alert("شكراً لك! تم إرسال طلبك بنجاح وسيتم التواصل معك قريباً.");
+            }, 1000);
         }
 
         function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => { alert("تم الحفظ بنجاح!"); }); }
         function deleteItem(ref, key) { if(confirm("حذف؟")) db.ref(ref).child(key).remove(); }
 
-        // دكتور ديكور: جلب الأقسام
+        function extractYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        db.ref('categories').on('value', snap => {
+            const cats = snap.val() || {};
+            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div onclick="openCat('${c.name}')" class="stat-card" style="flex:0 0 250px;height:350px;position:relative;padding:0;overflow:hidden;cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
+            document.getElementById('admCatList').innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+            document.getElementById('prodCat').innerHTML = Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
+        });
+
+        db.ref('products').on('value', snap => {
+            const data = snap.val() || {};
+            document.getElementById('admProdList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+        });
+
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
             document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" class="doc-list-btn">${s.name}</div>`).join('');
-            document.getElementById('selectDocSec').innerHTML = '<option disabled selected>اختر القسم للموضوع</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
+            document.getElementById('selectDocSec').innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
             document.getElementById('admDocSecList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('docSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         });
 
@@ -342,7 +414,6 @@
                     } else if(v.type === 'img') {
                         media = `<img src="${v.media}" style="width:100%; border-radius:20px; margin-bottom:15px;">`;
                     }
-                    
                     const isDirect = v.mode === 'open';
                     return `<div style="background:white; border-radius:25px; overflow:hidden; margin-bottom:20px; border:1px solid #eee; padding:20px;">
                         <h3 onclick="${isDirect ? '' : "this.nextElementSibling.style.display='block'"}" style="cursor:pointer; color:var(--brown);">${v.title}</h3>
@@ -365,30 +436,6 @@
             }, { threshold: 0.6 });
             document.querySelectorAll('.auto-video').forEach(v => obs.observe(v));
         }
-
-        // المنتجات والأقسام
-        db.ref('categories').on('value', snap => {
-            const cats = snap.val() || {};
-            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div onclick="openCat('${c.name}')" class="stat-card" style="flex:0 0 250px;height:350px;position:relative;padding:0;overflow:hidden;cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
-            document.getElementById('admCatList').innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-            document.getElementById('prodCat').innerHTML = Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
-        });
-
-        db.ref('products').on('value', snap => {
-            const data = snap.val() || {};
-            document.getElementById('admProdList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-        });
-
-        db.ref('payments').on('value', snap => {
-            const data = snap.val() || {};
-            document.getElementById('admPayList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-            document.getElementById('paymentList').innerHTML = Object.values(data).map(p => `<div style="text-align:center;margin-bottom:30px;"><h3>${p.name}</h3><img src="${p.qr}" style="width:250px;border-radius:20px;"></div>`).join('');
-        });
-
-        db.ref('docTopics').on('value', snap => {
-            const data = snap.val() || {};
-            document.getElementById('admDocTopicList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.title}</td><td><button onclick="deleteItem('docTopics','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-        });
 
         function openCat(n) { db.ref('products').once('value', snap => { 
             const items = Object.values(snap.val() || {}).filter(i => i.category === n);
