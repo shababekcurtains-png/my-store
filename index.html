@@ -294,17 +294,38 @@
             document.getElementById('admListProds').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red; font-weight:bold; border:none; background:none;">حذف</button></td></tr>`).join('');
         });
 
+      // مزامنة أقسام دكتور ديكور وتعبئة قوائم الاختيار في لوحة التحكم
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
-            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">${s.name}</div>`).join('');
-            document.getElementById('admListDocSecs').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('docSections','${k}')" style="color:red; font-weight:bold; border:none; background:none;">حذف</button></td></tr>`).join('');
             
-            // السطر الجوهري لتفعيل النشر:
-            document.getElementById('admDocTopicSec').innerHTML = '<option disabled selected>اختر قسم دكتور ديكور</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
+            // تحديث الأقسام في صفحة دكتور ديكور (المظهر البني)
+            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `
+                <div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">
+                    ${s.name}
+                </div>`).join('');
+            
+            // تحديث جدول حذف الأقسام في لوحة التحكم
+            document.getElementById('admListDocSecs').innerHTML = Object.entries(data).map(([k,v]) => `
+                <tr>
+                    <td>${v.name}</td>
+                    <td><button onclick="deleteItem('docSections','${k}')" style="color:red; font-weight:bold; border:none; background:none; cursor:pointer;">حذف</button></td>
+                </tr>`).join('');
+            
+            // تعبئة القائمة المنسدلة (الدروب داون) لكي تظهر الأقسام وتستطيع نشر المواضيع
+            document.getElementById('admDocTopicSec').innerHTML = '<option disabled selected>اختر قسم دكتور ديكور</option>' + 
+                Object.values(data).map(s => `<option value="${s.name}">${s.name}</option>`).join('');
         });
+
+        // مزامنة مواضيع دكتور ديكور (المقالات والريلز) لجدول الحذف
         db.ref('docTopics').on('value', snap => {
             globalDocTopics = snap.val() || {};
-            document.getElementById('admListDocTopics').innerHTML = Object.entries(globalDocTopics).map(([k,v]) => `<tr><td>${v.title}</td><td><button onclick="deleteItem('docTopics','${k}')" style="color:red; font-weight:bold; border:none; background:none;">حذف</button></td></tr>`).join('');
+            
+            // تحديث جدول حذف المواضيع في لوحة التحكم
+            document.getElementById('admListDocTopics').innerHTML = Object.entries(globalDocTopics).map(([k,v]) => `
+                <tr>
+                    <td>${v.title}</td>
+                    <td><button onclick="deleteItem('docTopics','${k}')" style="color:red; font-weight:bold; border:none; background:none; cursor:pointer;">حذف</button></td>
+                </tr>`).join('');
         });
 
         db.ref('payments').on('value', snap => {
