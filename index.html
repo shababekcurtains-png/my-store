@@ -198,8 +198,9 @@
                 <div class="admin-box">
                     <h3>١. إدارة الأقسام</h3>
                     <input type="text" id="admCatName" placeholder="اسم القسم">
-                    <input type="file" id="admCatFile" accept="image/*">
-                    <button onclick="saveItem('categories', {name:v('admCatName'), img:v('admCatImg')})" class="btn-gold">حفظ</button>
+                   <input type="file" id="admCatFile" accept="image/*" style="margin: 10px 0; width: 100%;">
+<button onclick="publishCat()" class="btn-gold">حفظ القسم</button>
+
                     <table class="admin-table"><tbody id="admListCats"></tbody></table>
                 </div>
                 <div class="admin-box">
@@ -408,9 +409,9 @@ async function uploadImg(file) {
     });
     const data = await res.json();
     return data.data.url;
-}
+} // إغلاق دالة uploadImg بالسطر 411
 
-// دالة حفظ الأقسام المصلحة
+// دالة حفظ الأقسام المصلحة (تعمل بالرفع المباشر)
 async function publishCat() {
     const fileInput = document.getElementById('admCatFile');
     const nameInput = document.getElementById('admCatName'); 
@@ -423,6 +424,7 @@ async function publishCat() {
 
     try {
         const imageUrl = await uploadImg(fileInput.files[0]);
+        // الحفظ في قاعدة بيانات Firebase
         db.ref('categories').push({
             name: nameInput.value,
             img: imageUrl
@@ -431,7 +433,37 @@ async function publishCat() {
             location.reload();
         });
     } catch (error) {
-        alert("خطأ في الاتصال، حاول مرة أخرى");
+        console.error(error);
+        alert("حدث خطأ في الاتصال، حاول مرة أخرى");
+    }
+}
+
+// دالة حفظ المنتجات المصلحة (للمرحلة القادمة)
+async function publishProd() {
+    const fileInput = document.getElementById('admProdFile');
+    const nameInput = document.getElementById('admProdName');
+    const priceInput = document.getElementById('admProdPrice');
+    const catSelect = document.getElementById('admProdCatSelect');
+
+    if(!fileInput.files[0] || !nameInput.value || !priceInput.value) {
+        return alert("يرجى إكمال بيانات المنتج واختيار الصورة");
+    }
+
+    alert("جاري رفع صورة المنتج...");
+
+    try {
+        const imageUrl = await uploadImg(fileInput.files[0]);
+        db.ref('products').push({
+            category: catSelect.value,
+            name: nameInput.value,
+            price: priceInput.value,
+            img: imageUrl
+        }).then(() => {
+            alert("تم نشر المنتج بنجاح!");
+            location.reload();
+        });
+    } catch (error) {
+        alert("فشل رفع صورة المنتج");
     }
 }
 
