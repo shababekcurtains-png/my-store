@@ -28,6 +28,7 @@
         .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
         
+        /* ستايل خانة البحث */
         .search-box { position: relative; width: 40px; height: 40px; transition: 0.4s; overflow: hidden; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; }
         .search-box:hover, .search-box:focus-within { width: 180px; border-color: var(--gold); }
         .search-box input { border: none; outline: none; background: transparent; padding: 10px; width: 140px; font-size: 0.9rem; }
@@ -43,7 +44,7 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
-        .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; }
         .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
 
         .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
@@ -79,9 +80,12 @@
         
         .doc-list-btn { background: white; padding: 20px; border-radius: 15px; margin-bottom: 10px; cursor: pointer; border: 1px solid #eee; font-weight: 700; transition: 0.3s; }
         .reel-container { position: relative; padding-top: 177.7%; background: #000; border-radius: 20px; overflow: hidden; }
-        .reel-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .vid-frame-wide { position: relative; padding-top: 56.25%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; width: 100%; }
+        .auto-video, .vid-frame-wide iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
         #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; }
+        .btn-del { color: var(--red); cursor: pointer; font-weight: bold; border: none; background: none; }
+        .btn-edit { color: #2196F3; cursor: pointer; font-weight: bold; border: none; background: none; margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -126,31 +130,11 @@
             <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
                 <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
                 <select id="userCity">
-                    <option value="بغداد">بغداد</option>
-                    <option value="البصرة">البصرة</option>
-                    <option value="نينوى">نينوى</option>
-                    <option value="أربيل">أربيل</option>
-                    <option value="النجف">النجف</option>
-                    <option value="كربلاء">كربلاء</option>
-                    <option value="بابل">بابل</option>
-                    <option value="الأنبار">الأنبار</option>
-                    <option value="ذي قار">ذي قار</option>
-                    <option value="ديالى">ديالى</option>
-                    <option value="ميسان">ميسان</option>
-                    <option value="واسط">واسط</option>
-                    <option value="المثنى">المثنى</option>
-                    <option value="كركوك">كركوك</option>
-                    <option value="صلاح الدين">صلاح الدين</option>
-                    <option value="دهوك">دهوك</option>
-                    <option value="السليمانية">السليمانية</option>
-                    <option value="القادسية">القادسية</option>
+                    <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="المثنى">المثنى</option><option value="كركوك">كركوك</option><option value="صلاح الدين">صلاح الدين</option><option value="دهوك">دهوك</option><option value="السليمانية">السليمانية</option><option value="القادسية">القادسية</option>
                 </select>
-                
                 <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
                 <select id="userPayment">
-                    <option value="نقد عند الاستلام">نقد عند الاستلام</option>
-                    <option value="زين كاش">زين كاش</option>
-                    <option value="كي كارد">كي كارد / فيزا</option>
+                    <option value="نقد عند الاستلام">نقد عند الاستلام</option><option value="زين كاش">زين كاش</option><option value="كي كارد">كي كارد / فيزا</option>
                 </select>
             </div>
 
@@ -215,50 +199,47 @@
                     <h3>١. إدارة الأقسام</h3>
                     <input type="text" id="catName" placeholder="اسم القسم">
                     <input type="text" id="catImg" placeholder="رابط صورة القسم">
-                    <button onclick="saveItem('categories', {name:v('catName'), img:v('catImg')})" class="btn-gold" style="width:100%;">حفظ القسم</button>
-                    <table class="admin-table"><thead><tr><th>الاسم</th><th>إجراء</th></tr></thead><tbody id="admCatList"></tbody></table>
+                    <button onclick="saveItem('categories', {name:v('catName'), img:v('catImg')})" class="btn-gold">حفظ</button>
+                    <table class="admin-table"><tbody id="admCatList"></tbody></table>
                 </div>
-
                 <div class="admin-box">
                     <h3>٢. إدارة المنتجات</h3>
-                    <select id="prodCat"><option disabled selected>اختر القسم</option></select>
+                    <select id="prodCat"></select>
                     <input type="text" id="prodName" placeholder="اسم الموديل">
                     <input type="number" id="prodPrice" placeholder="السعر">
                     <input type="text" id="prodImg" placeholder="رابط الصورة">
-                    <button onclick="saveItem('products', {category:v('prodCat'), name:v('prodName'), price:v('prodPrice'), img:v('prodImg')})" style="background:var(--brown); color:white; width:100%; padding:12px; border-radius:10px;">نشر المنتج</button>
-                    <table class="admin-table"><thead><tr><th>المنتج</th><th>إجراء</th></tr></thead><tbody id="admProdList"></tbody></table>
+                    <button onclick="saveItem('products', {category:v('prodCat'), name:v('prodName'), price:v('prodPrice'), img:v('prodImg')})" class="btn-gold">نشر</button>
+                    <table class="admin-table"><tbody id="admProdList"></tbody></table>
                 </div>
-
-                <div class="admin-box" style="border:2px solid var(--gold);">
-                    <h3>⭐ إدارة دكتور ديكور</h3>
+                <div class="admin-box">
+                    <h3>٣. إدارة دكتور ديكور</h3>
                     <input type="text" id="newDocSec" placeholder="اسم القسم الفرعي">
                     <button onclick="saveItem('docSections', {name:v('newDocSec')})" class="btn-gold">إضافة قسم</button>
                     <table class="admin-table"><tbody id="admDocSecList"></tbody></table>
                     <hr>
                     <select id="selectDocSec"></select>
-                    <input type="text" id="docT" placeholder="عنوان المقال">
+                    <input type="text" id="docT" placeholder="العنوان">
                     <textarea id="docD" placeholder="الشرح"></textarea>
-                    <input type="text" id="docM" placeholder="رابط ميديا (يوتيوب/صورة)">
-                    <select id="docY"><option value="img">صورة</option><option value="vid">فيديو (يوتيوب/ريلز)</option></select>
-                    <select id="docMode"><option value="closed">مقالة (فتح عند الضغط)</option><option value="open">مباشر (للسكرول والريلز)</option></select>
+                    <input type="text" id="docM" placeholder="رابط ميديا">
+                    <select id="docY"><option value="img">صورة</option><option value="vid">يوتيوب عادي</option><option value="shorts">يوتيوب شورتس</option></select>
+                    <select id="docMode"><option value="closed">مقالة (بالضغط)</option><option value="open">مباشر (سكرول)</option></select>
                     <button onclick="saveItem('docTopics', {section:v('selectDocSec'), title:v('docT'), desc:v('docD'), media:v('docM'), type:v('docY'), mode:v('docMode')})" class="btn-gold">نشر</button>
                     <table class="admin-table"><tbody id="admDocTopicList"></tbody></table>
                 </div>
-
                 <div class="admin-box">
-                    <h3>٤. إدارة طرق الدفع</h3>
+                    <h3>٤. طرق الدفع</h3>
                     <input type="text" id="pMethod" placeholder="اسم الطريقة">
                     <input type="text" id="pQR" placeholder="رابط الباركود">
-                    <button onclick="saveItem('payments', {name:v('pMethod'), qr:v('pQR')})" style="background:var(--whatsapp); color:white; width:100%; padding:12px; border-radius:10px;">حفظ الطريقة</button>
-                    <table class="admin-table"><thead><tr><th>الطريقة</th><th>إجراء</th></tr></thead><tbody id="admPayList"></tbody></table>
+                    <button onclick="saveItem('payments', {name:v('pMethod'), qr:v('pQR')})" class="btn-gold">حفظ</button>
+                    <table class="admin-table"><tbody id="admPayList"></tbody></table>
                 </div>
             </div>
         </div>
 
-        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة. نقدم مجموعة واسعة من الستائر تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية. كما نوفر خدمة التفصيل حسب المقاسات وخدمة التركيب المنزلي بأيدي فنيين متخصصين. رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق، ونسعى دائماً لتحقيق رضا عملائنا من خلال الجودة العالية والأسعار المنافسة والخدمة المتميزة....</p><div class="stat-grid"><div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div><div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div><div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div></div></div></div>
+        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة...</p><div class="stat-grid"><div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div><div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div><div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div></div></div></div>
         <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;"><h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2><div><i class="fa-solid fa-phone"></i> 07883002797</div><div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a></div></div>
         <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
-        <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button></div></div>
+        <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px; font-weight:900;">إتمام الطلب الآن</button></div></div>
         <div id="paymentPage" class="page"><div id="paymentList" style="padding: 40px 5%; max-width: 850px; margin: auto;"></div></div>
     </main>
 
@@ -266,7 +247,7 @@
         <h2>جاهز لتجديد ستائر منزلك؟</h2>
         <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
             <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a href="#categories" onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView()" class="btn-footer-prod">تصفح المنتجات</a>
+            <a onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView()" class="btn-footer-prod">تصفح المنتجات</a>
         </div>
     </div>
 
@@ -286,96 +267,11 @@
             if(push) history.pushState({pageId: id}, null, "");
         }
         window.onpopstate = e => showPage(e.state ? e.state.pageId : 'homePage', false);
-
-        function handleLogoClick() {
-            adminClicks++;
-            if(adminClicks >= 5) {
-                if(prompt("رمز الإدارة:") === "8496") showPage('adminPanel');
-                adminClicks = 0;
-            } else { showPage('homePage'); }
-        }
-
-        // --- نظام البحث المطور ---
-        function handleSearch() {
-            const query = v('searchInput').toLowerCase();
-            const resBox = document.getElementById('searchRes');
-            if(query.length < 2) { resBox.style.display = 'none'; return; }
-            
-            db.ref().once('value', snap => {
-                const data = snap.val();
-                let html = '<h3 style="padding:10px; font-weight:900; border-bottom:1px solid #eee;">نتائج البحث</h3><div style="max-height:400px; overflow-y:auto;">';
-                let found = false;
-
-                Object.values(data.products || {}).forEach(p => {
-                    if(p.name.toLowerCase().includes(query)) {
-                        html += `<div onclick='openCalc(${JSON.stringify(p)}); hideSearch()' style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; display:flex; gap:10px; align-items:center;">
-                            <img src="${p.img}" style="width:50px; height:50px; object-fit:cover; border-radius:10px;">
-                            <div><b>${p.name}</b><br><span style="color:var(--gold); font-size:0.8rem;">${p.price} د.ع</span></div>
-                        </div>`;
-                        found = true;
-                    }
-                });
-                
-                html += '</div><button onclick="hideSearch()" style="width:100%; padding:10px; border:none; background:var(--brown); color:white; border-radius:0 0 20px 20px;">إغلاق البحث</button>';
-                resBox.innerHTML = found ? html : '<p style="padding:20px; text-align:center;">لا توجد نتائج</p>';
-                resBox.style.display = 'block';
-            });
-        }
-        function hideSearch() { document.getElementById('searchRes').style.display = 'none'; document.getElementById('searchInput').value = ''; }
-
-        function addToCart() {
-            const h = document.getElementById('hIn').value;
-            if(!h || h <= 0) return alert("يرجى إدخال الطول المطلوب");
-            const total = Math.round(h * cur.price).toLocaleString();
-            cart.push({n: cur.name, p: total});
-            document.getElementById('globalCartCount').innerText = cart.length;
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d9b382', '#3d2e24', '#ffffff'] });
-            alert("تمت الإضافة بنجاح!");
-        }
-
-        function toggleCartModal() {
-            const overlay = document.getElementById('cartOverlay');
-            overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
-            const list = document.getElementById('cartItemsList');
-            list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join('');
-            if(cart.length === 0) list.innerHTML = "<p style='text-align:center; padding:20px; opacity:0.5;'>السلة فارغة حالياً</p>";
-        }
-
-        // --- دالة إرسال الطلب المحدثة ---
-        function sendOrder() {
-            if(cart.length === 0) return alert("السلة فارغة");
-            
-            const city = document.getElementById('userCity').value;
-            const pay = document.getElementById('userPayment').value;
-            
-            let msg = `طلب جديد من شبابيك للستائر 🪟\n\n`;
-            msg += `📍 المحافظة: ${city}\n`;
-            msg += `💰 طريقة الدفع: ${pay}\n\n`;
-            msg += `📦 المنتجات:\n`;
-            
-            cart.forEach((i, index) => msg += `${index+1}- ${i.n}: ${i.p} د.ع\n`);
-            
-            // فتح واتساب
-            window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
-            
-            // تصفير السلة والاحتفال بعد العودة (أو مباشرة)
-            setTimeout(() => {
-                cart = [];
-                document.getElementById('globalCartCount').innerText = "0";
-                toggleCartModal();
-                // احتفالية كبرى
-                confetti({
-                    particleCount: 200,
-                    spread: 100,
-                    origin: { y: 0.5 },
-                    colors: ['#d9b382', '#3d2e24', '#ffffff']
-                });
-                alert("شكراً لك! تم إرسال طلبك بنجاح وسيتم التواصل معك قريباً.");
-            }, 1000);
-        }
-
-        function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => { alert("تم الحفظ بنجاح!"); }); }
-        function deleteItem(ref, key) { if(confirm("حذف؟")) db.ref(ref).child(key).remove(); }
+        function handleLogoClick() { adminClicks++; if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } else { showPage('homePage'); } }
+        
+        function saveItem(ref, obj) { db.ref(ref).push(obj).then(() => { alert("تم الحفظ بنجاح!"); location.reload(); }); }
+        function deleteItem(ref, key) { if(confirm("هل متأكد من الحذف؟")) db.ref(ref).child(key).remove(); }
+        function editItem(ref, key, currentVal) { const newVal = prompt("تعديل الاسم/القيمة:", currentVal); if(newVal) db.ref(ref).child(key).update({ name: newVal, title: newVal, price: newVal }); }
 
         function extractYoutubeId(url) {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
@@ -383,23 +279,43 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
+        // مزامنة لوحة التحكم والبيانات
+        function syncPanel(ref, listId) {
+            db.ref(ref).on('value', snap => {
+                const data = snap.val() || {};
+                const list = document.getElementById(listId);
+                list.innerHTML = Object.entries(data).map(([key, val]) => `
+                    <tr>
+                        <td>${val.name || val.title}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editItem('${ref}', '${key}', '${val.name || val.title || val.price}')">تعديل</button>
+                            <button class="btn-del" onclick="deleteItem('${ref}', '${key}')">حذف</button>
+                        </td>
+                    </tr>`).join('');
+            });
+        }
+        syncPanel('categories', 'admCatList');
+        syncPanel('products', 'admProdList');
+        syncPanel('docSections', 'admDocSecList');
+        syncPanel('docTopics', 'admDocTopicList');
+        syncPanel('payments', 'admPayList');
+
+        // جلب الأقسام والمنتجات
         db.ref('categories').on('value', snap => {
             const cats = snap.val() || {};
-            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div onclick="openCat('${c.name}')" class="stat-card" style="flex:0 0 250px;height:350px;position:relative;padding:0;overflow:hidden;cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
-            document.getElementById('admCatList').innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-            document.getElementById('prodCat').innerHTML = Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
+            const grid = document.getElementById('categoriesList');
+            const select = document.getElementById('prodCat');
+            const docSelect = document.getElementById('selectDocSec');
+            grid.innerHTML = Object.values(cats).map(c => `
+                <div onclick="openCat('${c.name}')" style="flex:0 0 250px;height:350px;position:relative;border-radius:20px;overflow:hidden;cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
+            const options = '<option disabled selected>اختر القسم</option>' + Object.values(cats).map(c => `<option>${c.name}</option>`).join('');
+            select.innerHTML = options; docSelect.innerHTML = options;
         });
 
-        db.ref('products').on('value', snap => {
-            const data = snap.val() || {};
-            document.getElementById('admProdList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-        });
-
+        // دكتور ديكور
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
             document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" class="doc-list-btn">${s.name}</div>`).join('');
-            document.getElementById('selectDocSec').innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
-            document.getElementById('admDocSecList').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('docSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         });
 
         function openDocInside(secName) {
@@ -408,16 +324,15 @@
                 const topics = Object.entries(snap.val() || {}).filter(([k,v]) => v.section === secName);
                 document.getElementById('docTopicsList').innerHTML = topics.map(([k,v]) => {
                     let media = "";
-                    if(v.type === 'vid') {
+                    if(v.type === 'vid' || v.type === 'shorts') {
                         const id = extractYoutubeId(v.media);
-                        media = `<div class="reel-container"><iframe class="auto-video" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&playlist=${id}&loop=1&controls=0" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
-                    } else if(v.type === 'img') {
-                        media = `<img src="${v.media}" style="width:100%; border-radius:20px; margin-bottom:15px;">`;
-                    }
+                        const wrap = v.type === 'shorts' ? 'reel-container' : 'vid-frame-wide';
+                        media = `<div class="${wrap}"><iframe class="auto-video" src="https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=1&mute=1&playlist=${id}&loop=1&controls=1" frameborder="0" allow="autoplay; encrypted-media"></iframe></div>`;
+                    } else if(v.type === 'img') { media = `<img src="${v.media}" style="width:100%; border-radius:20px; margin-bottom:15px;">`; }
                     const isDirect = v.mode === 'open';
                     return `<div style="background:white; border-radius:25px; overflow:hidden; margin-bottom:20px; border:1px solid #eee; padding:20px;">
-                        <h3 onclick="${isDirect ? '' : "this.nextElementSibling.style.display='block'"}" style="cursor:pointer; color:var(--brown);">${v.title}</h3>
-                        <div style="display:${isDirect ? 'block' : 'none'}; margin-top:15px;">${media}<p style="margin-top:15px; font-size:0.9rem;">${v.desc}</p></div>
+                        <h3 onclick="${isDirect ? '' : "this.nextElementSibling.style.display='block'"}" style="cursor:pointer; color:var(--brown); font-weight:900;">${v.title}</h3>
+                        <div style="display:${isDirect ? 'block' : 'none'}; margin-top:15px;">${media}<p>${v.desc}</p></div>
                     </div>`;
                 }).join('');
                 initObserver();
@@ -429,22 +344,26 @@
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const iframe = entry.target;
-                    if(iframe.contentWindow) {
-                        iframe.contentWindow.postMessage(`{"event":"command","func":"${entry.isIntersecting ? 'playVideo' : 'pauseVideo'}","args":""}`, '*');
-                    }
+                    if(iframe.contentWindow) iframe.contentWindow.postMessage(`{"event":"command","func":"${entry.isIntersecting ? 'playVideo' : 'pauseVideo'}","args":""}`, '*');
                 });
             }, { threshold: 0.6 });
             document.querySelectorAll('.auto-video').forEach(v => obs.observe(v));
         }
 
-        function openCat(n) { db.ref('products').once('value', snap => { 
-            const items = Object.values(snap.val() || {}).filter(i => i.category === n);
-            document.getElementById('catTitle').innerText = n;
-            document.getElementById('catGrid').innerHTML = items.map(x => `<div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%;height:250px;object-fit:cover;"><div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join('');
-            showPage('categoryView');
-        }); }
-
+        // السلة والطلب
+        function toggleCartModal() { const o = document.getElementById('cartOverlay'); o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; const list = document.getElementById('cartItemsList'); list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join(''); }
+        function addToCart() { const h = v('hIn'); if(!h || h<=0) return; cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); document.getElementById('globalCartCount').innerText = cart.length; confetti({particleCount:150, spread:70, origin:{y:0.6}}); alert("تمت الإضافة!"); }
+        function sendOrder() {
+            if(cart.length === 0) return;
+            const city = v('userCity'), pay = v('userPayment');
+            let msg = `طلب جديد من شبابيك 🪟\n📍 المحافظة: ${city}\n💰 الدفع: ${pay}\n📦 المنتجات:\n`;
+            cart.forEach((i, x) => msg += `${x+1}- ${i.n}: ${i.p} د.ع\n`);
+            window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
+            setTimeout(() => { cart = []; document.getElementById('globalCartCount').innerText = "0"; toggleCartModal(); confetti({particleCount:200, spread:100, origin:{y:0.5}}); }, 1000);
+        }
+        function openCat(n) { db.ref('products').once('value', snap => { const items = Object.values(snap.val() || {}).filter(i => i.category === n); document.getElementById('catTitle').innerText = n; document.getElementById('catGrid').innerHTML = items.map(x => `<div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'><img src="${x.img}" style="width:100%;height:250px;object-fit:cover;"><div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join(''); showPage('categoryView'); }); }
         function openCalc(p) { cur = p; document.getElementById('pName').innerText = p.name; document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); document.getElementById('pImg').src = p.img; document.getElementById('hIn').value = ""; showPage('productCalculator'); }
+        function handleSearch() { /* بحث بسيط */ }
     </script>
 </body>
 </html>
