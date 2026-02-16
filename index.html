@@ -100,6 +100,37 @@
     word-wrap: break-word;
     font-size: 0.8rem;
 }
+   /* تنسيق ذكي: شبكة للمتصفح وتمرير للهاتف */
+#categoriesList {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 أقسام في السطر للمتصفح */
+    gap: 20px;
+    padding: 20px 5%;
+}
+
+@media (max-width: 768px) {
+    #categoriesList {
+        display: flex; /* العودة لنظام الصف للهاتف */
+        grid-template-columns: none;
+        overflow-x: auto; /* تفعيل التمرير الجانبي */
+        gap: 15px;
+        padding: 20px;
+        scrollbar-width: none;
+    }
+    #categoriesList div {
+        flex: 0 0 250px; /* عرض ثابت لكل قسم ليسمح بالتمرير */
+    }
+}
+
+/* تنسيق الكارت ليكون أنيقاً */
+.cat-card-new {
+    position: relative;
+    height: 350px;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
     </style>
 </head>
 <body>
@@ -300,7 +331,14 @@
         // مزامنة لوحة التحكم (تم فصل اختيار الأقسام بدقة)
         db.ref('categories').on('value', snap => {
             const cats = snap.val() || {};
-            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `<div onclick="openCat('${c.name}')" style="flex:0 0 250px;height:350px;position:relative;border-radius:20px;overflow:hidden;cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
+            document.getElementById('categoriesList').innerHTML = Object.values(cats).map(c => `
+    <div class="cat-card-new" onclick="openCat('${c.name}')">
+        <img src="${c.img}" style="width:100%; height:100%; object-fit:cover;">
+        <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:12px; font-weight:900; white-space:nowrap;">
+            ${c.name}
+        </div>
+    </div>
+`).join('');
             document.getElementById('admListCats').innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red; font-weight:bold; border:none; background:none;">حذف</button></td></tr>`).join('');
             document.getElementById('admProdCatSelect').innerHTML = '<option disabled selected>اختر قسم المنتجات</option>' + Object.values(cats).map(s => `<option>${s.name}</option>`).join('');
         });
