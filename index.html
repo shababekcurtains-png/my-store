@@ -204,7 +204,7 @@
                 </div>
                 <div class="admin-box">
                     <h3>٢. إدارة المنتجات</h3>
-                   <select id="selectDocTopicSec"></select>
+                   <select id="admProdCatSelect"></select>
                     <input type="text" id="admProdName" placeholder="اسم الموديل">
                     <input type="number" id="admProdPrice" placeholder="السعر">
                     <input type="text" id="admProdImg" placeholder="رابط الصورة">
@@ -295,7 +295,30 @@
         });
 
       // مزامنة أقسام دكتور ديكور وتعبئة قوائم الاختيار في لوحة التحكم
+        // مزامنة أقسام دكتور ديكور وتعبئة قوائم الاختيار في لوحة التحكم
         db.ref('docSections').on('value', snap => {
+            const data = snap.val() || {};
+            
+            // تحديث الأقسام في صفحة دكتور ديكور (المظهر البني)
+            document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `
+                <div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">
+                    ${s.name}
+                </div>`).join('');
+            
+            // تحديث جدول حذف الأقسام في لوحة التحكم
+            document.getElementById('admListDocSecs').innerHTML = Object.entries(data).map(([k,v]) => `
+                <tr>
+                    <td>${v.name}</td>
+                    <td><button onclick="deleteItem('docSections','${k}')" style="color:red; font-weight:bold; border:none; background:none; cursor:pointer;">حذف</button></td>
+                </tr>`).join('');
+            
+            // الإصلاح: تعبئة القائمة المنسدلة باستخدام المعرف الفريد
+            const docTopicSelect = document.getElementById('selectDocTopicSec');
+            if(docTopicSelect) {
+                docTopicSelect.innerHTML = '<option disabled selected>اختر قسم دكتور ديكور</option>' + 
+                Object.values(data).map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+            }
+        });('value', snap => {
             const data = snap.val() || {};
             
             // تحديث الأقسام في صفحة دكتور ديكور (المظهر البني)
