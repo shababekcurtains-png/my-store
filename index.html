@@ -307,7 +307,7 @@
                     </div>`).join('');
             }
             
-            // 2. تحديث جدول حذف الأقسام في لوحة التحكم لتمكينك من حذفها
+            // 2. تحديث جدول حذف الأقسام في لوحة التحكم
             const admListDoc = document.getElementById('admListDocSecs');
             if (admListDoc) {
                 admListDoc.innerHTML = Object.entries(data).map(([k,v]) => `
@@ -317,7 +317,7 @@
                     </tr>`).join('');
             }
             
-            // 3. الحل النهائي والأكيد: تعبئة القائمة المنسدلة التي كانت تظهر فارغة
+            // 3. الإصلاح الحقيقي: تعبئة القائمة المنسدلة لكي تظهر الأسماء (فن الستائر، ردد معي، الخ)
             const selectTopicMenu = document.getElementById('admDocTopicSec');
             if (selectTopicMenu) {
                 let options = '<option disabled selected>اختر قسم دكتور ديكور</option>';
@@ -327,6 +327,20 @@
                 selectTopicMenu.innerHTML = options;
             }
         });
+
+        // مزامنة جدول حذف مواضيع دكتور ديكور لتمكينك من مسحها
+        db.ref('docTopics').on('value', snap => {
+            const data = snap.val() || {};
+            const admListTopics = document.getElementById('admListDocTopics');
+            if (admListTopics) {
+                admListTopics.innerHTML = Object.entries(data).map(([k,v]) => `
+                    <tr>
+                        <td>${v.title}</td>
+                        <td><button onclick="deleteItem('docTopics','${k}')" style="color:red; font-weight:bold; border:none; background:none; cursor:pointer;">حذف</button></td>
+                    </tr>`).join('');
+            }
+        });
+            
             // تحديث الأقسام في صفحة دكتور ديكور (المظهر البني)
             document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `
                 <div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">
