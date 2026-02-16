@@ -198,7 +198,7 @@
                 <div class="admin-box">
                     <h3>١. إدارة الأقسام</h3>
                     <input type="text" id="admCatName" placeholder="اسم القسم">
-                    <input type="text" id="admCatImg" placeholder="رابط صورة القسم">
+                    <input type="file" id="admCatFile" accept="image/*">
                     <button onclick="saveItem('categories', {name:v('admCatName'), img:v('admCatImg')})" class="btn-gold">حفظ</button>
                     <table class="admin-table"><tbody id="admListCats"></tbody></table>
                 </div>
