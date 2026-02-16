@@ -12,6 +12,33 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+   /* تنسيق موحد للأقسام، المنتجات، وطرق الدفع في المتصفح */
+#categoriesList, #catGrid, #paymentList {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important; 
+    gap: 20px;
+    padding: 20px 5%;
+}
+
+/* تنسيق موحد للهاتف - تمرير جانبي حصراً للثلاثة أقسام */
+@media (max-width: 768px) {
+    #categoriesList, #catGrid, #paymentList {
+        display: flex !important;
+        grid-template-columns: none !important;
+        overflow-x: auto !important;
+        gap: 15px;
+        padding: 20px;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* توحيد حجم الكروت في الهاتف لمنع التداخل */
+    #categoriesList .cat-card-new, 
+    #catGrid div, 
+    #paymentList div {
+        flex: 0 0 250px !important; 
+        height: 350px;
+    }
+}
     <style>
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
