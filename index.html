@@ -131,6 +131,32 @@
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
+ /* تنسيق المتصفح (الكمبيوتر) - شبكة 5 في كل سطر */
+#categoriesList {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 15px;
+    padding: 20px 5%;
+}
+
+/* تنسيق الهاتف - تمرير جانبي حصراً */
+@media (max-width: 768px) {
+    #categoriesList {
+        display: flex !important; /* إجبار الهاتف على وضع الأقسام في صف واحد */
+        grid-template-columns: none !important;
+        overflow-x: auto !important; /* تفعيل التمرير */
+        scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding: 20px;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    #categoriesList .cat-card-new {
+        flex: 0 0 250px !important; /* منع انضغاط الصور وإجبارها على العرض الكامل */
+        height: 300px;
+        scroll-snap-align: start;
+    }
+}
     </style>
 </head>
 <body>
