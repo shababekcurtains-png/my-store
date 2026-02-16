@@ -114,7 +114,7 @@
     <div class="nav-bar">
         <ul class="nav-menu">
             <li><a onclick="showPage('homePage')">الرئيسية</a></li>
-            <li><a onclick="document.getElementById('categories').scrollIntoView()">المنتجات</a></li>
+            <li><a onclick="showPage('homePage'); setTimeout(() => { document.getElementById('categories').scrollIntoView({behavior: 'smooth'}); }, 100);">المنتجات</a></li>
             <li><a onclick="showPage('doctorPage')">دكتور ديكور</a></li>
             <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
             <li><a onclick="showPage('aboutPage')">من نحن</a></li>
@@ -204,7 +204,7 @@
                 </div>
                 <div class="admin-box">
                     <h3>٢. إدارة المنتجات</h3>
-                    <select id="admProdCatSelect"></select>
+                   <select id="selectDocTopicSec"></select>
                     <input type="text" id="admProdName" placeholder="اسم الموديل">
                     <input type="number" id="admProdPrice" placeholder="السعر">
                     <input type="text" id="admProdImg" placeholder="رابط الصورة">
@@ -217,7 +217,7 @@
                     <button onclick="saveItem('docSections', {name:v('admDocSecName')})" class="btn-gold">إضافة قسم</button>
                     <table class="admin-table"><tbody id="admListDocSecs"></tbody></table>
                     <hr>
-                    <select id="admDocTopicSec"></select>
+                    <select id="selectDocTopicSec"></select>
                     <input type="text" id="admDocTitle" placeholder="العنوان">
                     <textarea id="admDocDesc" placeholder="الشرح"></textarea>
                     <input type="text" id="admDocMedia" placeholder="رابط ميديا">
@@ -294,9 +294,10 @@
             const data = snap.val() || {};
             document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `<div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">${s.name}</div>`).join('');
             document.getElementById('admListDocSecs').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('docSections','${k}')" style="color:red; font-weight:bold; border:none; background:none;">حذف</button></td></tr>`).join('');
+            
+            // السطر الجوهري لتفعيل النشر:
             document.getElementById('admDocTopicSec').innerHTML = '<option disabled selected>اختر قسم دكتور ديكور</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
         });
-
         db.ref('docTopics').on('value', snap => {
             globalDocTopics = snap.val() || {};
             document.getElementById('admListDocTopics').innerHTML = Object.entries(globalDocTopics).map(([k,v]) => `<tr><td>${v.title}</td><td><button onclick="deleteItem('docTopics','${k}')" style="color:red; font-weight:bold; border:none; background:none;">حذف</button></td></tr>`).join('');
