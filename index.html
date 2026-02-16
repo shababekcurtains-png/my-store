@@ -294,10 +294,39 @@
             document.getElementById('admListProds').innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red; font-weight:bold; border:none; background:none;">حذف</button></td></tr>`).join('');
         });
 
-      // مزامنة أقسام دكتور ديكور وتعبئة قوائم الاختيار في لوحة التحكم
+     // مزامنة أقسام دكتور ديكور وتعبئة قوائم الاختيار في لوحة التحكم
         db.ref('docSections').on('value', snap => {
             const data = snap.val() || {};
             
+            // 1. تحديث شكل الأقسام في صفحة دكتور ديكور الرئيسية
+            const docNav = document.getElementById('docSectionsNav');
+            if (docNav) {
+                docNav.innerHTML = Object.values(data).map(s => `
+                    <div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">
+                        ${s.name}
+                    </div>`).join('');
+            }
+            
+            // 2. تحديث جدول حذف الأقسام في لوحة التحكم لتمكينك من حذفها
+            const admListDoc = document.getElementById('admListDocSecs');
+            if (admListDoc) {
+                admListDoc.innerHTML = Object.entries(data).map(([k,v]) => `
+                    <tr>
+                        <td>${v.name}</td>
+                        <td><button onclick="deleteItem('docSections','${k}')" style="color:red; font-weight:bold; border:none; background:none; cursor:pointer;">حذف</button></td>
+                    </tr>`).join('');
+            }
+            
+            // 3. الحل النهائي والأكيد: تعبئة القائمة المنسدلة التي كانت تظهر فارغة
+            const selectTopicMenu = document.getElementById('admDocTopicSec');
+            if (selectTopicMenu) {
+                let options = '<option disabled selected>اختر قسم دكتور ديكور</option>';
+                Object.values(data).forEach(s => {
+                    options += `<option value="${s.name}">${s.name}</option>`;
+                });
+                selectTopicMenu.innerHTML = options;
+            }
+        });
             // تحديث الأقسام في صفحة دكتور ديكور (المظهر البني)
             document.getElementById('docSectionsNav').innerHTML = Object.values(data).map(s => `
                 <div onclick="openDocInside('${s.name}')" style="background:var(--brown);color:white;padding:20px;border-radius:15px;text-align:center;cursor:pointer;font-weight:900;">
