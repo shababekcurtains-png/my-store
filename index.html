@@ -11,7 +11,32 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+/* تنسيق مطور لمنع التمرير الجانبي في المتصفح والكمبيوتر */
+.admin-table {
+    width: 100%;            /* جعل الجدول يلتزم بعرض الشاشة فقط */
+    table-layout: fixed;    /* منع الجدول من التمدد خارج الإطار */
+    border-collapse: collapse;
+}
 
+.admin-table td {
+    padding: 10px;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+
+/* توحيد حجم الصور في لوحة التحكم لمنع التضارب */
+.admin-table img {
+    width: 80px;            /* عرض ثابت ومناسب داخل الجدول */
+    height: 80px;           /* طول ثابت لجعل الصور مربعة ومنظمة */
+    object-fit: cover;      /* أهم سطر: يقص الصورة بذكاء لتملأ المربع دون تمطيط */
+    border-radius: 8px;     /* حواف منحنية لتناسب أناقة شبابيك */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* إخفاء التمرير الجانبي الزائد */
+body {
+    overflow-x: hidden; 
+}
     <style>
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
