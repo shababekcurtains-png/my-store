@@ -102,16 +102,11 @@
 }
    /* تنسيق ذكي: شبكة للمتصفح وتمرير للهاتف */
 #categoriesList {
-    /* تنسيق الشبكة للمتصفح (5 أعمدة في كل سطر) */
-#categoriesList {
-    display: grid !important;
-    /* قمنا بتغيير الرقم هنا إلى 5 لتوزيع الأقسام بشكل خماسي */
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 15px; /* تقليل المسافة قليلاً لتناسب الـ 5 أقسام */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 أقسام في السطر للمتصفح */
+    gap: 20px;
     padding: 20px 5%;
 }
-
-/* ملاحظة: كود الهاتف @media سيبقى كما هو دون تغيير ليحافظ على التمرير الجانبي */
 
 @media (max-width: 768px) {
     #categoriesList {
@@ -134,36 +129,6 @@
     border-radius: 20px;
     overflow: hidden;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-   /* تنسيق الشبكة للمتصفح (4 أعمدة ثابتة) */
-#categoriesList {
-    display: grid !important; /* تفعيل نظام الشبكة إجبارياً */
-    grid-template-columns: repeat(4, 1fr); /* 4 أعمدة متساوية */
-    gap: 20px;
-    padding: 20px 5%;
-}
-
-/* تنسيق التمرير للهاتف فقط */
-@media (max-width: 768px) {
-    #categoriesList {
-        display: flex !important; /* العودة لنظام الصف في الهاتف */
-        overflow-x: auto;
-        gap: 15px;
-        padding: 20px;
-        scrollbar-width: none;
-    }
-    #categoriesList div {
-        flex: 0 0 250px; /* الحفاظ على عرض القسم في الهاتف ومنع انضغاطه */
-    }
-}
-
-/* تنسيق شكل الكارت ليكون متناسقاً */
-.cat-card-new {
-    position: relative;
-    height: 350px;
-    border-radius: 20px;
-    overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
     </style>
