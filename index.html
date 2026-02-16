@@ -102,11 +102,16 @@
 }
    /* تنسيق ذكي: شبكة للمتصفح وتمرير للهاتف */
 #categoriesList {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 أقسام في السطر للمتصفح */
-    gap: 20px;
+    /* تنسيق الشبكة للمتصفح (5 أعمدة في كل سطر) */
+#categoriesList {
+    display: grid !important;
+    /* قمنا بتغيير الرقم هنا إلى 5 لتوزيع الأقسام بشكل خماسي */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 15px; /* تقليل المسافة قليلاً لتناسب الـ 5 أقسام */
     padding: 20px 5%;
 }
+
+/* ملاحظة: كود الهاتف @media سيبقى كما هو دون تغيير ليحافظ على التمرير الجانبي */
 
 @media (max-width: 768px) {
     #categoriesList {
