@@ -613,8 +613,61 @@ async function publishPayment() {
         alert("حدث خطأ أثناء الرفع، تأكد من اتصال الإنترنت");
     }
 }
+   // ==========================================
+// محرك المساعد الذكي "دكتور ديكور"
+// ==========================================
 
-</script> ```
+async function askAI() {
+    const query = document.getElementById('aiQuery').value.trim();
+    const responseBox = document.getElementById('aiResponse');
+    
+    if(!query) {
+        alert("يرجى كتابة استفسارك أولاً");
+        return;
+    }
 
-</body>
+    // إظهار تأثير التحميل بلمسة جمالية
+    responseBox.innerHTML = `
+        <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
+            <i class="fas fa-spinner fa-spin"></i> دكتور ديكور يحلل طلبك...
+        </div>`;
+
+   try {
+        const snap = await db.ref('docTopics').once('value');
+        const topics = snap.val() || {};
+        const topicsArray = Object.values(topics);
+
+        const match = topicsArray.find(t => 
+            query.toLowerCase().includes(t.title.toLowerCase()) || 
+            t.desc.toLowerCase().includes(query.toLowerCase())
+        );
+
+        setTimeout(() => {
+            if(match) {
+                responseBox.innerHTML = `
+                    <div style="background:var(--white); border-right:4px solid var(--gold); padding:15px; border-radius:10px; text-align:right;">
+                        <strong style="color:var(--gold);">✅ نصيحة ذكية:</strong><br>
+                        ${match.desc.substring(0, 150)}...
+                        <br>
+                        <button onclick="openDocInside('${match.section}')" class="btn-gold" style="padding:5px 15px; margin-top:10px; font-size:0.8rem;">
+                            عرض التفاصيل الكاملة
+                        </button>
+                    </div>`;
+            } else {
+                responseBox.innerHTML = `
+                    <div style="background:var(--white); border-right:4px solid var(--brown); padding:15px; border-radius:10px; text-align:right;">
+                        🤖 <strong>ممتاز!</strong> بالنسبة لـ "${query}"، أنصحك دائماً بمراعاة تناسق الإضاءة مع القماش. 
+                        <br>
+                        <a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; padding:5px 15px; margin-top:10px; font-size:0.8rem; text-decoration:none;">
+                            استشارة واتساب مجانية
+                        </a>
+                    </div>`;
+            }
+        }, 1000);
+    } catch (e) {
+        responseBox.innerHTML = "عذراً، حدث خطأ في الاتصال بالمستشار الذكي.";
+    }
+} // القوس الخاص بإغلاق دالة askAI
+
+</script> </body>
 </html>
