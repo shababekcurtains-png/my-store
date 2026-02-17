@@ -615,7 +615,85 @@ async function publishPayment() {
         alert("حدث خطأ أثناء الرفع، تأكد من اتصال الإنترنت");
     }
 }
+// ==========================================
+// محرك "دكتور ديكور" الذكي - نسخة شبابيك المطورة
+// ==========================================
 
+const GEMINI_KEY = 'AIzaSyCBt5C7X-XSAkoh_i-uZNZWZn8YaIbc9EQ';
+const DR_IMAGES = {
+    neutral: "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png",
+    thinking: "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png",
+    error: "https://i.ibb.co/hR7tjww2/Anger-Photoroom.png"
+};
+
+// دالة تحويل الصورة لبيانات يفهمها الذكاء الاصطناعي
+async function getBase64(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+    });
+}
+
+// الدالة الأساسية لاستلام وتحليل صورة العميل
+async function handleDrImage(input) {
+    if (!input.files || !input.files[0]) return;
+    
+    const box = document.getElementById('aiResponse');
+    const avatar = document.getElementById('drAvatar');
+    const status = document.getElementById('drStatus');
+    
+    // 1. وضعية التفكير (تغيير الأفاتار)
+    avatar.src = DR_IMAGES.thinking;
+    avatar.style.transform = "scale(1.1) rotate(5deg)";
+    status.innerText = "دكتور ديكور يحلل غرفتك الآن...";
+    box.innerHTML = "<div style='text-align:center;'><i class='fas fa-spinner fa-spin'></i> جاري قراءة الألوان والإضاءة...</div>";
+
+    try {
+        // 2. معالجة الصورة وإرسالها لـ Gemini Vision
+        const base64Data = await getBase64(input.files[0]);
+        
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                contents: [{
+                    parts: [
+                        { text: "أنت دكتور ديكور العراقي خبير ستائر شبابيك. حلل هذه الصورة واذكر ألوان الجدران والأثاث الموجود ثم اقترح ستارة مناسبة بلهجة عراقية بيضاء ودودة وقصيرة جداً." },
+                        { inline_data: { mime_type: "image/jpeg", data: base64Data } }
+                    ]
+                }]
+            })
+        });
+
+        const resData = await response.json();
+        
+        if (resData.candidates && resData.candidates[0].content) {
+            const advice = resData.candidates[0].content.parts[0].text;
+            
+            // 3. وضعية النجاح (العودة للابتسامة)
+            avatar.src = DR_IMAGES.neutral;
+            avatar.style.transform = "scale(1)";
+            status.innerText = "وجدتها! إليك النصيحة";
+            box.innerHTML = `
+                <div style="background:white; padding:15px; border-radius:15px; border-right:5px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
+                    <strong style="color:var(--gold);">📋 استشارة دكتور ديكور:</strong><br>
+                    ${advice}
+                </div>`;
+            
+            // تأثير الاحتفال بالنتيجة
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
+        } else {
+            throw new Error("API Limit or Error");
+        }
+
+    } catch (e) {
+        // 4. وضعية الخطأ (الدكتور غاضب)
+        avatar.src = DR_IMAGES.error;
+        status.innerText = "حدث خطأ في القراءة!";
+        box.innerHTML = "عذراً، لم أستطع رؤية الصورة بوضوح. تأكد من الإضاءة والإنترنت وجرب مرة أخرى.";
+    }
+}
 </script> ```
 
 </body>
