@@ -255,10 +255,9 @@
         <p style="text-align:center; color:#666; margin-bottom:30px;">المستشار الفني لجمال شبابيك منزلك</p>
 <div id="ai-consultant" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 40px; text-align: center; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
     
-    <div id="avatar-container" style="margin-bottom: 15px;">
-        <img id="drAvatar" src="https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png" style="width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; transition: 0.4s ease-in-out; background: white;">
+    <div id="avatar-container" style="margin-bottom: 15px; height: 160px; display: flex; align-items: center; justify-content: center;">
+        <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="height: 100%; object-fit: contain; transition: 0.4s ease-in-out;">
     </div>
-
     <h3 id="drStatus" style="font-weight: 900; color: var(--brown); margin-bottom: 5px;">أهلاً بك! أنا دكتور ديكور</h3>
     <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">صور لي نافذتك الآن وسأقترح عليك الستارة المثالية!</p>
 
@@ -688,47 +687,50 @@ async function askAI() {
 // محرك التفاعل المرئي لدكتور ديكور
 // ==========================================
 
+// مصفوفة روابط التعبيرات الخاصة بك
+const DR_EXPRESSIONS = {
+    neutral: "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png",
+    thinking: "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png", // الدكتور يلمس ذقنه
+    error: "https://i.ibb.co/hR7tjww2/Anger-Photoroom.png" // الدكتور غاضب/مستغرب
+};
+
 async function handleDrImage(input) {
     if (input.files && input.files[0]) {
         const responseBox = document.getElementById('aiResponse');
         const avatar = document.getElementById('drAvatar');
         const status = document.getElementById('drStatus');
 
-        // 1. تأثير التفكير (تغيير مظهر الأفاتار)
+        // أ- وضع التفكير: الدكتور يحلل الصورة بتركيز
+        avatar.src = DR_EXPRESSIONS.thinking;
         status.innerText = "دكتور ديكور يحلل تفاصيل غرفتك...";
-        avatar.style.transform = "scale(1.1) rotate(5deg)"; // حركة بسيطة توحي بالتفاعل
-        avatar.style.filter = "brightness(1.1)";
+        avatar.style.transform = "scale(1.1)";
         
-        responseBox.innerHTML = `
-            <div style="text-align:center;">
-                <i class="fas fa-circle-notch fa-spin"></i> جاري قراءة الأبعاد والألوان...
-            </div>`;
+        responseBox.innerHTML = `<div style="text-align:center;"><i class="fas fa-circle-notch fa-spin"></i> جاري قراءة الألوان والإضاءة...</div>`;
 
         try {
-            // 2. رفع الصورة (نستخدم نفس دالة الرفع التي برمجناها للأدمن)
             const imageUrl = await uploadImg(input.files[0]);
 
-            // 3. محاكاة تحليل الذكاء الاصطناعي (يمكننا ربطه بـ Gemini Vision لاحقاً)
             setTimeout(() => {
-                // العودة للحالة الطبيعية مع ابتسامة (تغيير الحالة)
+                // ب- وضع النجاح: الدكتور يعود للابتسامة الطبيعية
+                avatar.src = DR_EXPRESSIONS.neutral;
                 avatar.style.transform = "scale(1)";
-                avatar.style.filter = "none";
                 status.innerText = "وجدتها! إليك التنسيق المثالي";
 
                 responseBox.innerHTML = `
                     <div style="background:white; padding:15px; border-radius:15px; border-right:4px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
                         <p style="color:var(--brown); font-weight:bold;">✅ تم تحليل الصورة بنجاح:</p>
-                        <p>بناءً على إضاءة غرفتك، أنصحك بستائر <b>"بلاك أوت"</b> بيضاء مع إطار مخملي رمادي لتعطي فخامة عصرية.</p>
-                        <img src="${imageUrl}" style="width:100%; max-height:150px; object-fit:cover; border-radius:10px; margin-top:10px; border:1px solid #eee;">
+                        <p>بناءً على ألوان غرفتك، أنصحك بستائر <b>"بلاك أوت"</b> بيضاء مع إطار مخملي رمادي.</p>
+                        <img src="${imageUrl}" style="width:100%; max-height:150px; object-fit:cover; border-radius:10px; margin-top:10px;">
                     </div>`;
                 
-                // احتفال بسيط بنجاح الاستشارة
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
+                confetti({ particleCount: 100, spread: 70 });
             }, 3000);
 
         } catch (error) {
-            status.innerText = "حدث خطأ!";
-            responseBox.innerHTML = "عذراً، لم أستطع معالجة الصورة. تأكد من جودة الإضاءة.";
+            // ج- وضع الخطأ: الدكتور يظهر تعبير الاستياء
+            avatar.src = DR_EXPRESSIONS.error;
+            status.innerText = "هناك مشكلة في الصورة!";
+            responseBox.innerHTML = "عذراً، الصورة غير واضحة. يرجى التصوير في إضاءة جيدة.";
         }
     }
 }
