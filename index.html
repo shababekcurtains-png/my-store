@@ -302,8 +302,8 @@
                 <div class="admin-box">
                     <h3>٤. طرق الدفع</h3>
                     <input type="text" id="admPayName" placeholder="اسم الطريقة">
-                    <input type="text" id="admPayQR" placeholder="رابط الباركود">
-                    <button onclick="saveItem('payments', {name:v('admPayName'), qr:v('admPayQR')})" class="btn-gold">حفظ</button>
+                    <input type="file" id="admPayFile" accept="image/*" style="margin: 10px 0; width: 100%;">
+<button onclick="publishPayment()" class="btn-gold">حفظ طريقة الدفع</button>
                     <table class="admin-table"><tbody id="admListPays"></tbody></table>
                 </div>
             </div>
