@@ -1,31 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shababek Curtains Store</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Welcome to Shababek Curtains Store</h1>
-    </header>
-    <main>
-        <section id="products">
-            <h2>Our Products</h2>
-            <!-- product listings will go here -->
-        </section>
-        <section id="doctorPage">
-            <h2>Doctor Page</h2>
-            <!-- AI assistant chatbox will be added here -->
-            <div id="chatbox">
-                <input type="text" placeholder="Ask your question..." />
-                <button>Send</button>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Shababek Curtains Store. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+<div id="ai-assistant-box" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 30px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+    <span style="font-size: 3rem;">🤖</span>
+    <h3 style="font-weight: 900; color: var(--brown); margin: 10px 0;">مستشارك الذكي: دكتور ديكور</h3>
+    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">أخبرني عن غرفتك (لون الجدران أو الأثاث) وسأقترح عليك الستارة المثالية!</p>
+    <input type="text" id="userQuery" placeholder="مثلاً: صالة بيضاء مع أثاث بني.." style="border: 1px solid var(--gold); margin-bottom: 10px;">
+    <button onclick="askGemini()" class="btn-gold" style="width: 100%;">احصل على استشارة فورية</button>
+    <div id="aiResponse" style="margin-top: 15px; font-size: 0.95rem; color: var(--brown); line-height: 1.6;"></div>
+</div>
