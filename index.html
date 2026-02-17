@@ -1,10 +1,25 @@
-<!-- New doctor page content with AI assistant chatbox -->
-<div class="doctorPage">
-    <div class="ai-assistant-chatbox">
-        <!-- AI Assistant Chatbox Goes Here -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Store</title>
+</head>
+<body>
+    <h1>Welcome to My Store</h1>
+    <h2>Doctor Page</h2>
+    <div id="ai-assistant" style="border: 1px solid #ccc; padding: 10px;">
+        <h3>AI Assistant</h3>
+        <p>Hello! I'm your AI assistant. How can I help you today?</p>
+        <input type="text" id="user-input" placeholder="Ask me anything..." />
+        <button onclick="getResponse()">Send</button>
+        <div id="response"></div>
     </div>
-    <!-- Existing content continued here... -->
-    <div class="docSectionsNav">
-        <!-- Navigation Sections -->
-    </div>
-</div>
+    <script>
+        function getResponse() {
+            const userInput = document.getElementById('user-input').value;
+            document.getElementById('response').innerText = 'You asked: ' + userInput;
+        }
+    </script>
+</body>
+</html>
