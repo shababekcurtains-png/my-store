@@ -280,8 +280,8 @@
                    <select id="selectDocTopicSec"></select>
                     <input type="text" id="admProdName" placeholder="اسم الموديل">
                     <input type="number" id="admProdPrice" placeholder="السعر">
-                    <input type="text" id="admProdImg" placeholder="رابط الصورة">
-                    <button onclick="saveItem('products', {category:v('admProdCatSelect'), name:v('admProdName'), price:v('admProdPrice'), img:v('admProdImg')})" class="btn-gold">نشر</button>
+                    <input type="file" id="admProdFile" accept="image/*" style="margin: 10px 0; width: 100%;">
+<button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
                     <table class="admin-table"><tbody id="admListProds"></tbody></table>
                 </div>
                 <div class="admin-box" style="border:2px solid var(--gold);">
