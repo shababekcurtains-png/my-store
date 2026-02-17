@@ -12,12 +12,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
-        /* المتغيرات والأساسيات */
+     <style>
+        /* الأساسيات والمتغيرات لبراند شبابيك */
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
 
-        /* تنسيق الشبكة للمتصفح (خماسي 5x5) للأقسام والمنتجات والدفع */
+        /* تنسيق الشبكة للمتصفح (5 أعمدة) للأقسام والمنتجات والدفع */
         #categoriesList, #catGrid, #paymentList {
             display: grid !important;
             grid-template-columns: repeat(5, 1fr) !important; 
@@ -25,7 +26,7 @@
             padding: 20px 5%;
         }
 
-        /* تنسيق الهاتف (تمرير جانبي) */
+        /* تنسيق الهاتف (تمرير جانبي انسيابي) */
         @media (max-width: 768px) {
             #categoriesList, #catGrid, #paymentList {
                 display: flex !important;
@@ -36,13 +37,14 @@
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }
-            #categoriesList .cat-card-new, #catGrid div, #paymentList div {
+            /* الحفاظ على حجم الكروت في الهاتف ومنع انضغاطها */
+            .cat-card-new, #catGrid div, #paymentList div {
                 flex: 0 0 250px !important; 
                 height: 350px;
             }
         }
 
-        /* كلاس الكارت الموحد لبراند شبابيك */
+        /* التصميم الموحد للكروت (الكارت الجديد) */
         .cat-card-new {
             position: relative;
             height: 350px;
@@ -52,101 +54,26 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* تنسيقات الهيدر والبانر */
+        /* تنسيقات الهيدر والبانر العلوي */
         .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
         .logo-img { height: 90px; transition: 0.3s; }
         
-        /* تنسيق لوحة التحكم لمنع التمرير الجانبي */
-        .admin-table { width: 100%; table-layout: fixed; }
-        .admin-table img { width: 60px !important; height: 60px !important; object-fit: cover; border-radius: 8px; }
-        .admin-table td { word-wrap: break-word; font-size: 0.8rem; padding: 10px; }
+        /* تنسيقات لوحة التحكم (إدارة الأقسام والمنتجات) */
         .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 10px; table-layout: fixed; }
+        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; word-wrap: break-word; font-size: 0.85rem; }
+        .admin-table img { width: 60px !important; height: 60px !important; object-fit: cover; border-radius: 8px; }
 
-        /* العناصر العامة */
+        /* المكونات العامة */
         .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; }
-        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; }
+        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
         .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
         .active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
-    </style>
-</head>
-<body>
-
-    <div class="top-banner">
-        <span>شبابيك للستائر - ظل وذوق</span>
-        <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> تواصل عبر الواتساب</a>
-    </div>
-
-    <header>
-        <div style="font-weight:900; line-height:1; flex:1;">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
-        <div class="logo-center" onclick="handleLogoClick()"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img"></div>
-        <div class="header-left">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="ابحث عن موديل.." onkeyup="handleSearch()">
-            </div>
-            <div class="cart-icon" onclick="toggleCartModal()">
-                <i class="fas fa-shopping-basket"></i>
-                <span id="globalCartCount" class="cart-count">0</span>
-            </div>
-        </div>
-    </header>
-    
-    <div id="searchRes"></div>
-
-    <div class="nav-bar">
-        <ul class="nav-menu">
-            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
-            <li><a onclick="showPage('homePage'); setTimeout(() => { document.getElementById('categories').scrollIntoView({behavior: 'smooth'}); }, 100);">المنتجات</a></li>
-            <li><a onclick="showPage('doctorPage')">دكتور ديكور</a></li>
-            <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
-            <li><a onclick="showPage('aboutPage')">من نحن</a></li>
-            <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
-        </ul>
-    </div>
-
-    <div id="cartOverlay">
-        <div class="cart-modal">
-            <h2 style="margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:10px; font-weight:900;">سلة المشتريات</h2>
-            <div id="cartItemsList"></div>
-            
-            <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
-                <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
-                <select id="userCity">
-                    <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="المثنى">المثنى</option><option value="كركوك">كركوك</option><option value="صلاح الدين">صلاح الدين</option><option value="دهوك">دهوك</option><option value="السليمانية">السليمانية</option><option value="القادسية">القادسية</option>
-                </select>
-                <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
-                <select id="userPayment">
-                    <option value="نقد عند الاستلام">نقد عند الاستلام</option><option value="زين كاش">زين كاش</option><option value="كي كارد">كي كارد / فيزا</option>
-                </select>
-            </div>
-
-            <div style="margin-top:20px;">
-                <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
-                <p onclick="toggleCartModal()" style="margin-top:20px; text-align:center; color:#999; cursor:pointer; font-weight:bold;">إغلاق</p>
-            </div>
-        </div>
-    </div>
-
-    <main id="mainContainer">
-        <div id="homePage" class="page active">
-            <section class="hero">
-                <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <div class="hero-btns">
-                    <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold">احسب سعر ستائرك الآن</button>
-                    <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
-                </div>
-                <div class="social-hero">
-                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en-IQ" target="_blank"><i class="fab fa-snapchat"></i></a>
                 </div>
             </section>
             <section id="categories" style="padding: 40px 0;">
