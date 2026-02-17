@@ -293,10 +293,20 @@
                     <select id="selectDocTopicSec"></select>
                     <input type="text" id="admDocTitle" placeholder="العنوان">
                     <textarea id="admDocDesc" placeholder="الشرح"></textarea>
-                    <input type="text" id="admDocMedia" placeholder="رابط ميديا">
-                    <select id="admDocType"><option value="img">صورة</option><option value="vid">يوتيوب عادي</option><option value="shorts">يوتيوب شورتس</option></select>
-                    <select id="admDocMode"><option value="closed">مقالة (بالضغط)</option><option value="open">مباشر (سكرول)</option></select>
-                    <button onclick="saveItem('docTopics', {section:v('admDocTopicSec'), title:v('admDocTitle'), desc:v('admDocDesc'), media:v('admDocMedia'), type:v('admDocType'), mode:v('admDocMode')})" class="btn-gold">نشر</button>
+                   <div id="docMediaArea" style="margin: 10px 0;">
+    <input type="file" id="admDocFile" accept="image/*" style="display: block; width: 100%;">
+    <input type="text" id="admDocMedia" placeholder="رابط يوتيوب (للفيديو فقط)" style="display: none;">
+</div>
+<select id="admDocType" onchange="toggleDocInput(this.value)">
+    <option value="img">صورة نصيحة</option>
+    <option value="vid">يوتيوب عادي</option>
+    <option value="shorts">يوتيوب شورتس (Reels)</option>
+</select>
+<select id="admDocMode">
+    <option value="closed">مقالة (بالضغط)</option>
+    <option value="open">مباشر (سكرول)</option>
+</select>
+<button onclick="publishDocTopic()" class="btn-gold">إطلاق النصيحة</button>
                     <table class="admin-table"><tbody id="admListDocTopics"></tbody></table>
                 </div>
                 <div class="admin-box">
