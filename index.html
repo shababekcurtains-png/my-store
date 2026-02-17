@@ -3,23 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Store</title>
+    <title>Shababek Curtains Store</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to My Store</h1>
-    <h2>Doctor Page</h2>
-    <div id="ai-assistant" style="border: 1px solid #ccc; padding: 10px;">
-        <h3>AI Assistant</h3>
-        <p>Hello! I'm your AI assistant. How can I help you today?</p>
-        <input type="text" id="user-input" placeholder="Ask me anything..." />
-        <button onclick="getResponse()">Send</button>
-        <div id="response"></div>
-    </div>
-    <script>
-        function getResponse() {
-            const userInput = document.getElementById('user-input').value;
-            document.getElementById('response').innerText = 'You asked: ' + userInput;
-        }
-    </script>
+    <header>
+        <h1>Welcome to Shababek Curtains Store</h1>
+    </header>
+    <main>
+        <section id="products">
+            <h2>Our Products</h2>
+            <!-- product listings will go here -->
+        </section>
+        <section id="doctorPage">
+            <h2>Doctor Page</h2>
+            <!-- AI assistant chatbox will be added here -->
+            <div id="chatbox">
+                <input type="text" placeholder="Ask your question..." />
+                <button>Send</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Shababek Curtains Store. All rights reserved.</p>
+    </footer>
 </body>
 </html>
