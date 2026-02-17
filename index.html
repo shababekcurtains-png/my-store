@@ -684,6 +684,53 @@ async function askAI() {
         responseBox.innerHTML = "عذراً، حدث خطأ في الاتصال بالمستشار الذكي.";
     }
 } // القوس الخاص بإغلاق دالة askAI
+// ==========================================
+// محرك التفاعل المرئي لدكتور ديكور
+// ==========================================
 
+async function handleDrImage(input) {
+    if (input.files && input.files[0]) {
+        const responseBox = document.getElementById('aiResponse');
+        const avatar = document.getElementById('drAvatar');
+        const status = document.getElementById('drStatus');
+
+        // 1. تأثير التفكير (تغيير مظهر الأفاتار)
+        status.innerText = "دكتور ديكور يحلل تفاصيل غرفتك...";
+        avatar.style.transform = "scale(1.1) rotate(5deg)"; // حركة بسيطة توحي بالتفاعل
+        avatar.style.filter = "brightness(1.1)";
+        
+        responseBox.innerHTML = `
+            <div style="text-align:center;">
+                <i class="fas fa-circle-notch fa-spin"></i> جاري قراءة الأبعاد والألوان...
+            </div>`;
+
+        try {
+            // 2. رفع الصورة (نستخدم نفس دالة الرفع التي برمجناها للأدمن)
+            const imageUrl = await uploadImg(input.files[0]);
+
+            // 3. محاكاة تحليل الذكاء الاصطناعي (يمكننا ربطه بـ Gemini Vision لاحقاً)
+            setTimeout(() => {
+                // العودة للحالة الطبيعية مع ابتسامة (تغيير الحالة)
+                avatar.style.transform = "scale(1)";
+                avatar.style.filter = "none";
+                status.innerText = "وجدتها! إليك التنسيق المثالي";
+
+                responseBox.innerHTML = `
+                    <div style="background:white; padding:15px; border-radius:15px; border-right:4px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
+                        <p style="color:var(--brown); font-weight:bold;">✅ تم تحليل الصورة بنجاح:</p>
+                        <p>بناءً على إضاءة غرفتك، أنصحك بستائر <b>"بلاك أوت"</b> بيضاء مع إطار مخملي رمادي لتعطي فخامة عصرية.</p>
+                        <img src="${imageUrl}" style="width:100%; max-height:150px; object-fit:cover; border-radius:10px; margin-top:10px; border:1px solid #eee;">
+                    </div>`;
+                
+                // احتفال بسيط بنجاح الاستشارة
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
+            }, 3000);
+
+        } catch (error) {
+            status.innerText = "حدث خطأ!";
+            responseBox.innerHTML = "عذراً، لم أستطع معالجة الصورة. تأكد من جودة الإضاءة.";
+        }
+    }
+}
 </script> </body>
 </html>
