@@ -526,6 +526,122 @@ async function publishCat() {
         alert("حدث خطأ في الاتصال، حاول مرة أخرى");
     }
 }
+// 1. دالة نشر المنتجات المصلحة
+async function publishProd() {
+    const fileInput = document.getElementById('admProdFile');
+    const nameInput = document.getElementById('admProdName');
+    const priceInput = document.getElementById('admProdPrice');
+    const catSelect = document.getElementById('admProdCatSelect');
+
+    if(!fileInput.files[0] || !nameInput.value || !priceInput.value) {
+        return alert("يرجى إكمال بيانات المنتج واختيار الصورة");
+    }
+
+    alert("جاري رفع صورة المنتج لشبابيك...");
+
+    try {
+        const imageUrl = await uploadImg(fileInput.files[0]);
+        db.ref('products').push({
+            category: catSelect.value,
+            name: nameInput.value,
+            price: priceInput.value,
+            img: imageUrl
+        }).then(() => {
+            alert("تم نشر المنتج بنجاح!");
+            // حذفنا reload لكي لا يخرجك من اللوحة
+            nameInput.value = ""; priceInput.value = "";
+        });
+    } catch (error) {
+        alert("فشل رفع صورة المنتج");
+    }
+}
+
+// 2. محرك دكتور ديكور والتبديل بين الوسائط
+function toggleDocInput(type) {
+    const fileIn = document.getElementById('admDocFile');
+    const linkIn = document.getElementById('admDocMedia');
+    if(type === 'img') {
+        fileIn.style.display = 'block';
+        linkIn.style.display = 'none';
+    } else {
+        fileIn.style.display = 'none';
+        linkIn.style.display = 'block';
+    }
+}
+
+async function publishDocTopic() {
+    const title = document.getElementById('admDocTitle').value;
+    const desc = document.getElementById('admDocDesc').value;
+    const section = document.getElementById('selectDocTopicSec').value;
+    const type = document.getElementById('admDocType').value;
+    const fileInput = document.getElementById('admDocFile');
+
+    if(!title || !section) return alert("يرجى إكمال العنوان واختيار القسم الفرعي");
+
+    alert("جاري تجهيز نصيحة دكتور ديكور...");
+
+    try {
+        let finalMedia = "";
+        if(type === 'img') {
+            if(!fileInput.files[0]) return alert("يرجى اختيار صورة");
+            finalMedia = await uploadImg(fileInput.files[0]);
+        } else {
+            finalMedia = document.getElementById('admDocMedia').value;
+        }
+
+        db.ref('docTopics').push({
+            section: section, title: title, desc: desc,
+            media: finalMedia, type: type,
+            mode: document.getElementById('admDocMode').value
+        }).then(() => {
+            alert("تم إطلاق النصيحة بنجاح!");
+            document.getElementById('admDocTitle').value = "";
+        });
+    } catch (e) { alert("فشل النشر"); }
+}
+
+// 3. دالة المساعد الذكي (Gemini Assistant) لشبابيك
+async function askGemini() {
+    const query = document.getElementById('userQuery').value;
+    const responseBox = document.getElementById('aiResponse');
+    
+    if(!query) return alert("اسأل دكتور ديكور شيئاً..");
+
+    responseBox.innerHTML = "🤖 دكتور ديكور يفكر في طلبك...";
+
+    try {
+        // هنا نقوم بربط محرك البحث الداخلي لنصائحك بدلاً من API خارجي مكلف حالياً
+        // سيبحث الذكاء الاصطناعي في "نصائحك" التي رفعتها مسبقاً
+        const allTips = Object.values(globalDocTopics);
+        const match = allTips.find(t => t.title.includes(query) || t.desc.includes(query));
+
+        if(match) {
+            responseBox.innerHTML = `<b>نصيحة دكتور ديكور:</b> ${match.desc.substring(0, 150)}... <br> <button onclick="openDocInside('${match.section}')" class="btn-gold" style="padding:5px 10px; font-size:0.8rem;">اقرأ المزيد</button>`;
+        } else {
+            responseBox.innerHTML = "🤖 حالياً أتعلم ذوقك! جرب السؤال عن (ألوان، قياس، ستائر صالة).. أو تواصل مع فريق شبابيك مباشرة.";
+        }
+    } catch (e) { responseBox.innerHTML = "عذراً، المستشار مشغول حالياً."; }
+}
+
+// 4. دالة حفظ طرق الدفع
+async function publishPayment() {
+    const fileInput = document.getElementById('admPayFile');
+    const nameInput = document.getElementById('admPayName');
+
+    if(!fileInput.files[0] || !nameInput.value) return alert("اكمل البيانات");
+
+    alert("جاري رفع الباركود...");
+    try {
+        const imageUrl = await uploadImg(fileInput.files[0]);
+        db.ref('payments').push({ name: nameInput.value, qr: imageUrl }).then(() => {
+            alert("تم الحفظ!");
+            nameInput.value = "";
+        });
+    } catch (error) { alert("فشل الرفع"); }
+}
+
+// نهاية السكريبت
+</script>
 
 // دالة حفظ المنتجات المصلحة (للمرحلة القادمة)
 async function publishProd() {
