@@ -249,12 +249,24 @@
             </section>
         </div>
 
-        <div id="doctorPage" class="page">
-            <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
-                <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور </h2>
-                <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
-            </div>
+       <div id="doctorPage" class="page">
+    <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
+        <h2 style="text-align:center; font-weight:900; margin-bottom:10px;">دكتور ديكور</h2>
+        <p style="text-align:center; color:#666; margin-bottom:30px;">المستشار الفني لجمال شبابيك منزلك</p>
+
+        <div id="ai-consultant" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 40px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🤖</div>
+            <h3 style="font-weight: 900; color: var(--brown);">مستشارك الشخصي الذكي</h3>
+            <p style="font-size: 0.9rem; margin-bottom: 15px;">اكتب لون غرفتك أو نوع الأثاث وسأقترح عليك الستارة المثالية!</p>
+            <input type="text" id="aiQuery" placeholder="مثلاً: صالة مودرن لونها بيجي.." style="border: 1px solid var(--gold); text-align: center; width: 100%; padding: 12px; border-radius: 10px;">
+            <button onclick="askAI()" class="btn-gold" style="width: 100%; margin-top: 15px; padding: 15px;">احصل على نصيحة فورية</button>
+            <div id="aiResponse" style="margin-top: 20px; font-style: italic; color: var(--brown); line-height: 1.8; min-height: 20px;"></div>
         </div>
+
+        <h3 style="margin-bottom: 20px; border-right: 4px solid var(--gold); padding-right: 15px; font-weight: 900;">مختبر الأناقة</h3>
+        <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
+    </div>
+</div>
 
         <div id="docInsidePage" class="page">
             <div style="padding: 40px 5%; max-width: 600px; margin: auto;">
