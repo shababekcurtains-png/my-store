@@ -584,6 +584,62 @@ async function publishProd() {
         alert("فشل رفع صورة المنتج");
     }
 } 
+        // ==========================================
+// محرك "دكتور ديكور" لبراند شبابيك
+// ==========================================
+
+// 1. دالة التبديل بين رفع الصور ووضع روابط الفيديو
+function toggleDocInput(type) {
+    const fileIn = document.getElementById('admDocFile');
+    const linkIn = document.getElementById('admDocMedia');
+    if(type === 'img') {
+        fileIn.style.display = 'block';
+        linkIn.style.display = 'none';
+    } else {
+        fileIn.style.display = 'none';
+        linkIn.style.display = 'block';
+    }
+}
+
+// 2. دالة نشر محتوى دكتور ديكور (نصائح/فيديوهات)
+async function publishDocTopic() {
+    const title = document.getElementById('admDocTitle').value;
+    const desc = document.getElementById('admDocDesc').value;
+    const section = document.getElementById('selectDocTopicSec').value;
+    const type = document.getElementById('admDocType').value;
+    const fileInput = document.getElementById('admDocFile');
+    
+    if(!title || !section) return alert("يرجى إكمال العنوان واختيار القسم الفرعي");
+
+    alert("جاري تجهيز نصيحة دكتور ديكور... يرجى الانتظار");
+
+    try {
+        let finalMedia = "";
+        // إذا كان النوع صورة، نرفع الملف. إذا كان فيديو، نأخذ الرابط
+        if(type === 'img') {
+            if(!fileInput.files[0]) return alert("يرجى اختيار صورة النصيحة");
+            finalMedia = await uploadImg(fileInput.files[0]);
+        } else {
+            finalMedia = document.getElementById('admDocMedia').value;
+            if(!finalMedia) return alert("يرجى وضع رابط اليوتيوب");
+        }
+
+        db.ref('docTopics').push({
+            section: section,
+            title: title,
+            desc: desc,
+            media: finalMedia,
+            type: type,
+            mode: document.getElementById('admDocMode').value
+        }).then(() => {
+            alert("تم إطلاق النصيحة بنجاح في قسم دكتور ديكور!");
+            location.reload();
+        });
+    } catch (e) { 
+        console.error(e);
+        alert("فشل النشر، حاول مرة أخرى"); 
+    }
+}
    // ... نهاية الأكواد السابقة ...
 
 // الصق الدالة هنا (قبل وسم الإغلاق)
