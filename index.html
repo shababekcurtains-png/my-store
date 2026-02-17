@@ -705,31 +705,33 @@ async function handleDrImage(input) {
         status.innerText = "دكتور ديكور يحلل تفاصيل غرفتك...";
         avatar.style.transform = "scale(1.1)";
         
-        responseBox.innerHTML = `<div style="text-align:center;"><i class="fas fa-circle-notch fa-spin"></i> جاري قراءة الألوان والإضاءة...</div>`;
-
-        try {
+       try {
+            // 1. رفع الصورة لسيرفر شبابيك (ImgBB)
             const imageUrl = await uploadImg(input.files[0]);
 
-            setTimeout(() => {
-                // ب- وضع النجاح: الدكتور يعود للابتسامة الطبيعية
-                avatar.src = DR_EXPRESSIONS.neutral;
-                avatar.style.transform = "scale(1)";
-                status.innerText = "وجدتها! إليك التنسيق المثالي";
+            // 2. تحليل الصورة حقيقياً عبر الذكاء الاصطناعي
+            const aiAdvice = await analyzeWithGemini(imageUrl);
 
-                responseBox.innerHTML = `
-                    <div style="background:white; padding:15px; border-radius:15px; border-right:4px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
-                        <p style="color:var(--brown); font-weight:bold;">✅ تم تحليل الصورة بنجاح:</p>
-                        <p>بناءً على ألوان غرفتك، أنصحك بستائر <b>"بلاك أوت"</b> بيضاء مع إطار مخملي رمادي.</p>
-                        <img src="${imageUrl}" style="width:100%; max-height:150px; object-fit:cover; border-radius:10px; margin-top:10px;">
-                    </div>`;
-                
-                confetti({ particleCount: 100, spread: 70 });
-            }, 3000);
+            // 3. وضع النجاح: الدكتور يعود للابتسامة (صورة Neutral)
+            avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+            avatar.style.transform = "scale(1)";
+            status.innerText = "وجدتها! إليك التنسيق المثالي لغرفتك";
+
+            responseBox.innerHTML = `
+                <div style="background:white; padding:15px; border-radius:15px; border-right:4px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
+                    <p style="color:var(--brown); font-weight:bold;">✅ نصيحة دكتور ديكور المخصصة:</p>
+                    <p>${aiAdvice}</p>
+                    <img src="${imageUrl}" style="width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-top:10px; border:1px solid #eee;">
+                </div>`;
+            
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
 
         } catch (error) {
-            // ج- وضع الخطأ: الدكتور يظهر تعبير الاستياء
-            avatar.src = DR_EXPRESSIONS.error;
-            status.innerText = "هناك مشكلة في الصورة!";
+            // وضع الخطأ: الدكتور يظهر غاضباً (صورة Anger)
+            avatar.src = "https://i.ibb.co/hR7tjww2/Anger-Photoroom.png"; 
+            status.innerText = "هناك مشكلة!";
+            responseBox.innerHTML = "عذراً، لم أستطع تحليل الصورة. يرجى المحاولة مرة أخرى.";
+        }
             responseBox.innerHTML = "عذراً، الصورة غير واضحة. يرجى التصوير في إضاءة جيدة.";
         }
     }
