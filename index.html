@@ -249,12 +249,26 @@
             </section>
         </div>
 
-        <div id="doctorPage" class="page">
-            <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
-                <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور </h2>
-                <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
+       <div id="doctorPage" class="page">
+    <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
+        <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور</h2>
+        
+        <div id="ai-consultant" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 40px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+            <div id="avatar-container" style="margin-bottom: 15px; height: 160px; display: flex; align-items: center; justify-content: center;">
+                <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="height: 100%; object-fit: contain; transition: 0.4s ease-in-out;">
             </div>
+            <h3 id="drStatus" style="font-weight: 900; color: var(--brown); margin-bottom: 5px;">أهلاً بك! أنا دكتور ديكور</h3>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">التقط صورة لغرفتك وسأقترح عليك الستارة المثالية!</p>
+
+            <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="handleDrImage(this)">
+            <button onclick="document.getElementById('aiCamera').click()" class="btn-gold" style="width: 100%; padding: 18px;">📸 استشارة بالكاميرا</button>
+            
+            <div id="aiResponse" style="margin-top: 20px; text-align: right; line-height: 1.8;"></div>
         </div>
+
+        <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
+    </div>
+</div>
 
         <div id="docInsidePage" class="page">
             <div style="padding: 40px 5%; max-width: 600px; margin: auto;">
