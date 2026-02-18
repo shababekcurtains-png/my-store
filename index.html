@@ -684,6 +684,40 @@ async function handleDrImage(input) {
         box.innerHTML = "عذراً، لم أستطع تحليل الصورة. جرب مرة أخرى بصورة أوضح.";
     }
 }
+        function getWatermarkedUrl(originalUrl) {
+    if (!originalUrl) return "";
+    
+    // اسم الشعار الذي اخترناه في Cloudinary
+    const logoId = "shababek_logo"; 
+    
+    // إعدادات العلامة المائية:
+    // l_ : تحديد طبقة الشعار
+    // o_30 : جعل الشعار شفافاً بنسبة 30% لكي لا يزعج العين ولكنه يحمي الحقوق
+    // w_200 : تحديد عرض الشعار بـ 200 بكسل
+    // g_center : وضع الشعار في منتصف الصورة تماماً لضمان عدم إمكانية قصه
+    
+    const transformation = `l_${logoId},o_30,w_200,g_center`;
+    
+    // حقن التحويل داخل الرابط
+    return originalUrl.replace("/upload/", `/upload/${transformation}/`);
+}
+
+// تحديث دالة فتح المنتج لتعرض الصورة المحمية
+function openCalc(p) {
+    cur = p;
+    document.getElementById('pName').innerText = p.name;
+    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString();
+
+    // هنا يتم "السحر": عرض الصورة مع العلامة المائية تلقائياً
+    const protectedImg = getWatermarkedUrl(p.img);
+    
+    document.getElementById('pImg').src = protectedImg;
+    document.getElementById('curtainImg').src = p.img; 
+    document.getElementById('fabricImg').src = p.fabricImg || p.img; 
+
+    document.getElementById('hIn').value = "";
+    showPage('productCalculator');
+}
 </script> ```
 
 </body>
