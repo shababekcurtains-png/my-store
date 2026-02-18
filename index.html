@@ -348,6 +348,12 @@
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const GEMINI_KEY = 'AIzaSyCBt5C7X-XSAkoh_i-uZNZWZn8YaIbc9EQ';
+const DR_IMAGES = {
+    neutral: "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png",
+    thinking: "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png",
+    error: "https://i.ibb.co/hR7tjww2/Anger-Photoroom.png"
+};
         let cur = null, cart = [], adminClicks = 0, globalDocTopics = {};
 
         function v(id) { return document.getElementById(id).value; }
@@ -615,8 +621,71 @@ async function publishPayment() {
         alert("حدث خطأ أثناء الرفع، تأكد من اتصال الإنترنت");
     }
 }
+// دالة تحويل الصورة لبيانات يفهمها Gemini
+async function getBase64(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+    });
+}
 
-</script> ```
+// دالة الاتصال المباشر بذكاء جوجل
+async function analyzeWithGemini(base64Data) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            contents: [{ parts: [
+                { text: "أنت دكتور ديكور العراقي خبير ستائر شبابيك. حلل هذه الصورة واذكر ألوان الجدران والأثاث الموجود ثم اقترح ستارة مناسبة بلهجة عراقية بيضاء ودودة وقصيرة جداً." },
+                { inline_data: { mime_type: "image/jpeg", data: base64Data } }
+            ]}]
+        })
+    });
+    const resData = await response.json();
+    return resData.candidates[0].content.parts[0].text;
+}
+async function handleDrImage(input) {
+    if (!input.files || !input.files[0]) return;
+    
+    const responseBox = document.getElementById('aiResponse');
+    const avatar = document.getElementById('drAvatar');
+    const status = document.getElementById('drStatus');
+    
+    // 1. تفعيل وضعية التفكير (الأفاتار يلمس ذقنه)
+    avatar.src = DR_IMAGES.thinking;
+    avatar.style.transform = "scale(1.1) rotate(5deg)";
+    status.innerText = "دكتور ديكور يحلل غرفتك الآن...";
+    responseBox.innerHTML = "<div style='text-align:center;'>🔍 جاري قراءة الألوان والإضاءة عبر الذكاء الاصطناعي...</div>";
+
+    try {
+        // 2. معالجة الصورة وإرسالها لـ Gemini
+        const base64Data = await getBase64(input.files[0]);
+        const advice = await analyzeWithGemini(base64Data);
+        
+        // 3. وضعية النجاح (الدكتور يبتسم)
+        avatar.src = DR_IMAGES.neutral;
+        avatar.style.transform = "scale(1)";
+        status.innerText = "وجدتها! إليك النصيحة";
+        responseBox.innerHTML = `
+            <div style="background:white; padding:15px; border-radius:15px; border-right:5px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
+                <strong style="color:var(--gold);">📋 تحليل دكتور ديكور:</strong><br>
+                ${advice}
+            </div>`;
+        
+        // احتفال بالنتيجة
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
+
+    } catch (e) {
+        console.error(e);
+        // 4. وضعية الخطأ (الدكتور غاضب)
+        avatar.src = DR_IMAGES.error;
+        status.innerText = "حدث خطأ في الرؤية!";
+        responseBox.innerHTML = "عذراً، لم أستطع تحليل الصورة بوضوح. تأكد من الإضاءة والإنترنت وجرب مرة أخرى.";
+    }
+}
+    </script> ```
 
 </body>
 </html>
