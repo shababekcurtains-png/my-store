@@ -657,32 +657,47 @@ async function handleDrImage(input) {
     avatar.src = DR_IMAGES.thinking;
     avatar.style.transform = "scale(1.1) rotate(5deg)";
     status.innerText = "دكتور ديكور يحلل غرفتك الآن...";
-    responseBox.innerHTML = "<div style='text-align:center;'>🔍 جاري قراءة الألوان والإضاءة عبر الذكاء الاصطناعي...</div>";
+    responseBox.innerHTML = `
+        <div style="text-align:center; padding:20px;">
+            <i class="fas fa-circle-notch fa-spin" style="font-size:2rem; color:var(--gold);"></i>
+            <p style="margin-top:10px;">جاري قراءة الألوان والإضاءة عبر الذكاء الاصطناعي...</p>
+        </div>`;
 
     try {
-        // 2. معالجة الصورة وإرسالها لـ Gemini
+        // 2. تحويل الصورة إلى بيانات Base64 (السر لكي يراها Gemini)
         const base64Data = await getBase64(input.files[0]);
+        
+        // 3. استدعاء دالة التحليل وانتظار الرد الحقيقي
         const advice = await analyzeWithGemini(base64Data);
         
-        // 3. وضعية النجاح (الدكتور يبتسم)
+        // 4. وضعية النجاح (الدكتور يبتسم)
         avatar.src = DR_IMAGES.neutral;
         avatar.style.transform = "scale(1)";
-        status.innerText = "وجدتها! إليك النصيحة";
+        status.innerText = "وجدتها! إليك النصيحة المثالية";
+        
         responseBox.innerHTML = `
-            <div style="background:white; padding:15px; border-radius:15px; border-right:5px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
-                <strong style="color:var(--gold);">📋 تحليل دكتور ديكور:</strong><br>
-                ${advice}
+            <div style="background:white; padding:20px; border-radius:15px; border-right:5px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05); animation: fadeIn 0.5s ease;">
+                <strong style="color:var(--gold); font-size:1.1rem;">📋 استشارة دكتور ديكور لغرفتك:</strong>
+                <p style="margin-top:10px; line-height:1.8; color:var(--brown);">${advice}</p>
             </div>`;
         
-        // احتفال بالنتيجة
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
+        // احتفال بسيط بالنتيجة
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
 
-    } catch (e) {
-        console.error(e);
-        // 4. وضعية الخطأ (الدكتور غاضب)
+    } catch (error) {
+        console.error("AI Error:", error);
+        
+        // 5. وضعية الخطأ (الدكتور يظهر غاضباً أو مستغرباً)
         avatar.src = DR_IMAGES.error;
-        status.innerText = "حدث خطأ في الرؤية!";
-        responseBox.innerHTML = "عذراً، لم أستطع تحليل الصورة بوضوح. تأكد من الإضاءة والإنترنت وجرب مرة أخرى.";
+        avatar.style.transform = "scale(1)";
+        status.innerText = "حدث خطأ في قراءة الصورة!";
+        
+        responseBox.innerHTML = `
+            <div style="background:#fff5f5; padding:15px; border-radius:10px; border:1px solid #ffcccc; color:#cc0000; text-align:center;">
+                عذراً، لم أستطع تحليل الصورة بوضوح. <br>
+                <small>تأكد من جودة الإنترنت والتقط الصورة في إضاءة جيدة.</small>
+                <button onclick="location.reload()" style="display:block; margin:10px auto; background:none; border:none; color:blue; text-decoration:underline; cursor:pointer;">إعادة محاولة</button>
+            </div>`;
     }
 }
     </script> ```
