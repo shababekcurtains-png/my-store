@@ -13,17 +13,17 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
 
-        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 90px; transition: 0.3s; cursor: pointer; }
-        
+        .logo-img { height: 70px; cursor: pointer; transition: 0.3s; }
+        .logo-img:hover { transform: scale(1.05); }
+
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; text-align: center; }
         .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.3s; }
         .nav-menu a:hover { color: var(--gold); }
 
         .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
@@ -32,21 +32,25 @@
 
         #categoriesList { display: grid !important; grid-template-columns: repeat(5, 1fr); gap: 15px; padding: 20px 5%; }
         @media (max-width: 768px) {
-            #categoriesList { display: flex !important; overflow-x: auto !important; gap: 15px; padding: 20px; }
-            #categoriesList .cat-card-new { flex: 0 0 250px !important; height: 300px; }
+            #categoriesList { display: flex !important; overflow-x: auto !important; scroll-snap-type: x mandatory; gap: 15px; padding: 20px; }
+            #categoriesList .cat-card-new { flex: 0 0 250px !important; height: 300px; scroll-snap-align: start; }
         }
         .cat-card-new { position: relative; height: 350px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .cat-card-new img { width: 100%; height: 100%; object-fit: cover; }
-        .cat-tag { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 10px 25px; border-radius: 12px; font-weight: 900; }
+        .cat-tag { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; padding: 10px 25px; border-radius: 12px; font-weight: 900; white-space: nowrap; }
 
-        #ai-consultant { background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; text-align: center; max-width: 600px; margin: 20px auto; }
-        #aiResponse { margin-top: 20px; text-align: right; background: white; padding: 15px; border-radius: 15px; border-right: 5px solid var(--gold); display: none; }
+        #ai-consultant { background: #fdfaf5; border: 2px solid var(--gold); padding: 30px; border-radius: 25px; text-align: center; max-width: 600px; margin: 40px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        #drAvatar { height: 180px; object-fit: contain; transition: 0.4s; }
+        #aiResponse { margin-top: 20px; text-align: right; line-height: 1.8; background: white; padding: 20px; border-radius: 15px; border-right: 5px solid var(--gold); display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #444; }
+        
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 18px 35px; border-radius: 15px; font-weight: 900; cursor: pointer; font-size: 1.1rem; width: 100%; transition: 0.3s; }
+        .btn-gold:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="font-weight:900;">شبابيك للستائر</div>
+        <div style="font-weight:900; font-size: 1.2rem;">شبابيك للستائر</div>
         <div onclick="handleLogoClick()"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img"></div>
         <div style="width:50px;"></div>
     </header>
@@ -61,42 +65,57 @@
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
-            <h2 style="text-align:center; padding: 30px; font-weight: 900;">أقسامنا المميزة</h2>
+            <div style="height: 45vh; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png') center; background-size: cover; display: flex; align-items: center; justify-content: center; color: white; text-align: center; flex-direction: column; padding: 20px;">
+                <h1 style="font-size: 2.2rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-weight: 900;">أناقة منزلك تبدأ من شبابيك</h1>
+                <p style="margin-top: 10px; font-weight: 600;">حلول عصرية وذكية لكل زوايا البيت</p>
+            </div>
+            <h2 style="text-align:center; padding: 40px 0 10px 0; font-weight: 900;">أقسامنا المميزة</h2>
             <div id="categoriesList"></div>
         </div>
 
         <div id="doctorPage" class="page">
             <div style="padding: 20px 5%;">
                 <div id="ai-consultant">
-                    <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="height:160px; object-fit:contain;">
-                    <h3 id="drStatus" style="font-weight:900; margin:15px 0;">أنا دكتور ديكور، صور لي غرفتك!</h3>
+                    <div style="height: 180px; margin-bottom: 15px;">
+                        <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
+                    </div>
+                    <h3 id="drStatus" style="font-weight: 900; margin-bottom: 10px;">أهلاً بك! أنا دكتور ديكور</h3>
+                    <p style="color: #666; margin-bottom: 25px; font-size: 0.9rem;">صور غرفتك الآن، وسأحلل الألوان لأعطيك أفضل تنسيق للستائر بذكاء شبابيك!</p>
+                    
                     <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="handleDrImage(this)">
-                    <button onclick="document.getElementById('aiCamera').click()" style="background:var(--gold); color:white; border:none; padding:15px 30px; border-radius:12px; font-weight:900; width:100%;">📸 التقاط صورة</button>
+                    <button onclick="document.getElementById('aiCamera').click()" class="btn-gold">📸 التقاط صورة للغرفة</button>
+                    
                     <div id="aiResponse"></div>
                 </div>
             </div>
         </div>
 
-        <div id="contactPage" class="page" style="text-align:center; padding:50px;">
-            <h2>تواصل معنا: 07883002797</h2>
+        <div id="contactPage" class="page" style="text-align: center; padding: 80px 20px;">
+            <i class="fab fa-whatsapp" style="font-size: 4rem; color: var(--whatsapp); margin-bottom: 20px;"></i>
+            <h2 style="font-weight: 900;">تواصل مباشر مع الإدارة</h2>
+            <p style="margin: 15px 0; font-size: 1.2rem;">07883002797</p>
+            <a href="https://wa.me/9647883002797" class="btn-gold" style="text-decoration: none; display: inline-block; width: auto; padding: 15px 50px;">مراسلة واتساب</a>
         </div>
     </main>
 
     <script>
+        // 1. الإعدادات
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        
+        // مفتاحك الذي أرسلته
+        const GEMINI_API_KEY = "AIzaSyCBt5C7X-XSAkoh_i-uZNZWZn8YaIbc9EQ";
 
-        // 1. ضع مفتاح Gemini الخاص بك هنا (مهم جداً)
-        const GEMINI_API_KEY = "ضـع_مـفـتـاحـك_هـنـا";
-
+        // 2. التنقل بين الصفحات
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // جلب الأقسام من Firebase
+        // 3. جلب الأقسام من Firebase
         db.ref('categories').on('value', snap => {
             const cats = snap.val() || {};
             const list = document.getElementById('categoriesList');
@@ -109,19 +128,22 @@
             }
         });
 
-        // دالة تحليل الصورة المباشرة
+        // 4. محرك دكتور ديكور (تحليل الصور)
         async function handleDrImage(input) {
             if (!input.files || !input.files[0]) return;
+            
             const box = document.getElementById('aiResponse');
             const avatar = document.getElementById('drAvatar');
             const status = document.getElementById('drStatus');
 
+            // تغيير الحالة للتفكير
             avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
             status.innerText = "دكتور ديكور يحلل الآن...";
             box.style.display = "block";
-            box.innerHTML = "🔍 جاري فحص الألوان بذكاء شبابيك...";
+            box.innerHTML = `<div style="text-align:center;"><i class="fas fa-circle-notch fa-spin"></i> جاري فحص الألوان والإضاءة...</div>`;
 
             try {
+                // ضغط الصورة (Canvas) لضمان العمل في العراق
                 const base64Data = await new Promise((resolve) => {
                     const reader = new FileReader();
                     reader.readAsDataURL(input.files[0]);
@@ -130,44 +152,54 @@
                         img.src = e.target.result;
                         img.onload = () => {
                             const canvas = document.createElement('canvas');
-                            const scale = 800 / img.width;
-                            canvas.width = 800; canvas.height = img.height * scale;
-                            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                            const MAX_WIDTH = 800; 
+                            const scale = MAX_WIDTH / img.width;
+                            canvas.width = MAX_WIDTH;
+                            canvas.height = img.height * scale;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                             resolve(canvas.toDataURL('image/jpeg', 0.6).split(',')[1]);
                         };
                     };
                 });
 
+                // إرسال لـ Gemini مباشرة
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
                         contents: [{ parts: [
-                            { text: "أنت دكتور ديكور خبير ستائر شبابيك بالعراق. حلل الصورة واقترح ستارة مناسبة بلهجة عراقية قصيرة." },
+                            { text: "أنت دكتور ديكور العراقي خبير ستائر شبابيك. حلل الصورة بدقة واذكر ألوان الحائط والأثاث ثم اقترح ستارة مناسبة بلهجة عراقية بيضاء ودودة وقصيرة جداً." },
                             { inline_data: { mime_type: "image/jpeg", data: base64Data } }
                         ]}]
                     })
                 });
 
                 const data = await response.json();
-                const advice = data.candidates[0].content.parts[0].text;
-
-                avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-                status.innerText = "وجدتها! إليك النصيحة:";
-                box.innerHTML = advice;
-                confetti();
+                
+                if (data.candidates && data.candidates[0].content) {
+                    const advice = data.candidates[0].content.parts[0].text;
+                    
+                    // حالة النجاح
+                    avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+                    status.innerText = "وجدتها! إليك النصيحة المخصصة:";
+                    box.innerHTML = `<strong>📋 استشارة دكتور ديكور:</strong><br>${advice}`;
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
+                } else { throw new Error(); }
 
             } catch (e) {
                 avatar.src = "https://i.ibb.co/hR7tjww2/Anger-Photoroom.png";
-                box.innerHTML = "عذراً، تأكد من مفتاح الـ API وجودة الإنترنت.";
+                status.innerText = "حدث خطأ في الاتصال!";
+                box.innerHTML = "عذراً، لم أستطع رؤية الصورة بوضوح. تأكد من جودة الإنترنت وحاول مجدداً بصورة أوضح.";
             }
         }
 
+        // لوحة الإدارة (5 ضغطات)
         let adminClicks = 0;
         function handleLogoClick() {
             adminClicks++;
             if(adminClicks >= 5) {
-                if(prompt("رمز الدخول:") === "8496") alert("لوحة الإدارة قيد التفعيل");
+                if(prompt("رمز الدخول:") === "8496") alert("أهلاً بك في نظام الإدارة");
                 adminClicks = 0;
             } else { showPage('homePage'); }
         }
