@@ -348,6 +348,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         let cur = null, cart = [], adminClicks = 0, globalDocTopics = {};
+        
 
         function v(id) { return document.getElementById(id).value; }
         function showPage(id, push = true) {
