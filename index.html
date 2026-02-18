@@ -442,13 +442,35 @@ async function publishCat() {
 
 async function publishProd() {
     const fileInput = document.getElementById('admProdFile');
-    const nameInput = v('admProdName');
-    const priceInput = v('admProdPrice');
-    const catSelect = v('admProdCatSelect');
-    if(!fileInput.files[0] || !nameInput || !priceInput) return alert("أكمل بيانات المنتج");
-    alert("جاري الرفع والمعالجة...");
-    const url = await uploadImg(fileInput.files[0]);
-    db.ref('products').push({category: catSelect, name: nameInput, price: priceInput, img: url}).then(() => location.reload());
+    const nameInput = document.getElementById('admProdName').value;
+    const priceInput = document.getElementById('admProdPrice').value;
+    const catSelect = document.getElementById('admProdCatSelect').value;
+
+    if(!fileInput.files[0] || !nameInput || !priceInput) {
+        return alert("يرجى إكمال بيانات المنتج واختيار الصورة");
+    }
+
+    alert("جاري الرفع لـ Cloudinary... يرجى الانتظار");
+
+    try {
+        // استخدام دالة الرفع التي تم تعريفها مسبقاً
+        const imageUrl = await uploadImg(fileInput.files[0]);
+        
+        if (imageUrl) {
+            db.ref('products').push({
+                category: catSelect,
+                name: nameInput,
+                price: priceInput,
+                img: imageUrl // الرابط الجديد من Cloudinary
+            }).then(() => {
+                alert("تم النشر بنجاح! ستظهر العلامة المائية عند عرض المنتج.");
+                location.reload();
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        alert("حدث خطأ في الرفع. تأكد من تفعيل الـ VPN وإعدادات Cloudinary");
+    }
 }
 
 // --- دوال العرض والمنتجات ---
