@@ -249,27 +249,28 @@
             </section>
         </div>
 
-       <div id="doctorPage" class="page">
+      <div id="doctorPage" class="page">
     <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
         <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور</h2>
         
         <div id="ai-consultant" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 40px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
-            <div id="avatar-container" style="margin-bottom: 15px; height: 160px; display: flex; align-items: center; justify-content: center;">
+            
+            <div style="height: 160px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
                 <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="height: 100%; object-fit: contain; transition: 0.4s ease-in-out;">
             </div>
+
             <h3 id="drStatus" style="font-weight: 900; color: var(--brown); margin-bottom: 5px;">أهلاً بك! أنا دكتور ديكور</h3>
             <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">التقط صورة لغرفتك وسأقترح عليك الستارة المثالية!</p>
 
             <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="handleDrImage(this)">
             <button onclick="document.getElementById('aiCamera').click()" class="btn-gold" style="width: 100%; padding: 18px;">📸 استشارة بالكاميرا</button>
             
-            <div id="aiResponse" style="margin-top: 20px; text-align: right; line-height: 1.8;"></div>
+            <div id="aiResponse" style="margin-top: 20px; text-align: right; line-height: 1.8; display: none;"></div>
         </div>
 
         <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
     </div>
 </div>
-
         <div id="docInsidePage" class="page">
             <div style="padding: 40px 5%; max-width: 600px; margin: auto;">
                 <h2 id="currentDocTitle" style="text-align:center; margin-bottom:30px; color:var(--gold);"></h2>
@@ -348,6 +349,7 @@
         const firebaseConfig = { apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", authDomain: "shababekcurtain.firebaseapp.com", databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", projectId: "shababekcurtain" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const CLOUD_FUNCTION_URL = "https://us-central1-shababekcurtain.cloudfunctions.net/analyzeRoom";
         let cur = null, cart = [], adminClicks = 0, globalDocTopics = {};
 
         function v(id) { return document.getElementById(id).value; }
@@ -615,7 +617,153 @@ async function publishPayment() {
         alert("حدث خطأ أثناء الرفع، تأكد من اتصال الإنترنت");
     }
 }
+// 1. تعريف دالة معالجة صورة دكتور ديكور وارسالها للسيرفر الآمن
+async function handleDrImage(input) {
+    if (!input.files || !input.files[0]) return;
+    
+    const box = document.getElementById('aiResponse');
+    const avatar = document.getElementById('drAvatar');
+    const status = document.getElementById('drStatus');
 
+    // أ- وضعية التفكير: تغيير صورة الدكتور وإظهار نص التحميل
+    if(avatar) avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
+    if(status) status.innerText = "دكتور ديكور يحلل غرفتك الآن...";
+    
+    box.style.display = "block"; 
+    box.innerHTML = `<div style="text-align:center; padding:10px;">
+        <i class="fas fa-circle-notch fa-spin"></i> جاري قراءة الألوان والإضاءة بالسحابة...
+    </div>`;
+
+    try {
+        // ب- ضغط الصورة وتحويلها لـ Base64 لضمان سرعة الرفع
+        const base64Data = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(input.files[0]);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800; // تصغير العرض لسرعة الاستجابة
+                    const scale = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.6).split(',')[1]);
+                };
+            };
+            reader.onerror = error => reject(error);
+        });
+
+        // ج- الإرسال لـ Cloud Function (الرابط الآمن)
+        const response = await fetch(CLOUD_FUNCTION_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: base64Data })
+        });
+
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0].content) {
+            const advice = data.candidates[0].content.parts[0].text;
+            
+            // د- حالة النجاح: الدكتور يبتسم وعرض النصيحة
+            if(avatar) avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+            if(status) status.innerText = "وجدتها! إليك النصيحة المخصصة:";
+            box.innerHTML = `<div style="padding:15px; border-radius:15px; background:#fff; border-right:5px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
+                ${advice}
+            </div>`;
+            
+            // احتفالية بسيطة بنجاح التحليل
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
+        } else {
+            throw new Error("Invalid response from AI");
+        }
+
+    } catch (e) {
+        console.error("AI Error:", e);
+        // هـ- حالة الخطأ: الدكتور يغضب
+        if(avatar) avatar.src = "https://i.ibb.co/hR7tjww2/Anger-Photoroom.png";
+        if(status) status.innerText = "حدث خطأ في الاتصال!";
+        box.innerHTML = `<div style="color:red; text-align:center;">
+            عذراً، لم أستطع تحليل الصورة. تأكد من تفعيل السيرفر (Blaze Plan) وجودة الإنترنت.
+        </div>`;
+    }
+}// 1. ضع مفتاح Gemini الخاص بك هنا مباشرة
+const GEMINI_API_KEY = "ضع_مفتاح_جيمناي_هنا";
+
+async function handleDrImage(input) {
+    if (!input.files || !input.files[0]) return;
+    
+    const box = document.getElementById('aiResponse');
+    const avatar = document.getElementById('drAvatar');
+    const status = document.getElementById('drStatus');
+
+    // أ- وضع التفكير
+    if(avatar) avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
+    if(status) status.innerText = "دكتور ديكور يحلل غرفتك الآن...";
+    
+    box.style.display = "block"; 
+    box.innerHTML = `<div style="text-align:center; padding:10px;">
+        <i class="fas fa-circle-notch fa-spin"></i> جاري قراءة الألوان والإضاءة...
+    </div>`;
+
+    try {
+        // ب- ضغط الصورة (مهم جداً لسرعة التحليل)
+        const base64Data = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(input.files[0]);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800; 
+                    const scale = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.6).split(',')[1]);
+                };
+            };
+        });
+
+        // ج- الإرسال المباشر لـ Gemini (بدون وسيط)
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [
+                        { text: "أنت دكتور ديكور خبير ستائر شبابيك بالعراق. حلل الصورة واذكر ألوان الحائط والأثاث ثم اقترح لون ونوع ستارة مناسب بلهجة عراقية بيضاء ودودة وقصيرة جداً." },
+                        { inline_data: { mime_type: "image/jpeg", data: base64Data } }
+                    ]
+                }]
+            })
+        });
+
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0].content) {
+            const advice = data.candidates[0].content.parts[0].text;
+            
+            // د- حالة النجاح
+            if(avatar) avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+            if(status) status.innerText = "وجدتها! إليك النصيحة المخصصة:";
+            box.innerHTML = `<div style="padding:15px; border-radius:15px; background:#fff; border-right:5px solid var(--gold); box-shadow:0 5px 15px rgba(0,0,0,0.05);">
+                ${advice}
+            </div>`;
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
+        }
+
+    } catch (e) {
+        console.error("AI Error:", e);
+        if(avatar) avatar.src = "https://i.ibb.co/hR7tjww2/Anger-Photoroom.png";
+        box.innerHTML = "عذراً، حدث خطأ في التحليل. تأكد من اتصال الإنترنت وجرب مرة أخرى.";
+    }
+}
 </script> ```
 
 </body>
