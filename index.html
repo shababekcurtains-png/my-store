@@ -13,70 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        .ba-container {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    height: 450px;
-    margin: auto;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-.ba-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-}
-.ba-before {
-    width: 50%; /* البداية من المنتصف */
-    border-left: 3px solid white;
-}
-.ba-slider {
-    position: absolute;
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    outline: none;
-    margin: 0;
-    transition: 0.3s;
-    z-index: 10;
-    cursor: ew-resize;
-}
-.ba-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 5px;
-    height: 450px;
-    background: white;
-    cursor: ew-resize;
-}
-.ba-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background: var(--gold);
-    border: 3px solid white;
-    border-radius: 50%;
-    z-index: 11;
-    pointer-events: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.ba-button::before {
-    content: '↔';
-    color: white;
-    font-weight: bold;
-}
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
@@ -302,17 +238,6 @@
                 <div id="categoriesList" style="display:flex; overflow-x:auto; gap:20px; padding:20px 5%; scrollbar-width:none;"></div>
             </section>
             <section class="features-section">
-                <section class="before-after-section" style="padding: 60px 5%; background: #fff; text-align: center;">
-    <h2 style="font-weight: 900; margin-bottom: 10px;">لمسة شبابيك في منازل عملائنا</h2>
-    <p style="color: #777; margin-bottom: 40px;">اسحب الشريط لمشاهدة التحول قبل وبعد تركيب ستائرنا</p>
-
-    <div class="ba-container">
-        <div class="ba-image ba-after" style="background-image: url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png');"></div>
-        <div class="ba-image ba-before" id="beforeImg" style="background-image: url('https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2069&auto=format&fit=crop');"></div>
-        <input type="range" min="0" max="100" value="50" class="ba-slider" id="baSlider" oninput="moveSlider()">
-        <div class="ba-button"></div>
-    </div>
-</section>
                 <h2 style="margin-bottom:35px; font-weight:900;">لماذا شبابيك؟</h2>
                 <div class="features-grid">
                     <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ضمان حقيقي</h3><p>أرقى الأقمشة بضمان رسمي.</p></div>
@@ -653,17 +578,6 @@ function handleSearch() {
         
         resBox.style.display = 'block';
     });
-}
-        function moveSlider() {
-    const sliderValue = document.getElementById('baSlider').value;
-    const beforeImg = document.getElementById('beforeImg');
-    const baBtn = document.querySelector('.ba-button');
-    
-    // تحريك عرض الصورة "قبل" بناءً على قيمة السلايدر
-    beforeImg.style.width = sliderValue + "%";
-    
-    // تحريك الدائرة الذهبية مع السلايدر
-    baBtn.style.left = sliderValue + "%";
 }
 </script>
 
