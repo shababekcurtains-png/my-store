@@ -1,124 +1,101 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دكتور ديكور AI - شبابيك للستائر</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دكتور ديكور AI - شبابيك للستائر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<link rel="icon" href="https://i.ibb.co/3y1ZNCk0/1.png">
+    <style>
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background: white; color: var(--brown); }
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        /* الهيدر الموحد */
+        header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; }
+        .nav-menu { display: inline-flex; gap: 20px; list-style: none; padding: 0 20px; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; }
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
-rel="stylesheet">
+        /* قسم الذكاء الاصطناعي */
+        .ai-hero { background: var(--bg); padding: 50px 5%; text-align: center; min-height: 60vh; }
+        .avatar-container { width: 150px; height: 150px; background: white; border-radius: 50%; border: 4px solid var(--gold); margin: 0 auto 20px; overflow: hidden; }
+        #drAvatar { width: 100%; height: 100%; object-fit: contain; }
+        
+        .chat-bubble { background: white; padding: 25px; border-radius: 20px; border-right: 6px solid var(--gold); max-width: 600px; margin: 0 auto 30px; line-height: 1.8; text-align: right; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 18px 40px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; width: 100%; max-width: 400px; }
+        
+        footer { background: var(--brown); color: white; padding: 30px; text-align: center; margin-top: 50px; }
+    </style>
+</head>
+<body>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <header>
+        <div style="font-weight:900;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">للستائر</span></div>
+        <img src="https://i.ibb.co/3y1ZNCk0/1.png" style="height:70px; cursor:pointer;" onclick="location.href='index.html'">
+        <div style="width:50px;"></div> 
+    </header>
 
-<style>
+    <div class="nav-bar">
+        <ul class="nav-menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="index.html?go=categories">المنتجات</a></li>
+            <li><a href="ai.html" style="color:var(--gold)">دكتور ديكور (AI)</a></li>
+            <li><a href="index.html#contactPage">تواصل معنا</a></li>
+        </ul>
+    </div>
 
-:root{
---gold:#d9b382;
---brown:#3d2e24;
---bg:#f9f6f2;
---white:#ffffff;
---whatsapp:#25D366;
-}
+    <main class="ai-hero">
+        <div class="avatar-container">
+            <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
+        </div>
+        <div class="chat-bubble" id="aiResponse">
+            أهلاً بك! أنا دكتور ديكور. التقط صورة لغرفتك وسأقترح عليك نوع القماش واللون المثالي لستائرك.
+        </div>
+        
+        <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="analyzeRoom(this)">
+        <button onclick="document.getElementById('aiCamera').click()" class="btn-gold">
+            <i class="fas fa-camera"></i> ابدأ الاستشارة الآن
+        </button>
+    </main>
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:'Cairo',sans-serif;
-}
+    <footer>
+        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر</p>
+    </footer>
 
-body{
-background:var(--white);
-color:var(--brown);
-}
+    <script>
+    async function analyzeRoom(input) {
+        if (!input.files || !input.files[0]) return;
+        const box = document.getElementById('aiResponse');
+        const avatar = document.getElementById('drAvatar');
 
-.top-banner{
-background:var(--brown);
-color:white;
-padding:10px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-size:13px;
-}
+        box.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري تحليل الغرفة...`;
 
-header{
-background:white;
-padding:10px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 4px 15px rgba(0,0,0,0.05);
-}
-
-.logo-img{
-height:80px;
-cursor:pointer;
-}
-
-.nav-bar{
-background:#fcfcfc;
-border-bottom:1px solid #eee;
-padding:12px 0;
-}
-
-.nav-menu{
-display:flex;
-gap:25px;
-list-style:none;
-padding:0 20px;
-}
-
-.nav-menu a{
-text-decoration:none;
-color:var(--brown);
-font-weight:700;
-}
-
-.nav-menu a:hover{
-color:var(--gold);
-}
-
-.ai-hero{
-background:var(--bg);
-padding:60px 20px;
-text-align:center;
-min-height:70vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-}
-
-.avatar-container{
-
-width:170px;
-height:170px;
-background:white;
-border-radius:50%;
-border:4px solid var(--gold);
-overflow:hidden;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-margin-bottom:25px;
-
-}
-
-#drAvatar{
-width:100%;
-height:100%;
-object-fit:contain;
-transition:0.4s;
-}
-
-.chat-bubble{
-
-background:white;
-padding:25px;
-border-radius:25px;
-border-right:6px solid var(--gold);
-max-width:600
+        const reader = new FileReader();
+        reader.readAsDataURL(input.files[0]);
+        reader.onload = async (e) => {
+            const base64Data = e.target.result.split(',')[1];
+            try {
+                const response = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        image: base64Data,
+                        prompt: "حلل الغرفة واقترح قماش ستائر مناسب (بلاك أوت، مخمل، شيفون) بلهجة عراقية." 
+                    })
+                });
+                const data = await response.json();
+                if (data && data.candidates) {
+                    box.innerHTML = data.candidates[0].content.parts[0].text;
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                }
+            } catch (err) {
+                box.innerHTML = "عذراً، حاول مرة أخرى.";
+            }
+        };
+    }
+    </script>
+</body>
+</html>
