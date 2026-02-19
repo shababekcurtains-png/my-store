@@ -440,6 +440,28 @@ async function publishCat() {
     db.ref('categories').push({name: nameInput.value, img: url}).then(() => location.reload());
 }
 
+// 1. دالة الرفع العامة (تأكد من وجود async)
+// 1. دالة الرفع العامة (تأكد من وجود async)
+async function uploadImg(file) {
+    if (!file) return "";
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "afsx4w9k"); // البريسيت الخاص بك
+
+    try {
+        const res = await fetch("https://api.cloudinary.com/v1_1/dnkuwf8q9/image/upload", {
+            method: "POST",
+            body: formData
+        });
+        const data = await res.json();
+        return data.secure_url; 
+    } catch (err) {
+        console.error("خطأ في الرفع:", err);
+        return "";
+    }
+}
+
+// 2. دالة نشر المنتج الجديدة (تأكد من وجود async)
 async function publishProd() {
     const fileInput = document.getElementById('admProdFile');
     const nameInput = document.getElementById('admProdName').value;
@@ -450,10 +472,67 @@ async function publishProd() {
         return alert("يرجى إكمال بيانات المنتج واختيار الصورة");
     }
 
-    // إظهار رسالة انتظار للمستخدم
-    alert("جاري رفع الصورة لشبابيك... يرجى الانتظار حتى تظهر رسالة النجاح");
+    alert("جاري رفع الصورة لشبابيك... يرجى الانتظار");
 
-    try {
+    // هنا يتم الانتظار الفعلي للرفع لحل مشكلة الخطأ 404
+    const imageUrl = await uploadImg(fileInput.files[0]);
+    
+    if (imageUrl) {
+        db.ref('products').push({
+            category: catSelect,
+            name: nameInput,
+            price: priceInput,
+            img: imageUrl 
+        }).then(() => {
+            alert("تم رفع المنتج بنجاح!");
+            location.reload();
+        });
+    } else {
+        alert("فشل رفع الصورة، تأكد من اتصال الإنترنت");
+    }
+}
+        const res = await fetch("https://api.cloudinary.com/v1_1/dnkuwf8q9/image/upload", {
+            method: "POST",
+            body: formData
+        });
+        const data = await res.json();
+        return data.secure_url; 
+    } catch (err) {
+        console.error("خطأ في الرفع:", err);
+        return "";
+    }
+}
+
+// 2. دالة نشر المنتج الجديدة (تأكد من وجود async)
+async function publishProd() {
+    const fileInput = document.getElementById('admProdFile');
+    const nameInput = document.getElementById('admProdName').value;
+    const priceInput = document.getElementById('admProdPrice').value;
+    const catSelect = document.getElementById('admProdCatSelect').value;
+
+    if(!fileInput.files[0] || !nameInput || !priceInput) {
+        return alert("يرجى إكمال بيانات المنتج واختيار الصورة");
+    }
+
+    alert("جاري رفع الصورة لشبابيك... يرجى الانتظار");
+
+    // هنا يتم الانتظار الفعلي للرفع لحل مشكلة الخطأ 404
+    const imageUrl = await uploadImg(fileInput.files[0]);
+    
+    if (imageUrl) {
+        db.ref('products').push({
+            category: catSelect,
+            name: nameInput,
+            price: priceInput,
+            img: imageUrl 
+        }).then(() => {
+            alert("تم رفع المنتج بنجاح!");
+            location.reload();
+        });
+    } else {
+        alert("فشل رفع الصورة، تأكد من اتصال الإنترنت");
+    }
+}
         // الانتظار الفعلي حتى اكتمال الرفع والحصول على الرابط
         const imageUrl = await uploadImg(fileInput.files[0]);
         
