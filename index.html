@@ -515,14 +515,20 @@ function openCalc(p) {
     if(hInput) hInput.value = ""; 
 }
 
-// --- نظام السلة والطلب ---
 function addToCart() { 
     const h = v('hIn'); 
-    if(!h || h<=0) return alert("أدخل الطول"); 
-    cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); 
+    if(!h || h <= 0) return alert("أدخل الطول بالمتر أولاً"); 
+    
+    // تخزين الصورة المحمية بالعلامة المائية لتظهر في السلة لاحقاً
+    cart.push({
+        n: cur.name, 
+        p: Math.round(h * cur.price).toLocaleString(),
+        img: getWatermarkedUrl(cur.img) 
+    }); 
+    
     document.getElementById('globalCartCount').innerText = cart.length; 
     confetti({particleCount:150, spread:70, origin:{y:0.6}}); 
-    alert("تمت الإضافة!"); 
+    alert("تمت إضافة " + cur.name + " إلى السلة بنجاح!"); 
 }
 
 function toggleCartModal() { 
