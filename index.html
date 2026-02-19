@@ -329,7 +329,35 @@
 رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق، ونسعى دائماً لتحقيق رضا عملائنا من خلال الجودة العالية والأسعار المنافسة والخدمة المتميزة....</p><div class="stat-grid"><div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div><div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div><div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div></div></div></div>
         <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;"><h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2><div><i class="fa-solid fa-phone"></i> 07883002797</div><div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a></div></div>
         <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
-        <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button></div></div>
+        <div id="productCalculator" class="page">
+    <div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;">
+        <div style="position:relative; width:100%; border-radius:25px; overflow:hidden; margin-bottom:25px; background:#eee;">
+            <img id="pImg" src="" style="width:100%; display:block; transition: 0.5s ease; mix-blend-mode: multiply;">
+            <div id="colorOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; transition: 0.5s; opacity: 0.3;"></div>
+        </div>
+
+        <h2 id="pName" style="font-weight:900;"></h2>
+
+        <div style="margin: 20px 0;">
+            <p style="font-size:0.9rem; font-weight:bold; margin-bottom:10px; color:var(--brown);">اختر لون القماش للتجربة:</p>
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+                <div onclick="applyColor('#ffffff', 'أبيض')" style="width:35px; height:35px; border-radius:50%; background:#fff; border:2px solid #ddd; cursor:pointer;" title="أبيض"></div>
+                <div onclick="applyColor('#d9b382', 'ذهبي')" style="width:35px; height:35px; border-radius:50%; background:#d9b382; cursor:pointer;" title="ذهبي شبابيك"></div>
+                <div onclick="applyColor('#3d2e24', 'بني')" style="width:35px; height:35px; border-radius:50%; background:#3d2e24; cursor:pointer;" title="بني"></div>
+                <div onclick="applyColor('#708090', 'رصاصي')" style="width:35px; height:35px; border-radius:50%; background:#708090; cursor:pointer;" title="رصاصي"></div>
+                <div onclick="applyColor('#4a5d4a', 'زيتوني')" style="width:35px; height:35px; border-radius:50%; background:#4a5d4a; cursor:pointer;" title="زيتوني"></div>
+            </div>
+            <p id="selectedColorName" style="font-size:0.8rem; margin-top:8px; color:var(--gold); font-weight:bold;"></p>
+        </div>
+
+        <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div>
+        
+        <input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center; font-size:1.1rem; border:2px solid #eee;">
+        
+        <button onclick="addToCart()" class="btn-gold" style="width:100%; padding:20px; font-size:1.2rem;">إضافة للسلة</button>
+        <button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px; font-weight:900;">إتمام الطلب الآن</button>
+    </div>
+</div>
         <div id="paymentPage" class="page"><div id="paymentList" style="padding: 40px 5%; max-width: 850px; margin: auto;"></div></div>
     </main>
 
