@@ -592,6 +592,7 @@ function handleSearch() {
     const query = v('searchInput').toLowerCase();
     const resBox = document.getElementById('searchRes');
     
+    // إخفاء الصندوق إذا كان البحث أقل من حرفين
     if(query.length < 2) { 
         resBox.style.display = 'none'; 
         return; 
@@ -599,8 +600,10 @@ function handleSearch() {
 
     db.ref('products').once('value', snap => {
         const data = snap.val() || {};
+        // تصفية المنتجات بناءً على الاسم المكتوب
         const found = Object.values(data).filter(p => p.name.toLowerCase().includes(query));
         
+        // بناء قائمة النتائج مع المصغرات
         resBox.innerHTML = found.map(p => `
             <div onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none"' 
                  style="padding:10px; border-bottom:1px solid #eee; cursor:pointer; display:flex; align-items:center; gap:15px;">
@@ -611,8 +614,10 @@ function handleSearch() {
             </div>
         `).join('') || '<p style="padding:15px;">لا توجد نتائج مطابقة</p>';
         
+        // إظهار صندوق النتائج
         resBox.style.display = 'block';
     });
+} // <--- هذا هو القوس الذي كان ناقصاً وتسبب في توقف الموقع
 </script> ```
 
 </body>
