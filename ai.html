@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دكتور ديكور - شبابيك AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --gold: #d9b382; --brown: #3d2e24; --white: #ffffff; }
+        body { margin: 0; font-family: 'Cairo', sans-serif; background: #fdfaf5; color: var(--brown); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        .ai-container { width: 90%; max-width: 500px; text-align: center; padding-top: 50px; }
+        .avatar-box { position: relative; width: 250px; height: 250px; margin: 0 auto 30px; border-radius: 50%; background: white; border: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(217,179,130,0.3); overflow: hidden; }
+        #drAvatar { width: 100%; height: 100%; object-fit: contain; transition: 0.5s ease; }
+        
+        .chat-bubble { background: white; padding: 20px; border-radius: 20px; border-right: 5px solid var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; line-height: 1.8; min-height: 80px; }
+        
+        .btn-upload { background: var(--gold); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-size: 1.1rem; font-weight: 900; cursor: pointer; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(217,179,130,0.4); }
+        .btn-upload:active { transform: scale(0.95); }
+        
+        .back-home { margin-top: 30px; text-decoration: none; color: var(--brown); font-weight: bold; font-size: 0.9rem; opacity: 0.7; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <div class="ai-container">
+        <div class="avatar-box">
+            <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" alt="Doctor Decor">
+        </div>
+
+        <h2 id="drStatus" style="font-weight: 900; margin-bottom: 10px;">أهلاً بك في مختبر شبابيك</h2>
+        
+        <div class="chat-bubble" id="aiResponse">
+            أنا دكتور ديكور، التقط صورة لغرفتك وسأحلل الألوان والإضاءة لأختار لك الستارة المثالية من تشكيلة شبابيك.
+        </div>
+
+        <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="startAnalysis(this)">
+        <button onclick="document.getElementById('aiCamera').click()" class="btn-upload">
+            <i class="fas fa-camera"></i> ابدأ الاستشارة الآن
+        </button>
+
+        <a href="index.html" class="back-home"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
+    </div>
+
+<script>
+async function startAnalysis(input) {
+    if (!input.files || !input.files[0]) return;
+
+    const box = document.getElementById('aiResponse');
+    const avatar = document.getElementById('drAvatar');
+    const status = document.getElementById('drStatus');
+
+    // 1. حالة التحليل
+    avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png"; // وضعية التفكير
+    status.innerText = "جاري قراءة الغرفة...";
+    box.innerHTML = `<i class="fas fa-spinner fa-spin"></i> انتظر قليلاً، أدرس تفاصيل الإضاءة والأثاث...`;
+
+    try {
+        const file = input.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = async (e) => {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = async () => {
+                // 2. تصغير الصورة لضمان السرعة
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 800;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * (MAX_WIDTH / img.width);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const base64Data = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+
+                // 3. الاتصال بالسيرفر
+                const response = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: base64Data })
+                });
+
+                const data = await response.json();
+
+                if (data && data.candidates) {
+                    // 4. عرض النتيجة
+                    avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+                    status.innerText = "اكتمل التحليل!";
+                    box.innerHTML = data.candidates[0].content.parts[0].text;
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                }
+            };
+        };
+        reader.readAsDataURL(file);
+    } catch (e) {
+        status.innerText = "خطأ في الاتصال";
+        box.innerHTML = "يرجى المحاولة مرة أخرى، يبدو أن هناك ضغطاً على السيرفر.";
+    }
+}
+</script>
+</body>
+</html>
