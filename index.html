@@ -493,23 +493,23 @@ function openCat(n) {
 function openCalc(p) { 
     cur = p; 
     
-    // 1. إظهار صفحة الحاسبة أولاً
+    // 1. إظهار صفحة الحاسبة أولاً ليصبح عنصر pImg مرئياً للمتصفح
     showPage('productCalculator'); 
     
-    // 2. تحديث نصوص المنتج
-    document.getElementById('pName').innerText = p.name; 
-    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
-    
-    // 3. الحل: تحديث عنصر الصورة pImg بالعلامة المائية
+    // 2. تحديث البيانات النصية للموديل والسعر
+    const nameElem = document.getElementById('pName');
+    const priceElem = document.getElementById('pPrice');
     const imgElem = document.getElementById('pImg');
+
+    if(nameElem) nameElem.innerText = p.name; 
+    if(priceElem) priceElem.innerText = parseInt(p.price).toLocaleString(); 
+    
+    // 3. تحديث الصورة وتطبيق العلامة المائية فوراً
     if(imgElem) {
-        // نستخدم دالة العلامة المائية لضمان حماية صور شبابيك
+        // التأكد من استخدام دالة getWatermarkedUrl التي أنشأناها لـ Cloudinary
         imgElem.src = getWatermarkedUrl(p.img); 
     }
 
-    // 4. تصفير حقل الطول
-    document.getElementById('hIn').value = ""; 
-}
     // 4. تصفير حقل الإدخال لعملية حسابية جديدة
     const hInput = document.getElementById('hIn');
     if(hInput) hInput.value = ""; 
