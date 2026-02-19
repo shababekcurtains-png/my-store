@@ -343,7 +343,7 @@
 
     <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
 
-   <script>
+ <script>
 const firebaseConfig = { 
     apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
     authDomain: "shababekcurtain.firebaseapp.com", 
@@ -364,7 +364,7 @@ function getWatermarkedUrl(url) {
     return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
 }
 
-// --- ٢. نظام التنقل والهاش ---
+// --- ٢. نظام التنقل الذكي والهاش ---
 function showPage(id, push = true) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const targetPage = document.getElementById(id);
@@ -377,17 +377,13 @@ function showPage(id, push = true) {
 
 function handleLogoClick() { 
     adminClicks++; 
-    if(adminClicks >= 5) { 
-        if(prompt("الرمز:") === "8496") showPage('adminPanel'); 
-        adminClicks = 0; 
-    } else { 
-        showPage('homePage'); 
-    } 
+    if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } 
+    else { showPage('homePage'); } 
 }
 
 // --- ٣. دوال العرض والمنتجات ---
 function openCat(n) { 
-    localStorage.setItem('lastCat', n);
+    localStorage.setItem('lastCat', n); // حفظ القسم للرفرش
     db.ref('products').once('value', snap => { 
         const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
         document.getElementById('catTitle').innerText = n; 
@@ -405,7 +401,7 @@ function openCat(n) {
 
 function openCalc(p) { 
     cur = p; 
-    localStorage.setItem('lastProd', JSON.stringify(p));
+    localStorage.setItem('lastProd', JSON.stringify(p)); // حفظ المنتج للرفرش
     showPage('productCalculator'); 
     document.getElementById('pName').innerText = p.name; 
     document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
@@ -435,8 +431,7 @@ async function handleDrImage(input) {
             img.onload = async () => {
                 const canvas = document.createElement('canvas');
                 const MAX_WIDTH = 600; 
-                const scale = MAX_WIDTH / img.width;
-                canvas.width = MAX_WIDTH; canvas.height = img.height * scale;
+                canvas.width = MAX_WIDTH; canvas.height = img.height * (MAX_WIDTH / img.width);
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 const base64Data = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
@@ -483,11 +478,7 @@ function toggleCartModal() {
     if(cart.length > 0) list.innerHTML += `<div style="margin-top:15px; font-weight:900; text-align:center; background:#eee; padding:10px;">الإجمالي: ${total.toLocaleString()} د.ع</div>`;
 }
 
-function removeFromCart(idx) { 
-    cart.splice(idx, 1); 
-    document.getElementById('globalCartCount').innerText = cart.length; 
-    toggleCartModal(); 
-}
+function removeFromCart(idx) { cart.splice(idx, 1); document.getElementById('globalCartCount').innerText = cart.length; toggleCartModal(); }
 
 function sendOrder() {
     if(cart.length === 0) return alert("السلة فارغة");
@@ -505,12 +496,12 @@ function handleSearch() {
     if(q.length < 2) return res.style.display = 'none';
     db.ref('products').once('value', snap => {
         const found = Object.values(snap.val() || {}).filter(p => p.name.toLowerCase().includes(q));
-        res.innerHTML = found.map(p => `<div onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none"' style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;">${p.name}</div>`).join('');
+        res.innerHTML = found.map(p => `<div onclick='openCalc(${JSON.stringify(p)}); res.style.display="none"' style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;">${p.name}</div>`).join('');
         res.style.display = 'block';
     });
 }
 
-// --- ٦. المحرك الموحد عند التحميل ---
+// --- ٦. محرك التشغيل الرئيسي (إصلاح اختفاء الأقسام) ---
 function loadInitialData() {
     db.ref('categories').on('value', snap => {
         const cats = snap.val() || {};
@@ -525,32 +516,30 @@ function loadInitialData() {
     });
 }
 
-// مراقبة زر الرجوع في المتصفح أو الهاتف لضمان عدم اختفاء المنتجات
-window.addEventListener('popstate', () => {
-    const currentHash = location.hash.replace('#', '');
-    
-    if (currentHash === 'categoryView') {
-        // عند الرجوع لصفحة القسم، نبحث عن آخر قسم مسجل ونعيد جلب منتجاته فوراً
+// مراقبة التنقل (الرجوع والرفرش) في مكان واحد موحد
+function handleNavigation() {
+    const hash = location.hash.replace('#', '');
+    if (hash === 'categoryView') {
         const savedCat = localStorage.getItem('lastCat');
         if (savedCat) openCat(savedCat); 
         else showPage('homePage', false);
     } 
-    else if (currentHash === 'productCalculator') {
-        // عند الرجوع لصفحة المنتج، نعيد بناء بيانات الحاسبة
+    else if (hash === 'productCalculator') {
         const savedProd = localStorage.getItem('lastProd');
         if (savedProd) openCalc(JSON.parse(savedProd)); 
         else showPage('homePage', false);
     }
     else {
-        // في الحالات الأخرى، نظهر الصفحة المطلوبة أو الرئيسية
-        showPage(currentHash || 'homePage', false);
+        showPage(hash || 'homePage', false);
     }
+}
+
+window.addEventListener('load', () => {
+    loadInitialData(); // جلب الأقسام من Firebase فوراً
+    handleNavigation(); // التحقق من الصفحة الحالية
 });
 
-window.addEventListener('popstate', () => {
-    const currentHash = location.hash.replace('#', '');
-    showPage(currentHash || 'homePage', false);
-});
+window.addEventListener('popstate', handleNavigation); // معالجة زر الرجوع
 </script>
 </body>
 </html>
