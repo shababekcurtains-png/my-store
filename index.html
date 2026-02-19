@@ -450,6 +450,31 @@ async function publishProd() {
         return alert("يرجى إكمال بيانات المنتج واختيار الصورة");
     }
 
+    // إظهار رسالة انتظار للمستخدم
+    alert("جاري رفع الصورة لشبابيك... يرجى الانتظار حتى تظهر رسالة النجاح");
+
+    try {
+        // الانتظار الفعلي حتى اكتمال الرفع والحصول على الرابط
+        const imageUrl = await uploadImg(fileInput.files[0]);
+        
+        if (imageUrl) {
+            // إضافة المنتج فقط بعد التأكد من وجود الرابط imageUrl
+            db.ref('products').push({
+                category: catSelect,
+                name: nameInput,
+                price: priceInput,
+                img: imageUrl 
+            }).then(() => {
+                alert("تم رفع المنتج بنجاح! سيظهر الآن في الأقسام");
+                location.reload(); // إعادة تحميل لضمان تحديث البيانات
+            });
+        }
+    } catch (error) {
+        console.error("خطأ في الرفع:", error);
+        alert("حدث خطأ أثناء الرفع، تأكد من جودة الإنترنت");
+    }
+}
+
     alert("جاري الرفع لـ Cloudinary... يرجى الانتظار");
 
     try {
