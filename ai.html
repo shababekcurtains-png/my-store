@@ -1,101 +1,490 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دكتور ديكور AI - شبابيك للستائر</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background: white; color: var(--brown); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* الهيدر الموحد */
-        header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; }
-        .nav-menu { display: inline-flex; gap: 20px; list-style: none; padding: 0 20px; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; }
+<title>دكتور ديكور AI - شبابيك للستائر</title>
 
-        /* قسم الذكاء الاصطناعي */
-        .ai-hero { background: var(--bg); padding: 50px 5%; text-align: center; min-height: 60vh; }
-        .avatar-container { width: 150px; height: 150px; background: white; border-radius: 50%; border: 4px solid var(--gold); margin: 0 auto 20px; overflow: hidden; }
-        #drAvatar { width: 100%; height: 100%; object-fit: contain; }
-        
-        .chat-bubble { background: white; padding: 25px; border-radius: 20px; border-right: 6px solid var(--gold); max-width: 600px; margin: 0 auto 30px; line-height: 1.8; text-align: right; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 18px 40px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; width: 100%; max-width: 400px; }
-        
-        footer { background: var(--brown); color: white; padding: 30px; text-align: center; margin-top: 50px; }
-    </style>
+<link rel="icon" href="https://i.ibb.co/3y1ZNCk0/1.png">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
+rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+
+<style>
+
+:root{
+
+--gold:#d9b382;
+--brown:#3d2e24;
+--bg:#f9f6f2;
+--white:#ffffff;
+--whatsapp:#25D366;
+
+}
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
+
+}
+
+body{
+
+background:white;
+color:var(--brown);
+
+}
+
+
+/* الشريط العلوي */
+
+.top-banner{
+
+background:var(--brown);
+color:white;
+padding:10px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+
+/* الهيدر */
+
+header{
+
+background:white;
+padding:10px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 4px 15px rgba(0,0,0,0.05);
+
+}
+
+.logo-img{
+
+height:80px;
+cursor:pointer;
+
+}
+
+
+/* القائمة */
+
+.nav-bar{
+
+background:#fcfcfc;
+border-bottom:1px solid #eee;
+padding:12px 0;
+
+}
+
+.nav-menu{
+
+display:flex;
+gap:25px;
+list-style:none;
+padding:0 20px;
+
+}
+
+.nav-menu a{
+
+text-decoration:none;
+color:var(--brown);
+font-weight:700;
+
+}
+
+.nav-menu a:hover{
+
+color:var(--gold);
+
+}
+
+
+/* منطقة AI */
+
+.ai-hero{
+
+background:var(--bg);
+padding:60px 20px;
+min-height:70vh;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+
+}
+
+
+.avatar-container{
+
+width:170px;
+height:170px;
+border-radius:50%;
+background:white;
+border:4px solid var(--gold);
+overflow:hidden;
+margin-bottom:25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+}
+
+#drAvatar{
+
+width:100%;
+height:100%;
+object-fit:contain;
+transition:0.3s;
+
+}
+
+
+.chat-bubble{
+
+background:white;
+padding:25px;
+border-radius:25px;
+border-right:6px solid var(--gold);
+max-width:600px;
+margin-bottom:25px;
+line-height:1.8;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+
+}
+
+
+.btn-gold{
+
+background:var(--gold);
+color:white;
+border:none;
+padding:18px 40px;
+border-radius:12px;
+font-weight:900;
+cursor:pointer;
+font-size:1.1rem;
+transition:0.3s;
+
+}
+
+.btn-gold:hover{
+
+background:var(--brown);
+
+}
+
+
+/* الفوتر */
+
+.footer-cta{
+
+background:var(--brown);
+color:white;
+padding:40px 5%;
+text-align:center;
+border-radius:40px 40px 0 0;
+
+}
+
+.btn-footer{
+
+padding:10px 20px;
+border-radius:8px;
+text-decoration:none;
+display:inline-block;
+margin:5px;
+
+}
+
+
+/* زر واتساب */
+
+.wa-float{
+
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+width:60px;
+height:60px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+
+}
+
+</style>
+
 </head>
+
+
 <body>
 
-    <header>
-        <div style="font-weight:900;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">للستائر</span></div>
-        <img src="https://i.ibb.co/3y1ZNCk0/1.png" style="height:70px; cursor:pointer;" onclick="location.href='index.html'">
-        <div style="width:50px;"></div> 
-    </header>
 
-    <div class="nav-bar">
-        <ul class="nav-menu">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="index.html?go=categories">المنتجات</a></li>
-            <li><a href="ai.html" style="color:var(--gold)">دكتور ديكور (AI)</a></li>
-            <li><a href="index.html#contactPage">تواصل معنا</a></li>
-        </ul>
-    </div>
+<div class="top-banner">
 
-    <main class="ai-hero">
-        <div class="avatar-container">
-            <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
-        </div>
-        <div class="chat-bubble" id="aiResponse">
-            أهلاً بك! أنا دكتور ديكور. التقط صورة لغرفتك وسأقترح عليك نوع القماش واللون المثالي لستائرك.
-        </div>
-        
-        <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="analyzeRoom(this)">
-        <button onclick="document.getElementById('aiCamera').click()" class="btn-gold">
-            <i class="fas fa-camera"></i> ابدأ الاستشارة الآن
-        </button>
-    </main>
+<span>دكتور ديكور - مستشارك الذكي</span>
 
-    <footer>
-        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر</p>
-    </footer>
+<a href="https://wa.me/9647883002797"
+style="color:#25D366;text-decoration:none;">
 
-    <script>
-    async function analyzeRoom(input) {
-        if (!input.files || !input.files[0]) return;
-        const box = document.getElementById('aiResponse');
-        const avatar = document.getElementById('drAvatar');
+<i class="fab fa-whatsapp"></i>
 
-        box.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري تحليل الغرفة...`;
+واتساب
 
-        const reader = new FileReader();
-        reader.readAsDataURL(input.files[0]);
-        reader.onload = async (e) => {
-            const base64Data = e.target.result.split(',')[1];
-            try {
-                const response = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        image: base64Data,
-                        prompt: "حلل الغرفة واقترح قماش ستائر مناسب (بلاك أوت، مخمل، شيفون) بلهجة عراقية." 
-                    })
-                });
-                const data = await response.json();
-                if (data && data.candidates) {
-                    box.innerHTML = data.candidates[0].content.parts[0].text;
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                }
-            } catch (err) {
-                box.innerHTML = "عذراً، حاول مرة أخرى.";
-            }
-        };
-    }
-    </script>
+</a>
+
+</div>
+
+
+<header>
+
+<div style="font-weight:900">
+
+شبابيك<br>
+
+<span style="color:var(--gold);font-size:0.8rem;">
+للستائر
+</span>
+
+</div>
+
+
+<img src="https://i.ibb.co/3y1ZNCk0/1.png"
+class="logo-img"
+onclick="location.href='index.html'">
+
+
+<div></div>
+
+</header>
+
+
+
+<div class="nav-bar">
+
+<ul class="nav-menu">
+
+<li><a href="index.html">الرئيسية</a></li>
+
+<li><a href="index.html?go=categories">المنتجات</a></li>
+
+<li><a href="ai.html" style="color:var(--gold)">دكتور AI</a></li>
+
+<li><a href="index.html#contactPage">تواصل معنا</a></li>
+
+</ul>
+
+</div>
+
+
+
+<main class="ai-hero">
+
+
+<div class="avatar-container">
+
+<img id="drAvatar"
+src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
+
+</div>
+
+
+
+<div id="aiResponse"
+class="chat-bubble">
+
+أهلاً بك! التقط صورة لغرفتك وسأقترح أفضل ستارة مناسبة.
+
+</div>
+
+
+
+<input type="file"
+id="aiCamera"
+accept="image/*"
+capture="environment"
+style="display:none"
+onchange="analyzeRoom(this)">
+
+
+
+<button class="btn-gold"
+onclick="aiCamera.click()">
+
+<i class="fas fa-camera"></i>
+
+ابدأ التحليل
+
+</button>
+
+
+</main>
+
+
+
+<div class="footer-cta">
+
+<h2>جاهز لتجديد منزلك؟</h2>
+
+
+<a href="https://wa.me/9647883002797"
+class="btn-footer"
+style="border:1px solid white;color:white;">
+
+واتساب
+
+</a>
+
+
+<a href="index.html?go=categories"
+class="btn-footer"
+style="background:var(--gold);color:white;">
+
+تصفح المنتجات
+
+</a>
+
+</div>
+
+
+
+<footer style="background:var(--brown);color:#aaa;padding:20px;text-align:center;">
+
+© 2026 شبابيك للستائر
+
+</footer>
+
+
+
+<a href="https://wa.me/9647883002797"
+class="wa-float">
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+
+
+<script>
+
+async function analyzeRoom(input){
+
+if(!input.files[0]) return;
+
+const box=document.getElementById("aiResponse");
+
+const avatar=document.getElementById("drAvatar");
+
+
+avatar.src="https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
+
+box.innerHTML="جاري تحليل الصورة...";
+
+
+const reader=new FileReader();
+
+reader.onload=async function(e){
+
+const img=new Image();
+
+img.onload=async function(){
+
+const canvas=document.createElement("canvas");
+
+const MAX=600;
+
+const scale=MAX/img.width;
+
+canvas.width=MAX;
+
+canvas.height=img.height*scale;
+
+const ctx=canvas.getContext("2d");
+
+ctx.drawImage(img,0,0,canvas.width,canvas.height);
+
+const base64=canvas.toDataURL("image/jpeg",0.7).split(",")[1];
+
+
+try{
+
+const response=await fetch(
+"https://shababek-ai.bilalmohammedsalem23.workers.dev",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+image:base64
+})
+}
+);
+
+const data=await response.json();
+
+
+avatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+
+
+if(data.success){
+
+box.innerHTML=data.result;
+
+confetti({
+
+particleCount:150,
+spread:80
+
+});
+
+}else{
+
+box.innerHTML="لم يتمكن الذكاء الاصطناعي من التحليل.";
+
+}
+
+}catch(err){
+
+avatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+
+box.innerHTML="فشل الاتصال بالخادم.";
+
+}
+
+};
+
+img.src=e.target.result;
+
+};
+
+reader.readAsDataURL(input.files[0]);
+
+}
+
+</script>
+
+
 </body>
 </html>
