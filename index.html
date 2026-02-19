@@ -492,29 +492,60 @@ function openCat(n) {
 
 function openCalc(p) { 
     cur = p; 
-    document.getElementById('pName').innerText = p.name; 
-    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
-    // تطبيق العلامة المائية عند العرض
-    document.getElementById('pImg').src = getWatermarkedUrl(p.img); 
-    document.getElementById('hIn').value = ""; 
+    // التأكد من وجود العناصر قبل تحديثها
+    const nameElem = document.getElementById('pName');
+    const priceElem = document.getElementById('pPrice');
+    const imgElem = document.getElementById('pImg');
+
+    if(nameElem) nameElem.innerText = p.name; 
+    if(priceElem) priceElem.innerText = parseInt(p.price).toLocaleString(); 
+    
+    // حل المشكلة: تحديث مصدر الصورة بالعلامة المائية
+    if(imgElem) {
+        imgElem.src = getWatermarkedUrl(p.img); 
+    }
+
+    // تصفير حقل الطول وفتح الصفحة
+    const hInput = document.getElementById('hIn');
+    if(hInput) hInput.value = ""; 
+    
     showPage('productCalculator'); 
+}
 }
 
 // --- نظام السلة والطلب ---
-function addToCart() { 
+function function addToCart() { 
     const h = v('hIn'); 
-    if(!h || h<=0) return alert("أدخل الطول"); 
-    cart.push({n: cur.name, p: Math.round(h*cur.price).toLocaleString()}); 
+    if(!h || h <= 0) return alert("أدخل الطول بالمتر أولاً"); 
+    
+    // تخزين الاسم والسعر والصورة
+    cart.push({
+        n: cur.name, 
+        p: Math.round(h * cur.price).toLocaleString(),
+        img: getWatermarkedUrl(cur.img) // تخزين الرابط المحمي
+    }); 
+    
     document.getElementById('globalCartCount').innerText = cart.length; 
     confetti({particleCount:150, spread:70, origin:{y:0.6}}); 
-    alert("تمت الإضافة!"); 
+    alert("تمت إضافة " + cur.name + " إلى سلتك بنجاح!"); 
+}
 }
 
 function toggleCartModal() { 
     const o = document.getElementById('cartOverlay'); 
     o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; 
+    
     const list = document.getElementById('cartItemsList'); 
-    list.innerHTML = cart.map(i => `<div class="cart-item"><span>${i.n}</span><b>${i.p} د.ع</b></div>`).join(''); 
+    // إضافة المصغرات بجانب اسم الموديل في السلة
+    list.innerHTML = cart.map(i => `
+        <div class="cart-item" style="display:flex; align-items:center; gap:10px; padding:10px 0;">
+            <img src="${i.img}" style="width:40px; height:40px; border-radius:5px; object-fit:cover;">
+            <div style="flex:1;">
+                <div style="font-weight:bold;">${i.n}</div>
+                <div style="font-size:0.8rem; color:var(--gold);">${i.p} د.ع</div>
+            </div>
+        </div>
+    `).join(''); 
 }
 
 function sendOrder() {
