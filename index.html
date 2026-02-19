@@ -343,8 +343,7 @@
 
     <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
 
-    <script>
-    <script>
+   <script>
 const firebaseConfig = { 
     apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
     authDomain: "shababekcurtain.firebaseapp.com", 
@@ -378,13 +377,17 @@ function showPage(id, push = true) {
 
 function handleLogoClick() { 
     adminClicks++; 
-    if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } 
-    else { showPage('homePage'); } 
+    if(adminClicks >= 5) { 
+        if(prompt("الرمز:") === "8496") showPage('adminPanel'); 
+        adminClicks = 0; 
+    } else { 
+        showPage('homePage'); 
+    } 
 }
 
 // --- ٣. دوال العرض والمنتجات ---
 function openCat(n) { 
-    localStorage.setItem('lastCat', n); // حفظ الحالة للرفرش
+    localStorage.setItem('lastCat', n);
     db.ref('products').once('value', snap => { 
         const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
         document.getElementById('catTitle').innerText = n; 
@@ -402,7 +405,7 @@ function openCat(n) {
 
 function openCalc(p) { 
     cur = p; 
-    localStorage.setItem('lastProd', JSON.stringify(p)); // حفظ الحالة للرفرش
+    localStorage.setItem('lastProd', JSON.stringify(p));
     showPage('productCalculator'); 
     document.getElementById('pName').innerText = p.name; 
     document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
@@ -411,7 +414,7 @@ function openCalc(p) {
     document.getElementById('hIn').value = ""; 
 }
 
-// --- ٤. دالة دكتور ديكور (AI) المصلحة ---
+// --- ٤. دالة دكتور ديكور (AI) ---
 async function handleDrImage(input) {
     if (!input.files || !input.files[0]) return;
     const box = document.getElementById('aiResponse');
@@ -480,7 +483,11 @@ function toggleCartModal() {
     if(cart.length > 0) list.innerHTML += `<div style="margin-top:15px; font-weight:900; text-align:center; background:#eee; padding:10px;">الإجمالي: ${total.toLocaleString()} د.ع</div>`;
 }
 
-function removeFromCart(idx) { cart.splice(idx, 1); document.getElementById('globalCartCount').innerText = cart.length; toggleCartModal(); }
+function removeFromCart(idx) { 
+    cart.splice(idx, 1); 
+    document.getElementById('globalCartCount').innerText = cart.length; 
+    toggleCartModal(); 
+}
 
 function sendOrder() {
     if(cart.length === 0) return alert("السلة فارغة");
@@ -503,7 +510,7 @@ function handleSearch() {
     });
 }
 
-// --- ٦. المحرك الموحد عند التحميل (إصلاح اختفاء الأقسام) ---
+// --- ٦. المحرك الموحد عند التحميل ---
 function loadInitialData() {
     db.ref('categories').on('value', snap => {
         const cats = snap.val() || {};
@@ -535,7 +542,7 @@ window.addEventListener('load', () => {
     } else {
         showPage('homePage', false);
     }
-    loadInitialData(); // جلب الأقسام فوراً
+    loadInitialData();
 });
 
 window.addEventListener('popstate', () => {
@@ -543,8 +550,5 @@ window.addEventListener('popstate', () => {
     showPage(currentHash || 'homePage', false);
 });
 </script>
-</script>
-
-    
 </body>
 </html>
