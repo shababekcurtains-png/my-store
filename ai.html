@@ -3,265 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دكتور ديكور AI - شبابيك للستائر</title>
-
-<link rel="icon" href="https://i.ibb.co/3y1ZNCk0/1.png">
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
+<title>دكتور ديكور - شبابيك للستائر</title>
 <style>
-
-:root{
---gold:#d9b382;
---brown:#3d2e24;
---bg:#f9f6f2;
---white:#ffffff;
-}
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:'Cairo',sans-serif;
-}
-
-body{
-background:white;
-color:var(--brown);
-}
-
-header{
-background:white;
-padding:15px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
-}
-
-.logo-img{
-height:70px;
-cursor:pointer;
-}
-
-.nav-bar{
-background:#fafafa;
-padding:10px;
-text-align:center;
-}
-
-.nav-bar a{
-margin:0 15px;
-text-decoration:none;
-font-weight:bold;
-color:var(--brown);
-}
-
-.ai-hero{
-background:var(--bg);
-padding:50px 20px;
-text-align:center;
-min-height:80vh;
-}
-
-.avatar-container{
-width:160px;
-height:160px;
-margin:auto;
-border-radius:50%;
-border:4px solid var(--gold);
-background:white;
-overflow:hidden;
-box-shadow:0 10px 20px rgba(0,0,0,0.1);
-margin-bottom:20px;
-}
-
-.avatar-container img{
-width:100%;
-height:100%;
-object-fit:contain;
-}
-
-.chat-bubble{
-background:white;
-padding:20px;
-border-radius:20px;
-border-right:5px solid var(--gold);
-max-width:600px;
-margin:auto;
-margin-bottom:20px;
-box-shadow:0 5px 15px rgba(0,0,0,0.05);
-}
-
-.btn{
-background:var(--gold);
-color:white;
-border:none;
-padding:15px 30px;
-border-radius:10px;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.btn:hover{
-background:var(--brown);
-}
-
-footer{
-background:var(--brown);
-color:white;
-text-align:center;
-padding:20px;
-}
-
+  body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background:#f9f6f2; }
+  .chat-bubble { background:white; padding:20px; border-radius:20px; border-right:5px solid #d9b382; margin:20px auto; max-width:500px; }
+  .btn-gold { background:#d9b382; color:white; padding:15px 30px; border:none; border-radius:12px; cursor:pointer; font-weight:bold; }
 </style>
 </head>
-
 <body>
 
-<header>
-
-<div style="font-weight:900">
-شبابيك<br>
-<span style="color:var(--gold)">للستائر</span>
-</div>
-
-<img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
-
-<div></div>
-
-</header>
-
-<div class="nav-bar">
-
-<a href="#">الرئيسية</a>
-<a href="#">المنتجات</a>
-<a href="#">دكتور ديكور</a>
-<a href="#">تواصل</a>
-
-</div>
-
-<main class="ai-hero">
-
-<div class="avatar-container">
-
-<img id="avatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
-
-</div>
-
-<div class="chat-bubble" id="aiResponse">
-
-أهلاً بك، التقط صورة لغرفتك وسأقترح أفضل ستارة مناسبة.
-
-</div>
-
-<input type="file" id="fileInput" accept="image/*" style="display:none">
-
-<button class="btn" onclick="selectImage()">
-
-📷 ابدأ الاستشارة
-
-</button>
-
-</main>
-
-<footer>
-
-© 2026 شبابيك للستائر
-
-</footer>
+<h2>دكتور ديكور</h2>
+<div class="chat-bubble" id="aiResponse">أهلاً! التقط صورة لغرفتك لتلقي اقتراح الستائر.</div>
+<input type="file" id="aiCamera" accept="image/*" capture="environment" style="display:none" onchange="analyzeRoom(this)">
+<br>
+<button class="btn-gold" onclick="document.getElementById('aiCamera').click()">📸 ابدأ الاستشارة</button>
 
 <script>
-
-function selectImage(){
-
-document.getElementById("fileInput").click()
-
+async function analyzeRoom(input) {
+  if (!input.files || !input.files[0]) return;
+  const box = document.getElementById('aiResponse');
+  box.innerHTML = "⏳ جاري تحليل الغرفة...";
+  const reader = new FileReader();
+  reader.readAsDataURL(input.files[0]);
+  reader.onload = async (e) => {
+    try {
+      const base64Data = e.target.result.split(',')[1];
+      const response = await fetch("https://0.bilalmohammedsalem23.workers.dev/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64Data })
+      });
+      const data = await response.json();
+      box.innerHTML = data.reply;
+    } catch (err) {
+      box.innerHTML = "❌ فشل الاتصال: " + err.message;
+    }
+  };
 }
-
-document.getElementById("fileInput").addEventListener("change", analyzeImage)
-
-async function analyzeImage(event){
-
-const file = event.target.files[0]
-
-if(!file) return
-
-const avatar = document.getElementById("avatar")
-
-const box = document.getElementById("aiResponse")
-
-avatar.src="https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png"
-
-box.innerHTML="⏳ جاري تحليل الصورة..."
-
-const reader = new FileReader()
-
-reader.onload = async function(e){
-
-const img = new Image()
-
-img.src = e.target.result
-
-img.onload = async function(){
-
-const canvas = document.createElement("canvas")
-
-const maxWidth = 600
-
-canvas.width = maxWidth
-
-canvas.height = img.height * (maxWidth / img.width)
-
-const ctx = canvas.getContext("2d")
-
-ctx.drawImage(img,0,0,canvas.width,canvas.height)
-
-const base64 = canvas.toDataURL("image/jpeg",0.7).split(",")[1]
-
-try{
-
-const response = await fetch("https://0.bilalmohammedsalem23.workers.dev/",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-image:base64
-})
-
-})
-
-const data = await response.json()
-
-avatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png"
-
-box.innerHTML=data.reply
-
-confetti()
-
-}catch(error){
-
-box.innerHTML="❌ فشل الاتصال بالذكاء الاصطناعي"
-
-}
-
-}
-
-}
-
-reader.readAsDataURL(file)
-
-}
-
 </script>
 
 </body>
