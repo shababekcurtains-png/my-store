@@ -366,12 +366,21 @@ function getWatermarkedUrl(url) {
 
 // --- نظام التنقل ---
 function showPage(id, push = true) {
+    // 1. إخفاء جميع الصفحات
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    window.scrollTo(0,0);
-    if(push) history.pushState({pageId: id}, null, "");
+    
+    // 2. إظهار الصفحة المطلوبة
+    const targetPage = document.getElementById(id);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        window.scrollTo(0, 0);
+        
+        // 3. تحديث الرابط في المتصفح لضمان الرجوع المنطقي والبقاء عند الـ Refresh
+        if (push) {
+            location.hash = id; 
+        }
+    }
 }
-
 function handleLogoClick() { 
     adminClicks++; 
     if(adminClicks >= 5) { if(prompt("الرمز:") === "8496") showPage('adminPanel'); adminClicks = 0; } 
@@ -384,20 +393,24 @@ function openCat(n) {
         const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
         document.getElementById('catTitle').innerText = n; 
         document.getElementById('catGrid').innerHTML = items.map(x => `
-            <div style="background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 15px rgba(0,0,0,0.05);" onclick='openCalc(${JSON.stringify(x)})'>
+            <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})'>
                 <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
                 <div style="padding:20px;text-align:center;">
                     <h3>${x.name}</h3>
                     <p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p>
                 </div>
             </div>`).join(''); 
+        
+        // تسجيل الدخول لقسم معين في الهاش
         showPage('categoryView'); 
     }); 
 }
 
 function openCalc(p) { 
     cur = p; 
+    // تسجيل الدخول لصفحة المنتج/الحاسبة في الهاش
     showPage('productCalculator'); 
+    
     document.getElementById('pName').innerText = p.name; 
     document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
     const imgElem = document.getElementById('pImg');
@@ -517,6 +530,29 @@ db.ref('categories').on('value', snap => {
             <img src="${c.img}" style="width:100%; height:100%; object-fit:cover;">
             <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:12px; font-weight:900;">${c.name}</div>
         </div>`).join('');
+});
+        // تشغيل هذا الكود فور تحميل الموقع أو إعادة التنشيط (Refresh)
+window.addEventListener('load', () => {
+    // قراءة الصفحة المطلوبة من الرابط (Hash)
+    const currentHash = location.hash.replace('#', '');
+    
+    if (currentHash && document.getElementById(currentHash)) {
+        // إذا وجدنا "هاش" في الرابط، ابقَ في تلك الصفحة
+        showPage(currentHash, false);
+    } else {
+        // إذا كان الرابط فارغاً، اذهب للرئيسية
+        showPage('homePage', false);
+    }
+});
+
+// مراقبة "زر الرجوع" في المتصفح أو الهاتف
+window.addEventListener('popstate', () => {
+    const currentHash = location.hash.replace('#', '');
+    if (currentHash) {
+        showPage(currentHash, false);
+    } else {
+        showPage('homePage', false);
+    }
 });
 </script>
 
