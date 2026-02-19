@@ -519,14 +519,21 @@ db.ref('categories').on('value', snap => {
 });
         // تشغيل هذا الكود فور تحميل الموقع أو إعادة التنشيط (Refresh)
 window.addEventListener('load', () => {
-    // قراءة الصفحة المطلوبة من الرابط (Hash)
     const currentHash = location.hash.replace('#', '');
     
-    if (currentHash && document.getElementById(currentHash)) {
-        // إذا وجدنا "هاش" في الرابط، ابقَ في تلك الصفحة
+    if (currentHash === 'categoryView') {
+        const savedCat = localStorage.getItem('lastCat');
+        if (savedCat) openCat(savedCat); // إعادة فتح القسم بصوره
+        else showPage('homePage', false);
+    } 
+    else if (currentHash === 'productCalculator') {
+        const savedProd = localStorage.getItem('lastProd');
+        if (savedProd) openCalc(JSON.parse(savedProd)); // إعادة فتح المنتج بصورته
+        else showPage('homePage', false);
+    }
+    else if (currentHash && document.getElementById(currentHash)) {
         showPage(currentHash, false);
     } else {
-        // إذا كان الرابط فارغاً، اذهب للرئيسية
         showPage('homePage', false);
     }
 });
