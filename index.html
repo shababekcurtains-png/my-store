@@ -468,16 +468,16 @@ async function handleDrImage(input) {
     const avatar = document.getElementById('drAvatar');
     const status = document.getElementById('drStatus');
 
-    // تهيئة الواجهة
+    // تغيير تعبير الوجه والبدء
     if(avatar) avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
-    status.innerText = "دكتور ديكور يحلل الآن...";
+    status.innerText = "دكتور ديكور يحلل غرفتك الآن...";
     box.style.display = "block";
-    box.innerHTML = `<div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin"></i> جاري إرسال الصورة للمختبر...</div>`;
+    box.innerHTML = `<div style="text-align:center; padding:10px;"><i class="fas fa-spinner fa-spin"></i> جاري استشارة الخبراء...</div>`;
 
     try {
         const file = input.files[0];
         
-        // محرك معالجة الصور لضمان عدم تعليق التحليل
+        // معالجة وضغط الصورة لضمان استقرار الإرسال
         const processImage = (file) => {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -485,7 +485,7 @@ async function handleDrImage(input) {
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800; // حجم مثالي للذكاء الاصطناعي
+                        const MAX_WIDTH = 800; 
                         const scale = MAX_WIDTH / img.width;
                         canvas.width = MAX_WIDTH;
                         canvas.height = img.height * scale;
@@ -499,6 +499,44 @@ async function handleDrImage(input) {
             });
         };
 
+        const base64Data = await processImage(file);
+
+        // إرسال الطلب للسيرفر
+        const response = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: base64Data })
+        });
+
+        const data = await response.json();
+
+        // --- إصلاح السطر 523: التحقق الذكي من الرد ---
+        let aiText = "";
+        if (data && data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
+            aiText = data.candidates[0].content.parts[0].text;
+        } else if (data && data.error) {
+            aiText = "عذراً، واجه السيرفر خطأ: " + data.error;
+        } else {
+            throw new Error("Invalid AI Response Structure");
+        }
+
+        // عرض النتيجة بنجاح
+        if(avatar) avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+        status.innerText = "وجدتها! إليك نصيحة دكتور ديكور:";
+        box.innerHTML = `
+            <div style="padding:20px; border-radius:15px; background:#fff; border-right:6px solid var(--gold); box-shadow:0 10px 30px rgba(0,0,0,0.1); color:var(--brown); line-height:1.8;">
+                ${aiText}
+            </div>`;
+        
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+
+    } catch (error) {
+        console.error("AI Error:", error);
+        if(avatar) avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+        status.innerText = "عذراً، فشل التحليل!";
+        box.innerHTML = `<div style="color:red; text-align:center; padding:15px;">خطأ في تنسيق البيانات من السيرفر. تأكد من إعدادات الـ Worker.</div>`;
+    }
+}
         const base64Data = await processImage(file);
 
         // إرسال الطلب للسيرفر (POST Request)
