@@ -492,29 +492,21 @@ function openCat(n) {
 
 function openCalc(p) { 
     cur = p; 
-    
-    // 1. إظهار صفحة الحاسبة أولاً
+    // 1. اظهر الصفحة أولاً لضمان وجود عنصر pImg
     showPage('productCalculator'); 
     
-    // 2. تحديث نصوص المنتج
+    // 2. حدث البيانات
     document.getElementById('pName').innerText = p.name; 
     document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
     
-    // 3. الحل: تحديث عنصر الصورة pImg بالعلامة المائية
+    // 3. ضع الصورة بالعلامة المائية
     const imgElem = document.getElementById('pImg');
     if(imgElem) {
-        // نستخدم دالة العلامة المائية لضمان حماية صور شبابيك
         imgElem.src = getWatermarkedUrl(p.img); 
     }
-
-    // 4. تصفير حقل الطول
+    
     document.getElementById('hIn').value = ""; 
 }
-    // 4. تصفير حقل الإدخال لعملية حسابية جديدة
-    const hInput = document.getElementById('hIn');
-    if(hInput) hInput.value = ""; 
-}
-
 function addToCart() { 
     const h = v('hIn'); 
     if(!h || h <= 0) return alert("أدخل الطول بالمتر أولاً"); 
@@ -535,13 +527,12 @@ function toggleCartModal() {
     o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; 
     
     const list = document.getElementById('cartItemsList'); 
-    // التعديل هنا: أضفنا وسم img لعرض الصورة المخزنة i.img
     list.innerHTML = cart.map(i => `
-        <div class="cart-item" style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #eee;">
+        <div class="cart-item" style="display:flex; align-items:center; gap:15px; padding:10px 0;">
             <img src="${i.img}" style="width:50px; height:50px; border-radius:8px; object-fit:cover; border:1px solid var(--gold);">
             <div style="flex:1;">
-                <div style="font-weight:bold; color:var(--brown);">${i.n}</div>
-                <div style="font-size:0.9rem; color:var(--gold); font-weight:900;">${i.p} د.ع</div>
+                <div style="font-weight:bold;">${i.n}</div>
+                <div style="color:var(--gold); font-weight:900;">${i.p} د.ع</div>
             </div>
         </div>
     `).join(''); 
@@ -622,7 +613,6 @@ function handleSearch() {
         
         resBox.style.display = 'block';
     });
-}
 </script> ```
 
 </body>
