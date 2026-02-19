@@ -572,5 +572,23 @@ window.addEventListener('popstate', () => {
     else showPage(hash || 'homePage', false);
 });
 </script>
+    <script>
+window.addEventListener('load', function() {
+    // التحقق إذا كان الزبون يريد الذهاب للمنتجات
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('go') === 'categories') {
+        const target = document.getElementById('categories');
+        if (target) {
+            // تأخير بسيط 500ms لضمان تحميل الصور والأقسام أولاً
+            setTimeout(() => {
+                window.scrollTo({
+                    top: target.offsetTop - 100, // ترك مسافة بسيطة تحت الهيدر
+                    behavior: 'smooth'
+                });
+            }, 500);
+        }
+    }
+});
+</script>
 </body>
 </html>
