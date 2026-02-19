@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>نادي شبابيك الذهبي - برنامج الولاء</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+    <style>
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background: var(--white); color: var(--brown); overflow-x: hidden; }
+
+        /* الهيدر الموحد */
+        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .logo-img { height: 80px; cursor: pointer; }
+
+        /* الشريط الرئيسي الموحد */
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; font-size: 1rem; transition: 0.3s; }
+        .nav-menu a:hover { color: var(--gold); }
+
+        /* تصميم البطاقة والمحتوى */
+        .loyalty-hero { background: var(--bg); padding: 50px 5%; text-align: center; min-height: 60vh; display: flex; flex-direction: column; align-items: center; }
+        .membership-card { 
+            background: linear-gradient(135deg, #3d2e24 0%, #5a4537 100%);
+            color: white; width: 100%; max-width: 400px; padding: 35px; border-radius: 25px;
+            position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(61,46,36,0.3); margin-bottom: 30px;
+        }
+        .membership-card::after { content: ''; position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: rgba(217,179,130,0.15); border-radius: 50%; }
+        .card-label { font-size: 0.9rem; opacity: 0.8; font-weight: 600; }
+        .points-val { font-size: 3.5rem; font-weight: 900; color: var(--gold); margin: 15px 0; }
+
+        .rewards-list { width: 100%; max-width: 450px; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .reward-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-bottom: 1px solid #eee; text-align: right; }
+        .reward-item:last-child { border-bottom: none; }
+        .reward-icon { background: var(--bg); color: var(--gold); width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 18px 40px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; width: 100%; max-width: 400px; margin-top: 30px; }
+        .btn-gold:hover { background: var(--brown); transform: translateY(-3px); }
+
+        /* الفوتر الموحد */
+        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; margin-top: 50px; }
+        .btn-footer { padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: 600; margin: 5px; }
+        footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 30px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div class="top-banner">
+        <span>عضوية نادي شبابيك الذهبي</span>
+        <a href="https://wa.me/9647883002797" style="color:var(--whatsapp); text-decoration:none; font-weight:bold;"><i class="fab fa-whatsapp"></i> استفسار سريع</a>
+    </div>
+
+    <header>
+        <div style="font-weight:900; line-height:1;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">للستائر</span></div>
+        <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="location.href='index.html'">
+        <div style="width: 50px;"></div> 
+    </header>
+
+    <div class="nav-bar">
+        <ul class="nav-menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="index.html?go=categories">المنتجات</a></li>
+            <li><a href="ai.html">دكتور ديكور</a></li>
+            <li><a href="loyalty.html" style="color:var(--gold)">نادي النقاط</a></li>
+            <li><a href="index.html#paymentPage">طرق الدفع</a></li>
+            <li><a href="index.html#contactPage">تواصل معنا</a></li>
+        </ul>
+    </div>
+
+    <main class="loyalty-hero">
+        <h2 style="font-weight: 900; margin-bottom: 25px;">مرحباً بك في النادي الذهبي</h2>
+
+        <div class="membership-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="card-label">نقاطك الحالية</span>
+                <i class="fas fa-crown" style="color: var(--gold); font-size: 1.5rem;"></i>
+            </div>
+            <div id="userPoints" class="points-val">0</div>
+            <p style="font-size: 0.85rem; opacity: 0.9;">شكراً لثقتك بـ شبابيك للستائر</p>
+        </div>
+
+        <div class="rewards-list">
+            <div class="reward-item">
+                <div class="reward-icon"><i class="fas fa-gift"></i></div>
+                <div><b>هدية الانضمام</b><p style="font-size: 0.75rem; color: #777;">حصلت على 50 نقطة ترحيبية فوراً</p></div>
+            </div>
+            <div class="reward-item">
+                <div class="reward-icon"><i class="fas fa-truck"></i></div>
+                <div><b>تركيب مجاني</b><p style="font-size: 0.75rem; color: #777;">عند الوصول إلى 500 نقطة</p></div>
+            </div>
+            <div class="reward-item">
+                <div class="reward-icon"><i class="fas fa-percentage"></i></div>
+                <div><b>خصم VIP</b><p style="font-size: 0.75rem; color: #777;">خصم خاص لعملائنا الأكثر وفاءً</p></div>
+            </div>
+        </div>
+
+        <button onclick="redeemPoints()" class="btn-gold">استبدل نقاطك عبر واتساب</button>
+    </main>
+
+    <div class="footer-cta">
+        <h2 style="margin-bottom: 15px;">جاهز لتجديد ستائر منزلك؟</h2>
+        <a href="https://wa.me/9647883002797" class="btn-footer" style="border: 1px solid rgba(255,255,255,0.4); color: white;">تواصل عبر واتساب</a>
+        <a href="index.html?go=categories" class="btn-footer" style="background: var(--gold); color: white;">تصفح المنتجات</a>
+    </div>
+
+    <footer>
+        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
+    </footer>
+
+    <a href="https://wa.me/9647883002797" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+    let pts = localStorage.getItem('shababek_pts') || 0;
+    
+    // منح نقاط ترحيبية لأول مرة
+    if (!localStorage.getItem('shababek_joined')) {
+        pts = 50;
+        localStorage.setItem('shababek_pts', pts);
+        localStorage.setItem('shababek_joined', 'true');
+        setTimeout(() => confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }), 500);
+    }
+
+    document.getElementById('userPoints').innerText = pts;
+
+    function redeemPoints() {
+        const msg = `مرحباً شبابيك، أنا عضو في النادي الذهبي ورصيدي الحالي (${pts}) نقطة. أود الاستفسار عن المكافآت المتاحة لي.`;
+        window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
+    }
+</script>
+</body>
+</html>
