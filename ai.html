@@ -134,7 +134,33 @@ async function analyzeRoom(input) {
         }
     };
 }
-</script>
+    async function testWorker() {
+  const fileInput = document.getElementById('aiCamera');
+  if (!fileInput.files[0]) return alert("اختر صورة أولاً!");
 
+  const reader = new FileReader();
+  reader.readAsDataURL(fileInput.files[0]);
+  reader.onload = async (e) => {
+    const base64Data = e.target.result.split(',')[1];
+
+    const response = await fetch("https://0.bilalmohammedsalem23.workers.dev/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: base64Data })
+    });
+
+    const result = await response.json();
+    console.log("رد الـ Worker:", result);
+    alert(JSON.stringify(result, null, 2));
+  };
+}
+</script>
+<main>
+  <!-- ملف الصورة -->
+  <input type="file" id="aiCamera" accept="image/*">
+
+  <!-- زر الاختبار -->
+  <button onclick="testWorker()">اختبر وصول الصورة إلى الـ Worker</button>
+</main>
 </body>
 </html>
