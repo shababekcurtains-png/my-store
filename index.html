@@ -13,43 +13,42 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* زر واتساب العائم */
+        
+    /* زر واتساب العائم النابض */
 .floating-wa {
     position: fixed;
-    bottom: 25px;
-    left: 25px; /* يمكنك تغييرها إلى right إذا أردت */
-    width: 65px;
-    height: 65px;
+    bottom: 20px;
+    right: 20px; /* يناسب المواقع العربية */
+    width: 50px;   /* أصغر حجم */
+    height: 50px;  /* أصغر حجم */
     background: #25D366;
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    text-decoration: none;
+    font-size: 24px; /* أصغر أيقونة */
     z-index: 9999;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     animation: waPulse 1.8s infinite;
-    transition: 0.3s;
+    opacity: 0;  /* يبدأ مخفي */
+    transition: opacity 0.6s ease, transform 0.3s ease;
+}
+
+.floating-wa.show {
+    opacity: 1; /* يظهر */
+    transform: scale(1);
 }
 
 .floating-wa:hover {
-    transform: scale(1.15);
+    transform: scale(1.2);
 }
 
 /* تأثير النبض */
 @keyframes waPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 20px rgba(37, 211, 102, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-    }
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
@@ -383,6 +382,18 @@
     <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
 
     <script>
+        // إنشاء صوت خفيف
+const waSound = new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
+
+// إظهار الزر بعد 3 ثواني مع صوت
+setTimeout(() => {
+    const waBtn = document.querySelector('.floating-wa');
+    if(waBtn){
+        waBtn.classList.add('show'); // يضيف الكلاس ليظهر
+        waSound.play().catch(e=>console.log("صوت ممنوع تلقائياً في المتصفح")); 
+    }
+}, 3000);
+
        const firebaseConfig = { 
     apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
     authDomain: "shababekcurtain.firebaseapp.com", 
@@ -662,11 +673,12 @@ function handleSearch() {
     });
 }
 </script> ```
-<a href="https://wa.me/9647883002797" 
+
+<!-- زر واتساب العائم -->
+<a href="https://wa.me/9647883002797?text=مرحباً، أريد الاستفسار عن الستائر" 
    class="floating-wa" 
-   target="_blank"
+   target="_blank" 
    title="تواصل معنا عبر واتساب">
-   
    <i class="fab fa-whatsapp"></i>
 </a>
 
