@@ -474,6 +474,7 @@ async function publishProd() {
 }
 
 // --- دوال العرض والمنتجات ---
+// --- دوال العرض والمنتجات ---
 function openCat(n) { 
     db.ref('products').once('value', snap => { 
         const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
@@ -490,6 +491,95 @@ function openCat(n) {
     }); 
 }
 
+// --- دالة العلامة المائية المصححة ---
+function getWatermarkedUrl(originalUrl) {
+    if (!originalUrl || !originalUrl.includes("cloudinary.com")) return originalUrl;
+    const transformation = `l_shababek_logo,o_20,w_200,g_center`; 
+    return originalUrl.replace("/upload/", `/upload/${transformation}/`);
+}
+
+// --- دالة فتح الحاسبة المصلحة ---
+function openCalc(p) { 
+    cur = p; 
+    showPage('productCalculator'); 
+    document.getElementById('pName').innerText = p.name; 
+    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
+    
+    const imgElem = document.getElementById('pImg');
+    if(imgElem) {
+        imgElem.src = getWatermarkedUrl(p.img); 
+    }
+    document.getElementById('hIn').value = ""; 
+}
+
+// --- نظام السلة المصلح مع الصور المصغرة ---
+function addToCart() { 
+    const h = document.getElementById('hIn').value; 
+    if(!h || h <= 0) return alert("أدخل الطول بالمتر أولاً"); 
+    
+    cart.push({
+        n: cur.name, 
+        p: Math.round(h * cur.price).toLocaleString(),
+        img: getWatermarkedUrl(cur.img) 
+    }); 
+    
+    document.getElementById('globalCartCount').innerText = cart.length; 
+    confetti({particleCount:150, spread:70, origin:{y:0.6}}); 
+    alert("تمت إضافة " + cur.name + " إلى السلة بنجاح!"); 
+}
+
+function toggleCartModal() { 
+    const o = document.getElementById('cartOverlay'); 
+    o.style.display = o.style.display === 'flex' ? 'none' : 'flex'; 
+    
+    const list = document.getElementById('cartItemsList'); 
+    list.innerHTML = cart.map(i => `
+        <div class="cart-item" style="display:flex; align-items:center; gap:15px; padding:10px 0; border-bottom:1px solid #eee;">
+            <img src="${i.img}" style="width:50px; height:50px; border-radius:8px; object-fit:cover; border:1px solid var(--gold);">
+            <div style="flex:1;">
+                <div style="font-weight:bold; color:var(--brown);">${i.n}</div>
+                <div style="font-size:0.9rem; color:var(--gold); font-weight:900;">${i.p} د.ع</div>
+            </div>
+        </div>
+    `).join(''); 
+}
+
+function sendOrder() {
+    if(cart.length === 0) return alert("السلة فارغة");
+    const city = document.getElementById('userCity').value;
+    const pay = document.getElementById('userPayment').value;
+    let msg = `طلب جديد من شبابيك 🪟\n📍 المحافظة: ${city}\n💰 الدفع: ${pay}\n📦 المنتجات:\n`;
+    cart.forEach((i, x) => msg += `${x+1}- ${i.n}: ${i.p} د.ع\n`);
+    window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
+    setTimeout(() => { cart = []; document.getElementById('globalCartCount').innerText = "0"; toggleCartModal(); confetti({particleCount:200}); }, 1000);
+}
+
+// --- دالة البحث المصلحة ---
+function handleSearch() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const resBox = document.getElementById('searchRes');
+    
+    if(query.length < 2) { 
+        resBox.style.display = 'none'; 
+        return; 
+    }
+
+    db.ref('products').once('value', snap => {
+        const data = snap.val() || {};
+        const found = Object.values(data).filter(p => p.name.toLowerCase().includes(query));
+        
+        resBox.innerHTML = found.map(p => `
+            <div onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none"' 
+                 style="padding:10px; border-bottom:1px solid #eee; cursor:pointer; display:flex; align-items:center; gap:15px;">
+                <img src="${p.img}" style="width:50px; height:50px; border-radius:8px; object-fit:cover; border:1px solid var(--gold);">
+                <div style="font-weight:bold; color:var(--brown);">${p.name}</div>
+            </div>
+        `).join('') || '<p style="padding:15px;">لا توجد نتائج مطابقة</p>';
+        
+        resBox.style.display = 'block';
+    });
+}
+</script>
 function getWatermarkedUrl(originalUrl) {
     if (!originalUrl || !originalUrl.includes("cloudinary.com")) return originalUrl;
     
