@@ -660,6 +660,43 @@ window.addEventListener('popstate', () => {
     else if (hash === 'productCalculator') openCalc(JSON.parse(localStorage.getItem('lastProd')));
     else showPage(hash || 'homePage', false);
 });
+    let selectedColor = "الأصلي";
+
+function applyColor(hex, name) {
+    const img = document.getElementById('pImg');
+    const overlay = document.getElementById('colorOverlay');
+    const colorText = document.getElementById('selectedColorName');
+    
+    // تغيير لون الطبقة فوق الصورة مع الحفاظ على تفاصيل القماش (الظلال)
+    overlay.style.backgroundColor = hex;
+    colorText.innerText = "اللون المختار: " + name;
+    selectedColor = name;
+
+    // تأثير بصري بسيط للتبديل
+    img.style.transform = "scale(1.02)";
+    setTimeout(() => { img.style.transform = "scale(1)"; }, 200);
+}
+
+// تعديل دالة الإضافة للسلة لتشمل اللون المختار
+function addToCart() {
+    const h = v('hIn');
+    if(!h || h <= 0) return alert("أدخل الطول بالمتر أولاً");
+    
+    cart.push({ 
+        n: cur.name + " (لون: " + selectedColor + ")", 
+        p: Math.round(h * cur.price), 
+        img: getWatermarkedUrl(cur.img) 
+    });
+    
+    document.getElementById('globalCartCount').innerText = cart.length;
+    
+    // تفعيل حركة النبض للسلة
+    const cartIcon = document.querySelector('.cart-icon');
+    cartIcon.classList.add('cart-icon-active');
+    setTimeout(() => cartIcon.classList.remove('cart-icon-active'), 2000);
+    
+    alert("تمت إضافة المنتج باللون المختار بنجاح! 🛒");
+}
 </script>
 </body>
 </html>
