@@ -570,11 +570,26 @@ async function handleDrImage(input) {
 function handleSearch() {
     const query = v('searchInput').toLowerCase();
     const resBox = document.getElementById('searchRes');
-    if(query.length < 2) { resBox.style.display = 'none'; return; }
+    
+    if(query.length < 2) { 
+        resBox.style.display = 'none'; 
+        return; 
+    }
+
     db.ref('products').once('value', snap => {
         const data = snap.val() || {};
         const found = Object.values(data).filter(p => p.name.toLowerCase().includes(query));
-        resBox.innerHTML = found.map(p => `<div onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none"' style="padding:15px; border-bottom:1px solid #eee; cursor:pointer;">${p.name}</div>`).join('') || '<p style="padding:15px;">لا توجد نتائج</p>';
+        
+        resBox.innerHTML = found.map(p => `
+            <div onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none"' 
+                 style="padding:10px; border-bottom:1px solid #eee; cursor:pointer; display:flex; align-items:center; gap:15px;">
+                
+                <img src="${p.img}" style="width:50px; height:50px; border-radius:8px; object-fit:cover; border:1px solid var(--gold);">
+                
+                <div style="font-weight:bold; color:var(--brown);">${p.name}</div>
+            </div>
+        `).join('') || '<p style="padding:15px;">لا توجد نتائج مطابقة</p>';
+        
         resBox.style.display = 'block';
     });
 }
