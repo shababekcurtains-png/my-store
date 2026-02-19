@@ -490,20 +490,16 @@ function openCat(n) {
     }); 
 }
 
-function openCalc(p) { 
-    cur = p; 
-    // 1. اظهر الصفحة أولاً لضمان وجود عنصر pImg
-    showPage('productCalculator'); 
+function getWatermarkedUrl(originalUrl) {
+    if (!originalUrl || !originalUrl.includes("cloudinary.com")) return originalUrl;
     
-    // 2. حدث البيانات
-    document.getElementById('pName').innerText = p.name; 
-    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
+    // l_ تدل على الطبقة، وما بعدها هو اسم ملف اللوجو الخاص بك بدقة
+    // o_20 للشفافية، w_200 للحجم، g_center لوضعها في المنتصف
+    const transformation = `l_shababek_logo,o_20,w_200,g_center`; 
     
-    // 3. ضع الصورة بالعلامة المائية
-    const imgElem = document.getElementById('pImg');
-    if(imgElem) {
-        imgElem.src = getWatermarkedUrl(p.img); 
-    }
+    // استبدال كلمة upload في الرابط الأصلي بكلمة upload مع التعديلات
+    return originalUrl.replace("/upload/", `/upload/${transformation}/`);
+}
     
     document.getElementById('hIn').value = ""; 
 }
