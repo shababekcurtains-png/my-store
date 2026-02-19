@@ -525,24 +525,26 @@ function loadInitialData() {
     });
 }
 
-window.addEventListener('load', () => {
+// مراقبة زر الرجوع في المتصفح أو الهاتف لضمان عدم اختفاء المنتجات
+window.addEventListener('popstate', () => {
     const currentHash = location.hash.replace('#', '');
+    
     if (currentHash === 'categoryView') {
+        // عند الرجوع لصفحة القسم، نبحث عن آخر قسم مسجل ونعيد جلب منتجاته فوراً
         const savedCat = localStorage.getItem('lastCat');
         if (savedCat) openCat(savedCat); 
         else showPage('homePage', false);
     } 
     else if (currentHash === 'productCalculator') {
+        // عند الرجوع لصفحة المنتج، نعيد بناء بيانات الحاسبة
         const savedProd = localStorage.getItem('lastProd');
         if (savedProd) openCalc(JSON.parse(savedProd)); 
         else showPage('homePage', false);
     }
-    else if (currentHash && document.getElementById(currentHash)) {
-        showPage(currentHash, false);
-    } else {
-        showPage('homePage', false);
+    else {
+        // في الحالات الأخرى، نظهر الصفحة المطلوبة أو الرئيسية
+        showPage(currentHash || 'homePage', false);
     }
-    loadInitialData();
 });
 
 window.addEventListener('popstate', () => {
