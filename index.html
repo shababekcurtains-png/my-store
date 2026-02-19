@@ -518,17 +518,20 @@ db.ref('categories').on('value', snap => {
         </div>`).join('');
 });
         // تشغيل هذا الكود فور تحميل الموقع أو إعادة التنشيط (Refresh)
+// --- المحرك الموحد للتنقل ومنع اختفاء البيانات بعد الرفرش ---
+
 window.addEventListener('load', () => {
     const currentHash = location.hash.replace('#', '');
     
+    // 1. إعادة بناء الصفحة بناءً على الرابط (Hash) لضمان عدم اختفاء الصور
     if (currentHash === 'categoryView') {
         const savedCat = localStorage.getItem('lastCat');
-        if (savedCat) openCat(savedCat); // إعادة فتح القسم بصوره
+        if (savedCat) openCat(savedCat); 
         else showPage('homePage', false);
     } 
     else if (currentHash === 'productCalculator') {
         const savedProd = localStorage.getItem('lastProd');
-        if (savedProd) openCalc(JSON.parse(savedProd)); // إعادة فتح المنتج بصورته
+        if (savedProd) openCalc(JSON.parse(savedProd)); 
         else showPage('homePage', false);
     }
     else if (currentHash && document.getElementById(currentHash)) {
@@ -536,16 +539,30 @@ window.addEventListener('load', () => {
     } else {
         showPage('homePage', false);
     }
+
+    // 2. إعادة تفعيل جلب الأقسام والمنتجات لضمان ظهور الشريط الرئيسي والأقسام
+    loadInitialData(); 
 });
 
-// مراقبة "زر الرجوع" في المتصفح أو الهاتف
+// دالة جلب البيانات الأساسية لضمان ظهور الأقسام دائماً
+function loadInitialData() {
+    db.ref('categories').on('value', snap => {
+        const cats = snap.val() || {};
+        const categoriesList = document.getElementById('categoriesList');
+        if(categoriesList) {
+            categoriesList.innerHTML = Object.values(cats).map(c => `
+                <div class="cat-card-new" onclick="openCat('${c.name}')">
+                    <img src="${c.img}" style="width:100%; height:100%; object-fit:cover;">
+                    <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:12px; font-weight:900;">${c.name}</div>
+                </div>`).join('');
+        }
+    });
+}
+
+// مراقبة زر الرجوع في المتصفح/الهاتف
 window.addEventListener('popstate', () => {
     const currentHash = location.hash.replace('#', '');
-    if (currentHash) {
-        showPage(currentHash, false);
-    } else {
-        showPage('homePage', false);
-    }
+    showPage(currentHash || 'homePage', false);
 });
 </script>
 
