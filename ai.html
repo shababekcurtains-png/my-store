@@ -9,68 +9,45 @@
     <style>
         :root { --gold: #d9b382; --dark: #2c2420; --light: #fdfaf7; }
         body { background: var(--light); font-family: 'Cairo', sans-serif; margin: 0; padding: 20px; }
-        
-        /* تصميم الكارت الرئيسي */
         .ai-card { background: white; border-radius: 30px; padding: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.05); max-width: 500px; margin: 20px auto; text-align: center; }
-        
-        .avatar-section { position: relative; margin-bottom: 25px; }
-        .avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--gold); padding: 5px; background: white; }
-        
-        .bubble { background: #f9f9f9; padding: 20px; border-radius: 0 25px 25px 25px; border: 1px solid #eee; margin-bottom: 30px; font-size: 1rem; line-height: 1.7; color: var(--dark); text-align: right; position: relative; }
-        
-        /* زر الكاميرا الاحترافي */
-        .upload-btn { background: var(--gold); color: white; border: none; padding: 20px; border-radius: 50px; width: 100%; font-size: 1.2rem; font-weight: 900; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 8px 25px rgba(217,179,130,0.4); }
-        .upload-btn:hover { background: var(--dark); transform: translateY(-3px); }
-        
-        /* شبكة المنتجات المقترحة */
+        .avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--gold); margin-bottom: 20px; }
+        .bubble { background: #f9f9f9; padding: 20px; border-radius: 0 25px 25px 25px; border: 1px solid #eee; margin-bottom: 30px; font-size: 1rem; line-height: 1.7; text-align: right; }
+        .upload-btn { background: var(--gold); color: white; border: none; padding: 20px; border-radius: 50px; width: 100%; font-size: 1.2rem; font-weight: 900; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .upload-btn:hover { background: var(--dark); }
         .suggestions { display: none; margin-top: 35px; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .item { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; }
-        .item img { width: 100%; height: 160px; object-fit: cover; }
-        .item p { padding: 10px; font-size: 0.85rem; font-weight: bold; margin: 0; color: var(--dark); }
-        
-        /* أنيميشن التحميل */
-        .loading { display: none; margin: 10px auto; color: var(--gold); font-weight: bold; }
+        .item { background: white; border-radius: 20px; border: 1px solid #eee; overflow: hidden; }
+        .item img { width: 100%; height: 150px; object-fit: cover; }
+        .loading { display: none; color: var(--gold); font-weight: bold; margin: 15px 0; }
     </style>
 </head>
 <body>
 
 <div class="ai-card">
-    <div class="avatar-section">
-        <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="avatar" alt="Opal">
-    </div>
-    
+    <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="avatar" alt="Opal">
     <div class="bubble" id="opalText">
-        يا أهلاً بيك عيني.. أنا <b>Opal</b>، مستشارك الفني من شبابيك. 
-        صورلي غرفتك وخليني أحلل الإضاءة والأثاث حتى نختار الستارة اللي تلوك لبيتك وتكمله.
+        يا أهلاً بيك عيني.. أنا <b>Opal</b>. 
+        صورلي غرفتك حتى أحلل أثاثك وإضاءتك ونختار الستارة اللي تلوك لبيتك.
     </div>
 
-    <div class="loading" id="loader">
-        <i class="fas fa-spinner fa-spin"></i> Opal كاعد يحلل كل زاوية بالغرفة...
-    </div>
+    <div class="loading" id="loader"><i class="fas fa-spinner fa-spin"></i> Opal كاعد يحلل الغرفة...</div>
 
     <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
     <button class="upload-btn" id="actionBtn" onclick="document.getElementById('cameraInput').click()">
-        <i class="fas fa-camera"></i> افحص الغرفة هسة
+        <i class="fas fa-camera"></i> افحص الغرفة الآن
     </button>
 
     <div class="suggestions" id="suggestionsArea">
-        <h4 style="text-align: right; color: var(--dark); margin-bottom: 10px;">مقترحات تناسب تحليلي:</h4>
+        <h4 style="text-align: right; color: var(--dark);">مقترحات تناسب ذوق غرفتك:</h4>
         <div class="grid">
-            <div class="item">
-                <img id="imgSuggest1" src="">
-                <p>موديل رقم 1</p>
-            </div>
-            <div class="item">
-                <img id="imgSuggest2" src="">
-                <p>موديل رقم 2</p>
-            </div>
+            <div class="item"><img id="img1" src=""><p style="font-size: 0.8rem; font-weight: bold;">خيار رقم 1</p></div>
+            <div class="item"><img id="img2" src=""><p style="font-size: 0.8rem; font-weight: bold;">خيار رقم 2</p></div>
         </div>
     </div>
 </div>
 
 <script>
-    // الرابط المحدث والنهائي الخاص بك
+    // الرابط المحدث والوحيد للوركر الجديد
     const WORKER_URL = "https://shababek-opal-v1.bilalmohammedsalem23.workers.dev/";
 
     document.getElementById('cameraInput').addEventListener('change', async function(e) {
@@ -79,66 +56,50 @@
 
         const opalText = document.getElementById('opalText');
         const loader = document.getElementById('loader');
-        const actionBtn = document.getElementById('actionBtn');
         const suggestionsArea = document.getElementById('suggestionsArea');
 
-        // تجهيز الواجهة للتحليل
         opalText.style.opacity = "0.5";
         loader.style.display = "block";
-        actionBtn.disabled = true;
-        actionBtn.style.background = "#ccc";
 
         const reader = new FileReader();
         reader.onload = async (event) => {
-            const base64Image = event.target.result;
-
             try {
                 const response = await fetch(WORKER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: base64Image })
+                    body: JSON.stringify({ image: event.target.result })
                 });
 
                 const data = await response.json();
-                
-                // 1. عرض نص التحليل الفني
                 opalText.innerText = data.reply;
                 opalText.style.opacity = "1";
                 loader.style.display = "none";
-                actionBtn.disabled = false;
-                actionBtn.style.background = "var(--gold)";
 
-                // 2. ميزة النطق الصوتي للتحليل
-                const speech = new SpeechSynthesisUtterance(data.reply);
-                speech.lang = 'ar-SA';
-                speech.rate = 0.95; // سرعة هادئة
-                window.speechSynthesis.speak(speech);
+                // --- ميزة النطق الصوتي التلقائي ---
+                const talk = new SpeechSynthesisUtterance(data.reply);
+                talk.lang = 'ar-SA';
+                window.speechSynthesis.speak(talk);
 
-                // 3. تغيير صور المنتجات بناءً على تحليل النمط
-                const img1 = document.getElementById('imgSuggest1');
-                const img2 = document.getElementById('imgSuggest2');
+                // --- عرض الصور بناءً على تحليل النمط (Modern/Classic) ---
+                const i1 = document.getElementById('img1');
+                const i2 = document.getElementById('img2');
 
                 if (data.reply.includes("MODERN_STYLE")) {
-                    img1.src = "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500";
-                    img2.src = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=500";
+                    i1.src = "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500";
+                    i2.src = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=500";
                 } else {
-                    img1.src = "https://images.unsplash.com/photo-1617325252256-752118253fbc?w=500";
-                    img2.src = "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=500";
+                    i1.src = "https://images.unsplash.com/photo-1617325252256-752118253fbc?w=500";
+                    i2.src = "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=500";
                 }
-                
                 suggestionsArea.style.display = "block";
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
             } catch (err) {
                 opalText.innerText = "عذراً عيني، صار خلل بسيط بالتحليل. جرب مرة ثانية.";
                 loader.style.display = "none";
-                actionBtn.disabled = false;
-                actionBtn.style.background = "var(--gold)";
             }
         };
         reader.readAsDataURL(file);
     });
 </script>
-
 </body>
 </html>
