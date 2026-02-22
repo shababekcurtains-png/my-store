@@ -12,150 +12,177 @@
     <style>
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: var(--brown); line-height: 1.6; }
+        body { background: var(--white); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
 
-        /* الهيدر والملاحة */
-        header { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 60px; cursor: pointer; }
-        
-        .forum-hero { padding: 30px 5%; display: flex; flex-direction: column; align-items: center; }
+        /* الهيدر المعتمد */
+        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .logo-img { height: 80px; cursor: pointer; }
 
-        /* منطقة التحكم للمدير (أنت فقط) */
-        .admin-panel { background: white; width: 100%; max-width: 650px; border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 2px solid var(--gold); margin-bottom: 40px; }
-        .admin-panel h3 { margin-bottom: 15px; font-weight: 900; color: var(--brown); font-size: 1.1rem; }
-        .admin-panel textarea { width: 100%; border: 1px solid #eee; border-radius: 15px; padding: 15px; font-size: 1rem; resize: none; outline: none; background: #fafafa; margin-bottom: 15px; }
+        /* الشريط الرئيسي */
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; font-size: 1rem; }
+        .nav-menu a:hover { color: var(--gold); }
+
+        /* منطقة المحتوى */
+        .forum-container { background: var(--bg); padding: 40px 5%; min-height: 80vh; display: flex; flex-direction: column; align-items: center; }
+
+        /* لوحة التحكم (للمدير فقط) */
+        .admin-box { background: white; width: 100%; max-width: 700px; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 2px solid var(--gold); margin-bottom: 40px; }
+        .admin-box h2 { font-size: 1.2rem; margin-bottom: 15px; font-weight: 900; border-right: 4px solid var(--gold); padding-right: 10px; }
+        .admin-box textarea { width: 100%; border: 1px solid #eee; border-radius: 12px; padding: 15px; font-size: 1rem; resize: none; outline: none; margin-bottom: 15px; background: #fafafa; }
         
-        .btn-post { background: var(--gold); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; width: 100%; }
-        .btn-post:hover { background: var(--brown); }
+        .file-upload-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
+        .file-label { background: #eee; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+        .file-label:hover { background: var(--gold); color: white; }
+        .file-label i { margin-left: 5px; }
+
+        .btn-publish { background: var(--gold); color: white; border: none; padding: 12px 40px; border-radius: 10px; font-weight: 900; cursor: pointer; width: 100%; font-size: 1.1rem; }
 
         /* المشاركات */
-        .forum-post { background: white; width: 100%; max-width: 650px; border-radius: 25px; padding: 0; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid #eee; }
-        .post-header { padding: 20px; display: flex; align-items: center; gap: 12px; background: #fff; }
-        .admin-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); }
-        .post-body { padding: 0 20px 20px; text-align: right; }
-        .post-image { width: 100%; max-height: 500px; object-fit: cover; border-bottom: 1px solid #eee; }
+        .post { background: white; width: 100%; max-width: 700px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid #eee; }
+        .post-header { padding: 15px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f9f9f9; }
+        .admin-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--gold); }
+        .post-content { padding: 20px; font-size: 1.05rem; }
+        .media-container { width: 100%; background: #000; display: flex; justify-content: center; }
+        .media-container img, .media-container video { max-width: 100%; max-height: 600px; }
+        .file-attachment { padding: 15px 20px; background: #f8f9fa; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--brown); font-weight: 600; border-top: 1px solid #eee; }
 
-        /* منطقة التعليقات */
-        .comments-section { background: #fcfcfc; padding: 20px; border-top: 1px solid #eee; }
-        .comment { background: white; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-size: 0.9rem; border: 1px solid #f0f0f0; position: relative; }
-        .comment b { color: var(--gold); margin-left: 5px; }
-        
-        .comment-input-group { display: flex; gap: 8px; margin-top: 15px; }
-        .comment-input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 8px 15px; outline: none; font-size: 0.85rem; }
-        .btn-comment { background: var(--brown); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+        /* التعليقات */
+        .comments-area { padding: 20px; background: #fcfcfc; border-top: 1px solid #eee; }
+        .comment-input-box { display: flex; gap: 10px; margin-top: 10px; }
+        .comment-input-box input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 20px; outline: none; }
+        .btn-send { background: var(--brown); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; }
+        /* الفوتر المعتمد */
+        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; animation: pulse 2s infinite; }
     </style>
 </head>
 <body>
 
+    <div class="top-banner">
+        <span>لوحة تحكم منتدى شبابيك - دكتور ديكور</span>
+        <a href="https://wa.me/9647883002797" style="color:var(--whatsapp); text-decoration:none; font-weight:bold;"><i class="fab fa-whatsapp"></i> تواصل مباشر</a>
+    </div>
+
     <header>
-        <div style="font-weight:900; line-height:1;">شبابيك<br><span style="color:var(--gold); font-size:0.7rem;">للمنتدى</span></div>
+        <div style="font-weight:900; line-height:1;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">للستائر</span></div>
         <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
-        <div style="font-size: 1.2rem; color: var(--gold);"><i class="fas fa-crown"></i></div>
+        <div style="width: 50px;"></div> 
     </header>
 
-    <main class="forum-hero">
-        <div class="admin-panel" id="adminPanel">
-            <h3><i class="fas fa-pen-nib"></i> إضافة موضوع جديد يا بطل</h3>
-            <textarea id="postText" rows="3" placeholder="ما هي نصيحتك اليوم لزبائن شبابيك؟"></textarea>
-            <input type="file" id="postImage" accept="image/*" style="display: none;" onchange="previewImage(this)">
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-post" style="background: #f0f0f0; color: var(--brown);" onclick="document.getElementById('postImage').click()">
-                    <i class="fas fa-camera"></i> أرفق صورة التصميم
-                </button>
-                <button class="btn-post" onclick="submitPost()">نشر الآن</button>
+    <div class="nav-bar">
+        <ul class="nav-menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="index.html?go=categories">المنتجات</a></li>
+            <li><a href="ai.html" style="color:var(--gold)">منتدى ديكور</a></li>
+            <li><a href="index.html#paymentPage">طرق الدفع</a></li>
+            <li><a href="index.html#contactPage">تواصل معنا</a></li>
+        </ul>
+    </div>
+
+    <main class="forum-container">
+        <div class="admin-box">
+            <h2><i class="fas fa-edit"></i> أنشر موضوعاً جديداً</h2>
+            <textarea id="postText" rows="3" placeholder="بماذا تريد أن تنصح زبائن شبابيك اليوم؟"></textarea>
+            
+            <div class="file-upload-bar">
+                <label class="file-label" for="upImg"><i class="fas fa-image"></i> صورة <input type="file" id="upImg" hidden accept="image/*" onchange="handleFile('image')"></label>
+                <label class="file-label" for="upVid"><i class="fas fa-video"></i> فيديو <input type="file" id="upVid" hidden accept="video/*" onchange="handleFile('video')"></label>
+                <label class="file-label" for="upFile"><i class="fas fa-file-pdf"></i> ملف <input type="file" id="upFile" hidden accept=".pdf,.doc,.docx" onchange="handleFile('file')"></label>
             </div>
-            <img id="preview" style="display:none; width: 100%; margin-top:15px; border-radius:15px;">
+            
+            <div id="previewStatus" style="font-size: 0.8rem; color: var(--gold); margin-bottom: 10px;"></div>
+            <button class="btn-publish" onclick="publishPost()">نشر في المنتدى</button>
         </div>
 
-        <div id="forumFeed">
-            <div class="forum-post">
+        <div id="postsFeed" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+            <div class="post">
                 <div class="post-header">
-                    <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="admin-avatar">
-                    <div><b>دكتور ديكور (شبابيك)</b><br><small style="color: #999;">منذ ساعة • نصيحة فنية</small></div>
+                    <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="admin-img">
+                    <div><b>دكتور ديكور (شبابيك)</b><br><small style="color:#999;">منذ ساعتين</small></div>
                 </div>
-                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800" class="post-image">
-                <div class="post-body">
-                    <p>الستائر المخملية باللون البني المحروق تعطي فخامة لا توصف للصالات الكبيرة، خاصة مع إضاءة ذهبية هادئة. ما رأيكم بهذا التنسيق؟</p>
+                <div class="post-content">نصيحة اليوم: اختيار ألوان الستائر يجب أن يكون أغمق بدرجتين من لون الجدران لإعطاء عمق للغرفة.</div>
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800">
                 </div>
-                
-                <div class="comments-section">
-                    <div id="comments-1">
-                        <div class="comment"><b>أحمد:</b> فعلاً فخامة، تصلح لبيوت الموصل القديمة.</div>
-                    </div>
-                    <div class="comment-input-group">
-                        <input type="text" class="comment-input" placeholder="اكتب تعليقك..." id="input-1">
-                        <button class="btn-comment" onclick="addComment(1)"><i class="fas fa-paper-plane"></i></button>
+                <div class="comments-area">
+                    <div class="comment-input-box">
+                        <input type="text" placeholder="اكتب تعليقك هنا...">
+                        <button class="btn-send"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
+    <div class="footer-cta">
+        <h2 style="margin-bottom: 15px;">جاهز لتنفيذ طلبك؟</h2>
+        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر</p>
+    </div>
+
     <a href="https://wa.me/9647883002797" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-let currentImg = null;
+let currentFile = { data: null, type: null, name: "" };
 
-function previewImage(input) {
+function handleFile(type) {
+    const input = type === 'image' ? document.getElementById('upImg') : 
+                  type === 'video' ? document.getElementById('upVid') : document.getElementById('upFile');
+    
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = e => {
-            document.getElementById('preview').src = e.target.result;
-            document.getElementById('preview').style.display = 'block';
-            currentImg = e.target.result;
-        }
+            currentFile.data = e.target.result;
+            currentFile.type = type;
+            currentFile.name = input.files[0].name;
+            document.getElementById('previewStatus').innerText = "تم اختيار: " + currentFile.name;
+        };
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-function submitPost() {
+function publishPost() {
     const text = document.getElementById('postText').value;
-    const feed = document.getElementById('forumFeed');
-    if (!text && !currentImg) return alert("اكتب موضوعك أولاً!");
+    const feed = document.getElementById('postsFeed');
+    if (!text && !currentFile.data) return alert("يرجى كتابة نص أو اختيار ملف");
 
-    const postId = Date.now();
     const postDiv = document.createElement('div');
-    postDiv.className = 'forum-post';
+    postDiv.className = 'post';
     
-    let imgHtml = currentImg ? `<img src="${currentImg}" class="post-image">` : '';
-    
+    let mediaHtml = '';
+    if (currentFile.type === 'image') {
+        mediaHtml = `<div class="media-container"><img src="${currentFile.data}"></div>`;
+    } else if (currentFile.type === 'video') {
+        mediaHtml = `<div class="media-container"><video controls src="${currentFile.data}"></video></div>`;
+    } else if (currentFile.type === 'file') {
+        mediaHtml = `<a href="${currentFile.data}" download="${currentFile.name}" class="file-attachment"><i class="fas fa-file-download"></i> تحميل ملف: ${currentFile.name}</a>`;
+    }
+
     postDiv.innerHTML = `
         <div class="post-header">
-            <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="admin-avatar">
-            <div><b>دكتور ديكور (شبابيك)</b><br><small style="color: #999;">الآن • موضوع جديد</small></div>
+            <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="admin-img">
+            <div><b>دكتور ديكور (شبابيك)</b><br><small style="color:#999;">الآن</small></div>
         </div>
-        ${imgHtml}
-        <div class="post-body"><p>${text}</p></div>
-        <div class="comments-section">
-            <div id="comments-${postId}"></div>
-            <div class="comment-input-group">
-                <input type="text" class="comment-input" placeholder="اكتب تعليقك عيني..." id="input-${postId}">
-                <button class="btn-comment" onclick="addComment(${postId})"><i class="fas fa-paper-plane"></i></button>
+        <div class="post-content">${text}</div>
+        ${mediaHtml}
+        <div class="comments-area">
+            <div class="comment-input-box">
+                <input type="text" placeholder="اكتب تعليقك...">
+                <button class="btn-send"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     `;
 
     feed.prepend(postDiv);
-    confetti({ particleCount: 100, spread: 70 });
+    confetti({ particleCount: 150, spread: 70 });
 
-    // تصفير
+    // تصفير اللوحة
     document.getElementById('postText').value = '';
-    document.getElementById('preview').style.display = 'none';
-    currentImg = null;
-}
-
-function addComment(id) {
-    const input = document.getElementById(`input-${id}`);
-    const box = document.getElementById(`comments-${id}`);
-    if (!input.value) return;
-
-    const div = document.createElement('div');
-    div.className = 'comment';
-    div.innerHTML = `<b>متابع:</b> ${input.value}`;
-    box.appendChild(div);
-    input.value = '';
+    document.getElementById('previewStatus').innerText = '';
+    currentFile = { data: null, type: null, name: "" };
 }
 </script>
 </body>
