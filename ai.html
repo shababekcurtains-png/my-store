@@ -27,8 +27,11 @@
         /* منطقة المحتوى الفارغة */
         main { min-height: 70vh; padding: 40px 5%; display: flex; flex-direction: column; align-items: center; }
 
-        /* الفوتر المعتمد */
+        /* الفوتر المحدث مع زر المنتجات */
         .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; margin-top: 50px; }
+        .btn-footer-wa { border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-block; margin: 5px; }
+        .btn-footer-prod { background: var(--gold); color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-block; margin: 5px; }
+        
         footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px; text-align: center; font-size: 0.8rem; }
 
         /* زر الواتساب الطائر */
@@ -53,7 +56,7 @@
         <ul class="nav-menu">
             <li><a href="index.html">الرئيسية</a></li>
             <li><a href="index.html?go=categories">المنتجات</a></li>
-            <li><a href="ai.html" style="color:var(--gold)">منتدى شبابيك</a></li>
+            <li><a href="ai.html" style="color:var(--gold); font-weight: 900;">منتدى شبابيك</a></li>
             <li><a href="index.html#paymentPage">طرق الدفع</a></li>
             <li><a href="index.html#aboutPage">من نحن</a></li>
             <li><a href="index.html#contactPage">تواصل معنا</a></li>
@@ -64,8 +67,11 @@
         </main>
 
     <div class="footer-cta">
-        <h2 style="margin-bottom: 15px;">جاهز لتجديد ستائر منزلك؟</h2>
-        <a href="https://wa.me/9647883002797" style="border: 1px solid rgba(255,255,255,0.4); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">تواصل عبر واتساب</a>
+        <h2 style="margin-bottom: 20px; font-weight: 900;">جاهز لتجديد ستائر منزلك؟</h2>
+        <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
+            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
+            <a href="index.html?go=categories" class="btn-footer-prod">تصفح المنتجات</a>
+        </div>
     </div>
 
     <footer>
