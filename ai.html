@@ -2,147 +2,161 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منتدى دكتور ديكور - شبابيك</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منتدى دكتور ديكور - شبابيك للستائر</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; }
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: var(--brown); }
+        body { background: var(--bg); color: var(--brown); line-height: 1.6; }
 
-        /* الهيدر */
-        header { background: var(--white); padding: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-bottom: 3px solid var(--gold); }
-        .forum-title { font-weight: 900; font-size: 24px; }
-        .forum-title span { color: var(--gold); }
-
-        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
-
-        /* صندوق إضافة موضوع جديد */
-        .post-creator { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
-        .post-creator textarea { width: 100%; border: 1px solid #eee; border-radius: 10px; padding: 15px; font-size: 1rem; resize: none; margin-bottom: 10px; outline: none; }
-        .post-creator textarea:focus { border-color: var(--gold); }
-        .post-actions { display: flex; justify-content: space-between; align-items: center; }
-        .upload-img-btn { color: var(--gold); cursor: pointer; font-weight: 600; font-size: 0.9rem; }
-        .btn-post { background: var(--brown); color: white; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-
-        /* شكل المواضيع (المشاركات) */
-        .forum-post { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); position: relative; }
-        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .user-avatar { width: 45px; height: 45px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; }
-        .user-info b { font-size: 0.95rem; }
-        .user-info span { display: block; font-size: 0.75rem; color: #888; }
+        /* الهيدر والملاحة */
+        header { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .logo-img { height: 60px; cursor: pointer; }
         
-        .post-content { font-size: 1rem; margin-bottom: 15px; line-height: 1.6; }
-        .post-image { width: 100%; border-radius: 10px; margin-bottom: 15px; display: none; }
-        
-        .post-footer { border-top: 1px solid #f5f5f5; padding-top: 15px; display: flex; gap: 20px; }
-        .footer-item { color: #666; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
-        .footer-item:hover { color: var(--gold); }
-        .footer-item i { margin-left: 5px; }
+        .forum-hero { padding: 30px 5%; display: flex; flex-direction: column; align-items: center; }
 
-        /* منشن دكتور ديكور */
-        .dr-reply { background: #fffdf9; border: 1px dashed var(--gold); border-radius: 10px; padding: 15px; margin-top: 15px; display: flex; gap: 10px; }
-        .dr-reply img { width: 35px; height: 35px; border-radius: 50%; }
-        .dr-text { font-size: 0.85rem; }
+        /* منطقة التحكم للمدير (أنت فقط) */
+        .admin-panel { background: white; width: 100%; max-width: 650px; border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 2px solid var(--gold); margin-bottom: 40px; }
+        .admin-panel h3 { margin-bottom: 15px; font-weight: 900; color: var(--brown); font-size: 1.1rem; }
+        .admin-panel textarea { width: 100%; border: 1px solid #eee; border-radius: 15px; padding: 15px; font-size: 1rem; resize: none; outline: none; background: #fafafa; margin-bottom: 15px; }
+        
+        .btn-post { background: var(--gold); color: white; border: none; padding: 12px 25px; border-radius: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn-post:hover { background: var(--brown); }
+
+        /* المشاركات */
+        .forum-post { background: white; width: 100%; max-width: 650px; border-radius: 25px; padding: 0; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid #eee; }
+        .post-header { padding: 20px; display: flex; align-items: center; gap: 12px; background: #fff; }
+        .admin-avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); }
+        .post-body { padding: 0 20px 20px; text-align: right; }
+        .post-image { width: 100%; max-height: 500px; object-fit: cover; border-bottom: 1px solid #eee; }
+
+        /* منطقة التعليقات */
+        .comments-section { background: #fcfcfc; padding: 20px; border-top: 1px solid #eee; }
+        .comment { background: white; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-size: 0.9rem; border: 1px solid #f0f0f0; position: relative; }
+        .comment b { color: var(--gold); margin-left: 5px; }
+        
+        .comment-input-group { display: flex; gap: 8px; margin-top: 15px; }
+        .comment-input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 8px 15px; outline: none; font-size: 0.85rem; }
+        .btn-comment { background: var(--brown); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="forum-title">منتدى <span>دكتور ديكور</span></div>
-    <p style="font-size: 0.8rem; color: #888;">مجتمع شبابيك لتبادل الخبرات في تزيين المنازل</p>
-</header>
+    <header>
+        <div style="font-weight:900; line-height:1;">شبابيك<br><span style="color:var(--gold); font-size:0.7rem;">للمنتدى</span></div>
+        <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
+        <div style="font-size: 1.2rem; color: var(--gold);"><i class="fas fa-crown"></i></div>
+    </header>
 
-<div class="container">
-    <div class="post-creator">
-        <textarea id="postInput" rows="3" placeholder="اسأل دكتور ديكور أو شارك صورة لغرفتك..."></textarea>
-        <div class="post-actions">
-            <label class="upload-img-btn" for="fileUp">
-                <i class="fas fa-image"></i> إضافة صورة
-                <input type="file" id="fileUp" hidden accept="image/*" onchange="previewImage(this)">
-            </label>
-            <button class="btn-post" onclick="addPost()">نشر الموضوع</button>
+    <main class="forum-hero">
+        <div class="admin-panel" id="adminPanel">
+            <h3><i class="fas fa-pen-nib"></i> إضافة موضوع جديد يا بطل</h3>
+            <textarea id="postText" rows="3" placeholder="ما هي نصيحتك اليوم لزبائن شبابيك؟"></textarea>
+            <input type="file" id="postImage" accept="image/*" style="display: none;" onchange="previewImage(this)">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-post" style="background: #f0f0f0; color: var(--brown);" onclick="document.getElementById('postImage').click()">
+                    <i class="fas fa-camera"></i> أرفق صورة التصميم
+                </button>
+                <button class="btn-post" onclick="submitPost()">نشر الآن</button>
+            </div>
+            <img id="preview" style="display:none; width: 100%; margin-top:15px; border-radius:15px;">
         </div>
-        <img id="imgPreview" style="max-width: 100px; margin-top: 10px; border-radius: 5px; display: none;">
-    </div>
 
-    <div id="forumFeed">
-        <div class="forum-post">
-            <div class="post-header">
-                <div class="user-avatar" style="background: var(--gold); color: white;"><i class="fas fa-user-md"></i></div>
-                <div class="user-info">
-                    <b>دكتور ديكور (مشرف)</b>
-                    <span>منذ ساعة</span>
+        <div id="forumFeed">
+            <div class="forum-post">
+                <div class="post-header">
+                    <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="admin-avatar">
+                    <div><b>دكتور ديكور (شبابيك)</b><br><small style="color: #999;">منذ ساعة • نصيحة فنية</small></div>
+                </div>
+                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800" class="post-image">
+                <div class="post-body">
+                    <p>الستائر المخملية باللون البني المحروق تعطي فخامة لا توصف للصالات الكبيرة، خاصة مع إضاءة ذهبية هادئة. ما رأيكم بهذا التنسيق؟</p>
+                </div>
+                
+                <div class="comments-section">
+                    <div id="comments-1">
+                        <div class="comment"><b>أحمد:</b> فعلاً فخامة، تصلح لبيوت الموصل القديمة.</div>
+                    </div>
+                    <div class="comment-input-group">
+                        <input type="text" class="comment-input" placeholder="اكتب تعليقك..." id="input-1">
+                        <button class="btn-comment" onclick="addComment(1)"><i class="fas fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
-            <div class="post-content">
-                يا أهلاً بيكم بمنتداكم الجديد! هنا نتبادل الأفكار والصور. أي واحد عنده حيرة بالستائر أو الألوان يكتب موضوع وأنا والشباب نجاوبه.
-            </div>
-            <div class="post-footer">
-                <div class="footer-item"><i class="far fa-heart"></i> 24</div>
-                <div class="footer-item"><i class="far fa-comment"></i> 5 تعليقات</div>
-            </div>
         </div>
-    </div>
-</div>
+    </main>
+
+    <a href="https://wa.me/9647883002797" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-    let selectedImageData = null;
+let currentImg = null;
 
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            let reader = new FileReader();
-            reader.onload = e => {
-                const img = document.getElementById('imgPreview');
-                img.src = e.target.result;
-                img.style.display = 'block';
-                selectedImageData = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('preview').src = e.target.result;
+            document.getElementById('preview').style.display = 'block';
+            currentImg = e.target.result;
         }
+        reader.readAsDataURL(input.files[0]);
     }
+}
 
-    function addPost() {
-        const text = document.getElementById('postInput').value;
-        if (!text && !selectedImageData) return alert("اكتب شي عيني!");
+function submitPost() {
+    const text = document.getElementById('postText').value;
+    const feed = document.getElementById('forumFeed');
+    if (!text && !currentImg) return alert("اكتب موضوعك أولاً!");
 
-        const feed = document.getElementById('forumFeed');
-        const newPost = document.createElement('div');
-        newPost.className = 'forum-post';
-        
-        let imageHtml = selectedImageData ? `<img src="${selectedImageData}" class="post-image" style="display:block;">` : '';
-        
-        newPost.innerHTML = `
-            <div class="post-header">
-                <div class="user-avatar"><i class="fas fa-user"></i></div>
-                <div class="user-info">
-                    <b>عضو جديد</b>
-                    <span>الآن</span>
-                </div>
+    const postId = Date.now();
+    const postDiv = document.createElement('div');
+    postDiv.className = 'forum-post';
+    
+    let imgHtml = currentImg ? `<img src="${currentImg}" class="post-image">` : '';
+    
+    postDiv.innerHTML = `
+        <div class="post-header">
+            <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" class="admin-avatar">
+            <div><b>دكتور ديكور (شبابيك)</b><br><small style="color: #999;">الآن • موضوع جديد</small></div>
+        </div>
+        ${imgHtml}
+        <div class="post-body"><p>${text}</p></div>
+        <div class="comments-section">
+            <div id="comments-${postId}"></div>
+            <div class="comment-input-group">
+                <input type="text" class="comment-input" placeholder="اكتب تعليقك عيني..." id="input-${postId}">
+                <button class="btn-comment" onclick="addComment(${postId})"><i class="fas fa-paper-plane"></i></button>
             </div>
-            <div class="post-content">${text}</div>
-            ${imageHtml}
-            <div class="post-footer">
-                <div class="footer-item"><i class="far fa-heart"></i> 0</div>
-                <div class="footer-item"><i class="far fa-comment"></i> 0</div>
-            </div>
-            <div class="dr-reply">
-                <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
-                <div class="dr-text">
-                    <b>دكتور ديكور:</b> عيني عاشت ايدك على هالموضوع، راح نراجع الصور ونطيك رأينا بأقرب وقت!
-                </div>
-            </div>
-        `;
+        </div>
+    `;
 
-        feed.prepend(newPost);
+    feed.prepend(postDiv);
+    confetti({ particleCount: 100, spread: 70 });
 
-        // تصفير الصندوق
-        document.getElementById('postInput').value = '';
-        document.getElementById('imgPreview').style.display = 'none';
-        selectedImageData = null;
-    }
+    // تصفير
+    document.getElementById('postText').value = '';
+    document.getElementById('preview').style.display = 'none';
+    currentImg = null;
+}
+
+function addComment(id) {
+    const input = document.getElementById(`input-${id}`);
+    const box = document.getElementById(`comments-${id}`);
+    if (!input.value) return;
+
+    const div = document.createElement('div');
+    div.className = 'comment';
+    div.innerHTML = `<b>متابع:</b> ${input.value}`;
+    box.appendChild(div);
+    input.value = '';
+}
 </script>
-
 </body>
 </html>
