@@ -296,23 +296,49 @@
                     <input type="file" id="admProdFile" accept="image/*" style="margin: 10px 0; width: 100%;">
 <button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
                     <table class="admin-table"><tbody id="admListProds"></tbody></table>
-                </div>
-                <div class="admin-box" style="border:2px solid var(--gold);">
-                    <h3>٣. إدارة دكتور ديكور</h3>
-                    <input type="text" id="admDocSecName" placeholder="اسم القسم الفرعي">
-                    <button onclick="saveItem('docSections', {name:v('admDocSecName')})" class="btn-gold">إضافة قسم</button>
-                    <table class="admin-table"><tbody id="admListDocSecs"></tbody></table>
-                    <hr>
-                    <select id="selectDocTopicSec"></select>
-                    <input type="text" id="admDocTitle" placeholder="العنوان">
-                    <textarea id="admDocDesc" placeholder="الشرح"></textarea>
-                    <input type="text" id="admDocMedia" placeholder="رابط ميديا">
-                    <select id="admDocType"><option value="img">صورة</option><option value="vid">يوتيوب عادي</option><option value="shorts">يوتيوب شورتس</option></select>
-                    <select id="admDocMode"><option value="closed">مقالة (بالضغط)</option><option value="open">مباشر (سكرول)</option></select>
-                    <button onclick="saveItem('docTopics', {section:v('admDocTopicSec'), title:v('admDocTitle'), desc:v('admDocDesc'), media:v('admDocMedia'), type:v('admDocType'), mode:v('admDocMode')})" class="btn-gold">نشر</button>
-                    <table class="admin-table"><tbody id="admListDocTopics"></tbody></table>
-                </div>
-                <div class="admin-box">
+              <div class="admin-box" style="border:2px solid var(--gold);">
+    <h3>٣. إدارة منتدى شبابيك</h3>
+    <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">إدارة الأقسام والمواضيع والوسائط</p>
+
+    <div style="background:#fff; padding:10px; border-radius:10px; border:1px solid #ddd;">
+        <label style="font-weight:bold; font-size:0.8rem;">إضافة قسم منتدى جديد:</label>
+        <input type="text" id="admForumSecName" placeholder="مثلاً: موديلات 2026، كتالوجات، نصائح">
+        <button onclick="saveItem('forumSections', {name:v('admForumSecName')})" class="btn-gold" style="padding:8px;">إضافة قسم</button>
+        <table class="admin-table"><tbody id="admListForumSecs"></tbody></table>
+    </div>
+
+    <hr style="margin:20px 0;">
+
+    <div style="background:#fff; padding:10px; border-radius:10px; border:1px solid #ddd;">
+        <label style="font-weight:bold; font-size:0.8rem;">نشر موضوع/وسائط:</label>
+        <select id="selectForumTopicSec"></select>
+        <input type="text" id="admForumTitle" placeholder="عنوان الموضوع">
+        <textarea id="admForumDesc" placeholder="شرح الموضوع أو تفاصيل الستارة"></textarea>
+        
+        <select id="admForumType" onchange="toggleForumInput()">
+            <option value="img">صورة (رفع مباشر)</option>
+            <option value="vid">فيديو يوتيوب (رابط)</option>
+            <option value="pdf">كتالوج / ملف PDF (رفع مباشر)</option>
+        </select>
+
+        <input type="text" id="admForumUrl" placeholder="ضع رابط اليوتيوب هنا" style="display:none;">
+        
+        <input type="file" id="admForumFile" style="margin: 10px 0; font-size: 0.8rem;">
+
+        <button onclick="publishForumTopic()" class="btn-gold" id="btnForumPost">نشر في المنتدى</button>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>العنوان</th>
+                <th>القسم</th>
+                <th>إجراء</th>
+            </tr>
+        </thead>
+        <tbody id="admListForumTopics"></tbody>
+    </table>
+</div>
                     <h3>٤. طرق الدفع</h3>
                     <input type="text" id="admPayName" placeholder="اسم الطريقة">
                     <input type="file" id="admPayFile" accept="image/*" style="margin: 10px 0; width: 100%;">
@@ -587,6 +613,77 @@ window.addEventListener('load', function() {
                 });
             }, 500);
         }
+    }
+});
+        // تبديل حقول الإدخال حسب نوع المنشور
+function toggleForumInput() {
+    const type = v('admForumType');
+    document.getElementById('admForumUrl').style.display = (type === 'vid') ? 'block' : 'none';
+    document.getElementById('admForumFile').style.display = (type === 'vid') ? 'none' : 'block';
+}
+
+// وظيفة النشر الاحترافية للمنتدى
+async function publishForumTopic() {
+    const title = v('admForumTitle');
+    const desc = v('admForumDesc');
+    const section = v('selectForumTopicSec');
+    const type = v('admForumType');
+    const btn = document.getElementById('btnForumPost');
+    const fileInput = document.getElementById('admForumFile');
+    
+    if(!title || !section) return alert("أكمل العنوان والقسم عيني");
+
+    btn.innerText = "جاري المعالجة...";
+    btn.disabled = true;
+
+    let mediaUrl = "";
+
+    // إذا كان النوع فيديو، نأخذ الرابط من الحقل
+    if(type === 'vid') {
+        mediaUrl = v('admForumUrl');
+    } else {
+        // إذا كان صورة أو PDF، نرفعه لـ Cloudinary
+        if(fileInput.files[0]) {
+            mediaUrl = await uploadImg(fileInput.files[0]);
+        }
+    }
+
+    const postData = {
+        section: section,
+        title: title,
+        desc: desc,
+        media: mediaUrl,
+        type: type,
+        date: new Date().toLocaleString('ar-EG'),
+        timestamp: Date.now()
+    };
+
+    db.ref('forumTopics').push(postData).then(() => {
+        alert("تم النشر بنجاح!");
+        location.reload();
+    });
+}
+
+// ربط قوائم الأقسام والمنشورات باللوحة
+db.ref('forumSections').on('value', snap => {
+    const data = snap.val() || {};
+    const list = document.getElementById('admListForumSecs');
+    const select = document.getElementById('selectForumTopicSec');
+    if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('forumSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+    if(select) select.innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
+});
+
+db.ref('forumTopics').on('value', snap => {
+    const data = snap.val() || {};
+    const list = document.getElementById('admListForumTopics');
+    if(list) {
+        list.innerHTML = Object.entries(data).reverse().map(([k,v]) => `
+            <tr>
+                <td style="font-size:0.75rem;">${v.title}</td>
+                <td style="font-size:0.75rem;">${v.section}</td>
+                <td><button onclick="deleteItem('forumTopics','${k}')" style="color:red;">حذف</button></td>
+            </tr>
+        `).join('');
     }
 });
 </script>
