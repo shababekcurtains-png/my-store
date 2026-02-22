@@ -1,122 +1,41 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خبير شبابيك الذكي | Opal AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root { --gold: #d9b382; --dark: #2c2420; --light: #fdfaf7; }
-        body { background: var(--light); font-family: 'Cairo', sans-serif; margin: 0; padding-bottom: 50px; }
-        header { background: white; padding: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-bottom: 3px solid var(--gold); }
-        .logo { font-weight: 900; font-size: 1.8rem; color: var(--dark); }
-        .logo span { color: var(--gold); }
-        
-        .container { max-width: 600px; margin: 20px auto; padding: 15px; }
-        
-        .dr-section { display: flex; align-items: flex-start; gap: 15px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .avatar-circle { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); overflow: hidden; flex-shrink: 0; }
-        .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .response-bubble { background: #f0f0f0; padding: 15px; border-radius: 0 20px 20px 20px; flex-grow: 1; font-size: 0.95rem; line-height: 1.6; color: #333; }
+// استبدل وظيفة الـ FileReader في ملف ai.html بهذا المنطق الذكي
+reader.onload = async (event) => {
+    const base64 = event.target.result;
 
-        .upload-btn { background: var(--gold); color: white; border: none; padding: 15px; border-radius: 50px; width: 100%; font-size: 1.1rem; font-weight: 900; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(217, 179, 130, 0.4); }
-        .upload-btn:hover { background: var(--dark); }
+    try {
+        const response = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: base64 })
+        });
 
-        .suggestions-area { margin-top: 30px; display: none; }
-        .grid-results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .result-card { background: white; border-radius: 15px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; }
-        .result-card img { width: 100%; height: 140px; object-fit: cover; }
-        .result-card p { padding: 10px; font-size: 0.85rem; text-align: center; font-weight: bold; margin: 0; }
+        const data = await response.json();
+        aiText.innerText = data.reply;
 
-        .qi-card-promo { background: #fff3cd; color: #856404; padding: 15px; border-radius: 15px; margin-top: 20px; text-align: center; border: 1px dashed #ffd54f; display: none; }
-    </style>
-</head>
-<body>
+        // 1. ميزة النطق الصوتي للتحليل
+        const voice = new SpeechSynthesisUtterance(data.reply);
+        voice.lang = 'ar-SA'; 
+        voice.rate = 0.9; // سرعة هادئة لتناسب اللهجة
+        window.speechSynthesis.speak(voice);
 
-<header>
-    <div class="logo">شبابيك <span>للستائر</span></div>
-</header>
+        // 2. نظام اختيار الصور الذكي من منتجات شبابيك
+        // هنا نقوم بفحص الكلمات المفتاحية في رد الـ AI لتغيير الصور
+        const img1 = document.getElementById('resImg1');
+        const img2 = document.getElementById('resImg2');
 
-<div class="container">
-    <div class="dr-section">
-        <div class="avatar-circle">
-            <img id="drImg" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
-        </div>
-        <div class="response-bubble" id="aiText">
-            أهلاً بيك عيني.. أنا خبير "شبابيك" الذكي. صورلي غرفتك وخل نختار الستارة اللي تلوك لبيتك.
-        </div>
-    </div>
+        if (data.reply.includes("فاتح") || data.reply.includes("مودرن")) {
+            // صور منتجات المودرن من موقعك
+            img1.src = "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400"; 
+            img2.src = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400";
+        } else if (data.reply.includes("غامق") || data.reply.includes("كلاسيك")) {
+            // صور منتجات الكلاسيك من موقعك
+            img1.src = "https://images.unsplash.com/photo-1617325252256-752118253fbc?w=400";
+            img2.src = "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=400";
+        }
 
-    <input type="file" id="camInput" accept="image/*" capture="environment" hidden>
-    <button class="upload-btn" onclick="document.getElementById('camInput').click()">
-        <i class="fas fa-camera"></i> افحص غرفتك الآن
-    </button>
+        suggestions.style.display = "block";
 
-    <div class="qi-card-promo" id="qiPromo">
-        <i class="fas fa-credit-card"></i> <strong>تقسيط مريح!</strong> كلفها وتوكل.. قسطها يبدأ من 25 ألف شهرياً عبر <strong>كي كارد</strong>.
-    </div>
-
-    <div class="suggestions-area" id="suggestions">
-        <h3 style="color: var(--dark); font-size: 1.1rem; border-right: 4px solid var(--gold); padding-right: 10px; margin-bottom: 15px;">مقترحات الدكتور:</h3>
-        <div class="grid-results">
-            <div class="result-card">
-                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=500">
-                <p>موديل مودرن هادئ</p>
-            </div>
-            <div class="result-card">
-                <img src="https://images.unsplash.com/photo-1617325252256-752118253fbc?q=80&w=500">
-                <p>موديل فخامة كلاسيك</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    const WORKER_URL = "https://0.bilalmohammedsalem23.workers.dev/";
-
-    document.getElementById('camInput').addEventListener('change', async function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const aiText = document.getElementById('aiText');
-        const drImg = document.getElementById('drImg');
-        const suggestions = document.getElementById('suggestions');
-        const qiPromo = document.getElementById('qiPromo');
-
-        aiText.innerText = "لحظة عيني.. Opal كاعد يحلل غرفتك...";
-        drImg.style.filter = "grayscale(100%) blur(1px)";
-
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-            const base64 = event.target.result;
-
-            try {
-                const response = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: base64 })
-                });
-
-                const data = await response.json();
-                aiText.innerText = data.reply;
-                drImg.style.filter = "none";
-                
-                // إظهار المقترحات والتقسيط
-                suggestions.style.display = "block";
-                qiPromo.style.display = "block";
-                
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-
-            } catch (err) {
-                aiText.innerText = "عذراً عيني، صار خلل بالاتصال. جرب مرة ثانية.";
-                drImg.style.filter = "none";
-            }
-        };
-        reader.readAsDataURL(file);
-    });
-</script>
-
-</body>
-</html>
+    } catch (err) {
+        aiText.innerText = "عذراً عيني، صار خلل بسيط بالتحليل. جرب مرة ثانية.";
+    }
+};
