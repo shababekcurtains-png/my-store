@@ -615,73 +615,124 @@ window.addEventListener('load', function() {
         }
     }
 });
-        // تبديل حقول الإدخال حسب نوع المنشور
+       // --- وظائف منتدى شبابيك المحدثة ---
+
+// 1. تبديل حقول الإدخال حسب نوع المنشور (صورة، يوتيوب، ملف)
 function toggleForumInput() {
-    const type = v('admForumType');
-    document.getElementById('admForumUrl').style.display = (type === 'vid') ? 'block' : 'none';
-    document.getElementById('admForumFile').style.display = (type === 'vid') ? 'none' : 'block';
+    const type = document.getElementById('admForumType').value;
+    const urlField = document.getElementById('admForumUrl');
+    const fileField = document.getElementById('admForumFile');
+    
+    // إذا كان المختار فيديو يوتيوب، نظهر حقل الرابط ونخفي حقل الرفع
+    if (type === 'vid') {
+        urlField.style.display = 'block';
+        fileField.style.display = 'none';
+    } else {
+        urlField.style.display = 'none';
+        fileField.style.display = 'block';
+    }
 }
 
-// وظيفة النشر الاحترافية للمنتدى
+// 2. وظيفة النشر الاحترافية للمنتدى (مع دعم الكتالوجات والصور)
 async function publishForumTopic() {
     const title = v('admForumTitle');
     const desc = v('admForumDesc');
-    const section = v('selectForumTopicSec');
+    const section = document.getElementById('selectForumTopicSec').value;
     const type = v('admForumType');
     const btn = document.getElementById('btnForumPost');
     const fileInput = document.getElementById('admForumFile');
+    const urlInput = v('admForumUrl');
     
-    if(!title || !section) return alert("أكمل العنوان والقسم عيني");
+    // التحقق من صحة البيانات
+    if(!title || section === "اختر القسم" || section === "") {
+        return alert("عيني، أكمل العنوان واختار القسم أولاً");
+    }
 
-    btn.innerText = "جاري المعالجة...";
+    btn.innerText = "جاري النشر...";
     btn.disabled = true;
 
     let mediaUrl = "";
 
-    // إذا كان النوع فيديو، نأخذ الرابط من الحقل
-    if(type === 'vid') {
-        mediaUrl = v('admForumUrl');
-    } else {
-        // إذا كان صورة أو PDF، نرفعه لـ Cloudinary
-        if(fileInput.files[0]) {
-            mediaUrl = await uploadImg(fileInput.files[0]);
+    try {
+        if(type === 'vid') {
+            // التحقق من وجود رابط فيديو
+            if(!urlInput) throw new Error("يرجى وضع رابط اليوتيوب");
+            mediaUrl = urlInput;
+        } else {
+            // رفع الصورة أو ملف الـ PDF لـ Cloudinary
+            if(fileInput.files[0]) {
+                mediaUrl = await uploadImg(fileInput.files[0]);
+            } else if (type === 'img' || type === 'pdf') {
+                throw new Error("يرجى اختيار ملف للرفع");
+            }
         }
-    }
 
-    const postData = {
-        section: section,
-        title: title,
-        desc: desc,
-        media: mediaUrl,
-        type: type,
-        date: new Date().toLocaleString('ar-EG'),
-        timestamp: Date.now()
-    };
+        const postData = {
+            section: section,
+            title: title,
+            desc: desc,
+            media: mediaUrl,
+            type: type,
+            date: new Date().toLocaleString('ar-EG'),
+            timestamp: Date.now()
+        };
 
-    db.ref('forumTopics').push(postData).then(() => {
-        alert("تم النشر بنجاح!");
+        // الحفظ في قاعدة بيانات Firebase
+        await db.ref('forumTopics').push(postData);
+        
+        alert("تم النشر في منتدى شبابيك بنجاح!");
         location.reload();
-    });
+
+    } catch (error) {
+        alert("فشل النشر: " + error.message);
+        btn.innerText = "نشر في المنتدى";
+        btn.disabled = false;
+    }
 }
 
-// ربط قوائم الأقسام والمنشورات باللوحة
+// 3. محرك تحديث قوائم الأقسام والمنشورات (مع تصحيح الأزرار)
 db.ref('forumSections').on('value', snap => {
     const data = snap.val() || {};
     const list = document.getElementById('admListForumSecs');
     const select = document.getElementById('selectForumTopicSec');
-    if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('forumSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-    if(select) select.innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(data).map(s => `<option>${s.name}</option>`).join('');
+    
+    // تحديث جدول حذف الأقسام
+    if(list) {
+        list.innerHTML = Object.entries(data).map(([k,v]) => `
+            <tr>
+                <td style="font-weight:bold;">${v.name}</td>
+                <td style="text-align:left;">
+                    <button onclick="deleteItem('forumSections','${k}')" style="color:var(--red); border:none; background:none; cursor:pointer; font-weight:bold;">
+                        <i class="fas fa-trash-alt"></i> حذف القسم
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+    
+    // تحديث قائمة الاختيار (Select) عند النشر
+    if(select) {
+        select.innerHTML = '<option disabled selected value="">اختر القسم</option>' + 
+            Object.values(data).map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+    }
 });
 
+// 4. تحديث جدول المواضيع المنشورة في لوحة الإدارة
 db.ref('forumTopics').on('value', snap => {
     const data = snap.val() || {};
     const list = document.getElementById('admListForumTopics');
     if(list) {
         list.innerHTML = Object.entries(data).reverse().map(([k,v]) => `
             <tr>
-                <td style="font-size:0.75rem;">${v.title}</td>
-                <td style="font-size:0.75rem;">${v.section}</td>
-                <td><button onclick="deleteItem('forumTopics','${k}')" style="color:red;">حذف</button></td>
+                <td style="font-size:0.75rem; border-bottom:1px solid #eee; padding:10px;">
+                    <b>${v.title}</b><br>
+                    <span style="color:var(--gold)">${v.section}</span>
+                </td>
+                <td style="text-align:left; border-bottom:1px solid #eee;">
+                    <button onclick="deleteItem('forumTopics','${k}')" style="color:red; border:none; background:none; cursor:pointer;">
+                        <i class="fas fa-times-circle"></i> حذف
+                    </button>
+                </td>
             </tr>
         `).join('');
     }
