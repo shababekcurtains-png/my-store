@@ -393,40 +393,33 @@ function v(id) {
 function handleLogoClick() {
     adminClicks++;
     clearTimeout(clickTimer);
-
     if (adminClicks >= 5) {
         adminClicks = 0;
         const pass = prompt("أدخل رمز الدخول السحابي لشبابيك:");
         if (pass === "8496") {
             showPage('adminPanel');
             if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70 });
-        } else if (pass !== null) {
-            alert("الرمز غير صحيح!");
-        }
+        } else if (pass !== null) { alert("الرمز غير صحيح!"); }
         return;
     }
-
     clickTimer = setTimeout(() => {
         if (adminClicks === 1) showPage('homePage');
         adminClicks = 0;
     }, 400);
 }
 
-// --- 3. نظام التنقل المصحح (داخلياً وبداية الصفحة) ---
+// --- 3. نظام التنقل ---
 function showPage(id, push = true) {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(p => p.classList.remove('active'));
-    
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const targetPage = document.getElementById(id);
     if (targetPage) {
         targetPage.classList.add('active');
-        // الصعود للأعلى فوراً
         window.scrollTo({ top: 0, behavior: 'instant' });
         if (push) location.hash = id;
     }
 }
 
-// --- 4. محرك الصور والعلامة المائية ---
+// --- 4. محرك الصور العام ---
 async function uploadImg(file) {
     if (!file) return "";
     const formData = new FormData();
@@ -436,49 +429,17 @@ async function uploadImg(file) {
     const data = await res.json();
     return data.secure_url;
 }
-function getWatermarkedUrl(url) {
-    if (!url || !url.includes("cloudinary.com")) return url;
-    return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
+
+// --- 5. وظيفة حفظ عامة (للأقسام) ---
+async function saveItem(ref, data) {
+    if(!data.name && !data.title) return alert("أكمل البيانات");
+    db.ref(ref).push(data).then(() => {
+        alert("تم الحفظ بنجاح!");
+        if(ref.includes('forum')) document.getElementById('admForumSecName').value = "";
+    });
 }
 
-// --- 5. وظائف المتجر والمنتجات ---
-function openCat(n) { 
-    localStorage.setItem('lastCat', n);
-    db.ref('products').once('value', snap => { 
-        const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
-        document.getElementById('catTitle').innerText = n; 
-        document.getElementById('catGrid').innerHTML = items.map(x => `
-            <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})' style="cursor:pointer;">
-                <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
-                <div style="padding:20px;text-align:center;">
-                    <h3>${x.name}</h3>
-                    <p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p>
-                </div>
-            </div>`).join(''); 
-        showPage('categoryView'); 
-    }); 
-}
-
-function openCalc(p) { 
-    cur = p; 
-    localStorage.setItem('lastProd', JSON.stringify(p));
-    showPage('productCalculator'); 
-    document.getElementById('pName').innerText = p.name; 
-    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
-    document.getElementById('pImg').src = getWatermarkedUrl(p.img); 
-}
-
-function addToCart() {
-    const h = v('hIn');
-    if(!h || h <= 0) return alert("أدخل الطول");
-    cart.push({ n: cur.name, p: Math.round(h * cur.price), img: getWatermarkedUrl(cur.img) });
-    document.getElementById('globalCartCount').innerText = cart.length;
-    alert("تمت الإضافة!");
-}
-
-function deleteItem(ref, key) { if(confirm("حذف؟")) db.ref(ref).child(key).remove(); }
-
-// --- 6. وظائف المنتدى ---
+// --- 6. وظائف منتدى شبابيك (نشر المواضيع) ---
 function toggleForumInput() {
     const type = document.getElementById('admForumType').value;
     document.getElementById('admForumUrl').style.display = (type === 'vid') ? 'block' : 'none';
@@ -489,34 +450,46 @@ async function publishForumTopic() {
     const title = v('admForumTitle'), desc = v('admForumDesc');
     const section = document.getElementById('selectForumTopicSec').value;
     const type = v('admForumType'), btn = document.getElementById('btnForumPost'), fileInput = document.getElementById('admForumFile');
+    
     if(!title || section === "" || section === "اختر القسم") return alert("أكمل العنوان والقسم");
     btn.innerText = "جاري النشر..."; btn.disabled = true;
+
     let mediaUrl = (type === 'vid') ? v('admForumUrl') : (fileInput.files[0] ? await uploadImg(fileInput.files[0]) : "");
+
     db.ref('forumTopics').push({ section, title, desc, media: mediaUrl, type, date: new Date().toLocaleString('ar-EG'), timestamp: Date.now() })
-    .then(() => { alert("تم النشر!"); location.reload(); });
+    .then(() => { alert("تم النشر في المنتدى!"); location.reload(); });
 }
 
-// --- 7. محرك المزامنة الرئيسي (إصلاح اختفاء الأقسام) ---
+// --- 7. وظيفة طرق الدفع ---
+async function publishPayment() {
+    const name = v('admPayName');
+    const fileInput = document.getElementById('admPayFile');
+    if(!name || !fileInput.files[0]) return alert("أكمل بيانات الدفع (الاسم والصورة)");
+
+    const url = await uploadImg(fileInput.files[0]);
+    db.ref('payments').push({ name: name, img: url }).then(() => {
+        alert("تم حفظ طريقة الدفع!");
+        location.reload();
+    });
+}
+
+// دالة الحذف العامة
+function deleteItem(ref, key) { if(confirm("حذف؟")) db.ref(ref).child(key).remove(); }
+
+// --- 8. مزامنة البيانات (الأقسام، المنتجات، طرق الدفع) ---
 function initApp() {
-    // جلب الأقسام الرئيسية وتفعيل التفاعل
+    // الأقسام والمنتجات
     db.ref('categories').on('value', snap => {
         const cats = snap.val() || {};
         const list = document.getElementById('categoriesList');
-        if(list) {
-            list.innerHTML = Object.values(cats).map(c => `
-                <div class="cat-card-new" onclick="openCat('${c.name}')" style="cursor:pointer; transition: 0.3s;">
-                    <img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">
-                    <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div>
-                </div>`).join('');
-        }
-        // تحديث لوحة التحكم
+        if(list) list.innerHTML = Object.values(cats).map(c => `<div class="cat-card-new" onclick="openCat('${c.name}')" style="cursor:pointer;"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
         const admListCats = document.getElementById('admListCats');
-        if(admListCats) admListCats.innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
+        if(admListCats) admListCats.innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         const admProdCatSelect = document.getElementById('admProdCatSelect');
         if(admProdCatSelect) admProdCatSelect.innerHTML = '<option disabled selected>اختر قسم المنتجات</option>' + Object.values(cats).map(s => `<option>${s.name}</option>`).join('');
     });
 
-    // جلب بيانات المنتدى
+    // منتدى شبابيك
     db.ref('forumSections').on('value', snap => {
         const data = snap.val() || {};
         const list = document.getElementById('admListForumSecs'), select = document.getElementById('selectForumTopicSec');
@@ -528,15 +501,19 @@ function initApp() {
         const data = snap.val() || {}, list = document.getElementById('admListForumTopics');
         if(list) list.innerHTML = Object.entries(data).reverse().map(([k,v]) => `<tr><td>${v.title}</td><td>${v.section}</td><td><button onclick="deleteItem('forumTopics','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
     });
+
+    // طرق الدفع
+    db.ref('payments').on('value', snap => {
+        const data = snap.val() || {}, list = document.getElementById('admListPays');
+        if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
+    });
 }
 
 // التشغيل النهائي
 window.addEventListener('load', () => {
     initApp();
     const hash = location.hash.replace('#', '');
-    if (hash === 'categoryView') openCat(localStorage.getItem('lastCat'));
-    else if (hash === 'productCalculator') openCalc(JSON.parse(localStorage.getItem('lastProd')));
-    else showPage(hash || 'homePage', false);
+    showPage(hash || 'homePage', false);
 });
 </script>
 </body>
