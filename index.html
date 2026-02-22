@@ -369,7 +369,7 @@
 
     <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
 <script>
-// 1. تهيئة Firebase (مرة واحدة فقط)
+// 1. تهيئة Firebase
 const firebaseConfig = { 
     apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
     authDomain: "shababekcurtain.firebaseapp.com", 
@@ -381,41 +381,21 @@ const db = firebase.database();
 
 // متغيرات عامة
 const CLOUD_NAME = "dnkuwf8q9", UPLOAD_PRESET = "afsx4w9k", LOGO_ID = "shababek_logo";
-let cur = null, cart = [], adminClicks = 0;
+let cur = null, cart = [], adminClicks = 0, clickTimer;
 
-// دالة جلب القيم (النسخة الوحيدة)
+// دالة جلب القيم
 function v(id) { 
     const el = document.getElementById(id);
     return el ? el.value : ""; 
 }
 
-// --- 2. نظام التنقل والصفحات (حل مشكلة بداية الصفحة) ---
-function showPage(id, push = true) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const targetPage = document.getElementById(id);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        // الصعود للأعلى فوراً عند تبديل الصفحة
-        setTimeout(() => {
-            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-        }, 10);
-        if (push) location.hash = id; 
-    }
-}
-
-let adminClicks = 0;
-let clickTimer;
-
+// --- 2. محرك الشعار ولوحة التحكم (5 ضغطات) ---
 function handleLogoClick() {
-    // زيادة العداد فوراً عند كل لمسة
     adminClicks++;
-    
-    // مسح المؤقت القديم لمنع تصفير العداد قبل اكتمال النقرات
     clearTimeout(clickTimer);
 
-    // إذا وصل المستخدم لـ 4 نقرات (الدخول السري)
-    if (adminClicks >= 4) {
-        adminClicks = 0; // تصفير العداد فوراً
+    if (adminClicks >= 5) {
+        adminClicks = 0;
         const pass = prompt("أدخل رمز الدخول السحابي لشبابيك:");
         if (pass === "8496") {
             showPage('adminPanel');
@@ -423,24 +403,30 @@ function handleLogoClick() {
         } else if (pass !== null) {
             alert("الرمز غير صحيح!");
         }
-        return; // الخروج لضمان عدم العودة للرئيسية
+        return;
     }
 
-    // مؤقت ذكي: إذا توقف المستخدم عن النقر لمدة نصف ثانية ولم يصل لـ 4
     clickTimer = setTimeout(() => {
-        if (adminClicks === 1) {
-            showPage('homePage'); // العودة للرئيسية بنقرة واحدة
-        }
-        adminClicks = 0; // تصفير العداد
-    }, 450); 
+        if (adminClicks === 1) showPage('homePage');
+        adminClicks = 0;
+    }, 400);
 }
 
-// --- 3. محرك الصور والعلامة المائية ---
-function getWatermarkedUrl(url) {
-    if (!url || !url.includes("cloudinary.com")) return url;
-    return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
+// --- 3. نظام التنقل المصحح (داخلياً وبداية الصفحة) ---
+function showPage(id, push = true) {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(p => p.classList.remove('active'));
+    
+    const targetPage = document.getElementById(id);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        // الصعود للأعلى فوراً
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        if (push) location.hash = id;
+    }
 }
 
+// --- 4. محرك الصور والعلامة المائية ---
 async function uploadImg(file) {
     if (!file) return "";
     const formData = new FormData();
@@ -450,15 +436,19 @@ async function uploadImg(file) {
     const data = await res.json();
     return data.secure_url;
 }
+function getWatermarkedUrl(url) {
+    if (!url || !url.includes("cloudinary.com")) return url;
+    return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
+}
 
-// --- 4. وظائف المتجر والمنتجات ---
+// --- 5. وظائف المتجر والمنتجات ---
 function openCat(n) { 
     localStorage.setItem('lastCat', n);
     db.ref('products').once('value', snap => { 
         const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
         document.getElementById('catTitle').innerText = n; 
         document.getElementById('catGrid').innerHTML = items.map(x => `
-            <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})'>
+            <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})' style="cursor:pointer;">
                 <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
                 <div style="padding:20px;text-align:center;">
                     <h3>${x.name}</h3>
@@ -488,7 +478,7 @@ function addToCart() {
 
 function deleteItem(ref, key) { if(confirm("حذف؟")) db.ref(ref).child(key).remove(); }
 
-// --- 5. وظائف منتدى شبابيك (لوحة التحكم) ---
+// --- 6. وظائف المنتدى ---
 function toggleForumInput() {
     const type = document.getElementById('admForumType').value;
     document.getElementById('admForumUrl').style.display = (type === 'vid') ? 'block' : 'none';
@@ -499,53 +489,55 @@ async function publishForumTopic() {
     const title = v('admForumTitle'), desc = v('admForumDesc');
     const section = document.getElementById('selectForumTopicSec').value;
     const type = v('admForumType'), btn = document.getElementById('btnForumPost'), fileInput = document.getElementById('admForumFile');
-
     if(!title || section === "" || section === "اختر القسم") return alert("أكمل العنوان والقسم");
     btn.innerText = "جاري النشر..."; btn.disabled = true;
-
     let mediaUrl = (type === 'vid') ? v('admForumUrl') : (fileInput.files[0] ? await uploadImg(fileInput.files[0]) : "");
-
     db.ref('forumTopics').push({ section, title, desc, media: mediaUrl, type, date: new Date().toLocaleString('ar-EG'), timestamp: Date.now() })
-    .then(() => { alert("تم النشر بنجاح!"); location.reload(); });
+    .then(() => { alert("تم النشر!"); location.reload(); });
 }
 
-// --- 6. مزامنة البيانات والتشغيل الرئيسي ---
-window.addEventListener('load', () => {
-    // جلب الأقسام والمنتجات للوحة التحكم
+// --- 7. محرك المزامنة الرئيسي (إصلاح اختفاء الأقسام) ---
+function initApp() {
+    // جلب الأقسام الرئيسية وتفعيل التفاعل
     db.ref('categories').on('value', snap => {
         const cats = snap.val() || {};
         const list = document.getElementById('categoriesList');
-        if(list) list.innerHTML = Object.values(cats).map(c => `
-            <div class="cat-card-new" onclick="openCat('${c.name}')">
-                <img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">
-                <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div>
-            </div>`).join('');
-        
+        if(list) {
+            list.innerHTML = Object.values(cats).map(c => `
+                <div class="cat-card-new" onclick="openCat('${c.name}')" style="cursor:pointer; transition: 0.3s;">
+                    <img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div>
+                </div>`).join('');
+        }
+        // تحديث لوحة التحكم
         const admListCats = document.getElementById('admListCats');
-        if(admListCats) admListCats.innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-        
+        if(admListCats) admListCats.innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
         const admProdCatSelect = document.getElementById('admProdCatSelect');
         if(admProdCatSelect) admProdCatSelect.innerHTML = '<option disabled selected>اختر قسم المنتجات</option>' + Object.values(cats).map(s => `<option>${s.name}</option>`).join('');
     });
 
-    // جلب أقسام المنتدى
+    // جلب بيانات المنتدى
     db.ref('forumSections').on('value', snap => {
         const data = snap.val() || {};
         const list = document.getElementById('admListForumSecs'), select = document.getElementById('selectForumTopicSec');
-        if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('forumSections','${k}')" style="color:red;">حذف القسم</button></td></tr>`).join('');
+        if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('forumSections','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
         if(select) select.innerHTML = '<option disabled selected value="">اختر القسم</option>' + Object.values(data).map(s => `<option value="${s.name}">${s.name}</option>`).join('');
     });
 
-    // جلب المواضيع للوحة
     db.ref('forumTopics').on('value', snap => {
         const data = snap.val() || {}, list = document.getElementById('admListForumTopics');
         if(list) list.innerHTML = Object.entries(data).reverse().map(([k,v]) => `<tr><td>${v.title}</td><td>${v.section}</td><td><button onclick="deleteItem('forumTopics','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
     });
+}
 
-    // التعامل مع الهاش (Navigation)
+// التشغيل النهائي
+window.addEventListener('load', () => {
+    initApp();
     const hash = location.hash.replace('#', '');
     if (hash === 'categoryView') openCat(localStorage.getItem('lastCat'));
     else if (hash === 'productCalculator') openCalc(JSON.parse(localStorage.getItem('lastProd')));
     else showPage(hash || 'homePage', false);
 });
 </script>
+</body>
+</html>
