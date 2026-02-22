@@ -1,176 +1,148 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دكتور ديكور - شبابيك للستائر</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>
-:root{--gold:#d9b382;--brown:#3d2e24;--bg:#f9f6f2;--whatsapp:#25D366;}
-body{margin:0;font-family:'Cairo',sans-serif;background:var(--bg);color:var(--brown);text-align:center;}
-header{background:#fff;padding:15px;font-weight:900;font-size:22px;box-shadow:0 5px 20px rgba(0,0,0,0.05);}
-canvas{max-width:95%;margin-top:15px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
-.controls{margin-top:15px;display:flex;flex-wrap:wrap;justify-content:center;}
-.btn{background:var(--gold);border:none;color:white;padding:12px 16px;margin:5px;border-radius:10px;font-weight:700;cursor:pointer;}
-.btn:hover{opacity:.9;}
-.wa{background:var(--whatsapp);}
-#aiResponse{background:white;padding:20px;margin:15px auto;max-width:700px;border-right:6px solid var(--gold);border-radius:20px;line-height:1.8;}
-.avatar-container{width:120px;height:120px;margin:10px auto;border-radius:50%;border:4px solid var(--gold);overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
-#drAvatar{width:100%;height:100%;object-fit:contain;transition:0.3s;}
-.suggestion-grid{display:flex;justify-content:center;gap:15px;margin-top:20px;}
-.suggestion-card{border:1px solid #eee;border-radius:12px;overflow:hidden;width:150px;cursor:pointer;transition:0.3s;}
-.suggestion-card img{width:100%;height:150px;object-fit:cover;}
-.suggestion-card:hover{transform:scale(1.05);}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منتدى دكتور ديكور - شبابيك</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); color: var(--brown); }
+
+        /* الهيدر */
+        header { background: var(--white); padding: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-bottom: 3px solid var(--gold); }
+        .forum-title { font-weight: 900; font-size: 24px; }
+        .forum-title span { color: var(--gold); }
+
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+
+        /* صندوق إضافة موضوع جديد */
+        .post-creator { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .post-creator textarea { width: 100%; border: 1px solid #eee; border-radius: 10px; padding: 15px; font-size: 1rem; resize: none; margin-bottom: 10px; outline: none; }
+        .post-creator textarea:focus { border-color: var(--gold); }
+        .post-actions { display: flex; justify-content: space-between; align-items: center; }
+        .upload-img-btn { color: var(--gold); cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+        .btn-post { background: var(--brown); color: white; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+        /* شكل المواضيع (المشاركات) */
+        .forum-post { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); position: relative; }
+        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .user-avatar { width: 45px; height: 45px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; }
+        .user-info b { font-size: 0.95rem; }
+        .user-info span { display: block; font-size: 0.75rem; color: #888; }
+        
+        .post-content { font-size: 1rem; margin-bottom: 15px; line-height: 1.6; }
+        .post-image { width: 100%; border-radius: 10px; margin-bottom: 15px; display: none; }
+        
+        .post-footer { border-top: 1px solid #f5f5f5; padding-top: 15px; display: flex; gap: 20px; }
+        .footer-item { color: #666; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+        .footer-item:hover { color: var(--gold); }
+        .footer-item i { margin-left: 5px; }
+
+        /* منشن دكتور ديكور */
+        .dr-reply { background: #fffdf9; border: 1px dashed var(--gold); border-radius: 10px; padding: 15px; margin-top: 15px; display: flex; gap: 10px; }
+        .dr-reply img { width: 35px; height: 35px; border-radius: 50%; }
+        .dr-text { font-size: 0.85rem; }
+    </style>
 </head>
 <body>
 
-<header>دكتور ديكور - شبابيك للستائر</header>
+<header>
+    <div class="forum-title">منتدى <span>دكتور ديكور</span></div>
+    <p style="font-size: 0.8rem; color: #888;">مجتمع شبابيك لتبادل الخبرات في تزيين المنازل</p>
+</header>
 
-<div class="avatar-container">
-<img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
+<div class="container">
+    <div class="post-creator">
+        <textarea id="postInput" rows="3" placeholder="اسأل دكتور ديكور أو شارك صورة لغرفتك..."></textarea>
+        <div class="post-actions">
+            <label class="upload-img-btn" for="fileUp">
+                <i class="fas fa-image"></i> إضافة صورة
+                <input type="file" id="fileUp" hidden accept="image/*" onchange="previewImage(this)">
+            </label>
+            <button class="btn-post" onclick="addPost()">نشر الموضوع</button>
+        </div>
+        <img id="imgPreview" style="max-width: 100px; margin-top: 10px; border-radius: 5px; display: none;">
+    </div>
+
+    <div id="forumFeed">
+        <div class="forum-post">
+            <div class="post-header">
+                <div class="user-avatar" style="background: var(--gold); color: white;"><i class="fas fa-user-md"></i></div>
+                <div class="user-info">
+                    <b>دكتور ديكور (مشرف)</b>
+                    <span>منذ ساعة</span>
+                </div>
+            </div>
+            <div class="post-content">
+                يا أهلاً بيكم بمنتداكم الجديد! هنا نتبادل الأفكار والصور. أي واحد عنده حيرة بالستائر أو الألوان يكتب موضوع وأنا والشباب نجاوبه.
+            </div>
+            <div class="post-footer">
+                <div class="footer-item"><i class="far fa-heart"></i> 24</div>
+                <div class="footer-item"><i class="far fa-comment"></i> 5 تعليقات</div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<div id="aiResponse">ارفع صورة غرفتك وسأقترح لك ستارة مناسبة واقعية فوق الشباك ✨</div>
-
-<input type="file" accept="image/*" id="inputImage"><br>
-<canvas id="canvas"></canvas>
-
-<div class="controls">
-<button class="btn" onclick="autoDetect()">كشف الشباك تلقائياً</button>
-<button class="btn" onclick="smartColorMatch()">لون ستارة مناسب تلقائياً</button>
-<button class="btn" onclick="toggleCurtain()">فتح/إغلاق الستارة</button>
-<button class="btn" onclick="downloadImage()">حفظ الصورة</button>
-<button class="btn wa" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i></button>
-</div>
-
-<div class="suggestion-grid" id="suggestions"></div>
 
 <script>
-let canvas=document.getElementById("canvas");
-let ctx=canvas.getContext("2d");
-let img=new Image();
-let startX=0,startY=0,endX=0,endY=0;
-let curtainOpen=false;
-let curtainImg=new Image();
-let curtainColor="rgba(217,179,130,0.85)";
-let drAvatar=document.getElementById("drAvatar");
-let inputImage=document.getElementById("inputImage");
-let suggestionsDiv=document.getElementById("suggestions");
+    let selectedImageData = null;
 
-// مجموعة صور ستائر جاهزة (تغير حسب المتجر)
-let curtainOptions=[
-{src:"https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400", name:"ستارة بيج"},
-{src:"https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400", name:"ستارة بنية"},
-{src:"https://images.unsplash.com/photo-1617325252256-752118253fbc?w=400", name:"ستارة رمادية"}
-];
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = e => {
+                const img = document.getElementById('imgPreview');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                selectedImageData = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-// رفع الصورة
-inputImage.addEventListener("change",(e)=>{
-if(!e.target.files[0]) return;
-let reader=new FileReader();
-reader.onload=function(ev){
-img.onload=function(){
-canvas.width=img.width;
-canvas.height=img.height;
-ctx.drawImage(img,0,0);
-drAvatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-displaySuggestions();
-};
-img.src=ev.target.result;
-};
-reader.readAsDataURL(e.target.files[0]);
-});
+    function addPost() {
+        const text = document.getElementById('postInput').value;
+        if (!text && !selectedImageData) return alert("اكتب شي عيني!");
 
-// عرض مقترحات الستائر
-function displaySuggestions(){
-suggestionsDiv.innerHTML="";
-curtainOptions.forEach(opt=>{
-let card=document.createElement("div");
-card.className="suggestion-card";
-card.innerHTML=`<img src="${opt.src}"><p>${opt.name}</p>`;
-card.onclick=()=>{
-curtainImg.src=opt.src;
-applyCurtain();
-document.getElementById("aiResponse").innerHTML=`تم اختيار: ${opt.name}`;
-};
-suggestionsDiv.appendChild(card);
-});
-}
+        const feed = document.getElementById('forumFeed');
+        const newPost = document.createElement('div');
+        newPost.className = 'forum-post';
+        
+        let imageHtml = selectedImageData ? `<img src="${selectedImageData}" class="post-image" style="display:block;">` : '';
+        
+        newPost.innerHTML = `
+            <div class="post-header">
+                <div class="user-avatar"><i class="fas fa-user"></i></div>
+                <div class="user-info">
+                    <b>عضو جديد</b>
+                    <span>الآن</span>
+                </div>
+            </div>
+            <div class="post-content">${text}</div>
+            ${imageHtml}
+            <div class="post-footer">
+                <div class="footer-item"><i class="far fa-heart"></i> 0</div>
+                <div class="footer-item"><i class="far fa-comment"></i> 0</div>
+            </div>
+            <div class="dr-reply">
+                <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
+                <div class="dr-text">
+                    <b>دكتور ديكور:</b> عيني عاشت ايدك على هالموضوع، راح نراجع الصور ونطيك رأينا بأقرب وقت!
+                </div>
+            </div>
+        `;
 
-// كشف الشباك تلقائياً
-function autoDetect(){
-if(!img.src) return alert("ارفع صورة أولاً");
-drAvatar.src="https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png"; // تفكير
-ctx.drawImage(img,0,0);
-let data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
-let minX=canvas.width,minY=canvas.height,maxX=0,maxY=0;
-let brightCount=0;
-for(let y=0;y<canvas.height;y+=3){
-for(let x=0;x<canvas.width;x+=3){
-let i=(y*canvas.width+x)*4;
-let brightness=(data[i]+data[i+1]+data[i+2])/3;
-if(brightness>210){
-brightCount++;
-if(x<minX)minX=x;if(y<minY)minY=y;
-if(x>maxX)maxX=x;if(y>maxY)maxY=y;
-}}}
-if(maxX-minX<60){ drAvatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png"; return alert("لم أستطع كشف الشباك بدقة 😅"); }
-startX=minX;startY=minY;endX=maxX;endY=maxY;
-drAvatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-document.getElementById("aiResponse").innerHTML="تم كشف الشباك. اختر الستارة المناسبة 👌";
-applyCurtain();
-}
+        feed.prepend(newPost);
 
-// تطبيق الستارة فوق الشباك
-function applyCurtain(){
-if(!curtainImg.src) return;
-ctx.drawImage(img,0,0);
-let w=endX-startX, h=endY-startY;
-ctx.drawImage(curtainImg,startX,startY,w,h);
-if(!curtainOpen){
-ctx.globalAlpha=0.3; ctx.fillStyle="white"; ctx.fillRect(startX,startY,w,h); ctx.globalAlpha=1;
-}}
-function toggleCurtain(){curtainOpen=!curtainOpen; applyCurtain();}
-
-// اختيار لون تلقائي (يوجه المستخدم لستارة مناسبة)
-function smartColorMatch(){
-let tempCanvas=document.createElement("canvas");
-let tCtx=tempCanvas.getContext("2d");
-tempCanvas.width=canvas.width; tempCanvas.height=canvas.height;
-tCtx.drawImage(img,0,0);
-let data=tCtx.getImageData(0,0,canvas.width,canvas.height).data;
-let r=0,g=0,b=0,count=0;
-for(let y=0;y<canvas.height;y+=5){
-for(let x=0;x<canvas.width;x+=5){
-if(x>startX && x<endX && y>startY && y<endY) continue;
-let i=(y*canvas.width+x)*4;
-r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++;
-}}
-let avgR=Math.floor(r/count), avgG=Math.floor(g/count), avgB=Math.floor(b/count);
-let minDiff=99999, chosen=null;
-curtainOptions.forEach(opt=>{
-let imgCol=new Image(); imgCol.src=opt.src; // سهل التغيير لاحقاً
-let diff=Math.abs(avgR-200)+Math.abs(avgG-150)+Math.abs(avgB-100); // تقريب
-if(diff<minDiff){minDiff=diff; chosen=opt;}
-});
-if(chosen){curtainImg.src=chosen.src; applyCurtain(); document.getElementById("aiResponse").innerHTML=`تم اختيار لون ستارة مناسب: ${chosen.name}`;}
-}
-
-// حفظ الصورة
-function downloadImage(){
-let link=document.createElement("a");
-link.download="shababek-room.png";
-link.href=canvas.toDataURL();
-link.click();
-}
-
-// واتساب
-function sendToWhatsApp(){
-let text="مرحبا شبابيك 👋 أريد تنفيذ هذه الستارة.";
-window.open("https://wa.me/9647883002797?text="+encodeURIComponent(text),"_blank");
-}
+        // تصفير الصندوق
+        document.getElementById('postInput').value = '';
+        document.getElementById('imgPreview').style.display = 'none';
+        selectedImageData = null;
+    }
 </script>
+
 </body>
 </html>
