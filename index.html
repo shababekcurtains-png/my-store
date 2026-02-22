@@ -330,7 +330,12 @@
         <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;"><h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2><div><i class="fa-solid fa-phone"></i> 07883002797</div><div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a></div></div>
         <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
         <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button></div></div>
-        <div id="paymentPage" class="page"><div id="paymentList" style="padding: 40px 5%; max-width: 850px; margin: auto;"></div></div>
+       <div id="paymentPage" class="page">
+    <div style="padding: 40px 5%; text-align: center;">
+        <h2 style="font-weight:900; margin-bottom:30px;">طرق الدفع الآمنة</h2>
+        <div id="paymentList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 20px;"></div>
+    </div>
+</div>
     </main>
 
     <div class="footer-cta">
@@ -454,13 +459,52 @@ async function publishForumTopic() {
     .then(() => { alert("تم النشر في المنتدى!"); location.reload(); });
 }
 
-// --- 7. وظيفة طرق الدفع (المصححة) ---
 async function publishPayment() {
-    const name = v('admPayName'), file = document.getElementById('admPayFile').files[0];
-    if(!name || !file) return alert("أدخل اسم الطريقة وصورة الشعار");
-    const url = await uploadImg(file);
-    db.ref('payments').push({ name, img: url }).then(() => { alert("تم حفظ طريقة الدفع"); location.reload(); });
+    const name = v('admPayName');
+    const fileInput = document.getElementById('admPayFile');
+    
+    if(!name || !fileInput.files[0]) return alert("أدخل الاسم والصورة يا بطل");
+
+    const btn = event.target;
+    btn.innerText = "جاري الحفظ...";
+    btn.disabled = true;
+
+    try {
+        const url = await uploadImg(fileInput.files[0]);
+        // الحفظ في المرجع 'payments' ليتزامن مع السكريبت أعلاه
+        await db.ref('payments').push({
+            name: name,
+            img: url,
+            timestamp: Date.now()
+        });
+        alert("تمت إضافة الطريقة بنجاح!");
+        document.getElementById('admPayName').value = "";
+        fileInput.value = "";
+    } catch (e) {
+        alert("خطأ: " + e.message);
+    } finally {
+        btn.innerText = "حفظ طريقة الدفع";
+        btn.disabled = false;
+    }
 }
+
+    // --- ثانياً: العرض في لوحة التحكم (جدول للحذف) ---
+    if(adminTable) {
+        adminTable.innerHTML = Object.entries(data).map(([key, pay]) => `
+            <tr>
+                <td style="padding:10px;">
+                    <img src="${pay.img}" style="width:40px; height:40px; border-radius:5px; object-fit:cover; vertical-align:middle;">
+                    <span style="margin-right:10px; font-weight:bold;">${pay.name}</span>
+                </td>
+                <td style="text-align:left;">
+                    <button onclick="deleteItem('payments','${key}')" style="color:var(--red); border:none; background:none; cursor:pointer;">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+});
 
 function deleteItem(ref, key) { if(confirm("هل تريد الحذف نهائياً؟")) db.ref(ref).child(key).remove(); }
 
