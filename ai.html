@@ -3,82 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منتدى شبابيك - Shababek Forum</title>
+    <title>منتدى شبابيك - الأقسام</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
+        body { background: var(--bg); color: var(--brown); line-height: 1.6; }
 
-        /* الهيدر المعتمد */
-        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .logo-img { height: 80px; cursor: pointer; }
 
-        /* الشريط الرئيسي */
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; font-size: 1rem; transition: 0.3s; cursor: pointer; }
-        .nav-menu a:hover { color: var(--gold); }
+        /* شريط الأقسام */
+        .forum-nav { background: white; padding: 15px 5%; border-bottom: 2px solid var(--gold); overflow-x: auto; white-space: nowrap; display: flex; gap: 10px; scrollbar-width: none; }
+        .section-btn { background: #f0f0f0; padding: 10px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; border: 1px solid #eee; }
+        .section-btn.active { background: var(--gold); color: white; border-color: var(--gold); }
 
-        /* منطقة المحتوى الفارغة */
-        main { min-height: 70vh; padding: 40px 5%; display: flex; flex-direction: column; align-items: center; }
+        /* تصميم المنشور */
+        .feed-container { max-width: 700px; margin: 30px auto; padding: 0 15px; }
+        .post-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #eee; }
+        .post-tag { background: var(--bg); color: var(--gold); padding: 4px 12px; border-radius: 5px; font-size: 0.75rem; font-weight: 900; margin-bottom: 10px; display: inline-block; }
+        .post-media { width: 100%; border-radius: 15px; margin: 15px 0; overflow: hidden; }
+        .post-media img { width: 100%; display: block; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 15px; }
 
-        /* الفوتر المحدث مع زر المنتجات */
-        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; margin-top: 50px; }
-        .btn-footer-wa { border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-block; margin: 5px; }
+        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
         .btn-footer-prod { background: var(--gold); color: white; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; display: inline-block; margin: 5px; }
-        
-        footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px; text-align: center; font-size: 0.8rem; }
-
-        /* زر الواتساب الطائر */
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); } 100% { transform: scale(1); } }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 9999; }
     </style>
 </head>
 <body>
 
-    <div class="top-banner">
-        <span>منتدى شبابيك للستائر - ظل وذوق</span>
-        <a href="https://wa.me/9647883002797" style="color:var(--whatsapp); text-decoration:none; font-weight:bold;"><i class="fab fa-whatsapp"></i> تواصل مباشر</a>
-    </div>
-
     <header>
-        <div style="font-weight:900; line-height:1;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">للستائر</span></div>
+        <div style="font-weight:900; line-height:1;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">المنتدى</span></div>
         <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="location.href='index.html'">
         <div style="width: 50px;"></div> 
     </header>
 
-    <div class="nav-bar">
-        <ul class="nav-menu">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="index.html?go=categories">المنتجات</a></li>
-            <li><a href="ai.html" style="color:var(--gold); font-weight: 900;">منتدى شبابيك</a></li>
-            <li><a href="index.html#paymentPage">طرق الدفع</a></li>
-            <li><a href="index.html#aboutPage">من نحن</a></li>
-            <li><a href="index.html#contactPage">تواصل معنا</a></li>
-        </ul>
+    <div class="forum-nav" id="forumTabs">
+        <div class="section-btn active" onclick="filterForum('الكل', this)">الكل</div>
+        <div class="section-btn" onclick="filterForum('موديلات جديدة', this)">موديلات جديدة</div>
+        <div class="section-btn" onclick="filterForum('نصائح ديكور', this)">نصائح ديكور</div>
+        <div class="section-btn" onclick="filterForum('آراء الزبائن', this)">آراء الزبائن</div>
     </div>
 
-    <main>
+    <main class="feed-container" id="postsFeed">
         </main>
 
     <div class="footer-cta">
         <h2 style="margin-bottom: 20px; font-weight: 900;">جاهز لتجديد ستائر منزلك؟</h2>
-        <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
-            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a href="index.html?go=categories" class="btn-footer-prod">تصفح المنتجات</a>
-        </div>
+        <a href="index.html?go=categories" class="btn-footer-prod">تصفح المنتجات</a>
     </div>
-
-    <footer>
-        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
-    </footer>
 
     <a href="https://wa.me/9647883002797" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
+<script>
+// تهيئة Firebase (نفس إعدادات موقعك)
+const firebaseConfig = { 
+    apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
+    authDomain: "shababekcurtain.firebaseapp.com", 
+    databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
+    projectId: "shababekcurtain" 
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let allPosts = [];
+
+// تحميل البيانات
+db.ref('forum').orderByChild('timestamp').on('value', snap => {
+    allPosts = [];
+    snap.forEach(child => {
+        allPosts.push({ id: child.key, ...child.val() });
+    });
+    renderPosts(allPosts.reverse());
+});
+
+function renderPosts(posts) {
+    const feed = document.getElementById('postsFeed');
+    feed.innerHTML = posts.map(p => {
+        let mediaHtml = "";
+        if (p.type === 'image' && p.media) {
+            mediaHtml = `<div class="post-media"><img src="${p.media}"></div>`;
+        } else if (p.type === 'youtube' && p.media) {
+            // تحويل رابط يوتيوب إلى رابط Embed
+            let vidId = p.media.split('v=')[1] || p.media.split('/').pop();
+            mediaHtml = `<div class="post-media video-wrapper"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
+        }
+
+        return `
+            <div class="post-card">
+                <span class="post-tag">${p.section}</span>
+                <div style="font-weight:900; margin-bottom:10px; display:flex; align-items:center; gap:10px;">
+                    <img src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="width:35px;"> دكتور ديكور
+                </div>
+                <p>${p.text}</p>
+                ${mediaHtml}
+                <small style="color:#999; font-size:0.7rem;">نُشر في: ${p.date}</small>
+            </div>
+        `;
+    }).join('');
+}
+
+function filterForum(category, btn) {
+    // تحديث شكل الأزرار
+    document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // تصفية المحتوى
+    if (category === 'الكل') {
+        renderPosts(allPosts);
+    } else {
+        const filtered = allPosts.filter(p => p.section === category);
+        renderPosts(filtered);
+    }
+}
+</script>
 </body>
 </html>
