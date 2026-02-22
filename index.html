@@ -296,23 +296,6 @@
                     <input type="file" id="admProdFile" accept="image/*" style="margin: 10px 0; width: 100%;">
 <button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
                     <table class="admin-table"><tbody id="admListProds"></tbody></table>
-                </div>
-                <div class="admin-box" style="border:2px solid var(--gold);">
-                    <h3>٣. إدارة دكتور ديكور</h3>
-                    <input type="text" id="admDocSecName" placeholder="اسم القسم الفرعي">
-                    <button onclick="saveItem('docSections', {name:v('admDocSecName')})" class="btn-gold">إضافة قسم</button>
-                    <table class="admin-table"><tbody id="admListDocSecs"></tbody></table>
-                    <hr>
-                    <select id="selectDocTopicSec"></select>
-                    <input type="text" id="admDocTitle" placeholder="العنوان">
-                    <textarea id="admDocDesc" placeholder="الشرح"></textarea>
-                    <input type="text" id="admDocMedia" placeholder="رابط ميديا">
-                    <select id="admDocType"><option value="img">صورة</option><option value="vid">يوتيوب عادي</option><option value="shorts">يوتيوب شورتس</option></select>
-                    <select id="admDocMode"><option value="closed">مقالة (بالضغط)</option><option value="open">مباشر (سكرول)</option></select>
-                    <button onclick="saveItem('docTopics', {section:v('admDocTopicSec'), title:v('admDocTitle'), desc:v('admDocDesc'), media:v('admDocMedia'), type:v('admDocType'), mode:v('admDocMode')})" class="btn-gold">نشر</button>
-                    <table class="admin-table"><tbody id="admListDocTopics"></tbody></table>
-                </div>
-                <div class="admin-box">
                     <h3>٤. طرق الدفع</h3>
                     <input type="text" id="admPayName" placeholder="اسم الطريقة">
                     <input type="file" id="admPayFile" accept="image/*" style="margin: 10px 0; width: 100%;">
@@ -588,18 +571,56 @@ window.addEventListener('load', () => {
         if(list) list.innerHTML = Object.entries(data).reverse().map(([k,v]) => `<tr><td>${v.title}</td><td>${v.section}</td><td><button onclick="deleteItem('forumTopics','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
     });
 
-    // طرق الدفع
+  // --- ٩. مزامنة بيانات طرق الدفع (الإصدار الكامل) ---
     db.ref('payments').on('value', snap => {
-        const data = snap.val() || {}, list = document.getElementById('admListPays');
-        if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
+        const data = snap.val() || {};
+        const userList = document.getElementById('paymentList'); // صفحة الزبائن
+        const admList = document.getElementById('admListPays');   // لوحة التحكم
+
+        // عرض الكروت الفخمة للزبائن
+        if(userList) {
+            userList.innerHTML = Object.values(data).map(pay => `
+                <div class="cat-card-new" style="height: 180px; background: white; cursor: default; position: relative; border: 1px solid #eee;">
+                    <img src="${pay.img}" style="width:100%; height:100%; object-fit: contain; padding: 20px;">
+                    <div style="position:absolute; bottom:0; width:100%; background:var(--brown); color:white; padding:8px; font-weight:900; text-align:center; font-size:0.9rem;">
+                        ${pay.name}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // عرض الجدول للحذف في لوحة التحكم
+        if(admList) {
+            admList.innerHTML = Object.entries(data).map(([k, v]) => `
+                <tr>
+                    <td style="display:flex; align-items:center; gap:10px; padding:10px;">
+                        <img src="${v.img}" style="width:40px; height:40px; border-radius:5px; object-fit:cover;">
+                        <b>${v.name}</b>
+                    </td>
+                    <td style="text-align:left;">
+                        <button onclick="deleteItem('payments','${k}')" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
     });
 
-    // إدارة التنقل والهاش
+    // --- ١٠. إدارة التنقل والهاش عند فتح الموقع ---
     const hash = location.hash.replace('#', '');
-    if (hash === 'categoryView') openCat(localStorage.getItem('lastCat'));
-    else if (hash === 'productCalculator') openCalc(JSON.parse(localStorage.getItem('lastProd')));
-    else showPage(hash || 'homePage', false);
-});
+    if (hash === 'categoryView') {
+        const lastCat = localStorage.getItem('lastCat');
+        if(lastCat) openCat(lastCat);
+        else showPage('homePage', false);
+    } 
+    else if (hash === 'productCalculator') {
+        const lastProd = localStorage.getItem('lastProd');
+        if(lastProd) openCalc(JSON.parse(lastProd));
+        else showPage('homePage', false);
+    } 
+    else {
+        showPage(hash || 'homePage', false);
+    }
+}); // إغلاق مستمع نافذة التحميل window.addEventListener('load')
 </script>
 </body>
 </html>
