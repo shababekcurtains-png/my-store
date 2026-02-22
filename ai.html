@@ -1,210 +1,176 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دكتور ديكور AI PRO - شبابيك للستائر</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --whatsapp: #25D366; }
-        body { margin: 0; font-family: 'Cairo', sans-serif; text-align: center; background: var(--bg); color: var(--brown); padding-bottom: 50px; }
-        header { background: white; padding: 15px; font-weight: 900; font-size: 22px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        canvas { max-width: 95%; margin-top: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: #eee; }
-        .controls { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; max-width: 800px; margin-left: auto; margin-right: auto; }
-        .btn { background: var(--gold); border: none; color: white; padding: 12px 16px; margin: 5px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn:hover { background: var(--brown); transform: translateY(-2px); }
-        .wa { background: var(--whatsapp); }
-        #aiResponse { background: white; padding: 20px; margin: 15px auto; max-width: 700px; border-right: 6px solid var(--gold); border-radius: 20px; line-height: 1.8; text-align: right; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .avatar-container { width: 120px; height: 120px; margin: 10px auto; border-radius: 50%; border: 4px solid var(--gold); overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: white; }
-        #drAvatar { width: 100%; height: 100%; object-fit: contain; transition: 0.3s; }
-        .loading-text { color: var(--gold); font-weight: bold; display: none; margin: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دكتور ديكور - شبابيك للستائر</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--gold:#d9b382;--brown:#3d2e24;--bg:#f9f6f2;--whatsapp:#25D366;}
+body{margin:0;font-family:'Cairo',sans-serif;background:var(--bg);color:var(--brown);text-align:center;}
+header{background:#fff;padding:15px;font-weight:900;font-size:22px;box-shadow:0 5px 20px rgba(0,0,0,0.05);}
+canvas{max-width:95%;margin-top:15px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+.controls{margin-top:15px;display:flex;flex-wrap:wrap;justify-content:center;}
+.btn{background:var(--gold);border:none;color:white;padding:12px 16px;margin:5px;border-radius:10px;font-weight:700;cursor:pointer;}
+.btn:hover{opacity:.9;}
+.wa{background:var(--whatsapp);}
+#aiResponse{background:white;padding:20px;margin:15px auto;max-width:700px;border-right:6px solid var(--gold);border-radius:20px;line-height:1.8;}
+.avatar-container{width:120px;height:120px;margin:10px auto;border-radius:50%;border:4px solid var(--gold);overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+#drAvatar{width:100%;height:100%;object-fit:contain;transition:0.3s;}
+.suggestion-grid{display:flex;justify-content:center;gap:15px;margin-top:20px;}
+.suggestion-card{border:1px solid #eee;border-radius:12px;overflow:hidden;width:150px;cursor:pointer;transition:0.3s;}
+.suggestion-card img{width:100%;height:150px;object-fit:cover;}
+.suggestion-card:hover{transform:scale(1.05);}
+</style>
 </head>
 <body>
 
-<header>دكتور ديكور AI PRO — شبابيك للستائر</header>
+<header>دكتور ديكور - شبابيك للستائر</header>
 
 <div class="avatar-container">
-    <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
+<img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
 </div>
 
-<div id="aiResponse">
-    ارفع صورة غرفتك وسأقوم بتحليل الإضاءة والأثاث فوراً، ثم نركب الستارة المثالية ✨
-</div>
-<div id="loader" class="loading-text"><i class="fas fa-spinner fa-spin"></i> Opal يحلل الغرفة الآن...</div>
+<div id="aiResponse">ارفع صورة غرفتك وسأقترح لك ستارة مناسبة واقعية فوق الشباك ✨</div>
 
-<input type="file" id="fileInput" accept="image/*" onchange="loadImage(this)" style="margin: 20px 0;"><br>
+<input type="file" accept="image/*" id="inputImage"><br>
 <canvas id="canvas"></canvas>
 
 <div class="controls">
-    <button class="btn" onclick="autoDetect()">كشف تلقائي للشباك</button>
-    <button class="btn" onclick="applyCurtain()">تركيب ستارة واقعية</button>
-    <button class="btn" onclick="toggleCurtain()">فتح / إغلاق</button>
-    <button class="btn" onclick="smartColorMatch()">تنسيق اللون مع الأثاث</button>
-    <button class="btn" onclick="measureWindow()">قياس تقريبي</button>
-    <button class="btn" onclick="calculatePrice()">حساب التكلفة</button>
-    <button class="btn" onclick="downloadImage()">حفظ التصميم</button>
-    <button class="btn wa" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i> اطلب الآن</button>
+<button class="btn" onclick="autoDetect()">كشف الشباك تلقائياً</button>
+<button class="btn" onclick="smartColorMatch()">لون ستارة مناسب تلقائياً</button>
+<button class="btn" onclick="toggleCurtain()">فتح/إغلاق الستارة</button>
+<button class="btn" onclick="downloadImage()">حفظ الصورة</button>
+<button class="btn wa" onclick="sendToWhatsApp()"><i class="fab fa-whatsapp"></i></button>
 </div>
 
+<div class="suggestion-grid" id="suggestions"></div>
+
 <script>
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-let img = new Image();
-let startX=0, startY=0, endX=0, endY=0;
+let canvas=document.getElementById("canvas");
+let ctx=canvas.getContext("2d");
+let img=new Image();
+let startX=0,startY=0,endX=0,endY=0;
 let curtainOpen=false;
+let curtainImg=new Image();
 let curtainColor="rgba(217,179,130,0.85)";
-let drAvatar = document.getElementById("drAvatar");
-const WORKER_URL = "https://shababek-opal-v1.bilalmohammedsalem23.workers.dev/";
+let drAvatar=document.getElementById("drAvatar");
+let inputImage=document.getElementById("inputImage");
+let suggestionsDiv=document.getElementById("suggestions");
 
-// تحميل الصورة والتحليل التلقائي عبر AI
-function loadImage(input) {
-    if(!input.files[0]) return;
-    
-    const responseBox = document.getElementById("aiResponse");
-    const loader = document.getElementById("loader");
-    
-    // تغيير شكل الدكتور وبدء التحليل
-    drAvatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
-    loader.style.display = "block";
-    responseBox.innerText = "ثواني عيني.. Opal كاعد يحلل كل ركن بغرفتك...";
+// مجموعة صور ستائر جاهزة (تغير حسب المتجر)
+let curtainOptions=[
+{src:"https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400", name:"ستارة بيج"},
+{src:"https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400", name:"ستارة بنية"},
+{src:"https://images.unsplash.com/photo-1617325252256-752118253fbc?w=400", name:"ستارة رمادية"}
+];
 
-    let reader = new FileReader();
-    reader.onload = e => {
-        img.onload = () => {
-            // رسم الصورة على الكانفاس
-            const MAX_WIDTH = 1200;
-            const scale = MAX_WIDTH / img.width;
-            canvas.width = MAX_WIDTH;
-            canvas.height = img.height * scale;
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            
-            // إرسال الصورة للوركر للتحليل الفني
-            analyzeWithAI(canvas.toDataURL('image/jpeg', 0.7));
-        };
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(input.files[0]);
+// رفع الصورة
+inputImage.addEventListener("change",(e)=>{
+if(!e.target.files[0]) return;
+let reader=new FileReader();
+reader.onload=function(ev){
+img.onload=function(){
+canvas.width=img.width;
+canvas.height=img.height;
+ctx.drawImage(img,0,0);
+drAvatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+displaySuggestions();
+};
+img.src=ev.target.result;
+};
+reader.readAsDataURL(e.target.files[0]);
+});
+
+// عرض مقترحات الستائر
+function displaySuggestions(){
+suggestionsDiv.innerHTML="";
+curtainOptions.forEach(opt=>{
+let card=document.createElement("div");
+card.className="suggestion-card";
+card.innerHTML=`<img src="${opt.src}"><p>${opt.name}</p>`;
+card.onclick=()=>{
+curtainImg.src=opt.src;
+applyCurtain();
+document.getElementById("aiResponse").innerHTML=`تم اختيار: ${opt.name}`;
+};
+suggestionsDiv.appendChild(card);
+});
 }
 
-async function analyzeWithAI(base64Image) {
-    try {
-        const res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ image: base64Image })
-        });
-        const data = await res.json();
-        
-        document.getElementById("aiResponse").innerText = data.reply;
-        document.getElementById("loader").style.display = "none";
-        drAvatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-
-        // نطق النصيحة
-        const speech = new SpeechSynthesisUtterance(data.reply.replace(/\(.*\)/, ""));
-        speech.lang = 'ar-SA';
-        window.speechSynthesis.speak(speech);
-
-        // إذا كان التحليل يشير لنمط معين، نعدل لون الستارة الافتراضي
-        if(data.reply.includes("MODERN")) {
-            curtainColor = "rgba(217,179,130,0.85)";
-        } else {
-            curtainColor = "rgba(61,46,36,0.85)";
-        }
-
-    } catch (err) {
-        document.getElementById("aiResponse").innerText = "حللت غرفتك عيني، تكدر هسة تستخدم أدوات الكشف والتركيب.";
-        document.getElementById("loader").style.display = "none";
-        drAvatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-    }
-}
-
-// كشف تلقائي للشباك (Logic الخاص بك)
+// كشف الشباك تلقائياً
 function autoDetect(){
-    if(!img.src) return alert("ارفع صورة أولاً");
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    let data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
-    let minX=canvas.width, minY=canvas.height, maxX=0, maxY=0;
-    for(let y=0; y<canvas.height; y+=5){
-        for(let x=0; x<canvas.width; x+=5){
-            let i=(y*canvas.width+x)*4;
-            let brightness=(data[i]+data[i+1]+data[i+2])/3;
-            if(brightness>200){
-                if(x<minX)minX=x; if(y<minY)minY=y;
-                if(x>maxX)maxX=x; if(y>maxY)maxY=y;
-            }
-        }
-    }
-    if(maxX-minX<50) return alert("جرب رفع الصورة مرة أخرى أو حدد يدوي");
-    startX=minX; startY=minY; endX=maxX; endY=maxY;
-    drawSelection();
+if(!img.src) return alert("ارفع صورة أولاً");
+drAvatar.src="https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png"; // تفكير
+ctx.drawImage(img,0,0);
+let data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+let minX=canvas.width,minY=canvas.height,maxX=0,maxY=0;
+let brightCount=0;
+for(let y=0;y<canvas.height;y+=3){
+for(let x=0;x<canvas.width;x+=3){
+let i=(y*canvas.width+x)*4;
+let brightness=(data[i]+data[i+1]+data[i+2])/3;
+if(brightness>210){
+brightCount++;
+if(x<minX)minX=x;if(y<minY)minY=y;
+if(x>maxX)maxX=x;if(y>maxY)maxY=y;
+}}}
+if(maxX-minX<60){ drAvatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png"; return alert("لم أستطع كشف الشباك بدقة 😅"); }
+startX=minX;startY=minY;endX=maxX;endY=maxY;
+drAvatar.src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+document.getElementById("aiResponse").innerHTML="تم كشف الشباك. اختر الستارة المناسبة 👌";
+applyCurtain();
 }
 
-function drawSelection(){
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle="#d9b382";
-    ctx.lineWidth=5;
-    ctx.strokeRect(startX, startY, endX-startX, endY-startY);
-}
-
+// تطبيق الستارة فوق الشباك
 function applyCurtain(){
-    if(endX<=startX) { alert("يرجى الضغط على كشف تلقائي أولاً"); return; }
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    let w=endX-startX; let h=endY-startY;
-    let visibleWidth=curtainOpen?w*0.2:w;
-    let folds=20;
-    let foldWidth=visibleWidth/folds;
+if(!curtainImg.src) return;
+ctx.drawImage(img,0,0);
+let w=endX-startX, h=endY-startY;
+ctx.drawImage(curtainImg,startX,startY,w,h);
+if(!curtainOpen){
+ctx.globalAlpha=0.3; ctx.fillStyle="white"; ctx.fillRect(startX,startY,w,h); ctx.globalAlpha=1;
+}}
+function toggleCurtain(){curtainOpen=!curtainOpen; applyCurtain();}
 
-    ctx.fillStyle="rgba(255,255,255,0.3)"; // شيفون خلفي
-    ctx.fillRect(startX, startY, w, h);
-
-    for(let i=0; i<folds; i++){
-        let x=startX+i*foldWidth;
-        let grad=ctx.createLinearGradient(x,0,x+foldWidth,0);
-        grad.addColorStop(0,curtainColor);
-        grad.addColorStop(0.5,"rgba(0,0,0,0.1)");
-        grad.addColorStop(1,curtainColor);
-        ctx.fillStyle=grad;
-        ctx.fillRect(x, startY, foldWidth, h);
-    }
-    confetti({particleCount:100, spread:70, origin:{y:0.6}});
-}
-
-function toggleCurtain(){ curtainOpen=!curtainOpen; applyCurtain(); }
-
+// اختيار لون تلقائي (يوجه المستخدم لستارة مناسبة)
 function smartColorMatch(){
-    let data=ctx.getImageData(10,10,100,100).data; // عينة من الزاوية
-    curtainColor=`rgba(${data[0]},${data[1]},${data[2]},0.85)`;
-    applyCurtain();
+let tempCanvas=document.createElement("canvas");
+let tCtx=tempCanvas.getContext("2d");
+tempCanvas.width=canvas.width; tempCanvas.height=canvas.height;
+tCtx.drawImage(img,0,0);
+let data=tCtx.getImageData(0,0,canvas.width,canvas.height).data;
+let r=0,g=0,b=0,count=0;
+for(let y=0;y<canvas.height;y+=5){
+for(let x=0;x<canvas.width;x+=5){
+if(x>startX && x<endX && y>startY && y<endY) continue;
+let i=(y*canvas.width+x)*4;
+r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++;
+}}
+let avgR=Math.floor(r/count), avgG=Math.floor(g/count), avgB=Math.floor(b/count);
+let minDiff=99999, chosen=null;
+curtainOptions.forEach(opt=>{
+let imgCol=new Image(); imgCol.src=opt.src; // سهل التغيير لاحقاً
+let diff=Math.abs(avgR-200)+Math.abs(avgG-150)+Math.abs(avgB-100); // تقريب
+if(diff<minDiff){minDiff=diff; chosen=opt;}
+});
+if(chosen){curtainImg.src=chosen.src; applyCurtain(); document.getElementById("aiResponse").innerHTML=`تم اختيار لون ستارة مناسب: ${chosen.name}`;}
 }
 
-function measureWindow(){
-    let w=(Math.abs(endX-startX)*0.1).toFixed(1);
-    let h=(Math.abs(endY-startY)*0.1).toFixed(1);
-    alert(`القياس التقريبي:\nالعرض: ${w} سم\nالارتفاع: ${h} سم`);
-}
-
-function calculatePrice(){
-    let w=Math.abs(endX-startX)*0.1;
-    let price=(w*1500).toLocaleString(); // سعر افتراضي بالعراقي
-    alert(`التكلفة التقديرية: ${price} دينار عراقي`);
-}
-
+// حفظ الصورة
 function downloadImage(){
-    let link=document.createElement('a');
-    link.download="shababek-design.png";
-    link.href=canvas.toDataURL();
-    link.click();
+let link=document.createElement("a");
+link.download="shababek-room.png";
+link.href=canvas.toDataURL();
+link.click();
 }
 
+// واتساب
 function sendToWhatsApp(){
-    let text="مرحبا شبابيك.. هذا تصميم غرفتي من دكتور ديكور واريد استفسر.";
-    window.open("https://wa.me/9647883002797?text="+encodeURIComponent(text),"_blank");
+let text="مرحبا شبابيك 👋 أريد تنفيذ هذه الستارة.";
+window.open("https://wa.me/9647883002797?text="+encodeURIComponent(text),"_blank");
 }
 </script>
-
 </body>
 </html>
