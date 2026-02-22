@@ -403,23 +403,36 @@ function showPage(id, push = true) {
     }
 }
 
-// محرك لوحة التحكم المخفية (النسخة الوحيدة)
-function handleLogoClick() { 
-    adminClicks++; 
-    if(adminClicks >= 5) { 
+let adminClicks = 0;
+let clickTimer;
+
+function handleLogoClick() {
+    // زيادة العداد فوراً عند كل لمسة
+    adminClicks++;
+    
+    // مسح المؤقت القديم لمنع تصفير العداد قبل اكتمال النقرات
+    clearTimeout(clickTimer);
+
+    // إذا وصل المستخدم لـ 4 نقرات (الدخول السري)
+    if (adminClicks >= 4) {
+        adminClicks = 0; // تصفير العداد فوراً
         const pass = prompt("أدخل رمز الدخول السحابي لشبابيك:");
-        if(pass === "8496") {
+        if (pass === "8496") {
             showPage('adminPanel');
-            confetti({ particleCount: 100, spread: 70 });
+            if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70 });
         } else if (pass !== null) {
             alert("الرمز غير صحيح!");
         }
-        adminClicks = 0;
+        return; // الخروج لضمان عدم العودة للرئيسية
     }
-    // نقرة واحدة للعودة للرئيسية
-    if(adminClicks === 1) {
-        setTimeout(() => { if(adminClicks < 5) { showPage('homePage'); adminClicks = 0; } }, 500);
-    }
+
+    // مؤقت ذكي: إذا توقف المستخدم عن النقر لمدة نصف ثانية ولم يصل لـ 4
+    clickTimer = setTimeout(() => {
+        if (adminClicks === 1) {
+            showPage('homePage'); // العودة للرئيسية بنقرة واحدة
+        }
+        adminClicks = 0; // تصفير العداد
+    }, 450); 
 }
 
 // --- 3. محرك الصور والعلامة المائية ---
