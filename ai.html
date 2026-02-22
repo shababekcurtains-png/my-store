@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 
     <style>
         :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
@@ -70,7 +71,7 @@
             <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png">
         </div>
         <div class="chat-bubble" id="aiResponse">
-            أهلاً بيك! أنا دكتور ديكور. صورلي غرفتك وخليني أحلل الإضاءة والأثاث حتى نختار الستارة اللي تلوك لبيتك.
+            أهلاً بيك! أنا دكتور ديكور. صورلي غرفتك وخليني أحلل الألوان والأثاث حتى نختار الستارة اللي تلوك لبيتك.
         </div>
         
         <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="analyzeRoom(this)">
@@ -102,74 +103,63 @@
     <a href="https://wa.me/9647883002797" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-// الرابط الموحد والفعال للوركر
-const workerUrl = "https://shababek-opal-v1.bilalmohammedsalem23.workers.dev/";
-
 async function analyzeRoom(input) {
     if (!input.files || !input.files[0]) return;
+
     const box = document.getElementById('aiResponse');
     const avatar = document.getElementById('drAvatar');
     const btn = document.getElementById('btnAction');
     const suggestions = document.getElementById('suggestions');
 
-    // تغيير حالة الأفاتار (وضع التفكير)
-    avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png"; 
-    box.innerHTML = `<i class="fas fa-spinner fa-spin"></i> دقيقة عيني.. Opal كاعد يحلل الغرفة والأثاث...`;
+    avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
+    box.innerHTML = `<i class="fas fa-spinner fa-spin"></i> دقيقة عيني.. دكتور ديكور يحلل الغرفة...`;
     btn.disabled = true;
     btn.style.opacity = "0.5";
 
     const reader = new FileReader();
     reader.readAsDataURL(input.files[0]);
-    reader.onload = async (e) => {
-        try {
-            // إضافة التايم أوت لضمان عدم انقطاع الاتصال
-            const controller = new AbortController();
-            const id = setTimeout(() => controller.abort(), 45000); 
+    reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.crossOrigin = "Anonymous";
 
-            const response = await fetch(workerUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ image: e.target.result }),
-                signal: controller.signal
-            });
-            
-            clearTimeout(id);
-            const data = await response.json();
-            
-            // إعادة الأفاتار لحالته وعرض الرد
+        img.onload = () => {
+            const colorThief = new ColorThief();
+            const mainColor = colorThief.getColor(img);
+            const [r,g,b] = mainColor;
+
+            let replyText = "أهلاً عيني! بعد ما شفت ألوان غرفتك، أقترح: ";
+            let curtain1 = "";
+            let curtain2 = "";
+
+            const brightness = (r*299 + g*587 + b*114) / 1000;
+            if(brightness > 150){
+                replyText += "ستائر غامقة تناسب الغرفة الفاتحة.";
+                curtain1 = "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400";
+                curtain2 = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400";
+            } else {
+                replyText += "ستائر فاتحة توازن الغرفة الداكنة.";
+                curtain1 = "https://images.unsplash.com/photo-1617325252256-752118253fbc?w=400";
+                curtain2 = "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=400";
+            }
+
+            box.innerHTML = replyText;
+            const img1 = document.getElementById('curtain1');
+            const img2 = document.getElementById('curtain2');
+            img1.src = curtain1;
+            img2.src = curtain2;
+
+            suggestions.style.display = "block";
             avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
             btn.disabled = false;
             btn.style.opacity = "1";
 
-            const replyText = data.reply || "عذراً عيني، صار لود عالي. جرب مرة ثانية.";
-            box.innerHTML = replyText;
-            
-            // النطق الصوتي
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+
             const speech = new SpeechSynthesisUtterance(replyText);
             speech.lang = 'ar-SA';
             window.speechSynthesis.speak(speech);
-
-            // تحديث الصور ديناميكياً
-            const img1 = document.getElementById('curtain1');
-            const img2 = document.getElementById('curtain2');
-
-            if (replyText.includes("MODERN")) {
-                img1.src = "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400";
-                img2.src = "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400";
-            } else {
-                img1.src = "https://images.unsplash.com/photo-1617325252256-752118253fbc?w=400";
-                img2.src = "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=400";
-            }
-            
-            suggestions.style.display = "block";
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            
-        } catch (err) {
-            box.innerHTML = "عذراً عيني، السيرفر أخذ وقت طويل. اتأكد من قوة النت وجرب مرة ثانية.";
-            avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-            btn.disabled = false;
-            btn.style.opacity = "1";
-        }
+        };
     };
 }
 </script>
