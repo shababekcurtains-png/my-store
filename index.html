@@ -369,39 +369,30 @@
     </div>
 
     <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
-<script>
-// 1. تهيئة Firebase (الإعدادات الأصلية)
+// 1. تهيئة Firebase (مرة واحدة فقط لكل الموقع)
 const firebaseConfig = { 
     apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
     authDomain: "shababekcurtain.firebaseapp.com", 
     databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
     projectId: "shababekcurtain" 
 };
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const db = firebase.database();
 
+// متغيرات عامة
 const CLOUD_NAME = "dnkuwf8q9", UPLOAD_PRESET = "afsx4w9k", LOGO_ID = "shababek_logo";
 let cur = null, cart = [], adminClicks = 0;
 
-function v(id) { return document.getElementById(id).value; }
-
-// --- 2. محرك الصور والعلامة المائية (السكربت القديم) ---
-function getWatermarkedUrl(url) {
-    if (!url || !url.includes("cloudinary.com")) return url;
-    return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
+// دالة جلب القيم المختصرة
+function v(id) { 
+    const el = document.getElementById(id);
+    return el ? el.value : ""; 
 }
 
-async function uploadImg(file) {
-    if (!file) return "";
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
-    const data = await res.json();
-    return data.secure_url;
-}
-
-// --- 3. نظام التنقل (السكربت القديم) ---
+// --- 2. نظام التنقل والصفحات (أساسي للشريط الرئيسي) ---
 function showPage(id, push = true) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const targetPage = document.getElementById(id);
@@ -420,38 +411,85 @@ function handleLogoClick() {
     } else { showPage('homePage'); } 
 }
 
-// --- 4. إدارة المتجر والأقسام (السكربت القديم) ---
-db.ref('categories').on('value', snap => {
-    const cats = snap.val() || {};
-    const list = document.getElementById('admListCats');
-    if(list) list.innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-    const select = document.getElementById('admProdCatSelect');
-    if(select) select.innerHTML = '<option disabled selected>اختر القسم</option>' + Object.values(cats).map(s => `<option>${s.name}</option>`).join('');
-});
-
-db.ref('products').on('value', snap => {
-    const data = snap.val() || {};
-    const list = document.getElementById('admListProds');
-    if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;">حذف</button></td></tr>`).join('');
-});
-
-async function publishCat() {
-    const file = document.getElementById('admCatFile').files[0];
-    if(!file || !v('admCatName')) return alert("أكمل البيانات");
-    const url = await uploadImg(file);
-    db.ref('categories').push({name: v('admCatName'), img: url}).then(() => location.reload());
+// --- 3. محرك الصور والعلامة المائية ---
+function getWatermarkedUrl(url) {
+    if (!url || !url.includes("cloudinary.com")) return url;
+    return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
 }
 
-async function publishProd() {
-    const file = document.getElementById('admProdFile').files[0];
-    if(!file || !v('admProdName')) return alert("أكمل البيانات");
-    const url = await uploadImg(file);
-    db.ref('products').push({ category: v('admProdCatSelect'), name: v('admProdName'), price: v('admProdPrice'), img: url }).then(() => location.reload());
+async function uploadImg(file) {
+    if (!file) return "";
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
+    const data = await res.json();
+    return data.secure_url;
 }
 
-function deleteItem(ref, key) { if(confirm("حذف؟")) db.ref(ref).child(key).remove(); }
+// --- 4. وظائف المتجر والمنتجات ---
+function openCat(n) { 
+    localStorage.setItem('lastCat', n);
+    db.ref('products').once('value', snap => { 
+        const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
+        document.getElementById('catTitle').innerText = n; 
+        document.getElementById('catGrid').innerHTML = items.map(x => `
+            <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})'>
+                <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
+                <div style="padding:20px;text-align:center;">
+                    <h3>${x.name}</h3>
+                    <p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p>
+                </div>
+            </div>`).join(''); 
+        showPage('categoryView'); 
+    }); 
+}
 
-// --- 5. نظام دكتور ديكور (السكربت القديم - الكاميرا) ---
+function openCalc(p) { 
+    cur = p; 
+    localStorage.setItem('lastProd', JSON.stringify(p));
+    showPage('productCalculator'); 
+    document.getElementById('pName').innerText = p.name; 
+    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
+    document.getElementById('pImg').src = getWatermarkedUrl(p.img); 
+}
+
+function addToCart() {
+    const h = v('hIn');
+    if(!h || h <= 0) return alert("أدخل الطول");
+    cart.push({ n: cur.name, p: Math.round(h * cur.price), img: getWatermarkedUrl(cur.img) });
+    document.getElementById('globalCartCount').innerText = cart.length;
+    alert("تمت الإضافة للسلة!");
+}
+
+// --- 5. وظائف لوحة تحكم المنتدى (إضافة/حذف) ---
+function toggleForumInput() {
+    const type = document.getElementById('admForumType').value;
+    document.getElementById('admForumUrl').style.display = (type === 'vid') ? 'block' : 'none';
+    document.getElementById('admForumFile').style.display = (type === 'vid') ? 'none' : 'block';
+}
+
+async function publishForumTopic() {
+    const title = v('admForumTitle'), desc = v('admForumDesc');
+    const section = document.getElementById('selectForumTopicSec').value;
+    const type = v('admForumType');
+    const btn = document.getElementById('btnForumPost'), fileInput = document.getElementById('admForumFile');
+
+    if(!title || section === "" || section === "اختر القسم") return alert("أكمل العنوان والقسم");
+    btn.innerText = "جاري النشر..."; btn.disabled = true;
+
+    let mediaUrl = "";
+    if(type === 'vid') mediaUrl = v('admForumUrl');
+    else if(fileInput.files[0]) mediaUrl = await uploadImg(fileInput.files[0]);
+
+    db.ref('forumTopics').push({ section, title, desc, media: mediaUrl, type, date: new Date().toLocaleString('ar-EG'), timestamp: Date.now() })
+    .then(() => { alert("تم النشر بنجاح!"); location.reload(); });
+}
+
+// دالة الحذف العامة
+function deleteItem(ref, key) { if(confirm("هل أنت متأكد من الحذف؟")) db.ref(ref).child(key).remove(); }
+
+// --- 6. وظيفة دكتور ديكور (AI والكاميرا) ---
 async function handleDrImage(input) {
     if (!input.files[0]) return;
     const box = document.getElementById('aiResponse');
@@ -463,63 +501,57 @@ async function handleDrImage(input) {
     reader.readAsDataURL(input.files[0]);
     reader.onload = async (e) => {
         const base64 = e.target.result.split(',')[1];
-        const res = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", {
-            method: 'POST',
-            body: JSON.stringify({ image: base64 })
-        });
-        const data = await res.json();
-        avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-        box.innerHTML = `<div style="background:white;padding:15px;border-radius:12px;">${data.candidates[0].content.parts[0].text}</div>`;
-        confetti({ particleCount: 150 });
+        try {
+            const res = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", {
+                method: 'POST',
+                body: JSON.stringify({ image: base64 })
+            });
+            const data = await res.json();
+            avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+            box.innerHTML = `<div style="background:white;padding:15px;border-radius:12px;border-right:5px solid var(--gold);">${data.candidates[0].content.parts[0].text}</div>`;
+            confetti({ particleCount: 150 });
+        } catch (err) {
+            box.innerHTML = "فشل في التحليل، حاول مجدداً.";
+            avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
+        }
     };
 }
 
-// --- 6. نظام السلة (السكربت القديم) ---
-function addToCart() {
-    const h = v('hIn');
-    if(!h || h <= 0) return alert("أدخل الطول");
-    cart.push({ n: cur.name, p: Math.round(h * cur.price), img: getWatermarkedUrl(cur.img) });
-    document.getElementById('globalCartCount').innerText = cart.length;
-    alert("تمت الإضافة!");
-}
-
-// --- 7. وظائف منتدى شبابيك (السكربت الجديد الذي طلبته) ---
-function toggleForumInput() {
-    const type = document.getElementById('admForumType').value;
-    document.getElementById('admForumUrl').style.display = (type === 'vid') ? 'block' : 'none';
-    document.getElementById('admForumFile').style.display = (type === 'vid') ? 'none' : 'block';
-}
-
-async function publishForumTopic() {
-    const title = v('admForumTitle'), desc = v('admForumDesc'), section = document.getElementById('selectForumTopicSec').value, type = v('admForumType');
-    const btn = document.getElementById('btnForumPost'), fileInput = document.getElementById('admForumFile');
-    
-    if(!title || section === "") return alert("أكمل العنوان والقسم");
-    btn.innerText = "جاري النشر..."; btn.disabled = true;
-
-    let mediaUrl = (type === 'vid') ? v('admForumUrl') : (fileInput.files[0] ? await uploadImg(fileInput.files[0]) : "");
-
-    db.ref('forumTopics').push({ section, title, desc, media: mediaUrl, type, date: new Date().toLocaleString('ar-EG'), timestamp: Date.now() })
-    .then(() => { alert("تم النشر!"); location.reload(); });
-}
-
-db.ref('forumSections').on('value', snap => {
-    const data = snap.val() || {};
-    const list = document.getElementById('admListForumSecs'), select = document.getElementById('selectForumTopicSec');
-    if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('forumSections','${k}')" style="color:red;">حذف القسم</button></td></tr>`).join('');
-    if(select) select.innerHTML = '<option disabled selected value="">اختر القسم</option>' + Object.values(data).map(s => `<option value="${s.name}">${s.name}</option>`).join('');
-});
-
-// --- 8. تشغيل المحرك الرئيسي ---
-window.addEventListener('load', () => {
+// --- 7. المستمعات (Listeners) لجلب البيانات ---
+function initDataSync() {
+    // جلب الأقسام الرئيسية
     db.ref('categories').on('value', snap => {
+        const cats = snap.val() || {};
         const list = document.getElementById('categoriesList');
-        if(list) list.innerHTML = Object.values(snap.val() || {}).map(c => `
+        if(list) list.innerHTML = Object.values(cats).map(c => `
             <div class="cat-card-new" onclick="openCat('${c.name}')">
                 <img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">
                 <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div>
             </div>`).join('');
+        
+        const admListCats = document.getElementById('admListCats');
+        if(admListCats) admListCats.innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
+        
+        const admProdCatSelect = document.getElementById('admProdCatSelect');
+        if(admProdCatSelect) admProdCatSelect.innerHTML = '<option disabled selected>اختر قسم المنتجات</option>' + Object.values(cats).map(s => `<option>${s.name}</option>`).join('');
     });
+
+    // جلب أقسام المنتدى
+    db.ref('forumSections').on('value', snap => {
+        const data = snap.val() || {};
+        const list = document.getElementById('admListForumSecs'), select = document.getElementById('selectForumTopicSec');
+        if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('forumSections','${k}')" style="color:red;border:none;background:none;">حذف القسم</button></td></tr>`).join('');
+        if(select) select.innerHTML = '<option disabled selected value="">اختر القسم</option>' + Object.values(data).map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+    });
+}
+
+// تشغيل عند التحميل
+window.addEventListener('load', () => {
+    initDataSync();
+    const hash = location.hash.replace('#', '');
+    if (hash === 'categoryView') openCat(localStorage.getItem('lastCat'));
+    else if (hash === 'productCalculator') openCalc(JSON.parse(localStorage.getItem('lastProd')));
+    else showPage(hash || 'homePage', false);
 });
 </script>
 </body>
