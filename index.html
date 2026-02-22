@@ -411,14 +411,28 @@ function showPage(id, push = true) {
     }
 }
 
-function handleLogoClick() { 
-    adminClicks++; 
-    if(adminClicks >= 5) { 
-        if(prompt("الرمز:") === "8496") showPage('adminPanel'); 
-        adminClicks = 0; 
-    } else { showPage('homePage'); } 
-}
+function showPage(id, push = true) {
+    // 1. إخفاء جميع الصفحات
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    
+    const targetPage = document.getElementById(id);
+    if (targetPage) {
+        // 2. إظهار الصفحة المطلوبة
+        targetPage.classList.add('active');
+        
+        // 3. الحل الجذري: إجبار المتصفح على الصعود للأعلى تماماً
+        // نستخدم setTimeout لضمان أن الصفحة ظهرت فعلياً قبل التحريك
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'instant' // نستخدم instant لقفزة سريعة للبداية
+            });
+        }, 10);
 
+        if (push) location.hash = id; 
+    }
+}
 // --- ٤. وظائف لوحة التحكم ---
 db.ref('categories').on('value', snap => {
     const cats = snap.val() || {};
