@@ -252,25 +252,38 @@
             </section>
         </div>
 
-       <div id="doctorPage" class="page">
-    <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
-        <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور</h2>
-        
-        <div id="ai-consultant" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 40px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
-            <div id="avatar-container" style="margin-bottom: 15px; height: 160px; display: flex; align-items: center; justify-content: center;">
-                <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="height: 100%; object-fit: contain; transition: 0.4s ease-in-out;">
-            </div>
-            <h3 id="drStatus" style="font-weight: 900; color: var(--brown); margin-bottom: 5px;">أهلاً بك! أنا دكتور ديكور</h3>
-            <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">التقط صورة لغرفتك وسأقترح عليك الستارة المثالية!</p>
-
-            <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="handleDrImage(this)">
-            <button onclick="document.getElementById('aiCamera').click()" class="btn-gold" style="width: 100%; padding: 18px;">📸 استشارة بالكاميرا</button>
-            
-            <div id="aiResponse" style="margin-top: 20px; text-align: right; line-height: 1.8;"></div>
-        </div>
-
-        <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
-    </div>
+       <div class="admin-box" style="border:2px solid var(--gold);">
+    <h3>٣. إدارة منتدى شبابيك</h3>
+    <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">انشر المواضيع والصور والفيديوهات لتظهر في صفحة ai.html</p>
+    
+    <select id="admForumSection">
+        <option value="موديلات جديدة">موديلات جديدة</option>
+        <option value="نصائح ديكور">نصائح ديكور</option>
+        <option value="آراء الزبائن">آراء الزبائن</option>
+    </select>
+    
+    <textarea id="admForumText" placeholder="اكتب نصيحة أو خبر جديد لزبائن شبابيك..."></textarea>
+    
+    <select id="admForumType">
+        <option value="text">نص فقط</option>
+        <option value="image">صورة</option>
+        <option value="youtube">فيديو يوتيوب</option>
+    </select>
+    
+    <input type="text" id="admForumUrl" placeholder="رابط الصورة أو رابط اليوتيوب">
+    
+    <button onclick="publishToForum()" class="btn-gold" id="btnForum" style="margin-top: 10px;">نشر في منتدى شبابيك</button>
+    
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>الموضوع</th>
+                <th>القسم</th>
+                <th>إجراء</th>
+            </tr>
+        </thead>
+        <tbody id="admListForum"></tbody>
+    </table>
 </div>
 
         <div id="docInsidePage" class="page">
@@ -428,38 +441,52 @@ async function publishProd() {
     db.ref('products').push({ category: v('admProdCatSelect'), name: v('admProdName'), price: v('admProdPrice'), img: url }).then(() => location.reload());
 }
 
-// --- ٥. دكتور ديكور (الحل الجذري والنهائي) ---
-async function handleDrImage(input) {
-    if (!input || !input.files || !input.files[0]) return;
-    const box = document.getElementById('aiResponse');
-    const avatar = document.getElementById('drAvatar');
-    const status = document.getElementById('drStatus');
+// وظيفة النشر في المنتدى
+async function publishToForum() {
+    const text = v('admForumText');
+    const section = v('admForumSection');
+    const type = v('admForumType'); 
+    const mediaUrl = v('admForumUrl');
+    const btn = document.getElementById('btnForum');
 
-    avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
-    status.innerText = "جاري التحليل الآن...";
-    box.style.display = "block";
-    box.innerHTML = "يرجى الانتظار...";
+    if(!text || !section) return alert("يرجى كتابة نص الموضوع واختيار القسم");
 
-    try {
-        const reader = new FileReader();
-        reader.readAsDataURL(input.files[0]);
-        reader.onload = async (e) => {
-            const img = new Image();
-            img.src = e.target.result;
-            img.onload = async () => {
-                const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 600;
-                canvas.width = MAX_WIDTH;
-                canvas.height = img.height * (MAX_WIDTH / img.width);
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                const base64 = canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
+    btn.innerText = "جاري النشر...";
+    btn.disabled = true;
 
-                const res = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ image: base64 })
-                });
+    const postData = {
+        section: section,
+        text: text,
+        media: mediaUrl,
+        type: type,
+        date: new Date().toLocaleString('ar-EG'),
+        timestamp: Date.now()
+    };
+
+    db.ref('forum').push(postData).then(() => {
+        alert("تم النشر بنجاح!");
+        location.reload();
+    }).catch(err => {
+        alert("فشل النشر: " + err.message);
+        btn.disabled = false;
+        btn.innerText = "نشر في منتدى شبابيك";
+    });
+}
+
+// تحديث قائمة المواضيع في لوحة التحكم للحذف
+db.ref('forum').on('value', snap => {
+    const posts = snap.val() || {};
+    const list = document.getElementById('admListForum');
+    if(list) {
+        list.innerHTML = Object.entries(posts).reverse().map(([k, v]) => `
+            <tr>
+                <td style="font-size:0.7rem;">${v.text.substring(0, 20)}...</td>
+                <td>${v.section}</td>
+                <td><button onclick="deleteItem('forum','${k}')" style="color:red; border:none; background:none; cursor:pointer;">حذف</button></td>
+            </tr>
+        `).join('');
+    }
+});
 
                 const data = await res.json();
                 avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
