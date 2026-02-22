@@ -700,6 +700,42 @@ db.ref('forumTopics').on('value', snap => {
         `).join('');
     }
 });
-</script>
+// 1. دالة جلب القيم (تأكد من وجودها مرة واحدة في الكود)
+function v(id) { 
+    const el = document.getElementById(id);
+    return el ? el.value : ""; 
+}
+
+// 2. محرك لوحة التحكم المخفية (المطور)
+let adminClicks = 0;
+function handleLogoClick() { 
+    adminClicks++; 
+    
+    // إظهار تنبيه بسيط في الكونسول للمطور فقط للتأكد من عمل النقرات
+    console.log("نقر اللوجو: " + adminClicks);
+
+    if(adminClicks >= 5) { 
+        const pass = prompt("أدخل رمز الدخول السحابي لشبابيك:");
+        if(pass === "8496") {
+            showPage('adminPanel');
+            confetti({ particleCount: 100, spread: 70 }); // احتفال بدخول المدير
+        } else if (pass !== null) {
+            alert("الرمز غير صحيح يا بطل!");
+        }
+        adminClicks = 0; // تصفير العداد بعد المحاولة
+    }
+    
+    // العودة للرئيسية عند النقر العادي (مرة واحدة)
+    if(adminClicks === 1) {
+        setTimeout(() => {
+            if(adminClicks < 5) {
+                showPage('homePage');
+                adminClicks = 0;
+            }
+        }, 500);
+    }
+}
+    </script>
 </body>
 </html>
+
