@@ -12,57 +12,78 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--white); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
+        
+        /* شريط التمرير الموحد */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
 
+        body { background: var(--white); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
+        body.admin-open { overflow: hidden !important; } /* منع التمرير المزدوج */
+
+        /* الهيدر */
         .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header-right { flex: 1; font-weight: 900; line-height: 1.1; cursor: pointer; }
         .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
-        .logo-img { height: 90px; transition: 0.3s; }
-        
+        .logo-img { height: 90px; }
         .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
-        .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
         
         .search-box { position: relative; width: 40px; height: 40px; transition: 0.4s; overflow: hidden; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; }
         .search-box:hover, .search-box:focus-within { width: 180px; border-color: var(--gold); }
         .search-box input { border: none; outline: none; background: transparent; padding: 10px; width: 140px; font-size: 0.9rem; }
-        .search-box i { padding: 10px; color: var(--brown); cursor: pointer; }
+        .search-box i { padding: 10px; color: var(--brown); }
 
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
         .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; }
+        .nav-menu a.active { color: var(--gold); }
 
-        .container { padding: 30px 5%; max-width: 1200px; margin: auto; min-height: 50vh; }
-        .page-title { text-align: center; font-weight: 900; font-size: 2rem; margin-bottom: 30px; }
-        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .card-item { position: relative; height: 300px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        /* المحتوى والكروت الطولية */
+        .container { padding: 30px 5%; max-width: 1200px; margin: auto; min-height: 60vh; }
+        .page-title { text-align: center; font-weight: 900; font-size: 1.8rem; margin-bottom: 30px; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        
+        .card-item { 
+            position: relative; height: 400px; border-radius: 25px; 
+            overflow: hidden; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.06); 
+            transition: 0.4s; border: 1px solid #f0f0f0; 
+        }
         .card-item img { width: 100%; height: 100%; object-fit: cover; }
-        .card-overlay { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(61, 46, 36, 0.9)); color: white; padding: 20px; text-align: center; }
-        .card-overlay h3 { font-weight: 900; }
+        .card-overlay { 
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 85%; background: var(--gold); color: white; padding: 10px;
+            text-align: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .card-overlay h3 { font-weight: 900; font-size: 1rem; }
 
-        .topic-card { background: #fdfaf5; border-radius: 20px; padding: 15px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
-        .media-container { width: 100%; border-radius: 15px; overflow: hidden; background: #000; }
+        /* المواضيع */
+        .topic-card { background: #fff; border-radius: 25px; padding: 20px; border: 1px solid #eee; margin-bottom: 25px; }
+        .media-container { width: 100%; border-radius: 20px; overflow: hidden; background: #000; margin: 15px 0; }
         .vid-wide { position: relative; padding-bottom: 56.25%; height: 0; }
         .vid-wide iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .vid-shorts { aspect-ratio: 9/16; width: 100%; }
-        .vid-shorts iframe { width: 100%; height: 100%; }
+        .vid-shorts { aspect-ratio: 9/16; width: 100%; max-width: 350px; margin: auto; }
+        .back-btn { background: var(--brown); color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 700; border: none; }
 
-        #forumAdminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: auto; padding: 30px 5%; }
+        /* لوحة التحكم (تصميم أصلي) */
+        #forumAdminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: scroll; padding: 30px 5%; }
         .admin-box { background: #f4f4f4; padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: right; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 900; cursor: pointer; width: 100%; }
-        .back-btn { background: var(--brown); color: white; padding: 10px 20px; border-radius: 10px; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 700; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; }
 
-        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; margin-top: 50px; }
-        .footer-cta h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 15px; }
-        .btn-footer-wa { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; }
-        .btn-footer-prod { background: var(--gold); color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; }
-        footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
+        /* الفوتر */
+        .footer-cta { background: var(--brown); color: white; padding: 50px 5%; text-align: center; border-radius: 45px 45px 0 0; margin-top: 60px; }
+        .btn-footer-prod { background: var(--gold); color: white; padding: 12px 30px; border-radius: 12px; text-decoration: none; display: inline-block; font-weight: 700; margin-top: 15px; }
+        footer { background: var(--brown); color: rgba(255,255,255,0.5); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
 
-        @media (max-width: 768px) { .grid-layout { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } .card-item { height: 220px; } }
+        @media (max-width: 768px) {
+            .grid-layout { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .card-item { height: 320px; }
+        }
     </style>
 </head>
 <body>
@@ -73,18 +94,12 @@
     </div>
 
     <header>
-        <div style="font-weight:900; line-height:1; flex:1;" onclick="location.href='index.html'">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
+        <div class="header-right" onclick="location.href='index.html'">شبابيك<br><span style="color:var(--gold); font-size:0.9rem;">للستائر</span></div>
         <div class="logo-center" onclick="handleForumLogoClick()">
             <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
         </div>
         <div class="header-left">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="ابحث..">
-            </div>
-            <div class="cart-icon" onclick="location.href='index.html'">
-                <i class="fas fa-shopping-basket"></i>
-            </div>
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="ابحث.."></div>
         </div>
     </header>
 
@@ -92,7 +107,7 @@
         <ul class="nav-menu">
             <li><a href="index.html">الرئيسية</a></li>
             <li><a href="index.html">المنتجات</a></li>
-            <li><a href="ai.html" style="color:var(--gold);">منتدى شبابيك</a></li>
+            <li><a href="ai.html" class="active">منتدى شبابيك</a></li>
             <li><a href="index.html">طرق الدفع</a></li>
             <li><a href="index.html">من نحن</a></li>
             <li><a href="index.html">تواصل معنا</a></li>
@@ -100,17 +115,15 @@
     </div>
 
     <div class="container" id="mainView">
+        <div id="backBtnCont" style="display:none;"><button class="back-btn" onclick="renderSections()"><i class="fas fa-arrow-right"></i> العودة للأقسام</button></div>
         <h1 class="page-title" id="viewTitle">نافذتك لعالم الذوق والجمال</h1>
-        <div id="backBtnCont" style="display:none;">
-            <div class="back-btn" onclick="renderSections()"><i class="fas fa-arrow-right"></i> العودة للأقسام</div>
-        </div>
         <div class="grid-layout" id="forumGrid"></div>
     </div>
 
     <div id="forumAdminPanel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="font-weight:900;">إدارة منتدى شبابيك</h2>
-            <button onclick="document.getElementById('forumAdminPanel').style.display='none'" style="background:#3d2e24; color:white; border:none; padding:10px 20px; border-radius:10px;">إغلاق</button>
+            <button onclick="closeAdminPanel()" style="background:var(--brown); color:white; border:none; padding:10px 20px; border-radius:10px;">إغلاق</button>
         </div>
         <div class="admin-box">
             <h3>١. إضافة قسم جديد</h3>
@@ -125,10 +138,9 @@
             <input type="text" id="postTitle" placeholder="العنوان">
             <textarea id="postDesc" placeholder="التفاصيل..."></textarea>
             <select id="postType" onchange="toggleMediaInput()">
-                <option value="text">نص فقط</option>
+                <option value="vid">يوتيوب (ذكي)</option>
                 <option value="img">صورة</option>
-                <option value="vid">يوتيوب (عرضي)</option>
-                <option value="shorts">يوتيوب (شورتس)</option>
+                <option value="text">نص فقط</option>
             </select>
             <input type="text" id="postMediaUrl" placeholder="الرابط">
             <button onclick="publishTopic()" class="btn-gold" id="btnPublish">نشر الآن</button>
@@ -141,10 +153,7 @@
 
     <div class="footer-cta">
         <h2>جاهز لتجديد ستائر منزلك؟</h2>
-        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
-            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a href="index.html" class="btn-footer-prod">تصفح المنتجات</a>
-        </div>
+        <a href="index.html" class="btn-footer-prod">تصفح المنتجات</a>
     </div>
 
     <footer>
@@ -170,9 +179,17 @@ function handleForumLogoClick() {
     forumClicks++;
     if(forumClicks >= 5) {
         const pass = prompt("رمز الإدارة:");
-        if(pass === "8496") document.getElementById('forumAdminPanel').style.display = 'block';
+        if(pass === "8496") {
+            document.getElementById('forumAdminPanel').style.display = 'block';
+            document.body.classList.add('admin-open');
+        }
         forumClicks = 0;
     }
+}
+
+function closeAdminPanel() {
+    document.getElementById('forumAdminPanel').style.display = 'none';
+    document.body.classList.remove('admin-open');
 }
 
 function loadForumData() {
@@ -204,44 +221,43 @@ function renderSections() {
     });
 }
 
-// دالة عرض المواضيع المحدثة للتمييز والتشغيل الذكي
 function renderTopics(sectionName) {
     const grid = document.getElementById('forumGrid');
+    const backBtn = document.getElementById('backBtnCont');
+    const title = document.getElementById('viewTitle');
     grid.innerHTML = "";
+    backBtn.style.display = "block";
+    title.innerText = "قسم: " + sectionName;
 
     const filtered = topicsData.filter(t => t.section === sectionName).reverse();
-
     filtered.forEach(p => {
         const vidId = extractYoutubeId(p.media || "");
         const isShorts = p.media && p.media.includes('shorts');
         let mediaHtml = "";
 
-        if (vidId) {
-            // التمييز بين الشورتس (طولي) والعادي (عرضي) بناءً على الرابط
+        if (p.type === 'img') {
+            mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
+        } else if (vidId) {
             const containerClass = isShorts ? "vid-shorts" : "vid-wide";
-            const ratio = isShorts ? "aspect-ratio: 9/16; max-width: 350px;" : "position: relative; padding-bottom: 56.25%;";
-
             mediaHtml = `
-                <div class="media-container ${containerClass}" style="${ratio} margin: auto; overflow: hidden; border-radius: 20px;">
+                <div class="media-container ${containerClass}">
                     <iframe 
                         class="lazy-video"
                         width="100%" height="100%"
                         data-src="https://www.youtube.com/embed/${vidId}?enablejsapi=1&mute=1&playlist=${vidId}&loop=1" 
-                        frameborder="0" 
-                        allow="autoplay; encrypted-media" 
-                        allowfullscreen>
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                     </iframe>
                 </div>`;
         }
 
         grid.innerHTML += `
-            <div class="topic-card" style="background:#fff; border-radius:25px; padding:20px; border:1px solid #f0f0f0; margin-bottom:20px;">
+            <div class="topic-card">
                 <h3 style="font-weight:900; margin-bottom:10px;">${p.title}</h3>
+                <p style="white-space:pre-wrap; font-size:0.95rem; color:#444;">${p.desc}</p>
                 ${mediaHtml}
+                <div style="font-size:0.75rem; color:#999; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">نُشر بتاريخ: ${p.date}</div>
             </div>`;
     });
-
-    // تشغيل نظام المراقبة للتشغيل/الإيقاف التلقائي
     initAutoPlay();
 }
 
@@ -250,20 +266,17 @@ function initAutoPlay() {
         entries.forEach(entry => {
             const iframe = entry.target;
             const src = iframe.getAttribute('data-src');
-            
             if (entry.isIntersecting) {
-                // عند التمرير للداخل: وضع الرابط لتشغيل الفيديو
                 if (!iframe.src) iframe.src = src + "&autoplay=1";
-                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                if (iframe.contentWindow) iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
             } else {
-                // عند التمرير للخارج: إيقاف الفيديو
-                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                if (iframe.contentWindow) iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
             }
         });
-    }, { threshold: 0.5 }); // يعمل عندما يظهر 50% من الفيديو
-
+    }, { threshold: 0.5 });
     document.querySelectorAll('.lazy-video').forEach(vid => observer.observe(vid));
 }
+
 function saveForumSection() {
     const name = document.getElementById('newForumSecName').value;
     const img = document.getElementById('newForumSecImg').value;
@@ -281,11 +294,7 @@ function publishTopic() {
     const type = document.getElementById('postType').value;
     const media = document.getElementById('postMediaUrl').value;
     if(!title || !section) return alert("أكمل البيانات");
-    db.ref('forumTopics').push({
-        title, desc, section, type, media,
-        timestamp: Date.now(),
-        date: new Date().toLocaleDateString('ar-EG')
-    }).then(() => { location.reload(); });
+    db.ref('forumTopics').push({ title, desc, section, type, media, timestamp: Date.now(), date: new Date().toLocaleDateString('ar-EG') }).then(() => { location.reload(); });
 }
 
 function updateAdminLists() {
@@ -305,19 +314,16 @@ function updateAdminLists() {
 function updateAdminTopics() {
     const list = document.getElementById('adminTopicsList');
     if(!list) return;
-    list.innerHTML = topicsData.reverse().map(t => `
-        <div style="padding:10px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between;">
-            <span>${t.title}</span>
-            <button onclick="deleteItem('forumTopics','${t.id}')" style="color:red; border:none; background:none;">حذف</button>
-        </div>`).join('');
+    list.innerHTML = topicsData.reverse().map(t => `<div style="padding:10px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between;"><span>${t.title}</span><button onclick="deleteItem('forumTopics','${t.id}')" style="color:red; border:none; background:none;">حذف</button></div>`).join('');
 }
 
 function deleteItem(path, key) { if(confirm("حذف؟")) db.ref(path).child(key).remove(); }
 
 function extractYoutubeId(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    if (!url) return null;
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?)\??v?=?|shorts\/)([^#\&\?]*).*/;
     const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
+    return (match && match[7].length === 11) ? match[7] : null;
 }
 
 function toggleMediaInput() {
