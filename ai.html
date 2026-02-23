@@ -422,5 +422,57 @@ function toggleMediaInput() {
 
 window.addEventListener('load', loadForumData);
 </script>
+    <script>
+
+// ===== نظام تنقل خاص بالمنتدى فقط =====
+
+function forumNavigate(pageId, push = true) {
+
+    // اخفاء كل الصفحات داخل المنتدى
+    document.querySelectorAll(".forum-page")
+        .forEach(p => p.classList.remove("active"));
+
+    const target = document.getElementById(pageId);
+    if (!target) return;
+
+    target.classList.add("active");
+
+    // الصعود لبداية الصفحة
+    window.scrollTo(0, 0);
+
+    // حفظ في history
+    if (push) {
+        history.pushState(
+            { forumPage: pageId },
+            "",
+            "#" + pageId
+        );
+    }
+}
+
+
+// زر الرجوع والتقدم
+window.addEventListener("popstate", (e) => {
+
+    const page =
+        e.state?.forumPage ||
+        location.hash.replace("#", "") ||
+        "forumHome";
+
+    forumNavigate(page, false);
+});
+
+
+// عند تحميل الصفحة
+window.addEventListener("load", () => {
+
+    const page =
+        location.hash.replace("#", "") ||
+        "forumHome";
+
+    forumNavigate(page, false);
+});
+
+</script>
 </body>
 </html>
