@@ -199,15 +199,22 @@
             <h2 style="margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:10px; font-weight:900;">سلة المشتريات</h2>
             <div id="cartItemsList"></div>
             
-            <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
-                <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
-                <select id="userCity">
-                    <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="المثنى">المثنى</option><option value="كركوك">كركوك</option><option value="صلاح الدين">صلاح الدين</option><option value="دهوك">دهوك</option><option value="السليمانية">السليمانية</option><option value="القادسية">القادسية</option>
-                </select>
-                <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
-               <select id="userPayment"></select>
-                </select>
-            </div>
+           <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
+    <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
+    <select id="userCity">
+        <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="المثنى">المثنى</option><option value="كركوك">كركوك</option><option value="صلاح الدين">صلاح الدين</option><option value="دهوك">دهوك</option><option value="السليمانية">السليمانية</option><option value="القادسية">القادسية</option>
+    </select>
+
+    <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">هل تحتاج خدمة تركيب؟</label>
+    <select id="userInstall">
+        <option value="بدون تركيب">لا، بدون تركيب</option>
+        <option value="مع التركيب">نعم، أحتاج تركيب</option>
+    </select>
+
+    <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
+    <select id="userPayment">
+        </select>
+</div>
 
             <div style="margin-top:20px;">
                 <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
@@ -528,15 +535,26 @@ window.addEventListener('load', () => {
 
     // طرق الدفع
     db.ref('payments').on('value', snap => {
-        const data = snap.val() || {}, list = document.getElementById('paymentList'), admList = document.getElementById('admListPays');
-        if(list) list.innerHTML = Object.values(data).map(pay => `
-            <div class="cat-card-new" style="height: 180px; background: white; cursor: default; border: 1px solid #eee;">
+    const data = snap.val() || {};
+    const userList = document.getElementById('paymentList'); // صفحة طرق الدفع
+    const selectBox = document.getElementById('userPayment'); // قائمة السلة المنسدلة
+
+    // تحديث القائمة المنسدلة في السلة
+    if(selectBox) {
+        selectBox.innerHTML = Object.values(data).map(pay => `
+            <option value="${pay.name}">${pay.name}</option>
+        `).join('') || '<option value="نقد عند الاستلام">نقد عند الاستلام</option>';
+    }
+
+    // عرض الكروت في صفحة طرق الدفع للزبائن (كما فعلنا سابقاً)
+    if(userList) {
+        userList.innerHTML = Object.values(data).map(pay => `
+            <div class="cat-card-new" style="height: 180px; background: white; cursor: default;">
                 <img src="${pay.img}" style="width:100%; height:100%; object-fit: contain; padding: 20px;">
                 <div style="position:absolute; bottom:0; width:100%; background:var(--brown); color:white; padding:8px; font-weight:900; text-align:center;">${pay.name}</div>
             </div>`).join('');
-        if(admList) admList.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td><img src="${v.img}" width="30"> ${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
-    });
-
+    }
+});
     // إدارة التنقل والهاش
     const hash = location.hash.replace('#', '');
     if (hash === 'categoryView') {
