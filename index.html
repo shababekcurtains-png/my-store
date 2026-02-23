@@ -366,8 +366,13 @@ function showPage(id, push = true) {
     const targetPage = document.getElementById(id);
     if (targetPage) {
         targetPage.classList.add('active');
-        // الصعود للأعلى فوراً
-        window.scrollTo({ top: 0, behavior: 'instant' });
+        
+        // التعديل السحري: الصعود لبداية الصفحة فوراً وبسلاسة
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // يمكنك تغييرها لـ 'instant' إذا أردت صعوداً لحظياً
+        });
+
         if (push) location.hash = id;
     }
 }
