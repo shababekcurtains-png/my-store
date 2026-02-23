@@ -360,17 +360,33 @@ function v(id) {
 
 // --- 2. نظام التنقل والصفحات ---
 function showPage(id, push = true) {
-    const allPages = document.querySelectorAll('.page');
-    allPages.forEach(p => p.classList.remove('active'));
-    
-    const targetPage = document.getElementById(id);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        // الصعود للأعلى فوراً
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        if (push) location.hash = id;
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(p => p.classList.remove('active'));
+
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    target.classList.add('active');
+
+    // صعود فوري للأعلى
+    window.scrollTo(0, 0);
+
+    if (push) {
+        history.pushState({ page: id }, "", `#${id}`);
     }
 }
+
+// معالجة زر الرجوع
+window.addEventListener("popstate", (e) => {
+    const page = e.state?.page || location.hash.replace("#", "") || "home";
+    showPage(page, false);
+});
+
+// عند تحميل الصفحة أول مرة
+window.addEventListener("load", () => {
+    const page = location.hash.replace("#", "") || "home";
+    showPage(page, false);
+});
 
 // محرك الشعار ولوحة التحكم (5 ضغطات)
 function handleLogoClick() {
