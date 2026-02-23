@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منتدى شبابيك - الأقسام والمحتوى</title>
+    <title>منتدى شبابيك - Shababek Forum</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -12,56 +12,47 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background: var(--white); color: var(--brown); overflow-x: hidden; }
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--white); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
 
+        /* تنسيق الهيدر الموحد */
+        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-img { height: 70px; cursor: pointer; }
+        .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
+        .logo-img { height: 90px; transition: 0.3s; }
 
-        .container { padding: 30px 5%; max-width: 1200px; margin: auto; }
+        /* المحتوى الرئيسي */
+        .container { padding: 30px 5%; max-width: 1200px; margin: auto; min-height: 60vh; }
         .page-title { text-align: center; font-weight: 900; font-size: 2rem; margin-bottom: 30px; color: var(--brown); }
 
-        /* نظام توزيع الأقسام (مثل الصفحة الرئيسية) */
         .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        
-        .card-item { 
-            position: relative; 
-            height: 300px; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: 0.3s ease;
-        }
+        .card-item { position: relative; height: 300px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s ease; }
         .card-item:hover { transform: translateY(-10px); }
         .card-item img { width: 100%; height: 100%; object-fit: cover; }
-        .card-overlay { 
-            position: absolute; bottom: 0; width: 100%; 
-            background: linear-gradient(transparent, rgba(61, 46, 36, 0.9)); 
-            color: white; padding: 20px; text-align: center; 
-        }
-        .card-overlay h3 { font-weight: 900; font-size: 1.2rem; }
+        .card-overlay { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(61, 46, 36, 0.9)); color: white; padding: 20px; text-align: center; }
+        .card-overlay h3 { font-weight: 900; }
 
-        /* تنسيق المواضيع داخل القسم */
         .topic-card { background: #fdfaf5; border-radius: 20px; padding: 15px; border: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
         .media-container { width: 100%; border-radius: 15px; overflow: hidden; background: #000; }
-        
-        /* يوتيوب عرضي */
         .vid-wide { position: relative; padding-bottom: 56.25%; height: 0; }
         .vid-wide iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        
-        /* شورتس طولي */
         .vid-shorts { aspect-ratio: 9/16; width: 100%; }
         .vid-shorts iframe { width: 100%; height: 100%; }
 
         /* لوحة التحكم السرية */
         #forumAdminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: auto; padding: 30px 5%; }
-        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 20px; margin-bottom: 20px; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; }
+        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: right; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
         .btn-gold { background: var(--gold); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 900; cursor: pointer; width: 100%; }
-
         .back-btn { background: var(--brown); color: white; padding: 10px 20px; border-radius: 10px; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 700; }
+
+        /* تنسيق الفوتر الموحد */
+        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; margin-top: 50px; }
+        .btn-footer-prod { background: var(--gold); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; }
+        footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
 
         @media (max-width: 768px) {
             .grid-layout { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
@@ -71,10 +62,21 @@
 </head>
 <body>
 
+    <div class="top-banner">
+        <span>منتدى شبابيك - عالم الستائر والديكور</span>
+        <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> تواصل عبر الواتساب</a>
+    </div>
+
     <header>
-        <div style="font-weight:900; line-height:1;">شبابيك<br><span style="color:var(--gold); font-size:0.8rem;">المنتدى</span></div>
-        <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img" onclick="handleForumLogoClick()">
-        <button onclick="location.href='index.html'" style="background:none; border:none; color:var(--gold); font-weight:900; cursor:pointer;"><i class="fas fa-store"></i> المتجر</button>
+        <div style="font-weight:900; line-height:1; flex:1;" onclick="location.href='index.html'">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
+        <div class="logo-center" onclick="handleForumLogoClick()">
+            <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
+        </div>
+        <div style="flex:1; display:flex; justify-content:flex-end;">
+            <button onclick="location.href='index.html'" style="background:transparent; border:1px solid #eee; padding:8px 15px; border-radius:12px; cursor:pointer; font-weight:700; color:var(--brown);">
+                <i class="fas fa-store"></i> المتجر
+            </button>
+        </div>
     </header>
 
     <div class="container" id="mainView">
@@ -84,8 +86,7 @@
             <div class="back-btn" onclick="renderSections()"><i class="fas fa-arrow-right"></i> العودة للأقسام</div>
         </div>
 
-        <div class="grid-layout" id="forumGrid">
-            </div>
+        <div class="grid-layout" id="forumGrid"></div>
     </div>
 
     <div id="forumAdminPanel">
@@ -93,7 +94,6 @@
             <h2 style="font-weight:900;">إدارة منتدى شبابيك</h2>
             <button onclick="document.getElementById('forumAdminPanel').style.display='none'" style="background:#3d2e24; color:white; border:none; padding:10px 20px; border-radius:10px;">إغلاق</button>
         </div>
-
         <div class="admin-box">
             <h3>١. إضافة قسم جديد</h3>
             <input type="text" id="newForumSecName" placeholder="اسم القسم">
@@ -101,7 +101,6 @@
             <button onclick="saveForumSection()" class="btn-gold">حفظ القسم</button>
             <div id="adminForumSecsList" style="margin-top:15px; display:flex; flex-wrap:wrap; gap:10px;"></div>
         </div>
-
         <div class="admin-box">
             <h3>٢. نشر موضوع جديد</h3>
             <select id="selectTopicSec"></select>
@@ -116,188 +115,164 @@
             <input type="text" id="postMediaUrl" placeholder="الرابط">
             <button onclick="publishTopic()" class="btn-gold" id="btnPublish">نشر الآن</button>
         </div>
-
         <div class="admin-box">
             <h3>٣. إدارة المواضيع</h3>
             <div id="adminTopicsList"></div>
         </div>
     </div>
 
+    <div class="footer-cta">
+        <h2>جاهز لتجديد ستائر منزلك؟</h2>
+        <a href="index.html?go=categories" class="btn-footer-prod">تصفح المنتجات</a>
+    </div>
+
+    <footer>
+        <div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div>
+        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
+    </footer>
+
 <script>
-// تهيئة Firebase
-const firebaseConfig = { 
-    apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
-    authDomain: "shababekcurtain.firebaseapp.com", 
-    databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
-    projectId: "shababekcurtain" 
-};
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+    // تهيئة Firebase
+    const firebaseConfig = { 
+        apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
+        authDomain: "shababekcurtain.firebaseapp.com", 
+        databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
+        projectId: "shababekcurtain" 
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-let forumClicks = 0;
-let sectionsData = {};
-let topicsData = [];
+    let forumClicks = 0;
+    let sectionsData = {};
+    let topicsData = [];
 
-// --- 1. محرك الدخول السري ---
-function handleForumLogoClick() {
-    forumClicks++;
-    if(forumClicks >= 5) {
-        const pass = prompt("رمز الإدارة:");
-        if(pass === "8496") document.getElementById('forumAdminPanel').style.display = 'block';
-        forumClicks = 0;
+    // محرك الدخول السري (5 ضغطات على اللوجو)
+    function handleForumLogoClick() {
+        forumClicks++;
+        if(forumClicks >= 5) {
+            const pass = prompt("رمز الإدارة:");
+            if(pass === "8496") document.getElementById('forumAdminPanel').style.display = 'block';
+            forumClicks = 0;
+        }
     }
-}
 
-// --- 2. جلب البيانات ---
-function loadForumData() {
-    // جلب الأقسام
-    db.ref('forumSections').on('value', snap => {
-        sectionsData = snap.val() || {};
-        renderSections();
-        updateAdminLists();
-    });
-
-    // جلب المواضيع
-    db.ref('forumTopics').on('value', snap => {
-        topicsData = [];
-        snap.forEach(child => {
-            topicsData.push({ id: child.key, ...child.val() });
+    function loadForumData() {
+        db.ref('forumSections').on('value', snap => {
+            sectionsData = snap.val() || {};
+            renderSections();
+            updateAdminLists();
         });
-        updateAdminTopics();
-    });
-}
-
-// --- 3. العرض (Rendering) ---
-
-// عرض الأقسام ككروت
-function renderSections() {
-    const grid = document.getElementById('forumGrid');
-    const backBtn = document.getElementById('backBtnCont');
-    const title = document.getElementById('viewTitle');
-    
-    grid.innerHTML = "";
-    backBtn.style.display = "none";
-    title.innerText = "أقسام المنتدى";
-
-    Object.entries(sectionsData).forEach(([id, sec]) => {
-        grid.innerHTML += `
-            <div class="card-item" onclick="renderTopics('${sec.name}')">
-                <img src="${sec.img || 'https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'}">
-                <div class="card-overlay">
-                    <h3>${sec.name}</h3>
-                </div>
-            </div>
-        `;
-    });
-}
-
-// عرض المواضيع داخل قسم معين
-function renderTopics(sectionName) {
-    const grid = document.getElementById('forumGrid');
-    const backBtn = document.getElementById('backBtnCont');
-    const title = document.getElementById('viewTitle');
-    
-    grid.innerHTML = "";
-    backBtn.style.display = "block";
-    title.innerText = "قسم: " + sectionName;
-
-    const filtered = topicsData.filter(t => t.section === sectionName).reverse();
-
-    if(filtered.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:50px;">لا توجد مواضيع في هذا القسم بعد.</p>`;
-        return;
+        db.ref('forumTopics').on('value', snap => {
+            topicsData = [];
+            snap.forEach(child => { topicsData.push({ id: child.key, ...child.val() }); });
+            updateAdminTopics();
+        });
     }
 
-    filtered.forEach(p => {
-        let mediaHtml = "";
-        const vidId = extractYoutubeId(p.media || "");
+    function renderSections() {
+        const grid = document.getElementById('forumGrid');
+        const backBtn = document.getElementById('backBtnCont');
+        const title = document.getElementById('viewTitle');
+        grid.innerHTML = "";
+        backBtn.style.display = "none";
+        title.innerText = "أقسام المنتدى";
+        Object.entries(sectionsData).forEach(([id, sec]) => {
+            grid.innerHTML += `
+                <div class="card-item" onclick="renderTopics('${sec.name}')">
+                    <img src="${sec.img || 'https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'}">
+                    <div class="card-overlay"><h3>${sec.name}</h3></div>
+                </div>`;
+        });
+    }
 
-        if (p.type === 'img') mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
-        else if (p.type === 'vid') mediaHtml = `<div class="media-container vid-wide"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
-        else if (p.type === 'shorts') mediaHtml = `<div class="media-container vid-shorts"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
+    function renderTopics(sectionName) {
+        const grid = document.getElementById('forumGrid');
+        const backBtn = document.getElementById('backBtnCont');
+        const title = document.getElementById('viewTitle');
+        grid.innerHTML = "";
+        backBtn.style.display = "block";
+        title.innerText = "قسم: " + sectionName;
+        const filtered = topicsData.filter(t => t.section === sectionName).reverse();
+        if(filtered.length === 0) {
+            grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:50px;">لا توجد مواضيع هنا بعد.</p>`;
+            return;
+        }
+        filtered.forEach(p => {
+            let mediaHtml = "";
+            const vidId = extractYoutubeId(p.media || "");
+            if (p.type === 'img') mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
+            else if (p.type === 'vid') mediaHtml = `<div class="media-container vid-wide"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
+            else if (p.type === 'shorts') mediaHtml = `<div class="media-container vid-shorts"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
+            grid.innerHTML += `
+                <div class="topic-card">
+                    <h3 style="font-weight:900; color:var(--brown);">${p.title}</h3>
+                    <p style="font-size:0.9rem; white-space:pre-wrap;">${p.desc}</p>
+                    ${mediaHtml}
+                    <div style="font-size:0.7rem; color:#999; border-top:1px solid #eee; pt:10px;"><i class="far fa-calendar-alt"></i> ${p.date}</div>
+                </div>`;
+        });
+    }
 
-        grid.innerHTML += `
-            <div class="topic-card">
-                <h3 style="font-weight:900; color:var(--brown);">${p.title}</h3>
-                <p style="font-size:0.9rem; white-space:pre-wrap;">${p.desc}</p>
-                ${mediaHtml}
-                <div style="font-size:0.7rem; color:#999; border-top:1px solid #eee; pt:10px;">
-                    <i class="far fa-calendar-alt"></i> ${p.date}
-                </div>
-            </div>
-        `;
-    });
-}
+    function saveForumSection() {
+        const name = document.getElementById('newForumSecName').value;
+        const img = document.getElementById('newForumSecImg').value;
+        if(!name) return;
+        db.ref('forumSections').push({ name, img }).then(() => {
+            document.getElementById('newForumSecName').value = "";
+            document.getElementById('newForumSecImg').value = "";
+        });
+    }
 
-// --- 4. وظائف الإدارة ---
-function saveForumSection() {
-    const name = document.getElementById('newForumSecName').value;
-    const img = document.getElementById('newForumSecImg').value;
-    if(!name) return;
-    db.ref('forumSections').push({ name, img }).then(() => {
-        document.getElementById('newForumSecName').value = "";
-        document.getElementById('newForumSecImg').value = "";
-    });
-}
+    function publishTopic() {
+        const title = document.getElementById('postTitle').value;
+        const desc = document.getElementById('postDesc').value;
+        const section = document.getElementById('selectTopicSec').value;
+        const type = document.getElementById('postType').value;
+        const media = document.getElementById('postMediaUrl').value;
+        if(!title || !section) return alert("أكمل البيانات");
+        db.ref('forumTopics').push({
+            title, desc, section, type, media,
+            timestamp: Date.now(),
+            date: new Date().toLocaleDateString('ar-EG')
+        }).then(() => { location.reload(); });
+    }
 
-function publishTopic() {
-    const title = document.getElementById('postTitle').value;
-    const desc = document.getElementById('postDesc').value;
-    const section = document.getElementById('selectTopicSec').value;
-    const type = document.getElementById('postType').value;
-    const media = document.getElementById('postMediaUrl').value;
-    const btn = document.getElementById('btnPublish');
+    function updateAdminLists() {
+        const select = document.getElementById('selectTopicSec');
+        const adminList = document.getElementById('adminForumSecsList');
+        let selectHtml = `<option disabled selected value="">اختر القسم</option>`;
+        let adminHtml = "";
+        Object.entries(sectionsData).forEach(([k, v]) => {
+            selectHtml += `<option value="${v.name}">${v.name}</option>`;
+            adminHtml += `<div style="background:#ddd; padding:5px 15px; border-radius:20px; font-size:0.8rem;">${v.name} <i class="fas fa-times" onclick="deleteItem('forumSections','${k}')" style="color:red; cursor:pointer; margin-right:5px;"></i></div>`;
+        });
+        select.innerHTML = selectHtml;
+        adminList.innerHTML = adminHtml;
+    }
 
-    if(!title || !section) return alert("أكمل البيانات");
-    btn.innerText = "جاري النشر..."; btn.disabled = true;
+    function updateAdminTopics() {
+        const list = document.getElementById('adminTopicsList');
+        list.innerHTML = topicsData.reverse().map(t => `
+            <div style="padding:10px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between;">
+                <span>${t.title}</span>
+                <button onclick="deleteItem('forumTopics','${t.id}')" style="color:red; border:none; background:none;">حذف</button>
+            </div>`).join('');
+    }
 
-    db.ref('forumTopics').push({
-        title, desc, section, type, media,
-        timestamp: Date.now(),
-        date: new Date().toLocaleDateString('ar-EG')
-    }).then(() => { location.reload(); });
-}
+    function deleteItem(path, key) { if(confirm("حذف؟")) db.ref(path).child(key).remove(); }
 
-function updateAdminLists() {
-    const select = document.getElementById('selectTopicSec');
-    const adminList = document.getElementById('adminForumSecsList');
-    let selectHtml = `<option disabled selected value="">اختر القسم</option>`;
-    let adminHtml = "";
+    function extractYoutubeId(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
 
-    Object.entries(sectionsData).forEach(([k, v]) => {
-        selectHtml += `<option value="${v.name}">${v.name}</option>`;
-        adminHtml += `<div style="background:#ddd; padding:5px 15px; border-radius:20px; font-size:0.8rem;">
-                        ${v.name} <i class="fas fa-times" onclick="deleteItem('forumSections','${k}')" style="color:red; cursor:pointer;"></i>
-                      </div>`;
-    });
-    select.innerHTML = selectHtml;
-    adminList.innerHTML = adminHtml;
-}
+    function toggleMediaInput() {
+        const type = document.getElementById('postType').value;
+        document.getElementById('postMediaUrl').style.display = (type === 'text') ? 'none' : 'block';
+    }
 
-function updateAdminTopics() {
-    const list = document.getElementById('adminTopicsList');
-    list.innerHTML = topicsData.reverse().map(t => `
-        <div style="padding:10px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between;">
-            <span>${t.title}</span>
-            <button onclick="deleteItem('forumTopics','${t.id}')" style="color:red; border:none; background:none;">حذف</button>
-        </div>
-    `).join('');
-}
-
-function deleteItem(path, key) { if(confirm("حذف؟")) db.ref(path).child(key).remove(); }
-
-function extractYoutubeId(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-}
-
-function toggleMediaInput() {
-    const type = document.getElementById('postType').value;
-    document.getElementById('postMediaUrl').style.display = (type === 'text') ? 'none' : 'block';
-}
-
-window.addEventListener('load', loadForumData);
+    window.addEventListener('load', loadForumData);
 </script>
 </body>
 </html>
