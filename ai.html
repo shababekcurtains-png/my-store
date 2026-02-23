@@ -253,10 +253,12 @@ function renderSections() {
     title.innerText = "نافذتك لعالم الذوق والجمال";
     Object.entries(sectionsData).forEach(([id, sec]) => {
         grid.innerHTML += `
-            <div class="card-item" onclick="renderTopics('${sec.name}')">
-                <img src="${sec.img || 'https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'}">
-                <div class="card-overlay"><h3>${sec.name}</h3></div>
-            </div>`;
+           <div class="card-item" onclick="renderTopics('${sec.name}')">
+    ${sec.img.endsWith('.mp4') ? 
+        `<video src="${sec.img}" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover;"></video>` : 
+        `<img src="${sec.img || 'https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'}">`}
+    <div class="card-overlay"><h3>${sec.name}</h3></div>
+</div>
     });
 }
 
