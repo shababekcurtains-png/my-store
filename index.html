@@ -601,6 +601,23 @@ window.addEventListener('load', () => {
         showPage(hash || 'homePage', false);
     }
 });
+    window.addEventListener('load', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const section = urlParams.get('section');
+
+    if (section) {
+        // البحث عن القسم المطلوب والذهاب إليه
+        if (section === 'categories') {
+            showCategory('الكل'); // أو الدالة التي تفتح المنتجات عندك
+        } else if (section === 'paymentPage') {
+            document.getElementById('paymentPage').scrollIntoView({ behavior: 'smooth' });
+        } else if (section === 'aboutPage') {
+            document.getElementById('aboutPage').scrollIntoView({ behavior: 'smooth' });
+        } else if (section === 'contactPage') {
+            document.getElementById('contactPage').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
 </script>
 </body>
 </html>
