@@ -16,7 +16,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
 
-        /* الهيدر الموحد */
         .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         
@@ -26,19 +25,16 @@
         
         .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
         .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
-        .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
         
         .search-box { position: relative; width: 40px; height: 40px; transition: 0.4s; overflow: hidden; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; }
         .search-box:hover, .search-box:focus-within { width: 180px; border-color: var(--gold); }
         .search-box input { border: none; outline: none; background: transparent; padding: 10px; width: 140px; font-size: 0.9rem; }
         .search-box i { padding: 10px; color: var(--brown); cursor: pointer; }
 
-        /* شريط التنقل */
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
         .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
         .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; }
 
-        /* المحتوى */
         .container { padding: 30px 5%; max-width: 1200px; margin: auto; min-height: 50vh; }
         .page-title { text-align: center; font-weight: 900; font-size: 2rem; margin-bottom: 30px; }
         .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
@@ -54,14 +50,12 @@
         .vid-shorts { aspect-ratio: 9/16; width: 100%; }
         .vid-shorts iframe { width: 100%; height: 100%; }
 
-        /* لوحة التحكم (مخفية) */
         #forumAdminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: auto; padding: 30px 5%; }
         .admin-box { background: #f4f4f4; padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: right; }
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
         .btn-gold { background: var(--gold); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 900; cursor: pointer; width: 100%; }
         .back-btn { background: var(--brown); color: white; padding: 10px 20px; border-radius: 10px; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 700; }
 
-        /* الفوتر الموحد */
         .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; margin-top: 50px; }
         .footer-cta h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 15px; }
         .btn-footer-wa { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; }
@@ -159,7 +153,6 @@
     </footer>
 
 <script>
-// تهيئة Firebase
 const firebaseConfig = { 
     apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
     authDomain: "shababekcurtain.firebaseapp.com", 
@@ -201,7 +194,7 @@ function renderSections() {
     const title = document.getElementById('viewTitle');
     grid.innerHTML = "";
     backBtn.style.display = "none";
-    title.innerText = "نافذتك لعالم الذوق والجمال ";
+    title.innerText = "نافذتك لعالم الذوق والجمال";
     Object.entries(sectionsData).forEach(([id, sec]) => {
         grid.innerHTML += `
             <div class="card-item" onclick="renderTopics('${sec.name}')">
@@ -211,25 +204,41 @@ function renderSections() {
     });
 }
 
-// البحث عن جزء الـ shorts داخل دالة renderTopics واستبداله بهذا:
-else if (p.type === 'shorts') {
-    const vidId = extractYoutubeId(p.media || "");
-    // إضافة playlist و autoplay و mute لضمان التشغيل التلقائي والمستمر
-    mediaHtml = `
-        <div class="media-container vid-shorts">
-            <iframe 
-                src="https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1&loop=1&playlist=${vidId}&controls=0&modestbranding=1" 
-                allow="autoplay; encrypted-media" 
-                allowfullscreen>
-            </iframe>
-        </div>`;
-}
+function renderTopics(sectionName) {
+    const grid = document.getElementById('forumGrid');
+    const backBtn = document.getElementById('backBtnCont');
+    const title = document.getElementById('viewTitle');
+    grid.innerHTML = "";
+    backBtn.style.display = "block";
+    title.innerText = "قسم: " + sectionName;
+
+    const filtered = topicsData.filter(t => t.section === sectionName).reverse();
+
+    if(filtered.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:50px;">لا توجد مواضيع.</p>`;
+        return;
+    }
+
     filtered.forEach(p => {
         let mediaHtml = "";
         const vidId = extractYoutubeId(p.media || "");
-        if (p.type === 'img') mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
-        else if (p.type === 'vid') mediaHtml = `<div class="media-container vid-wide"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
-        else if (p.type === 'shorts') mediaHtml = `<div class="media-container vid-shorts"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
+
+        if (p.type === 'img') {
+            mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
+        } else if (p.type === 'vid') {
+            mediaHtml = `<div class="media-container vid-wide"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
+        } else if (p.type === 'shorts') {
+            // كود الشورتس المطور للتشغيل التلقائي والمستمر
+            mediaHtml = `
+                <div class="media-container vid-shorts">
+                    <iframe 
+                        src="https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1&loop=1&playlist=${vidId}&controls=0&modestbranding=1" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen>
+                    </iframe>
+                </div>`;
+        }
+
         grid.innerHTML += `
             <div class="topic-card">
                 <h3 style="font-weight:900;">${p.title}</h3>
