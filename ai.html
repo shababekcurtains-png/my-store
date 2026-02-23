@@ -55,12 +55,26 @@
         }
         .card-item img { width: 100%; height: 100%; object-fit: cover; }
         .card-overlay { 
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 85%; background: var(--gold); color: white; padding: 10px;
-            text-align: center; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-        .card-overlay h3 { font-weight: 900; font-size: 1rem; }
+    position: absolute; 
+    bottom: 15px; /* رفعناه قليلاً عن الحافة السفلى */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%; /* عرض المستطيل الذهبي */
+    background: var(--gold); 
+    color: var(--white); 
+    padding: 8px 5px; 
+    text-align: center; 
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 10; /* لضمان ظهوره فوق الصورة دائماً */
+}
 
+.card-item img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* لضمان عدم تمدد الصورة بشكل مشوه */
+    display: block;
+}
         /* المواضيع */
         .topic-card { background: #fff; border-radius: 25px; padding: 20px; border: 1px solid #eee; margin-bottom: 25px; }
         .media-container { width: 100%; border-radius: 20px; overflow: hidden; background: #000; margin: 15px 0; }
