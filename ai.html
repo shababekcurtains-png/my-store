@@ -201,7 +201,7 @@ function renderSections() {
     const title = document.getElementById('viewTitle');
     grid.innerHTML = "";
     backBtn.style.display = "none";
-    title.innerText = "أقسام المنتدى";
+    title.innerText = "نافذتك لعالم الذوق والجمال ";
     Object.entries(sectionsData).forEach(([id, sec]) => {
         grid.innerHTML += `
             <div class="card-item" onclick="renderTopics('${sec.name}')">
