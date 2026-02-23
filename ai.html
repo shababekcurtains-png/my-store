@@ -84,6 +84,32 @@
             .grid-layout { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
             .card-item { height: 320px; }
         }
+        #globalAudioBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+#globalAudioBtn:hover {
+    transform: scale(1.1);
+    background: var(--brown);
+}
+
+#globalAudioBtn i {
+    font-size: 1.2rem;
+}
     </style>
 </head>
 <body>
@@ -331,6 +357,53 @@ function toggleMediaInput() {
 }
 
 window.addEventListener('load', loadForumData);
+    let isGlobalMuted = true; // الحالة الافتراضية هي الكتم
+
+function toggleGlobalMute() {
+    isGlobalMuted = !isGlobalMuted;
+    const icon = document.getElementById('audioIcon');
+    
+    // تغيير شكل الأيقونة
+    if (isGlobalMuted) {
+        icon.className = "fas fa-volume-mute";
+    } else {
+        icon.className = "fas fa-volume-up";
+        // إطلاق confetti خفيف عند التشغيل كنوع من التفاعل
+        confetti({ particleCount: 50, spread: 30, origin: { y: 0.9, x: 0.9 } });
+    }
+
+    // إرسال الأمر لكل الفيديوهات الموجودة حالياً
+    document.querySelectorAll('.lazy-video').forEach(iframe => {
+        const command = isGlobalMuted ? 'mute' : 'unMute';
+        iframe.contentWindow.postMessage(`{"event":"command","func":"${command}","args":""}`, '*');
+    });
+}
+
+// تعديل بسيط على دالة initAutoPlay لكي تحترم حالة الزر عند التمرير
+function initAutoPlay() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const iframe = entry.target;
+            if (entry.isIntersecting) {
+                if (!iframe.src) iframe.src = iframe.getAttribute('data-src') + "&autoplay=1";
+                
+                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                
+                // التأكد من تطبيق حالة الصوت الحالية للزر
+                const audioCommand = isGlobalMuted ? 'mute' : 'unMute';
+                setTimeout(() => {
+                    iframe.contentWindow.postMessage(`{"event":"command","func":"${audioCommand}","args":""}`, '*');
+                }, 500); // تأخير بسيط لضمان تحميل الفيديو
+            } else {
+                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            }
+        });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.lazy-video').forEach(vid => observer.observe(vid));
+}
 </script>
+    <div id="globalAudioBtn" onclick="toggleGlobalMute()">
+    <i id="audioIcon" class="fas fa-volume-mute"></i>
+</div>
 </body>
 </html>
