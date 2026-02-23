@@ -424,55 +424,54 @@ window.addEventListener('load', loadForumData);
 </script>
     <script>
 
-// ===== نظام تنقل خاص بالمنتدى فقط =====
+// ===== نظام تنقل خاص بالشريط الرئيسي للمنتدى =====
+function forumNavMain(pageId, push = true) {
 
-function forumNavigate(pageId, push = true) {
-
-    // اخفاء كل الصفحات داخل المنتدى
-    document.querySelectorAll(".forum-page")
+    // اخفاء كل الصفحات داخل الشريط الرئيسي للمنتدى
+    document.querySelectorAll(".forum-main-page")
         .forEach(p => p.classList.remove("active"));
 
+    // تحديد الصفحة المستهدفة
     const target = document.getElementById(pageId);
     if (!target) return;
 
     target.classList.add("active");
 
-    // الصعود لبداية الصفحة
-    window.scrollTo(0, 0);
+    // الصعود لبداية الشريط الرئيسي فقط
+    const mainSection = document.getElementById("forumMain"); 
+    if (mainSection) mainSection.scrollTop = 0;
 
     // حفظ في history
     if (push) {
         history.pushState(
-            { forumPage: pageId },
+            { forumMainPage: pageId },
             "",
-            "#" + pageId
+            "#forumMain-" + pageId
         );
     }
 }
 
-
 // زر الرجوع والتقدم
 window.addEventListener("popstate", (e) => {
+    let page = e.state?.forumMainPage;
 
-    const page =
-        e.state?.forumPage ||
-        location.hash.replace("#", "") ||
-        "forumHome";
+    if (!page && location.hash.startsWith("#forumMain-")) {
+        page = location.hash.replace("#forumMain-", "");
+    }
 
-    forumNavigate(page, false);
+    forumNavMain(page || "mainHome", false);
 });
-
 
 // عند تحميل الصفحة
 window.addEventListener("load", () => {
+    let page = "mainHome";
 
-    const page =
-        location.hash.replace("#", "") ||
-        "forumHome";
+    if (location.hash.startsWith("#forumMain-")) {
+        page = location.hash.replace("#forumMain-", "");
+    }
 
-    forumNavigate(page, false);
+    forumNavMain(page, false);
 });
-
 </script>
 </body>
 </html>
