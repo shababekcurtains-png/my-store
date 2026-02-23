@@ -508,11 +508,45 @@ function toggleCartModal() {
 function removeFromCart(idx) { cart.splice(idx, 1); document.getElementById('globalCartCount').innerText = cart.length; toggleCartModal(); }
 
 function sendOrder() {
-    if(cart.length === 0) return alert("السلة فارغة");
-    let msg = `طلب جديد من شبابيك:\n`;
-    cart.forEach((i, x) => msg += `${x+1}- ${i.n}: ${i.p.toLocaleString()} د.ع\n`);
-    window.location.href = `https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`;
-    cart = []; document.getElementById('globalCartCount').innerText = "0"; toggleCartModal();
+    if(cart.length === 0) return alert("السلة فارغة يا بطل!");
+    
+    // جلب البيانات من الحقول
+    const city = document.getElementById('userCity').value;
+    const payment = document.getElementById('userPayment').value;
+    const install = document.getElementById('userInstall').value;
+
+    // بناء رأس الرسالة
+    let msg = `*طلب شراء جديد من شبابيك للستائر* 🪟\n\n`;
+    msg += `📍 *المحافظة:* ${city}\n`;
+    msg += `🛠 *خدمة التركيب:* ${install}\n`;
+    msg += `💳 *طريقة الدفع:* ${payment}\n`;
+    msg += `------------------------------\n\n`;
+    
+    let total = 0;
+
+    // إضافة المنتجات مع روابط صورها
+    cart.forEach((item, index) => {
+        msg += `*${index + 1}- الموديل:* ${item.n}\n`;
+        msg += `💰 *السعر:* ${item.p.toLocaleString()} د.ع\n`;
+        msg += `🖼 *صورة الموديل:* ${item.img}\n`; // إضافة رابط الصورة
+        msg += `------------------------------\n`;
+        total += item.p;
+    });
+    
+    // الإجمالي النهائي
+    msg += `\n💰 *الإجمالي الكلي للطلب:* ${total.toLocaleString()} د.ع\n\n`;
+    msg += `_شكراً لاختياركم شبابيك - ظل وذوق_`;
+
+    // إرسال الطلب عبر الواتساب
+    const waNumber = "9647883002797";
+    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+    
+    window.location.href = waUrl;
+
+    // تصفير السلة بعد الإرسال بنجاح
+    cart = []; 
+    document.getElementById('globalCartCount').innerText = "0"; 
+    toggleCartModal();
 }
 
 // --- 7. مزامنة البيانات عند التحميل ---
