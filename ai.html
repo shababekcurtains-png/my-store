@@ -216,7 +216,7 @@ function renderTopics(sectionName) {
     const filtered = topicsData.filter(t => t.section === sectionName).reverse();
 
     if(filtered.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:50px;">لا توجد مواضيع هنا بعد.</p>`;
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:50px;">لا توجد مواضيع في هذا القسم بعد.</p>`;
         return;
     }
 
@@ -224,38 +224,46 @@ function renderTopics(sectionName) {
         let mediaHtml = "";
         const vidId = extractYoutubeId(p.media || "");
         
-        // فحص ذكي: هل الرابط يحتوي على كلمة shorts؟
+        // فحص ذكي للرابط: هل هو شورتس أم فيديو عادي؟
         const isShorts = p.media && p.media.includes('shorts');
 
-        if (p.type === 'img') {
-            mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
+        if (p.type === 'img' && p.media) {
+            mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%; border-radius:15px;"></div>`;
         } 
         else if (vidId) {
             if (isShorts) {
-                // --- حافظة الشورتس العمودية ---
+                // عرض الشورتس (طولي + تشغيل تلقائي + صامت + تكرار)
                 mediaHtml = `
-                    <div class="media-container vid-shorts">
+                    <div class="media-container vid-shorts" style="aspect-ratio: 9/16; width: 100%; max-width: 350px; margin: auto; overflow: hidden; border-radius: 20px;">
                         <iframe 
-                            src="https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1&loop=1&playlist=${vidId}&controls=0" 
-                            allow="autoplay; encrypted-media" 
+                            width="100%" height="100%"
+                            src="https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1&loop=1&playlist=${vidId}&controls=0&modestbranding=1" 
+                            title="YouTube video player" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             allowfullscreen>
                         </iframe>
                     </div>`;
             } else {
-                // --- حافظة الفيديو الأفقي العادي ---
+                // عرض الفيديو العادي (أفقي)
                 mediaHtml = `
-                    <div class="media-container vid-wide">
-                        <iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe>
+                    <div class="media-container vid-wide" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px;">
+                        <iframe 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                            src="https://www.youtube.com/embed/${vidId}" 
+                            title="YouTube video player" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
                     </div>`;
             }
         }
 
         grid.innerHTML += `
-            <div class="topic-card">
-                <h3 style="font-weight:900; color:var(--brown);">${p.title}</h3>
-                <p style="font-size:0.9rem; white-space:pre-wrap; margin-bottom:10px;">${p.desc}</p>
+            <div class="topic-card" style="background:#fff; border-radius:25px; padding:20px; border:1px solid #f0f0f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <h3 style="font-weight:900; color:var(--brown); margin-bottom:10px; font-size:1.1rem;">${p.title}</h3>
+                <p style="font-size:0.9rem; white-space:pre-wrap; color:#666; margin-bottom:15px;">${p.desc}</p>
                 ${mediaHtml}
-                <div style="font-size:0.7rem; color:#999; border-top:1px solid #eee; padding-top:10px; margin-top:10px;">
+                <div style="font-size:0.7rem; color:#bbb; border-top:1px solid #eee; padding-top:10px; margin-top:15px;">
                     <i class="far fa-calendar-alt"></i> نُشر في: ${p.date}
                 </div>
             </div>`;
