@@ -208,6 +208,7 @@ function renderTopics(sectionName) {
     const grid = document.getElementById('forumGrid');
     const backBtn = document.getElementById('backBtnCont');
     const title = document.getElementById('viewTitle');
+    
     grid.innerHTML = "";
     backBtn.style.display = "block";
     title.innerText = "قسم: " + sectionName;
@@ -215,40 +216,51 @@ function renderTopics(sectionName) {
     const filtered = topicsData.filter(t => t.section === sectionName).reverse();
 
     if(filtered.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:50px;">لا توجد مواضيع.</p>`;
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:50px;">لا توجد مواضيع هنا بعد.</p>`;
         return;
     }
 
     filtered.forEach(p => {
         let mediaHtml = "";
         const vidId = extractYoutubeId(p.media || "");
+        
+        // فحص ذكي: هل الرابط يحتوي على كلمة shorts؟
+        const isShorts = p.media && p.media.includes('shorts');
 
         if (p.type === 'img') {
             mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
-        } else if (p.type === 'vid') {
-            mediaHtml = `<div class="media-container vid-wide"><iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe></div>`;
-        } else if (p.type === 'shorts') {
-            // كود الشورتس المطور للتشغيل التلقائي والمستمر
-            mediaHtml = `
-                <div class="media-container vid-shorts">
-                    <iframe 
-                        src="https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1&loop=1&playlist=${vidId}&controls=0&modestbranding=1" 
-                        allow="autoplay; encrypted-media" 
-                        allowfullscreen>
-                    </iframe>
-                </div>`;
+        } 
+        else if (vidId) {
+            if (isShorts) {
+                // --- حافظة الشورتس العمودية ---
+                mediaHtml = `
+                    <div class="media-container vid-shorts">
+                        <iframe 
+                            src="https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1&loop=1&playlist=${vidId}&controls=0" 
+                            allow="autoplay; encrypted-media" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>`;
+            } else {
+                // --- حافظة الفيديو الأفقي العادي ---
+                mediaHtml = `
+                    <div class="media-container vid-wide">
+                        <iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe>
+                    </div>`;
+            }
         }
 
         grid.innerHTML += `
             <div class="topic-card">
-                <h3 style="font-weight:900;">${p.title}</h3>
-                <p style="white-space:pre-wrap;">${p.desc}</p>
+                <h3 style="font-weight:900; color:var(--brown);">${p.title}</h3>
+                <p style="font-size:0.9rem; white-space:pre-wrap; margin-bottom:10px;">${p.desc}</p>
                 ${mediaHtml}
-                <div style="font-size:0.7rem; color:#999; border-top:1px solid #eee; pt:10px;">${p.date}</div>
+                <div style="font-size:0.7rem; color:#999; border-top:1px solid #eee; padding-top:10px; margin-top:10px;">
+                    <i class="far fa-calendar-alt"></i> نُشر في: ${p.date}
+                </div>
             </div>`;
     });
 }
-
 function saveForumSection() {
     const name = document.getElementById('newForumSecName').value;
     const img = document.getElementById('newForumSecImg').value;
