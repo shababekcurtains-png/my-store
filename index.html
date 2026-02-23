@@ -377,17 +377,32 @@ function showPage(id, push = true) {
 }
 
 // معالجة زر الرجوع
-window.addEventListener("popstate", (e) => {
-    const page = e.state?.page || location.hash.replace("#", "") || "home";
-    showPage(page, false);
-});
+window.addEventListener('load', () => {
+    // 1. فحص هل المستخدم قادم من رابط خارجي (مثل المنتدى) وبحوزته طلب لصفحة معينة
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetPage = urlParams.get('page');
 
-// عند تحميل الصفحة أول مرة
-window.addEventListener("load", () => {
-    const page = location.hash.replace("#", "") || "home";
-    showPage(page, false);
+    if (targetPage) {
+        // إذا كان الطلب هو المنتجات، ننتقل للقسم المناسب
+        if (targetPage === 'categories') {
+            showPage('homePage');
+            setTimeout(() => {
+                document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        } else {
+            // فتح أي صفحة أخرى (من نحن، طرق الدفع، إلخ)
+            showPage(targetPage);
+        }
+    } else {
+        // إذا لم يوجد طلب، نطبق نظام الهاش القديم أو نفتح الرئيسية
+        const hash = location.hash.replace('#', '');
+        if (hash) {
+            showPage(hash, false);
+        } else {
+            showPage('homePage', false);
+        }
+    }
 });
-
 // محرك الشعار ولوحة التحكم (5 ضغطات)
 function handleLogoClick() {
     adminClicks++;
