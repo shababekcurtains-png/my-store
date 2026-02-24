@@ -708,6 +708,16 @@ window.addEventListener('load', () => {
         }
     }
 });
+    // هذا الكود هو "العقل" الذي يفهم زر الرجوع في الموبايل
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.page) {
+        // إذا ضغط المستخدم رجوع، نفتح الصفحة المسجلة في الذاكرة
+        showPage(event.state.page, false); 
+    } else {
+        // إذا لم يوجد سجل، يعود للرئيسية كخيار آمن
+        showPage('homePage', false);
+    }
+});
 </script>
 </body>
 </html>
