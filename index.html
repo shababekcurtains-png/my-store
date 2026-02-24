@@ -101,25 +101,35 @@
     font-size: 0.8rem;
 }
    /* تنسيق ذكي: شبكة للمتصفح وتمرير للهاتف */
+/* الأقسام كما كانت: شبكة للمتصفح وتمرير للهاتف */
 #categoriesList {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 أقسام في السطر للمتصفح */
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     padding: 20px 5%;
 }
 
 @media (max-width: 768px) {
     #categoriesList {
-        display: flex; /* العودة لنظام الصف للهاتف */
+        display: flex;
         grid-template-columns: none;
-        overflow-x: auto; /* تفعيل التمرير الجانبي */
+        overflow-x: auto;
         gap: 15px;
         padding: 20px;
         scrollbar-width: none;
     }
     #categoriesList div {
-        flex: 0 0 250px; /* عرض ثابت لكل قسم ليسمح بالتمرير */
+        flex: 0 0 250px;
     }
+}
+
+.cat-card-new {
+    position: relative;
+    height: 350px;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
      /* --- تنسيق طرق الدفع المطور (مطابق للمنتدى) --- */
 #paymentList {
@@ -517,6 +527,7 @@ async function handleDrImage(input) {
 }
 
 // --- 6. نظام السلة وعرض المنتجات ---
+// --- إعادة دالة فتح القسم كما كانت ---
 function openCat(n) { 
     localStorage.setItem('lastCat', n);
     db.ref('products').once('value', snap => { 
@@ -525,53 +536,37 @@ function openCat(n) {
         document.getElementById('catGrid').innerHTML = items.map(x => `
             <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})'>
                 <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
-                <div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div>
+                <div style="padding:20px;text-align:center;">
+                    <h3>${x.name}</h3>
+                    <p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p>
+                </div>
             </div>`).join(''); 
         showPage('categoryView'); 
     }); 
 }
 
+// --- إعادة دالة فتح المنتج كما كانت ---
 function openCalc(p) { 
-    cur = p; localStorage.setItem('lastProd', JSON.stringify(p));
+    cur = p; 
+    localStorage.setItem('lastProd', JSON.stringify(p));
     showPage('productCalculator'); 
     document.getElementById('pName').innerText = p.name; 
     document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
     document.getElementById('pImg').src = getWatermarkedUrl(p.img); 
 }
-// --- دالة البحث الشاملة (لا تلمس السلة) ---
-async function handleSearch() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const resBox = document.getElementById('searchRes');
-    
-    // إذا كان المكتوب أقل من حرفين أخفِ النتائج
-    if (query.length < 2) { 
-        resBox.style.display = 'none'; 
-        return; 
-    }
 
-    // جلب البيانات
-    const [prodsSnap, topicsSnap] = await Promise.all([
-        db.ref('products').once('value'),
-        db.ref('forumTopics').once('value')
-    ]);
-
-    const prods = prodsSnap.val() || {};
-    const topics = topicsSnap.val() || {};
-    let html = "";
-
-    // البحث في المنتجات (عرض الاسم والقسم)
-    Object.values(prods).filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)).forEach(p => {
-        html += `
-            <div style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee;cursor:pointer;" 
-                 onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none";'>
-                <img src="${p.img.split(',')[0]}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
-                <div>
-                    <div style="font-weight:bold;font-size:0.9rem;">${p.name}</div>
-                    <div style="font-size:0.7rem;color:var(--gold);">${p.category}</div>
-                </div>
-            </div>`;
-    });
-
+// --- إعادة مزامنة الأقسام عند التحميل كما كانت ---
+db.ref('categories').on('value', snap => {
+    const cats = snap.val() || {};
+    const list = document.getElementById('categoriesList');
+    if(list) list.innerHTML = Object.values(cats).map(c => `
+        <div class="cat-card-new" onclick="openCat('${c.name}')">
+            <img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">
+            <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">
+                ${c.name}
+            </div>
+        </div>`).join('');
+});
     // البحث في مواضيع المنتدى
     Object.values(topics).filter(t => t.title.toLowerCase().includes(query)).forEach(t => {
         html += `
