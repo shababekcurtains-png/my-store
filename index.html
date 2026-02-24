@@ -121,6 +121,32 @@
         flex: 0 0 250px; /* عرض ثابت لكل قسم ليسمح بالتمرير */
     }
 }
+        /* ====== نفس نظام عرض الأقسام لطرق الدفع ====== */
+
+#paymentList {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    padding: 20px 5%;
+}
+
+/* الهاتف */
+@media (max-width: 768px) {
+    #paymentList {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding: 20px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #paymentList .cat-card-new {
+        flex: 0 0 250px !important;
+        height: 300px;
+        scroll-snap-align: start;
+    }
+}
 
 /* تنسيق الكارت ليكون أنيقاً */
 .cat-card-new {
