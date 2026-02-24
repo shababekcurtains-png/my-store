@@ -12,7 +12,17 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
+        :root { 
+            --gold: #d9b382; 
+            --brown: #3d2e24; 
+            --bg: #f9f6f2; 
+            --white: #ffffff; 
+            --whatsapp: #25D366;
+            --red: #ff4d4d;
+            --gray-light: #f0f0f0;
+            --gray: #999;
+        }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         ::-webkit-scrollbar { width: 6px; }
@@ -22,133 +32,710 @@
         body { background: var(--white); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
         body.admin-open { overflow: hidden !important; }
 
-        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .top-banner { 
+            background: var(--brown); 
+            color: white; 
+            padding: 10px 5%; 
+            text-align: center; 
+            font-size: 13px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
         
-        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .header-right { flex: 1; font-weight: 900; line-height: 1.1; cursor: pointer; }
-        .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
-        .logo-img { height: 90px; }
-        .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
+        .wa-link { 
+            color: var(--whatsapp); 
+            text-decoration: none; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+        }
         
-        .search-box { position: relative; width: 40px; height: 40px; transition: 0.4s; overflow: hidden; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; }
-        .search-box:hover, .search-box:focus-within { width: 180px; border-color: var(--gold); }
-        .search-box input { border: none; outline: none; background: transparent; padding: 10px; width: 140px; font-size: 0.9rem; }
-        .search-box i { padding: 10px; color: var(--brown); }
+        header { 
+            background: var(--white); 
+            padding: 10px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        }
+        
+        .header-right { 
+            flex: 1; 
+            font-weight: 900; 
+            line-height: 1.1; 
+            cursor: pointer; 
+        }
+        
+        .logo-center { 
+            flex: 1; 
+            display: flex; 
+            justify-content: center; 
+            cursor: pointer; 
+        }
+        
+        .logo-img { 
+            height: 90px; 
+            transition: transform 0.3s;
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        .header-left { 
+            flex: 1; 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        
+        /* نظام الإشعارات */
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--brown);
+            transition: 0.3s;
+        }
+        
+        .notification-bell:hover {
+            color: var(--gold);
+        }
+        
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--red);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: 900;
+        }
+        
+        .search-box { 
+            position: relative; 
+            width: 40px; 
+            height: 40px; 
+            transition: 0.4s; 
+            overflow: hidden; 
+            border: 1px solid #eee; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+        }
+        
+        .search-box:hover, .search-box:focus-within { 
+            width: 250px; 
+            border-color: var(--gold); 
+        }
+        
+        .search-box input { 
+            border: none; 
+            outline: none; 
+            background: transparent; 
+            padding: 10px; 
+            width: 210px; 
+            font-size: 0.9rem; 
+        }
+        
+        .search-box i { 
+            padding: 10px; 
+            color: var(--brown); 
+        }
 
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; }
-        .nav-menu a.active { color: var(--gold); }
+        .nav-bar { 
+            background: #fcfcfc; 
+            border-bottom: 1px solid #eee; 
+            padding: 12px 0; 
+            overflow-x: auto; 
+            white-space: nowrap; 
+            scrollbar-width: none; 
+        }
+        
+        .nav-menu { 
+            display: inline-flex; 
+            gap: 25px; 
+            list-style: none; 
+            padding: 0 20px; 
+        }
+        
+        .nav-menu a { 
+            text-decoration: none; 
+            color: var(--brown); 
+            font-weight: 700; 
+            transition: 0.3s;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .nav-menu a:hover { 
+            color: var(--gold);
+            background: rgba(217, 179, 130, 0.1);
+        }
+        
+        .nav-menu a.active { 
+            color: var(--gold);
+            background: rgba(217, 179, 130, 0.15);
+        }
 
-        .container { padding: 30px 5%; max-width: 1200px; margin: auto; min-height: 60vh; }
-        .page-title { text-align: center; font-weight: 900; font-size: 1.8rem; margin-bottom: 30px; }
-        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .container { 
+            padding: 30px 5%; 
+            max-width: 1200px; 
+            margin: auto; 
+            min-height: 60vh; 
+        }
+        
+        .page-title { 
+            text-align: center; 
+            font-weight: 900; 
+            font-size: 2rem; 
+            margin-bottom: 30px; 
+            color: var(--brown);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 3px;
+        }
+        
+        .grid-layout { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+            gap: 25px; 
+        }
         
         .card-item { 
-            position: relative; height: 400px; border-radius: 25px; 
-            overflow: hidden; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.06); 
-            transition: 0.4s; border: 1px solid #f0f0f0; 
+            position: relative; 
+            height: 380px; 
+            border-radius: 25px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06); 
+            transition: all 0.4s ease; 
+            border: 1px solid #f0f0f0; 
         }
-        .card-item img, .card-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .card-item:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15); 
+        }
+        
+        .card-item img, .card-item video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block; 
+            transition: transform 0.6s;
+        }
+        
+        .card-item:hover img,
+        .card-item:hover video {
+            transform: scale(1.1);
+        }
 
         .card-overlay { 
-            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-            width: 90%; background: var(--gold); color: white; padding: 8px 5px; 
-            text-align: center; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10;
+            position: absolute; 
+            bottom: 15px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 90%; 
+            background: var(--gold); 
+            color: white; 
+            padding: 10px; 
+            text-align: center; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
         }
-        .card-overlay h3 { font-weight: 900; font-size: 1rem; margin: 0; }
+        
+        .card-overlay h3 { 
+            font-weight: 900; 
+            font-size: 1.1rem; 
+            margin: 0; 
+        }
 
-        .topic-card { background: #fff; border-radius: 25px; padding: 20px; border: 1px solid #eee; margin-bottom: 25px; }
-        .media-container { width: 100%; border-radius: 20px; overflow: hidden; background: #000; margin: 15px 0; }
-        .vid-wide { position: relative; padding-bottom: 56.25%; height: 0; }
-        .vid-wide iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .vid-shorts { aspect-ratio: 9/16; width: 100%; max-width: 350px; margin: auto; }
-        .back-btn { background: var(--brown); color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 700; border: none; }
+        .topic-card { 
+            background: #fff; 
+            border-radius: 25px; 
+            padding: 25px; 
+            border: 1px solid #eee; 
+            margin-bottom: 25px; 
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        
+        .topic-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-color: var(--gold);
+        }
+        
+        /* تحسين عرض الفيديو */
+        .video-wrapper { 
+            position: relative; 
+            padding-bottom: 56.25%; 
+            height: 0; 
+            overflow: hidden; 
+            border-radius: 15px; 
+            margin: 15px 0;
+            background: #000;
+        }
+        
+        .video-wrapper iframe { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+        }
+        
+        .vid-shorts { 
+            aspect-ratio: 9/16; 
+            width: 100%; 
+            max-width: 350px; 
+            margin: 15px auto; 
+        }
+        
+        .back-btn { 
+            background: var(--brown); 
+            color: white; 
+            padding: 10px 25px; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px; 
+            font-weight: 700; 
+            border: none; 
+            transition: 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: var(--gold);
+            transform: translateX(5px);
+        }
+        
+        /* أزرار التفاعل */
+        .topic-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .topic-actions button {
+            background: none;
+            border: 1px solid #eee;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            color: var(--brown);
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .topic-actions button:hover {
+            background: var(--gold);
+            color: white;
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+        
+        .topic-actions button i {
+            font-size: 1.1rem;
+        }
+        
+        .topic-actions button.liked {
+            background: var(--gold);
+            color: white;
+            border-color: var(--gold);
+        }
+        
+        /* قسم التعليقات */
+        .comments-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .comment {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .comment-author {
+            font-weight: 700;
+            color: var(--gold);
+        }
+        
+        .comment-date {
+            color: #999;
+        }
+        
+        .comment-text {
+            color: #444;
+            line-height: 1.6;
+        }
+        
+        .add-comment {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .add-comment input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .add-comment button {
+            background: var(--gold);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .add-comment button:hover {
+            background: var(--brown);
+            transform: scale(1.1);
+        }
+        
+        /* نظام الوسوم */
+        .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .tag:hover {
+            background: var(--gold);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tag.pinned {
+            background: var(--gold);
+            color: white;
+        }
+        
+        /* مؤشر التحميل */
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* زر المشاركة */
+        .share-btn {
+            background: none;
+            border: 1px solid #eee;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--brown);
+            margin-top: 10px;
+        }
+        
+        .share-btn:hover {
+            background: var(--gold);
+            color: white;
+            border-color: var(--gold);
+        }
+        
+        /* لوحة الإدارة */
+        #forumAdminPanel { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: white; 
+            z-index: 9999; 
+            overflow-y: auto; 
+            padding: 30px 5%; 
+        }
+        
+        .admin-box { 
+            background: #f4f4f4; 
+            padding: 25px; 
+            border-radius: 20px; 
+            margin-bottom: 25px; 
+            text-align: right; 
+            border: 1px solid #eee;
+        }
+        
+        .admin-box h3 {
+            color: var(--brown);
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+        
+        input, select, textarea { 
+            width: 100%; 
+            padding: 12px 15px; 
+            margin: 8px 0; 
+            border-radius: 12px; 
+            border: 1px solid #ddd; 
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(217, 179, 130, 0.2);
+        }
+        
+        .btn-gold { 
+            background: var(--gold); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-weight: 900; 
+            width: 100%; 
+            cursor: pointer; 
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-gold:hover {
+            background: var(--brown);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
-        #forumAdminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: scroll; padding: 30px 5%; }
-        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: right; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; }
+        #globalAudioBtn { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            width: 55px; 
+            height: 55px; 
+            background: var(--gold); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            cursor: pointer; 
+            z-index: 9999; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        
+        #globalAudioBtn:hover {
+            transform: scale(1.1);
+            background: var(--brown);
+        }
 
-        #globalAudioBtn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--gold); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .footer-cta { 
+            background: var(--brown); 
+            color: white; 
+            padding: 60px 5%; 
+            text-align: center; 
+            border-radius: 45px 45px 0 0; 
+            margin-top: 60px; 
+        }
+        
+        .footer-cta h2 { 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            margin-bottom: 25px; 
+        }
 
-        .footer-cta { background: var(--brown); color: white; padding: 50px 5%; text-align: center; border-radius: 45px 45px 0 0; margin-top: 60px; }
-        footer { background: var(--brown); color: rgba(255,255,255,0.5); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
+        .footer-btns { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+        }
 
-        @media (max-width: 768px) { .grid-layout { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } .card-item { height: 320px; } }
-   /* حاوية "جاهز لتجديد ستائر منزلك" */
-.footer-cta {
-    background: var(--brown);
-    color: white;
-    padding: 60px 5%;
-    text-align: center;
-    border-radius: 45px 45px 0 0; /* انحناء علوي كبير مطابق للصورة */
-    margin-top: 50px;
-}
+        .btn-footer-wa { 
+            background: transparent; 
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            color: white; 
+            padding: 12px 30px; 
+            border-radius: 12px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            transition: 0.3s; 
+        }
+        
+        .btn-footer-wa:hover {
+            background: var(--whatsapp);
+            border-color: var(--whatsapp);
+        }
 
-.footer-cta h2 {
-    font-size: 1.8rem;
-    font-weight: 900;
-    margin-bottom: 25px;
-}
+        .btn-footer-prod { 
+            background: var(--gold); 
+            color: white; 
+            padding: 12px 30px; 
+            border-radius: 12px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            transition: 0.3s; 
+        }
+        
+        .btn-footer-prod:hover {
+            background: white;
+            color: var(--brown);
+        }
 
-/* أزرار الفوتر */
-.footer-btns {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
+        footer { 
+            background: var(--brown); 
+            color: rgba(255, 255, 255, 0.6); 
+            padding: 30px 5%; 
+            text-align: center; 
+            border-top: 1px solid rgba(255, 255, 255, 0.1); 
+        }
 
-.btn-footer-wa {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: white;
-    padding: 12px 30px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: 0.3s;
-}
+        .footer-logo { 
+            font-size: 2.2rem; 
+            font-weight: 900; 
+            color: var(--gold); 
+            margin-bottom: 10px; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+        
+        .footer-logo:hover {
+            color: white;
+        }
 
-.btn-footer-prod {
-    background: var(--gold);
-    color: white;
-    padding: 12px 30px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: 0.3s;
-}
+        .footer-copy { 
+            font-size: 0.85rem; 
+            opacity: 0.8; 
+        }
 
-/* تذييل الصفحة النهائي */
-footer {
-    background: var(--brown);
-    color: rgba(255, 255, 255, 0.6);
-    padding: 30px 5%;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+        /* إشعار منبثق */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--brown);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 10001;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
 
-.footer-logo {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: var(--gold);
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-.footer-copy {
-    font-size: 0.85rem;
-    opacity: 0.8;
-}
-
-/* توافق الجوال */
-@media (max-width: 768px) {
-    .footer-cta h2 { font-size: 1.4rem; }
-    .footer-cta { border-radius: 30px 30px 0 0; }
-}
+        @media (max-width: 768px) { 
+            .grid-layout { 
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+            } 
+            
+            .card-item { 
+                height: 320px; 
+            }
+            
+            .footer-cta h2 { 
+                font-size: 1.4rem; 
+            }
+            
+            .footer-cta { 
+                border-radius: 30px 30px 0 0; 
+            }
+            
+            .topic-actions {
+                flex-direction: column;
+            }
+            
+            .topic-actions button {
+                width: 100%;
+            }
+            
+            .add-comment {
+                flex-direction: column;
+            }
+            
+            .add-comment button {
+                width: 100%;
+                border-radius: 30px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -164,25 +751,56 @@ footer {
             <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
         </div>
         <div class="header-left">
-            <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="ابحث.."></div>
+            <div class="notification-bell" onclick="showNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count" id="notificationCount">0</span>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search" onclick="handleForumSearch()"></i>
+                <input type="text" id="forumSearchInput" placeholder="ابحث عن موضوع.." onkeyup="handleForumSearch()">
+            </div>
         </div>
     </header>
 
-   <div class="nav-bar">
-    <ul class="nav-menu">
-        <li><a href="index.html">الرئيسية</a></li>
-        <li><a href="index.html?page=categories">المنتجات</a></li>
-        <li><a href="ai.html" class="active">منتدى شبابيك</a></li>
-        <li><a href="index.html?page=paymentPage">طرق الدفع</a></li>
-        <li><a href="index.html?page=aboutPage">من نحن</a></li>
-        <li><a href="index.html?page=contactPage">تواصل معنا</a></li>
-    </ul>
-</div>
+    <div class="nav-bar">
+        <ul class="nav-menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="index.html?page=categories">المنتجات</a></li>
+            <li><a href="ai.html" class="active">منتدى شبابيك</a></li>
+            <li><a href="index.html?page=paymentPage">طرق الدفع</a></li>
+            <li><a href="index.html?page=aboutPage">من نحن</a></li>
+            <li><a href="index.html?page=contactPage">تواصل معنا</a></li>
+        </ul>
+    </div>
+
+    <!-- نتائج البحث -->
+    <div id="searchResults" style="display:none; position:absolute; top:110px; left:5%; width:90%; background:white; z-index:5000; box-shadow:0 10px 30px rgba(0,0,0,0.1); border-radius:20px; padding:15px; max-height:400px; overflow-y:auto;"></div>
 
     <div class="container" id="mainView">
-        <div id="backBtnCont" style="display:none;"><button class="back-btn" onclick="renderSections()"><i class="fas fa-arrow-right"></i> العودة للأقسام</button></div>
+        <div id="backBtnCont" style="display:none;">
+            <button class="back-btn" onclick="renderSections()">
+                <i class="fas fa-arrow-right"></i> العودة للأقسام
+            </button>
+        </div>
         <h1 class="page-title" id="viewTitle">نافذتك لعالم الذوق والجمال</h1>
         <div class="grid-layout" id="forumGrid"></div>
+    </div>
+
+    <!-- نافذة التعليقات المنبثقة -->
+    <div id="commentsModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; justify-content:center; align-items:center;">
+        <div style="background:white; width:90%; max-width:600px; border-radius:30px; padding:30px; max-height:80vh; overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="font-weight:900;">التعليقات</h3>
+                <button onclick="closeCommentsModal()" style="background:var(--red); color:white; border:none; width:40px; height:40px; border-radius:50%; cursor:pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="commentsList"></div>
+            <div class="add-comment">
+                <input type="text" id="newComment" placeholder="أضف تعليقك...">
+                <button onclick="addComment()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
     </div>
 
     <div id="forumAdminPanel">
@@ -201,13 +819,17 @@ footer {
             <h3>٢. نشر موضوع جديد</h3>
             <select id="selectTopicSec"></select>
             <input type="text" id="postTitle" placeholder="العنوان">
-            <textarea id="postDesc" placeholder="التفاصيل..."></textarea>
+            <textarea id="postDesc" placeholder="التفاصيل..." rows="4"></textarea>
+            <input type="text" id="postTags" placeholder="وسوم (افصل بينها بفاصلة)">
             <select id="postType" onchange="toggleMediaInput()">
                 <option value="vid">يوتيوب (ذكي)</option>
                 <option value="img">صورة</option>
                 <option value="text">نص فقط</option>
             </select>
             <input type="text" id="postMediaUrl" placeholder="الرابط">
+            <label style="display:flex; align-items:center; gap:10px; margin:10px 0;">
+                <input type="checkbox" id="postPinned"> <span>تثبيت الموضوع</span>
+            </label>
             <button onclick="publishTopic()" class="btn-gold" id="btnPublish">نشر الآن</button>
         </div>
         <div class="admin-box">
@@ -216,262 +838,523 @@ footer {
         </div>
     </div>
 
-   <div class="footer-cta">
-    <h2>جاهز لتجديد ستائر منزلك؟</h2>
-    <div class="footer-btns">
-        <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-        <a href="index.html" class="btn-footer-prod">تصفح المنتجات</a>
+    <div class="footer-cta">
+        <h2>جاهز لتجديد ستائر منزلك؟</h2>
+        <div class="footer-btns">
+            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
+            <a href="index.html" class="btn-footer-prod">تصفح المنتجات</a>
+        </div>
     </div>
-</div>
 
-<footer>
-    <div class="footer-logo" onclick="location.href='index.html'">شبابيك</div>
-    <p class="footer-copy">© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
-</footer>
-
+    <footer>
+        <div class="footer-logo" onclick="location.href='index.html'">شبابيك</div>
+        <p class="footer-copy">© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
+    </footer>
 
     <div id="globalAudioBtn" onclick="toggleGlobalMute()">
         <i id="audioIcon" class="fas fa-volume-mute"></i>
     </div>
 
-<script>
-const firebaseConfig = { 
-    apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
-    authDomain: "shababekcurtain.firebaseapp.com", 
-    databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
-    projectId: "shababekcurtain" 
-};
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+    <div class="toast-message" id="toastMessage"></div>
 
-let forumClicks = 0;
-let sectionsData = {};
-let topicsData = [];
-let isGlobalMuted = true;
+    <script>
+        // تهيئة Firebase
+        const firebaseConfig = { 
+            apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
+            authDomain: "shababekcurtain.firebaseapp.com", 
+            databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
+            projectId: "shababekcurtain" 
+        };
+        
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-function handleForumLogoClick() {
-    forumClicks++;
-    if(forumClicks >= 5) {
-        const pass = prompt("رمز الإدارة:");
-        if(pass === "8496") {
-            document.getElementById('forumAdminPanel').style.display = 'block';
-            document.body.classList.add('admin-open');
-        }
-        forumClicks = 0;
-    }
-}
+        // متغيرات عامة
+        let forumClicks = 0;
+        let sectionsData = {};
+        let topicsData = [];
+        let isGlobalMuted = true;
+        let currentTopicId = null;
+        let notifications = [];
 
-function closeAdminPanel() {
-    document.getElementById('forumAdminPanel').style.display = 'none';
-    document.body.classList.remove('admin-open');
-}
-
-function loadForumData() {
-    db.ref('forumSections').on('value', snap => {
-        sectionsData = snap.val() || {};
-        renderSections();
-        updateAdminLists();
-    });
-    db.ref('forumTopics').on('value', snap => {
-        topicsData = [];
-        snap.forEach(child => { topicsData.push({ id: child.key, ...child.val() }); });
-        updateAdminTopics();
-    });
-}
-
-function renderSections() {
-    const grid = document.getElementById('forumGrid');
-    const backBtn = document.getElementById('backBtnCont');
-    const title = document.getElementById('viewTitle');
-    grid.innerHTML = "";
-    backBtn.style.display = "none";
-    title.innerText = "نافذتك لعالم الذوق والجمال";
-    
-    Object.entries(sectionsData).forEach(([id, sec]) => {
-        const isVideo = sec.img && sec.img.toLowerCase().endsWith('.mp4');
-        grid.innerHTML += `
-            <div class="card-item" onclick="renderTopics('${sec.name}')">
-                ${isVideo ? 
-                    `<video src="${sec.img}" autoplay loop muted playsinline></video>` : 
-                    `<img src="${sec.img || 'https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'}">`}
-                <div class="card-overlay"><h3>${sec.name}</h3></div>
-            </div>`;
-    });
-}
-
-function renderTopics(sectionName) {
-    const grid = document.getElementById('forumGrid');
-    const backBtn = document.getElementById('backBtnCont');
-    const title = document.getElementById('viewTitle');
-    grid.innerHTML = "";
-    backBtn.style.display = "block";
-    title.innerText = "قسم: " + sectionName;
-
-    const filtered = topicsData.filter(t => t.section === sectionName).reverse();
-    filtered.forEach(p => {
-        const vidId = extractYoutubeId(p.media || "");
-        const isShorts = p.media && p.media.includes('shorts');
-        let mediaHtml = "";
-
-        if (p.type === 'img') {
-            mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
-        } else if (vidId) {
-            const containerClass = isShorts ? "vid-shorts" : "vid-wide";
-            mediaHtml = `
-                <div class="media-container ${containerClass}">
-                    <iframe class="lazy-video" width="100%" height="100%"
-                        data-src="https://www.youtube.com/embed/${vidId}?enablejsapi=1&mute=1&playlist=${vidId}&loop=1" 
-                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-                    </iframe>
-                </div>`;
+        // دالة عرض الإشعارات المنبثقة
+        function showToast(message) {
+            const toast = document.getElementById('toastMessage');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
         }
 
-        grid.innerHTML += `
-            <div class="topic-card">
-                <h3 style="font-weight:900; margin-bottom:10px;">${p.title}</h3>
-                <p style="white-space:pre-wrap; font-size:0.95rem; color:#444;">${p.desc}</p>
-                ${mediaHtml}
-                <div style="font-size:0.75rem; color:#999; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">نُشر بتاريخ: ${p.date}</div>
-            </div>`;
-    });
-    initAutoPlay();
-}
+        // الدخول للوحة الإدارة
+        function handleForumLogoClick() {
+            forumClicks++;
+            if(forumClicks >= 5) {
+                const pass = prompt("رمز الإدارة:");
+                if(pass === "8496") {
+                    document.getElementById('forumAdminPanel').style.display = 'block';
+                    document.body.classList.add('admin-open');
+                    showToast('👋 مرحباً بك في لوحة الإدارة');
+                }
+                forumClicks = 0;
+            }
+        }
 
-function initAutoPlay() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const iframe = entry.target;
-            if (entry.isIntersecting) {
-                if (!iframe.src) iframe.src = iframe.getAttribute('data-src') + "&autoplay=1";
-                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                const audioCmd = isGlobalMuted ? 'mute' : 'unMute';
-                setTimeout(() => { iframe.contentWindow.postMessage(`{"event":"command","func":"${audioCmd}","args":""}`, '*'); }, 600);
+        function closeAdminPanel() {
+            document.getElementById('forumAdminPanel').style.display = 'none';
+            document.body.classList.remove('admin-open');
+        }
+
+        // تحميل بيانات المنتدى
+        function loadForumData() {
+            db.ref('forumSections').on('value', snap => {
+                sectionsData = snap.val() || {};
+                renderSections();
+                updateAdminLists();
+            });
+            
+            db.ref('forumTopics').on('value', snap => {
+                topicsData = [];
+                snap.forEach(child => { 
+                    topicsData.push({ id: child.key, ...child.val() }); 
+                });
+                updateAdminTopics();
+                
+                // تحديث عدد الإشعارات (مثلاً: المواضيع الجديدة)
+                const today = new Date().toDateString();
+                const newTopics = topicsData.filter(t => t.date === today).length;
+                document.getElementById('notificationCount').textContent = newTopics || '0';
+            });
+        }
+
+        // عرض الأقسام
+        function renderSections() {
+            const grid = document.getElementById('forumGrid');
+            const backBtn = document.getElementById('backBtnCont');
+            const title = document.getElementById('viewTitle');
+            
+            grid.innerHTML = "";
+            backBtn.style.display = "none";
+            title.innerText = "نافذتك لعالم الذوق والجمال";
+            
+            if (Object.keys(sectionsData).length === 0) {
+                grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:50px;">لا توجد أقسام بعد</div>';
+                return;
+            }
+            
+            Object.entries(sectionsData).forEach(([id, sec]) => {
+                const isVideo = sec.img && sec.img.toLowerCase().endsWith('.mp4');
+                grid.innerHTML += `
+                    <div class="card-item" onclick="renderTopics('${sec.name}')">
+                        ${isVideo ? 
+                            `<video src="${sec.img}" autoplay loop muted playsinline></video>` : 
+                            `<img src="${sec.img || 'https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'}">`}
+                        <div class="card-overlay"><h3>${sec.name}</h3></div>
+                    </div>`;
+            });
+        }
+
+        // عرض مواضيع قسم معين
+        function renderTopics(sectionName) {
+            const grid = document.getElementById('forumGrid');
+            const backBtn = document.getElementById('backBtnCont');
+            const title = document.getElementById('viewTitle');
+            
+            grid.innerHTML = `<div class="loading-spinner"></div>`;
+            backBtn.style.display = "block";
+            title.innerText = "قسم: " + sectionName;
+
+            setTimeout(() => {
+                const filtered = topicsData.filter(t => t.section === sectionName);
+                
+                // ترتيب المواضيع: المثبتة أولاً
+                const pinned = filtered.filter(t => t.pinned);
+                const normal = filtered.filter(t => !t.pinned);
+                const sorted = [...pinned, ...normal].reverse();
+                
+                if (sorted.length === 0) {
+                    grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:50px;">لا توجد مواضيع في هذا القسم</div>';
+                    return;
+                }
+
+                grid.innerHTML = sorted.map(t => {
+                    const vidId = extractYoutubeId(t.media || "");
+                    const isShorts = t.media && t.media.includes('shorts');
+                    let mediaHtml = "";
+
+                    if (t.type === 'img' && t.media) {
+                        mediaHtml = `<div class="media-container"><img src="${t.media}" style="width:100%; border-radius:15px;"></div>`;
+                    } else if (vidId) {
+                        const containerClass = isShorts ? "vid-shorts" : "video-wrapper";
+                        mediaHtml = `
+                            <div class="${containerClass}">
+                                <iframe class="lazy-video" width="100%" height="100%"
+                                    data-src="https://www.youtube.com/embed/${vidId}?enablejsapi=1&mute=1&playlist=${vidId}&loop=1" 
+                                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                                </iframe>
+                            </div>`;
+                    }
+
+                    // إنشاء الوسوم
+                    const tags = t.tags ? t.tags.split(',').map(tag => 
+                        `<span class="tag" onclick="searchByTag('${tag.trim()}')">#${tag.trim()}</span>`
+                    ).join('') : '';
+
+                    return `
+                        <div class="topic-card" id="topic-${t.id}">
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                                ${t.pinned ? '<span class="tag pinned"><i class="fas fa-thumbtack"></i> مثبت</span>' : ''}
+                            </div>
+                            <h3 style="font-weight:900; margin-bottom:10px; font-size:1.3rem;">${t.title}</h3>
+                            <div class="topic-tags">${tags}</div>
+                            <p style="white-space:pre-wrap; font-size:0.95rem; color:#444; line-height:1.8;">${t.desc || ''}</p>
+                            ${mediaHtml}
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; font-size:0.8rem; color:#999;">
+                                <span>📅 ${t.date || ''}</span>
+                                <button class="share-btn" onclick="shareTopic('${t.id}')">
+                                    <i class="fas fa-share-alt"></i> مشاركة
+                                </button>
+                            </div>
+                            <div class="topic-actions">
+                                <button onclick="likeTopic('${t.id}')" id="like-btn-${t.id}">
+                                    <i class="far fa-heart"></i> <span id="likes-${t.id}">${t.likes || 0}</span>
+                                </button>
+                                <button onclick="showComments('${t.id}')">
+                                    <i class="far fa-comment"></i> <span>${t.comments ? Object.keys(t.comments).length : 0}</span>
+                                </button>
+                            </div>
+                        </div>`;
+                }).join('');
+                
+                initAutoPlay();
+            }, 500);
+        }
+
+        // نظام الإعجابات
+        function likeTopic(topicId) {
+            const topic = topicsData.find(t => t.id === topicId);
+            const likesSpan = document.getElementById(`likes-${topicId}`);
+            const likeBtn = document.getElementById(`like-btn-${topicId}`);
+            
+            if (likeBtn.classList.contains('liked')) {
+                // إلغاء الإعجاب
+                let count = parseInt(likesSpan.textContent) || 0;
+                likesSpan.textContent = Math.max(0, count - 1);
+                likeBtn.classList.remove('liked');
+                db.ref('forumTopics').child(topicId).update({ 
+                    likes: Math.max(0, count - 1)
+                });
+                showToast('تم إلغاء الإعجاب');
             } else {
-                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                // إعجاب
+                let count = parseInt(likesSpan.textContent) || 0;
+                likesSpan.textContent = count + 1;
+                likeBtn.classList.add('liked');
+                db.ref('forumTopics').child(topicId).update({ 
+                    likes: count + 1
+                });
+                showToast('👍 تم الإعجاب');
+                
+                // احتفال بسيط
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 30,
+                        spread: 30,
+                        origin: { y: 0.8 }
+                    });
+                }
+            }
+        }
+
+        // نظام التعليقات
+        function showComments(topicId) {
+            currentTopicId = topicId;
+            const topic = topicsData.find(t => t.id === topicId);
+            const comments = topic.comments || {};
+            
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = Object.entries(comments).map(([id, comment]) => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">👤 ${comment.author || 'مستخدم'}</span>
+                        <span class="comment-date">${comment.date || ''}</span>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                </div>
+            `).join('') || '<p style="text-align:center; padding:20px;">لا توجد تعليقات بعد</p>';
+            
+            document.getElementById('commentsModal').style.display = 'flex';
+        }
+
+        function closeCommentsModal() {
+            document.getElementById('commentsModal').style.display = 'none';
+            currentTopicId = null;
+        }
+
+        function addComment() {
+            if (!currentTopicId) return;
+            
+            const commentText = document.getElementById('newComment').value.trim();
+            if (!commentText) return;
+            
+            const commentId = Date.now().toString();
+            const comment = {
+                text: commentText,
+                author: 'مستخدم',
+                date: new Date().toLocaleDateString('ar-EG')
+            };
+            
+            db.ref('forumTopics').child(currentTopicId).child('comments').child(commentId).set(comment)
+                .then(() => {
+                    document.getElementById('newComment').value = '';
+                    showComments(currentTopicId);
+                    showToast('تم إضافة التعليق');
+                });
+        }
+
+        // البحث في المنتدى
+        function handleForumSearch() {
+            const query = document.getElementById('forumSearchInput').value.trim().toLowerCase();
+            const resultsBox = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                resultsBox.style.display = 'none';
+                return;
+            }
+            
+            const results = topicsData.filter(t => 
+                t.title.toLowerCase().includes(query) ||
+                t.desc?.toLowerCase().includes(query) ||
+                t.tags?.toLowerCase().includes(query)
+            );
+            
+            if (results.length === 0) {
+                resultsBox.innerHTML = '<div style="padding:15px; text-align:center;">لا توجد نتائج</div>';
+                resultsBox.style.display = 'block';
+                return;
+            }
+            
+            resultsBox.innerHTML = results.map(t => `
+                <div style="padding:12px; border-bottom:1px solid #eee; cursor:pointer;" 
+                     onclick="renderTopics('${t.section}'); document.getElementById('forumSearchInput').value=''; resultsBox.style.display='none';">
+                    <div style="font-weight:bold; color:var(--brown);">${t.title}</div>
+                    <div style="font-size:0.8rem; color:var(--gold);">القسم: ${t.section}</div>
+                </div>
+            `).join('');
+            
+            resultsBox.style.display = 'block';
+        }
+
+        // البحث بالوسم
+        function searchByTag(tag) {
+            document.getElementById('forumSearchInput').value = tag;
+            handleForumSearch();
+        }
+
+        // مشاركة الموضوع
+        function shareTopic(topicId) {
+            const url = `${window.location.origin}${window.location.pathname}?topic=${topicId}`;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('📋 تم نسخ الرابط');
+            });
+        }
+
+        // عرض الإشعارات
+        function showNotifications() {
+            const today = new Date().toDateString();
+            const newTopics = topicsData.filter(t => t.date === today);
+            
+            if (newTopics.length === 0) {
+                showToast('لا توجد إشعارات جديدة');
+                return;
+            }
+            
+            let msg = '📢 مواضيع اليوم:\n';
+            newTopics.forEach(t => {
+                msg += `\n• ${t.title}`;
+            });
+            alert(msg);
+        }
+
+        // تشغيل الفيديو التلقائي
+        function initAutoPlay() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const iframe = entry.target;
+                    if (entry.isIntersecting) {
+                        if (!iframe.src) iframe.src = iframe.getAttribute('data-src') + "&autoplay=1";
+                        iframe.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                        const audioCmd = isGlobalMuted ? 'mute' : 'unMute';
+                        setTimeout(() => { 
+                            iframe.contentWindow?.postMessage(`{"event":"command","func":"${audioCmd}","args":""}`, '*'); 
+                        }, 600);
+                    } else {
+                        iframe.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('.lazy-video').forEach(vid => observer.observe(vid));
+        }
+
+        // كتم الصوت
+        function toggleGlobalMute() {
+            isGlobalMuted = !isGlobalMuted;
+            const icon = document.getElementById('audioIcon');
+            icon.className = isGlobalMuted ? "fas fa-volume-mute" : "fas fa-volume-up";
+            
+            if (!isGlobalMuted && typeof confetti === 'function') {
+                confetti({ particleCount: 40, spread: 40, origin: { y: 0.9, x: 0.9 } });
+            }
+            
+            document.querySelectorAll('.lazy-video').forEach(iframe => {
+                const cmd = isGlobalMuted ? 'mute' : 'unMute';
+                iframe.contentWindow?.postMessage(`{"event":"command","func":"${cmd}","args":""}`, '*');
+            });
+        }
+
+        // إدارة المحتوى
+        function saveForumSection() {
+            const name = document.getElementById('newForumSecName').value.trim();
+            const img = document.getElementById('newForumSecImg').value.trim();
+            
+            if(!name) {
+                alert('الرجاء إدخال اسم القسم');
+                return;
+            }
+            
+            db.ref('forumSections').push({ name, img }).then(() => {
+                document.getElementById('newForumSecName').value = "";
+                document.getElementById('newForumSecImg').value = "";
+                showToast('تم إضافة القسم بنجاح');
+            });
+        }
+
+        function publishTopic() {
+            const title = document.getElementById('postTitle').value.trim();
+            const desc = document.getElementById('postDesc').value.trim();
+            const section = document.getElementById('selectTopicSec').value;
+            const type = document.getElementById('postType').value;
+            const media = document.getElementById('postMediaUrl').value.trim();
+            const tags = document.getElementById('postTags').value.trim();
+            const pinned = document.getElementById('postPinned').checked;
+            
+            if(!title || !section) {
+                alert("أكمل البيانات المطلوبة");
+                return;
+            }
+            
+            db.ref('forumTopics').push({ 
+                title, 
+                desc, 
+                section, 
+                type, 
+                media: type === 'text' ? '' : media, 
+                tags,
+                pinned,
+                likes: 0,
+                timestamp: Date.now(), 
+                date: new Date().toLocaleDateString('ar-EG') 
+            }).then(() => { 
+                document.getElementById('postTitle').value = "";
+                document.getElementById('postDesc').value = "";
+                document.getElementById('postMediaUrl').value = "";
+                document.getElementById('postTags').value = "";
+                document.getElementById('postPinned').checked = false;
+                showToast('تم نشر الموضوع بنجاح');
+            });
+        }
+
+        function updateAdminLists() {
+            const select = document.getElementById('selectTopicSec');
+            const adminList = document.getElementById('adminForumSecsList');
+            
+            if(!select || !adminList) return;
+            
+            let selectHtml = '<option disabled selected value="">اختر القسم</option>';
+            let adminHtml = "";
+            
+            Object.entries(sectionsData).forEach(([k, v]) => {
+                selectHtml += `<option value="${v.name}">${v.name}</option>`;
+                adminHtml += `<div style="background:#ddd; padding:5px 15px; border-radius:20px; font-size:0.8rem;">
+                                ${v.name} 
+                                <i class="fas fa-times" onclick="deleteItem('forumSections','${k}')" style="color:red; cursor:pointer; margin-right:5px;"></i>
+                              </div>`;
+            });
+            
+            select.innerHTML = selectHtml;
+            adminList.innerHTML = adminHtml;
+        }
+
+        function updateAdminTopics() {
+            const list = document.getElementById('adminTopicsList');
+            if(!list) return;
+            
+            list.innerHTML = topicsData.reverse().map(t => `
+                <div style="padding:12px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <span style="font-weight:700;">${t.title}</span>
+                        ${t.pinned ? '<span style="background:var(--gold); color:white; padding:2px 8px; border-radius:12px; font-size:0.7rem; margin-right:8px;">مثبت</span>' : ''}
+                    </div>
+                    <div>
+                        <button onclick="deleteItem('forumTopics','${t.id}')" style="color:red; border:none; background:none; cursor:pointer; margin-left:10px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteItem(path, key) { 
+            if(confirm("هل أنت متأكد من الحذف؟")) {
+                db.ref(path).child(key).remove().then(() => {
+                    showToast('تم الحذف بنجاح');
+                });
+            }
+        }
+
+        function extractYoutubeId(url) {
+            if (!url) return null;
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?)\??v?=?|shorts\/)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[7]?.length === 11) ? match[7] : null;
+        }
+
+        function toggleMediaInput() {
+            const type = document.getElementById('postType').value;
+            const mediaInput = document.getElementById('postMediaUrl');
+            mediaInput.style.display = (type === 'text') ? 'none' : 'block';
+        }
+
+        // إغلاق نتائج البحث عند النقر خارجها
+        document.addEventListener('click', (e) => {
+            const searchBox = document.querySelector('.search-box');
+            const searchRes = document.getElementById('searchResults');
+            if (searchBox && searchRes && !searchBox.contains(e.target) && !searchRes.contains(e.target)) {
+                searchRes.style.display = 'none';
             }
         });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.lazy-video').forEach(vid => observer.observe(vid));
-}
 
-function toggleGlobalMute() {
-    isGlobalMuted = !isGlobalMuted;
-    const icon = document.getElementById('audioIcon');
-    icon.className = isGlobalMuted ? "fas fa-volume-mute" : "fas fa-volume-up";
-    if (!isGlobalMuted) confetti({ particleCount: 40, spread: 40, origin: { y: 0.9, x: 0.9 } });
-    
-    document.querySelectorAll('.lazy-video').forEach(iframe => {
-        const cmd = isGlobalMuted ? 'mute' : 'unMute';
-        iframe.contentWindow.postMessage(`{"event":"command","func":"${cmd}","args":""}`, '*');
-    });
-}
-
-function saveForumSection() {
-    const name = document.getElementById('newForumSecName').value;
-    const img = document.getElementById('newForumSecImg').value;
-    if(!name) return;
-    db.ref('forumSections').push({ name, img }).then(() => {
-        document.getElementById('newForumSecName').value = "";
-        document.getElementById('newForumSecImg').value = "";
-    });
-}
-
-function publishTopic() {
-    const title = document.getElementById('postTitle').value;
-    const desc = document.getElementById('postDesc').value;
-    const section = document.getElementById('selectTopicSec').value;
-    const type = document.getElementById('postType').value;
-    const media = document.getElementById('postMediaUrl').value;
-    if(!title || !section) return alert("أكمل البيانات");
-    db.ref('forumTopics').push({ title, desc, section, type, media, timestamp: Date.now(), date: new Date().toLocaleDateString('ar-EG') }).then(() => { location.reload(); });
-}
-
-function updateAdminLists() {
-    const select = document.getElementById('selectTopicSec');
-    const adminList = document.getElementById('adminForumSecsList');
-    if(!select || !adminList) return;
-    let selectHtml = `<option disabled selected value="">اختر القسم</option>`;
-    let adminHtml = "";
-    Object.entries(sectionsData).forEach(([k, v]) => {
-        selectHtml += `<option value="${v.name}">${v.name}</option>`;
-        adminHtml += `<div style="background:#ddd; padding:5px 15px; border-radius:20px; font-size:0.8rem;">${v.name} <i class="fas fa-times" onclick="deleteItem('forumSections','${k}')" style="color:red; cursor:pointer; margin-right:5px;"></i></div>`;
-    });
-    select.innerHTML = selectHtml;
-    adminList.innerHTML = adminHtml;
-}
-
-function updateAdminTopics() {
-    const list = document.getElementById('adminTopicsList');
-    if(!list) return;
-    list.innerHTML = topicsData.reverse().map(t => `<div style="padding:10px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between;"><span>${t.title}</span><button onclick="deleteItem('forumTopics','${t.id}')" style="color:red; border:none; background:none;">حذف</button></div>`).join('');
-}
-
-function deleteItem(path, key) { if(confirm("حذف؟")) db.ref(path).child(key).remove(); }
-
-function extractYoutubeId(url) {
-    if (!url) return null;
-    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?)\??v?=?|shorts\/)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[7].length === 11) ? match[7] : null;
-}
-
-function toggleMediaInput() {
-    const type = document.getElementById('postType').value;
-    document.getElementById('postMediaUrl').style.display = (type === 'text') ? 'none' : 'block';
-}
-
-window.addEventListener('load', loadForumData);
-</script>
-    <script>
-
-// ===== نظام تنقل خاص بالشريط الرئيسي للمنتدى =====
-function forumNavMain(pageId, push = true) {
-
-    // اخفاء كل الصفحات داخل الشريط الرئيسي للمنتدى
-    document.querySelectorAll(".forum-main-page")
-        .forEach(p => p.classList.remove("active"));
-
-    // تحديد الصفحة المستهدفة
-    const target = document.getElementById(pageId);
-    if (!target) return;
-
-    target.classList.add("active");
-
-    // الصعود لبداية الشريط الرئيسي فقط
-    const mainSection = document.getElementById("forumMain"); 
-    if (mainSection) mainSection.scrollTop = 0;
-
-    // حفظ في history
-    if (push) {
-        history.pushState(
-            { forumMainPage: pageId },
-            "",
-            "#forumMain-" + pageId
-        );
-    }
-}
-
-// زر الرجوع والتقدم
-window.addEventListener("popstate", (e) => {
-    let page = e.state?.forumMainPage;
-
-    if (!page && location.hash.startsWith("#forumMain-")) {
-        page = location.hash.replace("#forumMain-", "");
-    }
-
-    forumNavMain(page || "mainHome", false);
-});
-
-// عند تحميل الصفحة
-window.addEventListener("load", () => {
-    let page = "mainHome";
-
-    if (location.hash.startsWith("#forumMain-")) {
-        page = location.hash.replace("#forumMain-", "");
-    }
-
-    forumNavMain(page, false);
-});
-</script>
+        // بدء التطبيق
+        window.addEventListener('load', () => {
+            loadForumData();
+            
+            // التحقق من وجود موضوع في الرابط
+            const urlParams = new URLSearchParams(window.location.search);
+            const topicId = urlParams.get('topic');
+            if (topicId) {
+                setTimeout(() => {
+                    const topic = topicsData.find(t => t.id === topicId);
+                    if (topic) {
+                        renderTopics(topic.section);
+                        setTimeout(() => {
+                            document.getElementById(`topic-${topicId}`)?.scrollIntoView({ behavior: 'smooth' });
+                        }, 1000);
+                    }
+                }, 1500);
+            }
+        });
+    </script>
 </body>
 </html>
