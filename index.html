@@ -154,7 +154,7 @@
             padding: 20px 5%;
         }
         
-        /* تنسيق طرق الدفع */
+        /* تنسيق طرق الدفع مثل المنتدى */
         #paymentList {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -519,4 +519,346 @@
             }
             
             const url = await uploadImage(file);
-            if (
+            if (url) {
+                db.ref('categories').push({name: name, img: url}).then(() => {
+                    alert("تم إضافة القسم بنجاح");
+                    document.getElementById('admCatName').value = "";
+                    document.getElementById('admCatFile').value = "";
+                });
+            }
+        }
+
+        // نشر منتج جديد
+        async function publishProd() {
+            const file = document.getElementById('admProdFile').files[0];
+            const cat = document.getElementById('admProdCatSelect').value;
+            const name = getValue('admProdName');
+            const price = getValue('admProdPrice');
+            
+            if(!file || !name || !price || cat === "اختر قسم المنتجات") {
+                alert("أكمل بيانات المنتج");
+                return;
+            }
+            
+            const url = await uploadImage(file);
+            if (url) {
+                db.ref('products').push({ 
+                    category: cat, 
+                    name: name, 
+                    price: parseInt(price), 
+                    img: url 
+                }).then(() => {
+                    alert("تم نشر المنتج بنجاح");
+                    document.getElementById('admProdName').value = "";
+                    document.getElementById('admProdPrice').value = "";
+                    document.getElementById('admProdFile').value = "";
+                });
+            }
+        }
+
+        // نشر طريقة دفع جديدة
+        async function publishPayment() {
+            const file = document.getElementById('admPayFile').files[0];
+            const name = getValue('admPayName');
+            
+            if(!file || !name) {
+                alert("أكمل بيانات طريقة الدفع");
+                return;
+            }
+            
+            const url = await uploadImage(file);
+            if (url) {
+                db.ref('payments').push({ 
+                    name: name, 
+                    img: url 
+                }).then(() => {
+                    alert("تم إضافة طريقة الدفع بنجاح");
+                    document.getElementById('admPayName').value = "";
+                    document.getElementById('admPayFile').value = "";
+                });
+            }
+        }
+
+        // حذف عنصر
+        function deleteItem(ref, key) { 
+            if(confirm("هل تريد الحذف نهائياً؟")) {
+                db.ref(ref).child(key).remove(); 
+            }
+        }
+
+        // فتح قسم المنتجات
+        function openCat(categoryName) { 
+            localStorage.setItem('lastCat', categoryName);
+            db.ref('products').once('value', snap => { 
+                const products = snap.val() || {};
+                const items = Object.values(products).filter(i => i.category === categoryName); 
+                document.getElementById('catTitle').innerText = categoryName; 
+                
+                if (items.length === 0) {
+                    document.getElementById('catGrid').innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:50px;">لا توجد منتجات في هذا القسم</div>';
+                } else {
+                    document.getElementById('catGrid').innerHTML = items.map(x => `
+                        <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x).replace(/'/g, "&apos;")})'>
+                            <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
+                            <div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div>
+                        </div>`).join('');
+                }
+                showPage('categoryView'); 
+            }); 
+        }
+
+        // فتح حاسبة المنتج
+        function openCalc(product) { 
+            currentProduct = product; 
+            localStorage.setItem('lastProd', JSON.stringify(product));
+            showPage('productCalculator'); 
+            document.getElementById('pName').innerText = product.name; 
+            document.getElementById('pPrice').innerText = parseInt(product.price).toLocaleString(); 
+            document.getElementById('pImg').src = getWatermarkedUrl(product.img); 
+            document.getElementById('hIn').value = '';
+        }
+
+        // البحث
+        async function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resBox = document.getElementById('searchRes');
+            
+            if (query.length < 2) { 
+                resBox.style.display = 'none'; 
+                return; 
+            }
+
+            const [prodsSnap] = await Promise.all([
+                db.ref('products').once('value')
+            ]);
+
+            const prods = prodsSnap.val() || {};
+            let html = "";
+
+            Object.values(prods).filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)).forEach(p => {
+                html += `
+                    <div style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee;cursor:pointer;" 
+                         onclick='openCalc(${JSON.stringify(p).replace(/'/g, "&apos;")}); document.getElementById("searchRes").style.display="none";'>
+                        <img src="${p.img}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
+                        <div>
+                            <div style="font-weight:bold;font-size:0.9rem;">${p.name}</div>
+                            <div style="font-size:0.7rem;color:var(--gold);">${p.category}</div>
+                        </div>
+                    </div>`;
+            });
+
+            if (html !== "") {
+                resBox.innerHTML = html;
+                resBox.style.display = 'block';
+            } else {
+                resBox.innerHTML = `<div style="padding:15px;text-align:center;color:#999;">لا توجد نتائج مطابقة</div>`;
+                resBox.style.display = 'block';
+            }
+        }
+
+        // إضافة إلى السلة
+        function addToCart() {
+            const h = parseFloat(document.getElementById('hIn').value);
+            if(!h || h <= 0) return alert("أدخل الطول بالمتر");
+            if(!currentProduct) return alert("حدث خطأ");
+            
+            cart.push({ 
+                n: currentProduct.name, 
+                p: Math.round(h * currentProduct.price), 
+                img: getWatermarkedUrl(currentProduct.img),
+                length: h
+            });
+            
+            document.getElementById('globalCartCount').innerText = cart.length; 
+            localStorage.setItem('shababek_cart', JSON.stringify(cart));
+            alert("تمت الإضافة للسلة!");
+            document.getElementById('hIn').value = '';
+        }
+
+        // عرض/إخفاء السلة
+        function toggleCartModal() {
+            const overlay = document.getElementById('cartOverlay');
+            overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
+            
+            if (overlay.style.display === 'flex') {
+                let total = 0;
+                let html = '';
+                
+                cart.forEach((item, idx) => {
+                    total += item.p;
+                    html += `<div class="cart-item" style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eee;">
+                        <img src="${item.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;">
+                        <div style="flex:1;"><b>${item.n}</b><br><span style="color:var(--gold)">${item.p.toLocaleString()} د.ع</span></div>
+                        <i class="fas fa-trash" style="color:red;cursor:pointer;" onclick="removeFromCart(${idx})"></i>
+                    </div>`;
+                });
+                
+                if (cart.length > 0) {
+                    html += `<div style="margin-top:15px;font-weight:900;text-align:center;background:#eee;padding:10px;">الإجمالي: ${total.toLocaleString()} د.ع</div>`;
+                } else {
+                    html = '<p style="text-align:center;padding:20px;">السلة فارغة</p>';
+                }
+                
+                document.getElementById('cartItemsList').innerHTML = html;
+            }
+        }
+
+        // حذف من السلة
+        function removeFromCart(index) { 
+            cart.splice(index, 1); 
+            document.getElementById('globalCartCount').innerText = cart.length; 
+            localStorage.setItem('shababek_cart', JSON.stringify(cart));
+            toggleCartModal(); 
+        }
+
+        // إرسال الطلب
+        function sendOrder() {
+            if(cart.length === 0) return alert("السلة فارغة");
+            
+            const city = document.getElementById('userCity').value;
+            const payment = document.getElementById('userPayment').value;
+            const install = document.getElementById('userInstall').value;
+
+            let msg = `*طلب شراء جديد من شبابيك للستائر* 🪟\n\n`;
+            msg += `📍 *المحافظة:* ${city}\n`;
+            msg += `🛠 *خدمة التركيب:* ${install}\n`;
+            msg += `💳 *طريقة الدفع:* ${payment}\n`;
+            msg += `------------------------------\n\n`;
+            
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                msg += `*${index + 1}- الموديل:* ${item.n}\n`;
+                msg += `💰 *السعر:* ${item.p.toLocaleString()} د.ع\n`;
+                msg += `🖼 *صورة الموديل:* ${item.img}\n`;
+                msg += `------------------------------\n`;
+                total += item.p;
+            });
+            
+            msg += `\n💰 *الإجمالي الكلي للطلب:* ${total.toLocaleString()} د.ع\n\n`;
+            msg += `_شكراً لاختياركم شبابيك - ظل وذوق_`;
+
+            const waNumber = "9647883002797";
+            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+            
+            window.open(waUrl, '_blank');
+
+            cart = []; 
+            document.getElementById('globalCartCount').innerText = "0"; 
+            localStorage.setItem('shababek_cart', JSON.stringify(cart));
+            toggleCartModal();
+        }
+
+        // إغلاق نتائج البحث عند النقر خارجها
+        document.addEventListener('click', (e) => {
+            const searchBox = document.querySelector('.search-box');
+            const searchRes = document.getElementById('searchRes');
+            if (searchBox && searchRes && !searchBox.contains(e.target) && !searchRes.contains(e.target)) {
+                searchRes.style.display = 'none';
+            }
+        });
+
+        // معالجة زر الرجوع
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.page) {
+                showPage(event.state.page, false); 
+            } else {
+                showPage('homePage', false);
+            }
+        });
+
+        // تحميل البيانات
+        window.addEventListener('load', () => {
+            // الأقسام
+            db.ref('categories').on('value', snap => {
+                const cats = snap.val() || {};
+                const list = document.getElementById('categoriesList');
+                if(list) {
+                    if (Object.keys(cats).length === 0) {
+                        list.innerHTML = '<div style="grid-column:1/-1; text-align:center;">لا توجد أقسام</div>';
+                    } else {
+                        list.innerHTML = Object.values(cats).map(c => 
+                            `<div class="cat-card-new" onclick="openCat('${c.name}')">
+                                <img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">
+                                <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div>
+                            </div>`
+                        ).join('');
+                    }
+                }
+                
+                const admListCats = document.getElementById('admListCats');
+                if(admListCats) {
+                    admListCats.innerHTML = Object.entries(cats).map(([k,v]) => 
+                        `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;border:none;background:none;cursor:pointer;">حذف</button></td></tr>`
+                    ).join('');
+                }
+                
+                const admProdCatSelect = document.getElementById('admProdCatSelect');
+                if(admProdCatSelect) {
+                    admProdCatSelect.innerHTML = '<option disabled selected>اختر قسم المنتجات</option>' + 
+                        Object.values(cats).map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+                }
+            });
+
+            // المنتجات
+            db.ref('products').on('value', snap => {
+                const data = snap.val() || {};
+                const list = document.getElementById('admListProds');
+                if(list) {
+                    list.innerHTML = Object.entries(data).map(([k,v]) => 
+                        `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;border:none;background:none;cursor:pointer;">حذف</button></td></tr>`
+                    ).join('');
+                }
+            });
+
+            // طرق الدفع
+            db.ref('payments').on('value', snap => {
+                const data = snap.val() || {};
+                const userList = document.getElementById('paymentList');
+                const selectBox = document.getElementById('userPayment');
+
+                if(selectBox) {
+                    selectBox.innerHTML = Object.values(data).map(pay => 
+                        `<option value="${pay.name}">${pay.name}</option>`
+                    ).join('') || '<option value="نقد عند الاستلام">نقد عند الاستلام</option>';
+                }
+
+                if(userList) {
+                    if (Object.keys(data).length === 0) {
+                        userList.innerHTML = '<div style="grid-column:1/-1; text-align:center;">لا توجد طرق دفع</div>';
+                    } else {
+                        userList.innerHTML = Object.values(data).map(pay => `
+                            <div class="payment-card">
+                                <img src="${pay.img}" style="width:100%; height:100%; object-fit: contain; padding: 20px;">
+                                <div class="payment-overlay">${pay.name}</div>
+                            </div>
+                        `).join('');
+                    }
+                }
+                
+                const admListPays = document.getElementById('admListPays');
+                if(admListPays) {
+                    admListPays.innerHTML = Object.entries(data).map(([k,v]) => 
+                        `<tr><td>${v.name}</td><td><button onclick="deleteItem('payments','${k}')" style="color:red;border:none;background:none;cursor:pointer;">حذف</button></td></tr>`
+                    ).join('');
+                }
+            });
+
+            // استعادة آخر صفحة
+            const hash = location.hash.replace('#', '');
+            if (hash === 'categoryView') {
+                const lastCat = localStorage.getItem('lastCat');
+                if(lastCat) openCat(lastCat);
+            } else if (hash === 'productCalculator') {
+                const lastProd = localStorage.getItem('lastProd');
+                if(lastProd) openCalc(JSON.parse(lastProd));
+            } else {
+                showPage(hash || 'homePage', false);
+            }
+
+            // تحديث عداد السلة
+            document.getElementById('globalCartCount').innerText = cart.length;
+        });
+    </script>
+</body>
+</html>
