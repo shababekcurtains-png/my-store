@@ -188,6 +188,63 @@
     }
 }
     </style>
+    /* تنسيق كارت الدفع الفاخر (مطابق للمنتدى) */
+.pay-card-premium {
+    position: relative;
+    height: 400px; 
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border: 1px solid #f0f0f0;
+    background: #fff;
+    cursor: default;
+    transition: 0.4s;
+}
+
+.pay-card-premium img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.pay-overlay {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    background: var(--gold);
+    color: white;
+    padding: 10px 5px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+/* شبكة طرق الدفع - 5 في السطر للحاسوب وتمرير للموبايل */
+#paymentList {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 30px 5%;
+}
+
+@media (max-width: 768px) {
+    #paymentList {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding: 20px;
+        scrollbar-width: none;
+    }
+    .pay-card-premium {
+        flex: 0 0 250px !important;
+        height: 320px;
+        scroll-snap-align: start;
+    }
+}
 </head>
 <body>
 
@@ -688,32 +745,31 @@ window.addEventListener('load', () => {
     });
 
     // طرق الدفع
+   // مزامنة طرق الدفع وعرضها بتنسيق فخم
     db.ref('payments').on('value', snap => {
-    const data = snap.val() || {};
-    const userList = document.getElementById('paymentList'); // صفحة طرق الدفع
-    const selectBox = document.getElementById('userPayment'); // قائمة السلة المنسدلة
+        const data = snap.val() || {};
+        const userList = document.getElementById('paymentList'); 
+        const selectBox = document.getElementById('userPayment'); 
 
-    // تحديث القائمة المنسدلة في السلة
-    if(selectBox) {
-        selectBox.innerHTML = Object.values(data).map(pay => `
-            <option value="${pay.name}">${pay.name}</option>
-        `).join('') || '<option value="نقد عند الاستلام">نقد عند الاستلام</option>';
-    }
+        // تحديث القائمة المنسدلة في السلة
+        if(selectBox) {
+            selectBox.innerHTML = Object.values(data).map(pay => `
+                <option value="${pay.name}">${pay.name}</option>
+            `).join('') || '<option value="نقد عند الاستلام">نقد عند الاستلام</option>';
+        }
 
-    // عرض الكروت في صفحة طرق الدفع للزبائن (كما فعلنا سابقاً)
-    if(userList) {
-    userList.innerHTML = Object.values(data).map(pay => `
-        <div class="cat-card-new" onclick="void(0)">
-            <img src="${pay.img}" style="width:100%;height:100%;object-fit:cover;">
-            <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
-                        background:var(--gold);color:white;
-                        padding:10px 25px;border-radius:12px;font-weight:900;">
-                ${pay.name}
-            </div>
-        </div>
-    `).join('');
-}
-});
+        // عرض الكروت الفخمة في صفحة طرق الدفع
+        if(userList) {
+            userList.innerHTML = Object.values(data).map(pay => `
+                <div class="pay-card-premium">
+                    <img src="${pay.img}">
+                    <div class="pay-overlay">
+                        <h3>${pay.name}</h3>
+                    </div>
+                </div>
+            `).join('');
+        }
+    });
     // إدارة التنقل والهاش
     const hash = location.hash.replace('#', '');
     if (hash === 'categoryView') {
