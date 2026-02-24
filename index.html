@@ -493,38 +493,49 @@ async function handleDrImage(input) {
 }
 
 // --- 6. نظام السلة وعرض المنتجات ---
-function openCat(n) { 
+function openCat(n, pushHistory = true) { 
     localStorage.setItem('lastCat', n);
+    
+    // إذا كان الانتقال للأمام، نسجل الحالة في المتصفح
+    if (pushHistory) {
+        history.pushState({ pageId: 'categoryView', catName: n }, "", "#categoryView");
+    }
+
     db.ref('products').once('value', snap => { 
         const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
         document.getElementById('catTitle').innerText = n; 
         document.getElementById('catGrid').innerHTML = items.map(x => `
             <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})'>
-                <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
-                <div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div>
+                <img src="${x.img.split(',')[0]}" style="width:100%;height:250px;object-fit:cover;">
+                <div style="padding:20px;text-align:center;">
+                    <h3>${x.name}</h3>
+                    <p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p>
+                </div>
             </div>`).join(''); 
-        showPage('categoryView'); 
+        
+        showPage('categoryView', false); // نمرر false لكي لا تكرر showPage التسجيل
     }); 
 }
 
-function openCalc(p) { 
-    cur = p; localStorage.setItem('lastProd', JSON.stringify(p));
-    showPage('productCalculator'); 
-    document.getElementById('pName').innerText = p.name; 
-    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
-    document.getElementById('pImg').src = getWatermarkedUrl(p.img); 
-}
-// --- دالة البحث الشاملة (لا تلمس السلة) ---
-async function handleSearch() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const resBox = document.getElementById('searchRes');
+function openCalc(p, pushHistory = true) {
+    cur = p; 
+    localStorage.setItem('lastProd', JSON.stringify(p));
     
-    // إذا كان المكتوب أقل من حرفين أخفِ النتائج
-    if (query.length < 2) { 
-        resBox.style.display = 'none'; 
-        return; 
+    // تسجيل حالة المنتج في التاريخ
+    if (pushHistory) {
+        history.pushState({ pageId: 'productCalculator', prod: p }, "", "#productCalculator");
     }
 
+    showPage('productCalculator', false); 
+    
+    document.getElementById('pName').innerText = p.name; 
+    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString();
+    
+    // كود المستعرض المطور (vTrack و vDots) يكمل هنا كما هو لديك...
+    const track = document.getElementById('vTrack');
+    const dotsContainer = document.getElementById('vDots');
+    // ... إلخ
+}
     // جلب البيانات
     const [prodsSnap, topicsSnap] = await Promise.all([
         db.ref('products').once('value'),
@@ -706,6 +717,29 @@ window.addEventListener('load', () => {
         } else if (section === 'contactPage') {
             document.getElementById('contactPage').scrollIntoView({ behavior: 'smooth' });
         }
+    }
+});
+    window.addEventListener('popstate', (event) => {
+    if (event.state) {
+        const state = event.state;
+        
+        // التسلسل العكسي الذكي
+        if (state.pageId === 'categoryView') {
+            openCat(state.catName, false); // يرجع للقسم
+        } else if (state.pageId === 'productCalculator') {
+            openCalc(state.prod, false); // يرجع للمنتج
+        } else {
+            showPage(state.pageId || 'homePage', false);
+        }
+    } else {
+        showPage('homePage', false); // العودة للأصل عند فراغ السجل
+    }
+});
+
+// تأمين الحالة الأولية عند تحميل المتجر
+window.addEventListener('load', () => {
+    if (!history.state) {
+        history.replaceState({ pageId: 'homePage' }, "", "#homePage");
     }
 });
 </script>
