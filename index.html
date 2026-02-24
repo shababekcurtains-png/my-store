@@ -411,7 +411,333 @@
         <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
     </footer>
 
-    <script>
+     /* ===== مستعرض المنتجات المتطور ===== */
+    .product-viewer-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.95);
+        z-index: 10000;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .product-viewer-container.active {
+        display: flex;
+        opacity: 1;
+    }
+    
+    .viewer-content {
+        position: relative;
+        width: 90%;
+        max-width: 1200px;
+        height: 90vh;
+        background: #111;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    
+    .viewer-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: var(--gold);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    
+    .viewer-close:hover {
+        transform: scale(1.1);
+        background: var(--brown);
+    }
+    
+    .viewer-main {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .viewer-slides {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+    
+    .viewer-slide {
+        flex: 0 0 100%;
+        height: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .viewer-slide img,
+    .viewer-slide video {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        cursor: crosshair;
+        transition: transform 0.1s ease;
+        user-select: none;
+    }
+    
+    .viewer-slide img.zoomed,
+    .viewer-slide video.zoomed {
+        transform: scale(2);
+        cursor: zoom-out;
+    }
+    
+    /* عدسة التكبير */
+    .zoom-lens {
+        position: absolute;
+        border: 3px solid var(--gold);
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        pointer-events: none;
+        z-index: 10;
+        display: none;
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    
+    .viewer-slide:hover .zoom-lens {
+        display: block;
+    }
+    
+    /* أزرار التنقل */
+    .viewer-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 60px;
+        height: 60px;
+        background: var(--gold);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    
+    .viewer-nav:hover {
+        background: var(--brown);
+        transform: translateY(-50%) scale(1.1);
+    }
+    
+    .viewer-nav.prev {
+        left: 20px;
+    }
+    
+    .viewer-nav.next {
+        right: 20px;
+    }
+    
+    /* مؤشر التقدم */
+    .viewer-progress {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 15px;
+        z-index: 10001;
+        background: rgba(0,0,0,0.5);
+        padding: 15px 30px;
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .progress-dot {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: 0.3s;
+        opacity: 0.7;
+    }
+    
+    .progress-dot.active {
+        border-color: var(--gold);
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    
+    .progress-dot img,
+    .progress-dot video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .progress-dot.video-thumb {
+        position: relative;
+    }
+    
+    .progress-dot.video-thumb::after {
+        content: '▶';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        background: rgba(0,0,0,0.5);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+    }
+    
+    /* معلومات المنتج */
+    .viewer-info {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border: 1px solid var(--gold);
+    }
+    
+    .viewer-info h3 {
+        font-size: 1.3rem;
+        font-weight: 900;
+    }
+    
+    .viewer-info .price {
+        color: var(--gold);
+        font-weight: 900;
+        font-size: 1.3rem;
+    }
+    
+    .viewer-info .add-to-cart {
+        background: var(--gold);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 30px;
+        font-weight: 900;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    
+    .viewer-info .add-to-cart:hover {
+        background: white;
+        color: var(--brown);
+    }
+    
+    /* التمرير التلقائي */
+    .auto-play-toggle {
+        position: absolute;
+        bottom: 100px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: var(--gold);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+    }
+    
+    .auto-play-toggle.paused {
+        background: #666;
+    }
+    
+    /* للهواتف */
+    @media (max-width: 768px) {
+        .viewer-nav {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+        
+        .viewer-progress {
+            bottom: 20px;
+            padding: 10px 15px;
+            gap: 8px;
+        }
+        
+        .progress-dot {
+            width: 35px;
+            height: 35px;
+        }
+        
+        .viewer-info {
+            flex-direction: column;
+            align-items: flex-start;
+            top: 10px;
+            left: 10px;
+            padding: 10px 15px;
+            gap: 10px;
+        }
+        
+        .viewer-info h3 {
+            font-size: 1rem;
+        }
+        
+        .viewer-info .price {
+            font-size: 1rem;
+        }
+        
+        .viewer-info .add-to-cart {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .auto-play-toggle {
+            bottom: 80px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+        }
+    }
+</style>
         // تهيئة Firebase
         const firebaseConfig = { 
             apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
