@@ -378,27 +378,30 @@ function showPage(id, push = true) {
 
 // معالجة زر الرجوع
 window.addEventListener('load', () => {
-    // 1. فحص إذا كان الرابط يحتوي على "page" قادم من المنتدى
+    // 1. فحص هل المستخدم قادم من رابط خارجي (مثل المنتدى) وبحوزته طلب لصفحة معينة
     const urlParams = new URLSearchParams(window.location.search);
     const targetPage = urlParams.get('page');
 
-    // 2. الحصول على الـ "هاش" الحالي من الرابط (مثلاً #aboutPage)
-    const currentHash = location.hash.replace('#', '');
-
     if (targetPage) {
-        // إذا قادم من رابط خارجي بطلب صفحة معينة
-        showPage(targetPage);
-    } else if (currentHash) {
-        // إذا عملت "رفرش" والهاش موجود، يفتح نفس الصفحة
-        showPage(currentHash, false); // false لكي لا يكرر السجل في التاريخ
+        // إذا كان الطلب هو المنتجات، ننتقل للقسم المناسب
+        if (targetPage === 'categories') {
+            showPage('homePage');
+            setTimeout(() => {
+                document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        } else {
+            // فتح أي صفحة أخرى (من نحن، طرق الدفع، إلخ)
+            showPage(targetPage);
+        }
     } else {
-        // إذا فتحت الموقع أول مرة بدون أي إضافات
-        showPage('homePage', false);
+        // إذا لم يوجد طلب، نطبق نظام الهاش القديم أو نفتح الرئيسية
+        const hash = location.hash.replace('#', '');
+        if (hash) {
+            showPage(hash, false);
+        } else {
+            showPage('homePage', false);
+        }
     }
-
-    // --- بقية أكواد المزامنة (الأقسام، طرق الدفع) تبقى كما هي تحت هذا السطر ---
-    db.ref('categories').on('value', snap => { /* كود الأقسام */ });
-    db.ref('payments').on('value', snap => { /* كود الدفع */ });
 });
 // محرك الشعار ولوحة التحكم (5 ضغطات)
 function handleLogoClick() {
