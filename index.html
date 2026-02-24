@@ -1446,6 +1446,13 @@
                 alibabaViewerData.mediaItems.push({ type: 'video', url: product.video });
             }
             
+            // ترتيب العناصر بحيث تكون الفيديوهات في المقدمة
+            alibabaViewerData.mediaItems.sort((a, b) => {
+                if (a.type === 'video' && b.type !== 'video') return -1;
+                if (a.type !== 'video' && b.type === 'video') return 1;
+                return 0;
+            });
+            
             const viewer = document.getElementById('alibabaViewer');
             
             // تحديث معلومات المنتج
@@ -1460,7 +1467,7 @@
             document.getElementById('alibabaProductRating').textContent = `4.8 (${Math.floor(Math.random() * 200) + 50} تقييم)`;
             document.getElementById('alibabaProductSold').textContent = `أكثر من ${Math.floor(Math.random() * 500) + 200} قطعة مباعة`;
             
-            // عرض الصورة الرئيسية
+            // عرض الصورة الرئيسية (أول عنصر بعد الترتيب)
             const container = document.getElementById('alibabaMainImageContainer');
             container.innerHTML = '';
             
@@ -1476,16 +1483,32 @@
                     iframe.style.height = '100%';
                     iframe.style.border = 'none';
                     container.appendChild(iframe);
+                    
+                    // إضافة مستمع حدث نهاية الفيديو
+                    iframe.onload = function() {
+                        // لا يمكن الاستماع مباشرة لنهاية الفيديو في iframe
+                        // سنستخدم interval للتحقق من الوقت
+                        setTimeout(() => {
+                            // بعد انتهاء الفيديو تقريباً (نستخدم وقت تقديري)
+                            startAlibabaAutoPlay();
+                        }, 30000); // 30 ثانية تقريباً مدة الفيديو
+                    };
                 } else {
                     const video = document.createElement('video');
                     video.src = firstItem.url;
                     video.controls = true;
                     video.autoplay = true;
                     video.muted = true;
-                    video.loop = true;
+                    video.loop = false; // لا نريد التكرار
                     video.style.width = '100%';
                     video.style.height = '100%';
                     video.style.objectFit = 'contain';
+                    
+                    // عند انتهاء الفيديو، نبدأ التمرير التلقائي
+                    video.addEventListener('ended', () => {
+                        startAlibabaAutoPlay();
+                    });
+                    
                     container.appendChild(video);
                 }
             } else {
@@ -1494,6 +1517,9 @@
                 img.className = 'alibaba-main-image';
                 img.alt = '';
                 container.appendChild(img);
+                
+                // إذا كان أول عنصر صورة، نبدأ التمرير التلقائي فوراً
+                startAlibabaAutoPlay();
             }
             
             // إضافة أزرار التنقل
@@ -1506,9 +1532,6 @@
             calculateAlibabaTotal();
             
             viewer.classList.add('active');
-            
-            // بدء التشغيل التلقائي فوراً
-            startAlibabaAutoPlay();
         }
 
         // تحديث المعرض المصغر
@@ -1561,6 +1584,15 @@
                     iframe.style.height = '100%';
                     iframe.style.border = 'none';
                     container.appendChild(iframe);
+                    
+                    // إيقاف التمرير التلقائي أثناء تشغيل الفيديو
+                    stopAlibabaAutoPlay();
+                    
+                    // محاولة اكتشاف نهاية الفيديو (تقديري)
+                    setTimeout(() => {
+                        startAlibabaAutoPlay();
+                    }, 30000); // 30 ثانية
+                    
                 } else {
                     // إذا لم يكن رابط يوتيوب، نستخدم video tag عادي
                     const video = document.createElement('video');
@@ -1568,11 +1600,20 @@
                     video.controls = true;
                     video.autoplay = true;
                     video.muted = true;
-                    video.loop = true;
+                    video.loop = false;
                     video.style.width = '100%';
                     video.style.height = '100%';
                     video.style.objectFit = 'contain';
+                    
+                    // عند انتهاء الفيديو، نبدأ التمرير التلقائي
+                    video.addEventListener('ended', () => {
+                        startAlibabaAutoPlay();
+                    });
+                    
                     container.appendChild(video);
+                    
+                    // إيقاف التمرير التلقائي أثناء تشغيل الفيديو
+                    stopAlibabaAutoPlay();
                 }
             } else {
                 // إذا كان صورة
@@ -1629,9 +1670,10 @@
             toggleCartModal();
         }
 
-        // التمرير التلقائي - يبدأ تلقائياً
+        // التمرير التلقائي - يبدأ عند الحاجة
         function startAlibabaAutoPlay() {
             if (alibabaViewerData.mediaItems.length <= 1) return;
+            if (alibabaViewerData.isAutoPlaying) return;
             
             alibabaViewerData.isAutoPlaying = true;
             alibabaViewerData.autoPlayInterval = setInterval(() => {
