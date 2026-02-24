@@ -3,160 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>شبابيك للستائر - Shababek Curtains</title>
+    <title>منتدى شبابيك - Shababek Forum</title>
     <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+        body { background: var(--white); color: var(--brown); overflow-x: hidden; line-height: 1.6; }
+        body.admin-open { overflow: hidden !important; }
 
         .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
         .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-
-        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
-        .logo-img { height: 90px; transition: 0.3s; }
         
+        header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header-right { flex: 1; font-weight: 900; line-height: 1.1; cursor: pointer; }
+        .logo-center { flex: 1; display: flex; justify-content: center; cursor: pointer; }
+        .logo-img { height: 90px; }
         .header-left { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 15px; }
-        .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
-        .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
         
         .search-box { position: relative; width: 40px; height: 40px; transition: 0.4s; overflow: hidden; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; }
         .search-box:hover, .search-box:focus-within { width: 180px; border-color: var(--gold); }
         .search-box input { border: none; outline: none; background: transparent; padding: 10px; width: 140px; font-size: 0.9rem; }
-        .search-box i { padding: 10px; color: var(--brown); cursor: pointer; }
+        .search-box i { padding: 10px; color: var(--brown); }
 
-        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
         .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
-        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.3s; }
-        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; }
+        .nav-menu a.active { color: var(--gold); }
 
-        .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
-        .active { display: block !important; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        #cartOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
-        .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
-
-        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
-        .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
-        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; margin-bottom: 30px; }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
-        .btn-trans { background: transparent; color: white; border: 2px solid white; padding: 16px 35px; border-radius: 12px; font-weight: 900; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-
-        .social-hero { display: flex; gap: 20px; }
-        .social-hero a { color: var(--white); font-size: 1.8rem; transition: 0.4s; }
-        .social-hero a:hover { color: var(--gold); transform: translateY(-8px) scale(1.2); }
-
-        .features-section { background: var(--bg); padding: 50px 5%; text-align: center; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 1200px; margin: auto; }
-        .f-card { background: white; padding: 25px 15px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: 0.3s; }
-        .f-card:hover { transform: translateY(-5px); border: 1px solid var(--gold); }
-
-        .stat-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
-        .stat-card { background: #f4f1ed; padding: 25px; border-radius: 20px; text-align: center; }
-        .stat-num { font-size: 2.2rem; font-weight: 900; color: var(--gold); display: block; }
-
-        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
-        .footer-cta h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 10px; }
-        .btn-footer-wa { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; font-size: 0.9rem; }
-        .btn-footer-prod { background: var(--gold); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 5px; font-weight: 600; font-size: 0.9rem; }
-
-        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 10px; overflow: hidden; font-size: 0.85rem; }
-        .admin-table td { padding: 10px; border-bottom: 1px solid #eee; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Cairo'; }
-
-        footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
+        .container { padding: 30px 5%; max-width: 1200px; margin: auto; min-height: 60vh; }
+        .page-title { text-align: center; font-weight: 900; font-size: 1.8rem; margin-bottom: 30px; }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         
-        .doc-list-btn { background: white; padding: 20px; border-radius: 15px; margin-bottom: 10px; cursor: pointer; border: 1px solid #eee; font-weight: 700; transition: 0.3s; }
-        
-        /* مشغلات الفيديو المطورة */
-        .vid-frame-wide { position: relative; padding-top: 56.25%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; width: 100%; }
-        .reel-container { position: relative; padding-top: 177.7%; background: #000; border-radius: 20px; overflow: hidden; }
-        .auto-video, .vid-frame-wide iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        
-        #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; }
-  /* حل مشكلة التمرير وتنسيق الصور في المتصفح */
-.admin-table {
-    width: 100%;
-    table-layout: fixed; /* يمنع التمدد الجانبي */
-}
-.admin-table img {
-    width: 60px !important; 
-    height: 60px !important;
-    object-fit: cover;
-    border-radius: 8px;
-}
-.admin-table td {
-    word-wrap: break-word;
-    font-size: 0.8rem;
-}
-   /* تنسيق ذكي: شبكة للمتصفح وتمرير للهاتف */
-#categoriesList {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 أقسام في السطر للمتصفح */
-    gap: 20px;
-    padding: 20px 5%;
-}
+        .card-item { 
+            position: relative; height: 400px; border-radius: 25px; 
+            overflow: hidden; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.06); 
+            transition: 0.4s; border: 1px solid #f0f0f0; 
+        }
+        .card-item img, .card-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-@media (max-width: 768px) {
-    #categoriesList {
-        display: flex; /* العودة لنظام الصف للهاتف */
-        grid-template-columns: none;
-        overflow-x: auto; /* تفعيل التمرير الجانبي */
-        gap: 15px;
-        padding: 20px;
-        scrollbar-width: none;
-    }
-    #categoriesList div {
-        flex: 0 0 250px; /* عرض ثابت لكل قسم ليسمح بالتمرير */
-    }
-}
+        .card-overlay { 
+            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+            width: 90%; background: var(--gold); color: white; padding: 8px 5px; 
+            text-align: center; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10;
+        }
+        .card-overlay h3 { font-weight: 900; font-size: 1rem; margin: 0; }
 
-/* تنسيق الكارت ليكون أنيقاً */
-.cat-card-new {
-    position: relative;
-    height: 350px;
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
- /* تنسيق المتصفح (الكمبيوتر) - شبكة 5 في كل سطر */
-#categoriesList {
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 15px;
-    padding: 20px 5%;
-}
+        .topic-card { background: #fff; border-radius: 25px; padding: 20px; border: 1px solid #eee; margin-bottom: 25px; }
+        .media-container { width: 100%; border-radius: 20px; overflow: hidden; background: #000; margin: 15px 0; }
+        .vid-wide { position: relative; padding-bottom: 56.25%; height: 0; }
+        .vid-wide iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .vid-shorts { aspect-ratio: 9/16; width: 100%; max-width: 350px; margin: auto; }
+        .back-btn { background: var(--brown); color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 700; border: none; }
 
-/* تنسيق الهاتف - تمرير جانبي حصراً */
-@media (max-width: 768px) {
-    #categoriesList {
-        display: flex !important; /* إجبار الهاتف على وضع الأقسام في صف واحد */
-        grid-template-columns: none !important;
-        overflow-x: auto !important; /* تفعيل التمرير */
-        scroll-snap-type: x mandatory;
-        gap: 15px;
-        padding: 20px;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    #categoriesList .cat-card-new {
-        flex: 0 0 250px !important; /* منع انضغاط الصور وإجبارها على العرض الكامل */
-        height: 300px;
-        scroll-snap-align: start;
-    }
-}
+        #forumAdminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow-y: scroll; padding: 30px 5%; }
+        .admin-box { background: #f4f4f4; padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: right; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; }
+        .btn-gold { background: var(--gold); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; }
+
+        #globalAudioBtn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--gold); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+        .footer-cta { background: var(--brown); color: white; padding: 60px 5%; text-align: center; border-radius: 45px 45px 0 0; margin-top: 50px; }
+        .footer-cta h2 { font-size: 1.8rem; font-weight: 900; margin-bottom: 25px; }
+        .footer-btns { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
+        .btn-footer-wa { background: transparent; border: 1px solid rgba(255, 255, 255, 0.4); color: white; padding: 12px 30px; border-radius: 12px; text-decoration: none; font-weight: 700; transition: 0.3s; }
+        .btn-footer-prod { background: var(--gold); color: white; padding: 12px 30px; border-radius: 12px; text-decoration: none; font-weight: 700; transition: 0.3s; }
+
+        footer { background: var(--brown); color: rgba(255, 255, 255, 0.6); padding: 30px 5%; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .footer-logo { font-size: 2.2rem; font-weight: 900; color: var(--gold); margin-bottom: 10px; cursor: pointer; }
+        .footer-copy { font-size: 0.85rem; opacity: 0.8; }
+
+        /* تنسيق قسم طرق الدفع - نفس تنسيق أقسام المنتدى */
+        .payment-section {
+            margin-top: 50px;
+        }
+        .payment-title {
+            text-align: center;
+            font-weight: 900;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--brown);
+        }
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .payment-item {
+            position: relative;
+            height: 400px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            background: white;
+        }
+        .payment-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 30px;
+        }
+        .payment-item .payment-overlay {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: var(--gold);
+            color: white;
+            padding: 8px 5px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .payment-item .payment-overlay h3 {
+            font-weight: 900;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) { 
+            .grid-layout, .payment-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } 
+            .card-item, .payment-item { height: 320px; }
+            .footer-cta h2 { font-size: 1.4rem; }
+            .footer-cta { border-radius: 30px 30px 0 0; }
+        }
     </style>
 </head>
 <body>
@@ -167,178 +150,87 @@
     </div>
 
     <header>
-        <div style="font-weight:900; line-height:1; flex:1;">شبابيك<br><span style="color:var(--gold); font-size:1rem;">للستائر</span></div>
-        <div class="logo-center" onclick="handleLogoClick()"><img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img"></div>
+        <div class="header-right" onclick="location.href='index.html'">شبابيك<br><span style="color:var(--gold); font-size:0.9rem;">للستائر</span></div>
+        <div class="logo-center" onclick="handleForumLogoClick()">
+            <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
+        </div>
         <div class="header-left">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="ابحث عن موديل.." onkeyup="handleSearch()">
-            </div>
-            <div class="cart-icon" onclick="toggleCartModal()">
-                <i class="fas fa-shopping-basket"></i>
-                <span id="globalCartCount" class="cart-count">0</span>
-            </div>
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="ابحث.."></div>
         </div>
     </header>
-    
-    <div id="searchRes"></div>
 
-    <div class="nav-bar">
-        <ul class="nav-menu">
-            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
-            <li><a onclick="showPage('homePage'); setTimeout(() => { document.getElementById('categories').scrollIntoView({behavior: 'smooth'}); }, 100);">المنتجات</a></li>
-            <li><a href="ai.html">منتدى شبابيك</a></li>
-            <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
-            <li><a onclick="showPage('aboutPage')">من نحن</a></li>
-            <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
-        </ul>
-    </div>
-
-    <div id="cartOverlay">
-        <div class="cart-modal">
-            <h2 style="margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:10px; font-weight:900;">سلة المشتريات</h2>
-            <div id="cartItemsList"></div>
-            
-           <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
-    <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
-    <select id="userCity">
-        <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="المثنى">المثنى</option><option value="كركوك">كركوك</option><option value="صلاح الدين">صلاح الدين</option><option value="دهوك">دهوك</option><option value="السليمانية">السليمانية</option><option value="القادسية">القادسية</option>
-    </select>
-
-    <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">هل تحتاج خدمة تركيب؟</label>
-    <select id="userInstall">
-        <option value="بدون تركيب">لا، بدون تركيب</option>
-        <option value="مع التركيب">نعم، أحتاج تركيب</option>
-    </select>
-
-    <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
-    <select id="userPayment">
-        </select>
+   <div class="nav-bar">
+    <ul class="nav-menu">
+        <li><a href="index.html">الرئيسية</a></li>
+        <li><a href="index.html?page=categories">المنتجات</a></li>
+        <li><a href="ai.html" class="active">منتدى شبابيك</a></li>
+        <li><a href="index.html?page=paymentPage">طرق الدفع</a></li>
+        <li><a href="index.html?page=aboutPage">من نحن</a></li>
+        <li><a href="index.html?page=contactPage">تواصل معنا</a></li>
+    </ul>
 </div>
 
-            <div style="margin-top:20px;">
-                <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
-                <p onclick="toggleCartModal()" style="margin-top:20px; text-align:center; color:#999; cursor:pointer; font-weight:bold;">إغلاق</p>
-            </div>
-        </div>
-    </div>
-
-    <main id="mainContainer">
-        <div id="homePage" class="page active">
-            <section class="hero">
-                <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <div class="hero-btns">
-                    <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold">احسب سعر ستائرك الآن</button>
-                    <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
-                </div>
-                <div class="social-hero">
-                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en-IQ" target="_blank"><i class="fab fa-snapchat"></i></a>
-                </div>
-            </section>
-            <section id="categories" style="padding: 40px 0;">
-                <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
-                <div id="categoriesList" style="display:flex; overflow-x:auto; gap:20px; padding:20px 5%; scrollbar-width:none;"></div>
-            </section>
-            <section class="features-section">
-                <h2 style="margin-bottom:35px; font-weight:900;">لماذا شبابيك؟</h2>
-                <div class="features-grid">
-                    <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ضمان حقيقي</h3><p>أرقى الأقمشة بضمان رسمي.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>قياس منزلي</h3><p>نصلكم للقياس مجاناً.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>تفصيل دقيق</h3><p>خياطة احترافية حسب الطلب.</p></div>
-                    <div class="f-card"><i class="fa-solid fa-palette" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ذوق رفيع</h3><p>أحدث الموديلات العصرية.</p></div>
-                </div>
-            </section>
-        </div>
-
-       <div id="doctorPage" class="page">
-    <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
-        <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور</h2>
+    <div class="container" id="mainView">
+        <div id="backBtnCont" style="display:none;"><button class="back-btn" onclick="renderSections()"><i class="fas fa-arrow-right"></i> العودة للأقسام</button></div>
+        <h1 class="page-title" id="viewTitle">نافذتك لعالم الذوق والجمال</h1>
+        <div class="grid-layout" id="forumGrid"></div>
         
-        <div id="ai-consultant" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 40px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
-            <div id="avatar-container" style="margin-bottom: 15px; height: 160px; display: flex; align-items: center; justify-content: center;">
-                <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="height: 100%; object-fit: contain; transition: 0.4s ease-in-out;">
-            </div>
-            <h3 id="drStatus" style="font-weight: 900; color: var(--brown); margin-bottom: 5px;">أهلاً بك! أنا دكتور ديكور</h3>
-            <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">التقط صورة لغرفتك وسأقترح عليك الستارة المثالية!</p>
-
-            <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="handleDrImage(this)">
-            <button onclick="document.getElementById('aiCamera').click()" class="btn-gold" style="width: 100%; padding: 18px;">📸 استشارة بالكاميرا</button>
-            
-            <div id="aiResponse" style="margin-top: 20px; text-align: right; line-height: 1.8;"></div>
+        <!-- قسم طرق الدفع - بنفس تنسيق أقسام المنتدى -->
+        <div class="payment-section">
+            <h2 class="payment-title">طرق الدفع المتاحة</h2>
+            <div class="payment-grid" id="paymentGrid"></div>
         </div>
+    </div>
 
-        <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
+    <div id="forumAdminPanel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="font-weight:900;">إدارة منتدى شبابيك</h2>
+            <button onclick="closeAdminPanel()" style="background:var(--brown); color:white; border:none; padding:10px 20px; border-radius:10px;">إغلاق</button>
+        </div>
+        <div class="admin-box">
+            <h3>١. إضافة قسم جديد</h3>
+            <input type="text" id="newForumSecName" placeholder="اسم القسم">
+            <input type="text" id="newForumSecImg" placeholder="رابط صورة الغلاف">
+            <button onclick="saveForumSection()" class="btn-gold">حفظ القسم</button>
+            <div id="adminForumSecsList" style="margin-top:15px; display:flex; flex-wrap:wrap; gap:10px;"></div>
+        </div>
+        <div class="admin-box">
+            <h3>٢. نشر موضوع جديد</h3>
+            <select id="selectTopicSec"></select>
+            <input type="text" id="postTitle" placeholder="العنوان">
+            <textarea id="postDesc" placeholder="التفاصيل..."></textarea>
+            <select id="postType" onchange="toggleMediaInput()">
+                <option value="vid">يوتيوب (ذكي)</option>
+                <option value="img">صورة</option>
+                <option value="text">نص فقط</option>
+            </select>
+            <input type="text" id="postMediaUrl" placeholder="الرابط">
+            <button onclick="publishTopic()" class="btn-gold" id="btnPublish">نشر الآن</button>
+        </div>
+        <div class="admin-box">
+            <h3>٣. إدارة المواضيع</h3>
+            <div id="adminTopicsList"></div>
+        </div>
+    </div>
+
+   <div class="footer-cta">
+    <h2>جاهز لتجديد ستائر منزلك؟</h2>
+    <div class="footer-btns">
+        <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
+        <a href="index.html" class="btn-footer-prod">تصفح المنتجات</a>
     </div>
 </div>
 
-        <div id="docInsidePage" class="page">
-            <div style="padding: 40px 5%; max-width: 600px; margin: auto;">
-                <h2 id="currentDocTitle" style="text-align:center; margin-bottom:30px; color:var(--gold);"></h2>
-                <div id="docTopicsList"></div>
-                <button onclick="showPage('doctorPage')" class="btn-gold" style="width:100%; margin-top:20px; background:var(--brown);">العودة</button>
-            </div>
-        </div>
+<footer>
+    <div class="footer-logo" onclick="location.href='index.html'">شبابيك</div>
+    <p class="footer-copy">© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
+</footer>
 
-        <div id="adminPanel" class="page">
-            <div style="padding: 40px 5%; max-width: 900px; margin: auto;">
-                <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">لوحة الإدارة السحابية</h2>
-                <div class="admin-box">
-                    <h3>١. إدارة الأقسام</h3>
-                    <input type="text" id="admCatName" placeholder="اسم القسم">
-                   <input type="file" id="admCatFile" accept="image/*" style="margin: 10px 0; width: 100%;">
-<button onclick="publishCat()" class="btn-gold">حفظ القسم</button>
-
-                    <table class="admin-table"><tbody id="admListCats"></tbody></table>
-                </div>
-                <div class="admin-box">
-                    <h3>٢. إدارة المنتجات</h3>
-                   <select id="admProdCatSelect"></select>
-                    <input type="text" id="admProdName" placeholder="اسم الموديل">
-                    <input type="number" id="admProdPrice" placeholder="السعر">
-                    <input type="file" id="admProdFile" accept="image/*" style="margin: 10px 0; width: 100%;">
-<button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
-                    <table class="admin-table"><tbody id="admListProds"></tbody></table>
-                    <h3>٤. طرق الدفع</h3>
-                    <input type="text" id="admPayName" placeholder="اسم الطريقة">
-                    <input type="file" id="admPayFile" accept="image/*" style="margin: 10px 0; width: 100%;">
-<button onclick="publishPayment()" class="btn-gold">حفظ طريقة الدفع</button>
-                    <table class="admin-table"><tbody id="admListPays"></tbody></table>
-                </div>
-            </div>
-        </div>
-
-        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.
-
-نقدم مجموعة واسعة من الستائر تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية. كما نوفر خدمة التفصيل حسب المقاسات وخدمة التركيب المنزلي بأيدي فنيين متخصصين.
-
-رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق، ونسعى دائماً لتحقيق رضا عملائنا من خلال الجودة العالية والأسعار المنافسة والخدمة المتميزة....</p><div class="stat-grid"><div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div><div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div><div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div></div></div></div>
-        <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;"><h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2><div><i class="fa-solid fa-phone"></i> 07883002797</div><div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a></div></div>
-        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
-        <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button></div></div>
-       <div id="paymentPage" class="page">
-    <div style="padding: 40px 5%; text-align: center;">
-        <h2 style="font-weight:900; margin-bottom:30px;">طرق الدفع الآمنة</h2>
-        <div id="paymentList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 20px;"></div>
-    </div>
-</div>
-    </main>
-
-    <div class="footer-cta">
-        <h2>جاهز لتجديد ستائر منزلك؟</h2>
-        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
-            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView()" class="btn-footer-prod">تصفح المنتجات</a>
-        </div>
+    <div id="globalAudioBtn" onclick="toggleGlobalMute()">
+        <i id="audioIcon" class="fas fa-volume-mute"></i>
     </div>
 
-    <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
 <script>
-// 1. تهيئة Firebase
 const firebaseConfig = { 
     apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
     authDomain: "shababekcurtain.firebaseapp.com", 
@@ -348,375 +240,264 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// متغيرات عامة
-const CLOUD_NAME = "dnkuwf8q9", UPLOAD_PRESET = "afsx4w9k", LOGO_ID = "shababek_logo";
-let cur = null, cart = [], adminClicks = 0, clickTimer;
+let forumClicks = 0;
+let sectionsData = {};
+let topicsData = [];
+let paymentsData = {};
+let isGlobalMuted = true;
 
-// دالة جلب القيم المختصرة
-function v(id) { 
-    const el = document.getElementById(id);
-    return el ? el.value : ""; 
-}
+// إضافة متغير لتتبع حالة الصوت
+let isMuted = true;
 
-// --- 2. نظام التنقل والصفحات ---
-function showPage(id, push = true) {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(p => p.classList.remove('active'));
-
-    const target = document.getElementById(id);
-    if (!target) return;
-
-    target.classList.add('active');
-
-    // صعود فوري للأعلى
-    window.scrollTo(0, 0);
-
-    if (push) {
-        history.pushState({ page: id }, "", `#${id}`);
+function handleForumLogoClick() {
+    forumClicks++;
+    if(forumClicks >= 5) {
+        const pass = prompt("رمز الإدارة:");
+        if(pass === "8496") {
+            document.getElementById('forumAdminPanel').style.display = 'block';
+            document.body.classList.add('admin-open');
+        }
+        forumClicks = 0;
     }
 }
 
-// معالجة زر الرجوع
-window.addEventListener('load', () => {
-    // 1. فحص هل المستخدم قادم من رابط خارجي (مثل المنتدى) وبحوزته طلب لصفحة معينة
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetPage = urlParams.get('page');
+function closeAdminPanel() {
+    document.getElementById('forumAdminPanel').style.display = 'none';
+    document.body.classList.remove('admin-open');
+}
 
-    if (targetPage) {
-        // إذا كان الطلب هو المنتجات، ننتقل للقسم المناسب
-        if (targetPage === 'categories') {
-            showPage('homePage');
-            setTimeout(() => {
-                document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
-            }, 500);
-        } else {
-            // فتح أي صفحة أخرى (من نحن، طرق الدفع، إلخ)
-            showPage(targetPage);
-        }
-    } else {
-        // إذا لم يوجد طلب، نطبق نظام الهاش القديم أو نفتح الرئيسية
-        const hash = location.hash.replace('#', '');
-        if (hash) {
-            showPage(hash, false);
-        } else {
-            showPage('homePage', false);
-        }
-    }
-});
-// محرك الشعار ولوحة التحكم (5 ضغطات)
-function handleLogoClick() {
-    adminClicks++;
-    clearTimeout(clickTimer);
-    if (adminClicks >= 5) {
-        adminClicks = 0;
-        const pass = prompt("أدخل رمز الدخول السحابي لشبابيك:");
-        if (pass === "8496") {
-            showPage('adminPanel');
-            if (typeof confetti === 'function') confetti({ particleCount: 100, spread: 70 });
-        } else if (pass !== null) { alert("الرمز غير صحيح!"); }
+function loadForumData() {
+    db.ref('forumSections').on('value', snap => {
+        sectionsData = snap.val() || {};
+        renderSections();
+        updateAdminLists();
+    });
+    db.ref('forumTopics').on('value', snap => {
+        topicsData = [];
+        snap.forEach(child => { topicsData.push({ id: child.key, ...child.val() }); });
+        updateAdminTopics();
+    });
+    
+    // تحميل طرق الدفع
+    db.ref('payments').on('value', snap => {
+        paymentsData = snap.val() || {};
+        renderPayments();
+    });
+}
+
+function renderSections() {
+    const grid = document.getElementById('forumGrid');
+    const backBtn = document.getElementById('backBtnCont');
+    const title = document.getElementById('viewTitle');
+    grid.innerHTML = "";
+    backBtn.style.display = "none";
+    title.innerText = "نافذتك لعالم الذوق والجمال";
+    
+    Object.entries(sectionsData).forEach(([id, sec]) => {
+        const isVideo = sec.img && sec.img.toLowerCase().endsWith('.mp4');
+        grid.innerHTML += `
+            <div class="card-item" onclick="renderTopics('${sec.name}')">
+                ${isVideo ? 
+                    `<video src="${sec.img}" autoplay loop muted playsinline></video>` : 
+                    `<img src="${sec.img || 'https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'}">`}
+                <div class="card-overlay"><h3>${sec.name}</h3></div>
+            </div>`;
+    });
+}
+
+// دالة عرض طرق الدفع بنفس تنسيق أقسام المنتدى
+function renderPayments() {
+    const grid = document.getElementById('paymentGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = "";
+    
+    if (Object.keys(paymentsData).length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px;">لا توجد طرق دفع مضافة</div>';
         return;
     }
-    clickTimer = setTimeout(() => {
-        if (adminClicks === 1) showPage('homePage');
-        adminClicks = 0;
-    }, 400);
-}
-
-// --- 3. محرك الصور السحابي ---
-async function uploadImg(file) {
-    if (!file) return "";
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
-    const data = await res.json();
-    return data.secure_url;
-}
-
-function getWatermarkedUrl(url) {
-    if (!url || !url.includes("cloudinary.com")) return url;
-    return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
-}
-
-// --- 4. وظائف إدارة المتجر (أقسام ومنتجات) ---
-async function publishCat() {
-    const file = document.getElementById('admCatFile').files[0];
-    if(!file || !v('admCatName')) return alert("أكمل بيانات القسم");
-    const url = await uploadImg(file);
-    db.ref('categories').push({name: v('admCatName'), img: url}).then(() => location.reload());
-}
-
-async function publishProd() {
-    const file = document.getElementById('admProdFile').files[0];
-    const cat = document.getElementById('admProdCatSelect').value;
-    if(!file || !v('admProdName') || cat === "اختر قسم المنتجات") return alert("أكمل بيانات المنتج");
-    const url = await uploadImg(file);
-    db.ref('products').push({ category: cat, name: v('admProdName'), price: v('admProdPrice'), img: url }).then(() => location.reload());
-}
-
-async function publishPayment() {
-    const name = v('admPayName'), file = document.getElementById('admPayFile').files[0];
-    if(!name || !file) return alert("أدخل اسم الطريقة وصورة الشعار");
-    const url = await uploadImg(file);
-    db.ref('payments').push({ name: name, img: url }).then(() => {
-        alert("تمت إضافة الطريقة بنجاح!");
-        location.reload();
-    });
-}
-
-function deleteItem(ref, key) { 
-    if(confirm("هل تريد الحذف نهائياً؟")) db.ref(ref).child(key).remove(); 
-}
-
-// --- 5. دكتور ديكور (AI) ---
-async function handleDrImage(input) {
-    if (!input.files[0]) return;
-    const box = document.getElementById('aiResponse'), avatar = document.getElementById('drAvatar');
-    avatar.src = "https://i.ibb.co/ZzMvg7Mz/Disgust-removebg-preview.png";
-    box.innerHTML = "جاري التحليل...";
-    const reader = new FileReader();
-    reader.readAsDataURL(input.files[0]);
-    reader.onload = async (e) => {
-        const base64 = e.target.result.split(',')[1];
-        try {
-            const res = await fetch("https://shababek-ai.bilalmohammedsalem23.workers.dev", { 
-                method: 'POST', body: JSON.stringify({ image: base64 }) 
-            });
-            const data = await res.json();
-            avatar.src = "https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png";
-            box.innerHTML = `<div style="background:white;padding:15px;border-radius:12px;border-right:5px solid var(--gold);">${data.candidates[0].content.parts[0].text}</div>`;
-            confetti({ particleCount: 150 });
-        } catch(err) {
-            box.innerHTML = "تأكد من الاتصال بالإنترنت وحاول مجدداً.";
-        }
-    };
-}
-
-// --- 6. نظام السلة وعرض المنتجات ---
-function openCat(n) { 
-    localStorage.setItem('lastCat', n);
-    db.ref('products').once('value', snap => { 
-        const items = Object.values(snap.val() || {}).filter(i => i.category === n); 
-        document.getElementById('catTitle').innerText = n; 
-        document.getElementById('catGrid').innerHTML = items.map(x => `
-            <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x)})'>
-                <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
-                <div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div>
-            </div>`).join(''); 
-        showPage('categoryView'); 
-    }); 
-}
-
-function openCalc(p) { 
-    cur = p; localStorage.setItem('lastProd', JSON.stringify(p));
-    showPage('productCalculator'); 
-    document.getElementById('pName').innerText = p.name; 
-    document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
-    document.getElementById('pImg').src = getWatermarkedUrl(p.img); 
-}
-// --- دالة البحث الشاملة (لا تلمس السلة) ---
-async function handleSearch() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const resBox = document.getElementById('searchRes');
     
-    // إذا كان المكتوب أقل من حرفين أخفِ النتائج
-    if (query.length < 2) { 
-        resBox.style.display = 'none'; 
-        return; 
-    }
-
-    // جلب البيانات
-    const [prodsSnap, topicsSnap] = await Promise.all([
-        db.ref('products').once('value'),
-        db.ref('forumTopics').once('value')
-    ]);
-
-    const prods = prodsSnap.val() || {};
-    const topics = topicsSnap.val() || {};
-    let html = "";
-
-    // البحث في المنتجات (عرض الاسم والقسم)
-    Object.values(prods).filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)).forEach(p => {
-        html += `
-            <div style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee;cursor:pointer;" 
-                 onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none";'>
-                <img src="${p.img.split(',')[0]}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
-                <div>
-                    <div style="font-weight:bold;font-size:0.9rem;">${p.name}</div>
-                    <div style="font-size:0.7rem;color:var(--gold);">${p.category}</div>
-                </div>
+    Object.values(paymentsData).forEach(payment => {
+        grid.innerHTML += `
+            <div class="payment-item">
+                <img src="${payment.img}" alt="${payment.name}">
+                <div class="payment-overlay"><h3>${payment.name}</h3></div>
             </div>`;
     });
+}
 
-    // البحث في مواضيع المنتدى
-    Object.values(topics).filter(t => t.title.toLowerCase().includes(query)).forEach(t => {
-        html += `
-            <div style="padding:12px;border-bottom:1px solid #eee;cursor:pointer;" onclick="window.location.href='ai.html'">
-                <div style="font-weight:bold;font-size:0.9rem;color:var(--brown);">${t.title}</div>
-                <div style="font-size:0.7rem;color:#28a745;">موضوع في المنتدى</div>
+function renderTopics(sectionName) {
+    const grid = document.getElementById('forumGrid');
+    const backBtn = document.getElementById('backBtnCont');
+    const title = document.getElementById('viewTitle');
+    grid.innerHTML = "";
+    backBtn.style.display = "block";
+    title.innerText = "قسم: " + sectionName;
+
+    const filtered = topicsData.filter(t => t.section === sectionName).reverse();
+    filtered.forEach(p => {
+        const vidId = extractYoutubeId(p.media || "");
+        const isShorts = p.media && p.media.includes('shorts');
+        let mediaHtml = "";
+
+        if (p.type === 'img') {
+            mediaHtml = `<div class="media-container"><img src="${p.media}" style="width:100%;"></div>`;
+        } else if (vidId) {
+            const containerClass = isShorts ? "vid-shorts" : "vid-wide";
+            mediaHtml = `
+                <div class="media-container ${containerClass}">
+                    <iframe class="lazy-video" width="100%" height="100%"
+                        data-src="https://www.youtube.com/embed/${vidId}?enablejsapi=1&mute=1&playlist=${vidId}&loop=1" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                    </iframe>
+                </div>`;
+        }
+
+        grid.innerHTML += `
+            <div class="topic-card">
+                <h3 style="font-weight:900; margin-bottom:10px;">${p.title}</h3>
+                <p style="white-space:pre-wrap; font-size:0.95rem; color:#444;">${p.desc}</p>
+                ${mediaHtml}
+                <div style="font-size:0.75rem; color:#999; margin-top:10px; border-top:1px solid #eee; padding-top:10px;">نُشر بتاريخ: ${p.date}</div>
             </div>`;
     });
-
-    // إظهار الصندوق بالنتائج
-    if (html !== "") {
-        resBox.innerHTML = html;
-        resBox.style.display = 'block';
-    } else {
-        resBox.innerHTML = `<div style="padding:15px;text-align:center;color:#999;">لا توجد نتائج مطابقة</div>`;
-        resBox.style.display = 'block';
-    }
+    initAutoPlay();
 }
 
-// دالة إغلاق البحث عند الضغط في أي مكان خارج الحقل
-document.addEventListener('click', (e) => {
-    const searchBox = document.querySelector('.search-box');
-    if (!searchBox.contains(e.target)) {
-        document.getElementById('searchRes').style.display = 'none';
-    }
-});
-function addToCart() {
-    const h = v('hIn'); if(!h || h <= 0) return alert("أدخل الطول");
-    cart.push({ n: cur.name, p: Math.round(h * cur.price), img: getWatermarkedUrl(cur.img) });
-    document.getElementById('globalCartCount').innerText = cart.length; alert("تمت الإضافة للسلة!");
+function initAutoPlay() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const iframe = entry.target;
+            if (entry.isIntersecting) {
+                if (!iframe.src) iframe.src = iframe.getAttribute('data-src') + "&autoplay=1";
+                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                const audioCmd = isGlobalMuted ? 'mute' : 'unMute';
+                setTimeout(() => { iframe.contentWindow.postMessage(`{"event":"command","func":"${audioCmd}","args":""}`, '*'); }, 600);
+            } else {
+                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            }
+        });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.lazy-video').forEach(vid => observer.observe(vid));
 }
 
-function toggleCartModal() {
-    const o = document.getElementById('cartOverlay');
-    o.style.display = o.style.display === 'flex' ? 'none' : 'flex';
-    let total = 0;
-    document.getElementById('cartItemsList').innerHTML = cart.map((i, idx) => {
-        total += i.p;
-        return `<div class="cart-item" style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eee;">
-            <img src="${i.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;">
-            <div style="flex:1;"><b>${i.n}</b><br><span style="color:var(--gold)">${i.p.toLocaleString()} د.ع</span></div>
-            <i class="fas fa-trash" style="color:red;cursor:pointer;" onclick="removeFromCart(${idx})"></i>
-        </div>`;
-    }).join('') || '<p style="text-align:center;padding:20px;">السلة فارغة</p>';
-    if(cart.length > 0) document.getElementById('cartItemsList').innerHTML += `<div style="margin-top:15px;font-weight:900;text-align:center;background:#eee;padding:10px;">الإجمالي: ${total.toLocaleString()} د.ع</div>`;
-}
-
-function removeFromCart(idx) { cart.splice(idx, 1); document.getElementById('globalCartCount').innerText = cart.length; toggleCartModal(); }
-
-function sendOrder() {
-    if(cart.length === 0) return alert("السلة فارغة يا بطل!");
+function toggleGlobalMute() {
+    isGlobalMuted = !isGlobalMuted;
+    const icon = document.getElementById('audioIcon');
+    icon.className = isGlobalMuted ? "fas fa-volume-mute" : "fas fa-volume-up";
+    if (!isGlobalMuted) confetti({ particleCount: 40, spread: 40, origin: { y: 0.9, x: 0.9 } });
     
-    // جلب البيانات من الحقول
-    const city = document.getElementById('userCity').value;
-    const payment = document.getElementById('userPayment').value;
-    const install = document.getElementById('userInstall').value;
-
-    // بناء رأس الرسالة
-    let msg = `*طلب شراء جديد من شبابيك للستائر* 🪟\n\n`;
-    msg += `📍 *المحافظة:* ${city}\n`;
-    msg += `🛠 *خدمة التركيب:* ${install}\n`;
-    msg += `💳 *طريقة الدفع:* ${payment}\n`;
-    msg += `------------------------------\n\n`;
-    
-    let total = 0;
-
-    // إضافة المنتجات مع روابط صورها
-    cart.forEach((item, index) => {
-        msg += `*${index + 1}- الموديل:* ${item.n}\n`;
-        msg += `💰 *السعر:* ${item.p.toLocaleString()} د.ع\n`;
-        msg += `🖼 *صورة الموديل:* ${item.img}\n`; // إضافة رابط الصورة
-        msg += `------------------------------\n`;
-        total += item.p;
+    document.querySelectorAll('.lazy-video').forEach(iframe => {
+        const cmd = isGlobalMuted ? 'mute' : 'unMute';
+        iframe.contentWindow.postMessage(`{"event":"command","func":"${cmd}","args":""}`, '*');
     });
-    
-    // الإجمالي النهائي
-    msg += `\n💰 *الإجمالي الكلي للطلب:* ${total.toLocaleString()} د.ع\n\n`;
-    msg += `_شكراً لاختياركم شبابيك - ظل وذوق_`;
-
-    // إرسال الطلب عبر الواتساب
-    const waNumber = "9647883002797";
-    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
-    
-    window.location.href = waUrl;
-
-    // تصفير السلة بعد الإرسال بنجاح
-    cart = []; 
-    document.getElementById('globalCartCount').innerText = "0"; 
-    toggleCartModal();
 }
 
-// --- 7. مزامنة البيانات عند التحميل ---
-window.addEventListener('load', () => {
-    // الأقسام والمنتجات
-    db.ref('categories').on('value', snap => {
-        const cats = snap.val() || {};
-        const list = document.getElementById('categoriesList');
-        if(list) list.innerHTML = Object.values(cats).map(c => `<div class="cat-card-new" onclick="openCat('${c.name}')"><img src="${c.img}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div></div>`).join('');
-        const admListCats = document.getElementById('admListCats');
-        if(admListCats) admListCats.innerHTML = Object.entries(cats).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('categories','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
-        const admProdCatSelect = document.getElementById('admProdCatSelect');
-        if(admProdCatSelect) admProdCatSelect.innerHTML = '<option disabled selected>اختر قسم المنتجات</option>' + Object.values(cats).map(s => `<option>${s.name}</option>`).join('');
+function saveForumSection() {
+    const name = document.getElementById('newForumSecName').value;
+    const img = document.getElementById('newForumSecImg').value;
+    if(!name) return;
+    db.ref('forumSections').push({ name, img }).then(() => {
+        document.getElementById('newForumSecName').value = "";
+        document.getElementById('newForumSecImg').value = "";
     });
+}
 
-    db.ref('products').on('value', snap => {
-        const data = snap.val() || {}, list = document.getElementById('admListProds');
-        if(list) list.innerHTML = Object.entries(data).map(([k,v]) => `<tr><td>${v.name}</td><td><button onclick="deleteItem('products','${k}')" style="color:red;border:none;background:none;">حذف</button></td></tr>`).join('');
+function publishTopic() {
+    const title = document.getElementById('postTitle').value;
+    const desc = document.getElementById('postDesc').value;
+    const section = document.getElementById('selectTopicSec').value;
+    const type = document.getElementById('postType').value;
+    const media = document.getElementById('postMediaUrl').value;
+    if(!title || !section) return alert("أكمل البيانات");
+    db.ref('forumTopics').push({ title, desc, section, type, media, timestamp: Date.now(), date: new Date().toLocaleDateString('ar-EG') }).then(() => { location.reload(); });
+}
+
+function updateAdminLists() {
+    const select = document.getElementById('selectTopicSec');
+    const adminList = document.getElementById('adminForumSecsList');
+    if(!select || !adminList) return;
+    let selectHtml = `<option disabled selected value="">اختر القسم</option>`;
+    let adminHtml = "";
+    Object.entries(sectionsData).forEach(([k, v]) => {
+        selectHtml += `<option value="${v.name}">${v.name}</option>`;
+        adminHtml += `<div style="background:#ddd; padding:5px 15px; border-radius:20px; font-size:0.8rem;">${v.name} <i class="fas fa-times" onclick="deleteItem('forumSections','${k}')" style="color:red; cursor:pointer; margin-right:5px;"></i></div>`;
     });
+    select.innerHTML = selectHtml;
+    adminList.innerHTML = adminHtml;
+}
 
-    // طرق الدفع
-    db.ref('payments').on('value', snap => {
-    const data = snap.val() || {};
-    const userList = document.getElementById('paymentList'); // صفحة طرق الدفع
-    const selectBox = document.getElementById('userPayment'); // قائمة السلة المنسدلة
+function updateAdminTopics() {
+    const list = document.getElementById('adminTopicsList');
+    if(!list) return;
+    list.innerHTML = topicsData.reverse().map(t => `<div style="padding:10px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between;"><span>${t.title}</span><button onclick="deleteItem('forumTopics','${t.id}')" style="color:red; border:none; background:none;">حذف</button></div>`).join('');
+}
 
-    // تحديث القائمة المنسدلة في السلة
-    if(selectBox) {
-        selectBox.innerHTML = Object.values(data).map(pay => `
-            <option value="${pay.name}">${pay.name}</option>
-        `).join('') || '<option value="نقد عند الاستلام">نقد عند الاستلام</option>';
+function deleteItem(path, key) { if(confirm("حذف؟")) db.ref(path).child(key).remove(); }
+
+function extractYoutubeId(url) {
+    if (!url) return null;
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?)\??v?=?|shorts\/)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[7].length === 11) ? match[7] : null;
+}
+
+function toggleMediaInput() {
+    const type = document.getElementById('postType').value;
+    document.getElementById('postMediaUrl').style.display = (type === 'text') ? 'none' : 'block';
+}
+
+window.addEventListener('load', loadForumData);
+</script>
+    <script>
+
+// ===== نظام تنقل خاص بالشريط الرئيسي للمنتدى =====
+function forumNavMain(pageId, push = true) {
+
+    // اخفاء كل الصفحات داخل الشريط الرئيسي للمنتدى
+    document.querySelectorAll(".forum-main-page")
+        .forEach(p => p.classList.remove("active"));
+
+    // تحديد الصفحة المستهدفة
+    const target = document.getElementById(pageId);
+    if (!target) return;
+
+    target.classList.add("active");
+
+    // الصعود لبداية الشريط الرئيسي فقط
+    const mainSection = document.getElementById("forumMain"); 
+    if (mainSection) mainSection.scrollTop = 0;
+
+    // حفظ في history
+    if (push) {
+        history.pushState(
+            { forumMainPage: pageId },
+            "",
+            "#forumMain-" + pageId
+        );
+    }
+}
+
+// زر الرجوع والتقدم
+window.addEventListener("popstate", (e) => {
+    let page = e.state?.forumMainPage;
+
+    if (!page && location.hash.startsWith("#forumMain-")) {
+        page = location.hash.replace("#forumMain-", "");
     }
 
-    // عرض الكروت في صفحة طرق الدفع للزبائن (كما فعلنا سابقاً)
-    if(userList) {
-        userList.innerHTML = Object.values(data).map(pay => `
-            <div class="cat-card-new" style="height: 180px; background: white; cursor: default;">
-                <img src="${pay.img}" style="width:100%; height:100%; object-fit: contain; padding: 20px;">
-                <div style="position:absolute; bottom:0; width:100%; background:var(--brown); color:white; padding:8px; font-weight:900; text-align:center;">${pay.name}</div>
-            </div>`).join('');
-    }
+    forumNavMain(page || "mainHome", false);
 });
-    // إدارة التنقل والهاش
-    const hash = location.hash.replace('#', '');
-    if (hash === 'categoryView') {
-        const lastCat = localStorage.getItem('lastCat');
-        if(lastCat) openCat(lastCat);
-    } else if (hash === 'productCalculator') {
-        const lastProd = localStorage.getItem('lastProd');
-        if(lastProd) openCalc(JSON.parse(lastProd));
-    } else {
-        showPage(hash || 'homePage', false);
-    }
-});
-    window.addEventListener('load', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const section = urlParams.get('section');
 
-    if (section) {
-        // البحث عن القسم المطلوب والذهاب إليه
-        if (section === 'categories') {
-            showCategory('الكل'); // أو الدالة التي تفتح المنتجات عندك
-        } else if (section === 'paymentPage') {
-            document.getElementById('paymentPage').scrollIntoView({ behavior: 'smooth' });
-        } else if (section === 'aboutPage') {
-            document.getElementById('aboutPage').scrollIntoView({ behavior: 'smooth' });
-        } else if (section === 'contactPage') {
-            document.getElementById('contactPage').scrollIntoView({ behavior: 'smooth' });
-        }
+// عند تحميل الصفحة
+window.addEventListener("load", () => {
+    let page = "mainHome";
+
+    if (location.hash.startsWith("#forumMain-")) {
+        page = location.hash.replace("#forumMain-", "");
     }
-});
-    // هذا الكود هو "العقل" الذي يفهم زر الرجوع في الموبايل
-window.addEventListener('popstate', (event) => {
-    if (event.state && event.state.page) {
-        // إذا ضغط المستخدم رجوع، نفتح الصفحة المسجلة في الذاكرة
-        showPage(event.state.page, false); 
-    } else {
-        // إذا لم يوجد سجل، يعود للرئيسية كخيار آمن
-        showPage('homePage', false);
-    }
+
+    forumNavMain(page, false);
 });
 </script>
 </body>
