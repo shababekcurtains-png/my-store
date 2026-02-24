@@ -340,6 +340,7 @@
                     <input type="text" id="admProdName" placeholder="اسم الموديل">
                     <input type="number" id="admProdPrice" placeholder="السعر">
                     <input type="file" id="admProdFile" accept="image/*" style="margin: 10px 0; width: 100%;">
+                    <input type="text" id="admProdVideo" placeholder="رابط فيديو (اختياري)">
                     <button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
                     <table class="admin-table"><tbody id="admListProds"></tbody></table>
                 </div>
@@ -869,18 +870,15 @@
             const url = await uploadImage(file);
             if (url) {
                 db.ref('products').push({ 
-                    category: cat, 
-                    name: name, 
-                    price: parseInt(price), 
-                    img: url 
-                }).then(() => {
-                    alert("تم نشر المنتج بنجاح");
-                    document.getElementById('admProdName').value = "";
-                    document.getElementById('admProdPrice').value = "";
-                    document.getElementById('admProdFile').value = "";
-                });
-            }
-        }
+    category: cat, 
+    name: name, 
+    price: parseInt(price), 
+    img: url,
+    video: getValue('admProdVideo') // 👈 هذا السطر الجديد
+}).then(() => {
+    alert("تم نشر المنتج بنجاح");
+    // ...
+});
 
         // نشر طريقة دفع جديدة
         async function publishPayment() {
@@ -1185,6 +1183,323 @@
             // تحديث عداد السلة
             document.getElementById('globalCartCount').innerText = cart.length;
         });
+                // ===== نظام مستعرض المنتجات المتطور =====
+let viewerData = {
+    isOpen: false,
+    currentIndex: 0,
+    mediaItems: [],
+    product: null,
+    isZoomed: false,
+    isAutoPlaying: false,
+    autoPlayInterval: null,
+    startX: 0,
+    isDragging: false
+};
+
+// فتح المستعرض
+function openProductViewer(product, mediaItems) {
+    viewerData.product = product;
+    viewerData.mediaItems = mediaItems;
+    viewerData.currentIndex = 0;
+    viewerData.isOpen = true;
+    viewerData.isZoomed = false;
+    
+    const viewer = document.getElementById('productViewer');
+    const slides = document.getElementById('viewerSlides');
+    const progress = document.getElementById('viewerProgress');
+    const zoomLens = document.getElementById('zoomLens');
+    
+    // تحديث معلومات المنتج
+    document.getElementById('viewerProductName').textContent = product.name;
+    document.getElementById('viewerProductPrice').textContent = parseInt(product.price).toLocaleString() + ' د.ع';
+    
+    // إنشاء الشرائح
+    slides.innerHTML = mediaItems.map((item, index) => `
+        <div class="viewer-slide" data-index="${index}">
+            ${item.type === 'video' 
+                ? `<video src="${item.url}" controls playsinline></video>` 
+                : `<img src="${item.url}" alt="${product.name}" draggable="false">`
+            }
+        </div>
+    `).join('');
+    
+    // إنشاء مؤشر التقدم
+    progress.innerHTML = mediaItems.map((item, index) => `
+        <div class="progress-dot ${item.type === 'video' ? 'video-thumb' : ''} ${index === 0 ? 'active' : ''}" 
+             onclick="goToSlide(${index})">
+            ${item.type === 'video' 
+                ? `<video src="${item.url}" muted></video>` 
+                : `<img src="${item.url}">`
+            }
+        </div>
+    `).join('');
+    
+    viewer.classList.add('active');
+    
+    // إضافة مستمعي الأحداث
+    setupViewerEvents();
+}
+
+// إغلاق المستعرض
+function closeViewer() {
+    const viewer = document.getElementById('productViewer');
+    viewer.classList.remove('active');
+    viewerData.isOpen = false;
+    stopAutoPlay();
+}
+
+// التنقل بين الشرائح
+function navigateSlide(direction) {
+    if (!viewerData.isOpen) return;
+    
+    const newIndex = viewerData.currentIndex + direction;
+    if (newIndex >= 0 && newIndex < viewerData.mediaItems.length) {
+        viewerData.currentIndex = newIndex;
+        updateSlidePosition();
+        updateProgressDots();
+        resetZoom();
+    }
+}
+
+// الذهاب إلى شريحة محددة
+function goToSlide(index) {
+    if (!viewerData.isOpen) return;
+    
+    viewerData.currentIndex = index;
+    updateSlidePosition();
+    updateProgressDots();
+    resetZoom();
+}
+
+// تحديث موضع الشريحة
+function updateSlidePosition() {
+    const slides = document.getElementById('viewerSlides');
+    slides.style.transform = `translateX(-${viewerData.currentIndex * 100}%)`;
+}
+
+// تحديث نقاط التقدم
+function updateProgressDots() {
+    document.querySelectorAll('.progress-dot').forEach((dot, index) => {
+        if (index === viewerData.currentIndex) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
+// إعادة تعيين التكبير
+function resetZoom() {
+    viewerData.isZoomed = false;
+    const currentSlide = document.querySelector(`.viewer-slide[data-index="${viewerData.currentIndex}"]`);
+    if (currentSlide) {
+        const media = currentSlide.querySelector('img, video');
+        if (media) {
+            media.classList.remove('zoomed');
+        }
+    }
+    document.getElementById('zoomLens').style.display = 'none';
+}
+
+// التكبير بالعدسة
+function setupZoom() {
+    const currentSlide = document.querySelector(`.viewer-slide[data-index="${viewerData.currentIndex}"]`);
+    if (!currentSlide) return;
+    
+    const media = currentSlide.querySelector('img');
+    if (!media) return;
+    
+    const lens = document.getElementById('zoomLens');
+    
+    currentSlide.addEventListener('mousemove', (e) => {
+        if (viewerData.isZoomed) return;
+        
+        const rect = currentSlide.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        lens.style.display = 'block';
+        lens.style.left = (x - 75) + 'px';
+        lens.style.top = (y - 75) + 'px';
+        
+        // تكبير الصورة
+        const percentX = (x / rect.width) * 100;
+        const percentY = (y / rect.height) * 100;
+        media.style.transformOrigin = `${percentX}% ${percentY}%`;
+        media.style.transform = 'scale(2)';
+    });
+    
+    currentSlide.addEventListener('mouseleave', () => {
+        if (!viewerData.isZoomed) {
+            lens.style.display = 'none';
+            media.style.transform = 'scale(1)';
+        }
+    });
+    
+    currentSlide.addEventListener('click', () => {
+        viewerData.isZoomed = !viewerData.isZoomed;
+        if (viewerData.isZoomed) {
+            media.classList.add('zoomed');
+            lens.style.display = 'none';
+        } else {
+            media.classList.remove('zoomed');
+            media.style.transform = 'scale(1)';
+        }
+    });
+}
+
+// التمرير التلقائي
+function toggleAutoPlay() {
+    const toggle = document.getElementById('autoPlayToggle');
+    
+    if (viewerData.isAutoPlaying) {
+        stopAutoPlay();
+        toggle.classList.add('paused');
+        toggle.innerHTML = '<i class="fas fa-play"></i>';
+    } else {
+        startAutoPlay();
+        toggle.classList.remove('paused');
+        toggle.innerHTML = '<i class="fas fa-pause"></i>';
+    }
+}
+
+function startAutoPlay() {
+    if (viewerData.mediaItems.length <= 1) return;
+    
+    viewerData.isAutoPlaying = true;
+    viewerData.autoPlayInterval = setInterval(() => {
+        let nextIndex = viewerData.currentIndex + 1;
+        if (nextIndex >= viewerData.mediaItems.length) {
+            nextIndex = 0;
+        }
+        goToSlide(nextIndex);
+    }, 3000);
+}
+
+function stopAutoPlay() {
+    viewerData.isAutoPlaying = false;
+    if (viewerData.autoPlayInterval) {
+        clearInterval(viewerData.autoPlayInterval);
+        viewerData.autoPlayInterval = null;
+    }
+}
+
+// سحب اللمس للموبايل
+function setupTouchEvents() {
+    const slides = document.getElementById('viewerSlides');
+    
+    slides.addEventListener('touchstart', (e) => {
+        viewerData.startX = e.touches[0].clientX;
+        viewerData.isDragging = true;
+        stopAutoPlay();
+    });
+    
+    slides.addEventListener('touchmove', (e) => {
+        if (!viewerData.isDragging) return;
+        
+        const currentX = e.touches[0].clientX;
+        const diff = viewerData.startX - currentX;
+        
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+                navigateSlide(1);
+            } else {
+                navigateSlide(-1);
+            }
+            viewerData.isDragging = false;
+        }
+    });
+    
+    slides.addEventListener('touchend', () => {
+        viewerData.isDragging = false;
+    });
+}
+
+// إضافة مستمعي الأحداث
+function setupViewerEvents() {
+    setupZoom();
+    setupTouchEvents();
+    
+    // تحديث عند تغيير الشريحة
+    const observer = new MutationObserver(() => {
+        setupZoom();
+    });
+    
+    observer.observe(document.getElementById('viewerSlides'), {
+        childList: true,
+        subtree: true
+    });
+}
+
+// إضافة المنتج الحالي للسلة
+function addCurrentToCart() {
+    if (!viewerData.product) return;
+    
+    cart.push({ 
+        n: viewerData.product.name, 
+        p: viewerData.product.price, 
+        img: getWatermarkedUrl(viewerData.product.img)
+    });
+    
+    document.getElementById('globalCartCount').innerText = cart.length; 
+    localStorage.setItem('shababek_cart', JSON.stringify(cart));
+    alert("تمت الإضافة للسلة!");
+}
+
+// تعديل دالة openCalc لدعم المستعرض المتطور
+function openCalc(product) {
+    // جمع كل وسائط المنتج (صورة وفيديو)
+    const mediaItems = [
+        { type: 'image', url: product.img }
+    ];
+    
+    // إذا كان هناك فيديو للمنتج
+    if (product.video) {
+        mediaItems.push({ type: 'video', url: product.video });
+    }
+    
+    // فتح المستعرض
+    openProductViewer(product, mediaItems);
+    
+    // تحديث معلومات الحاسبة (للتوافق مع الكود القديم)
+    currentProduct = product;
+    localStorage.setItem('lastProd', JSON.stringify(product));
+    document.getElementById('pName').innerText = product.name;
+    document.getElementById('pPrice').innerText = parseInt(product.price).toLocaleString();
+    document.getElementById('pImg').src = getWatermarkedUrl(product.img);
+}
+
+// إضافة خاصية الفيديو للمنتج في لوحة التحكم
+// أضف هذا الحقل في adminPanel تحت حقل الصورة
+/*
+<input type="text" id="admProdVideo" placeholder="رابط فيديو (اختياري)">
+*/
     </script>
+                <div class="product-viewer-container" id="productViewer" onclick="if(event.target===this) closeViewer()">
+    <div class="viewer-content">
+        <button class="viewer-close" onclick="closeViewer()"><i class="fas fa-times"></i></button>
+        
+        <div class="viewer-info" id="viewerInfo">
+            <h3 id="viewerProductName"></h3>
+            <span class="price" id="viewerProductPrice"></span>
+            <button class="add-to-cart" onclick="addCurrentToCart()"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
+        </div>
+        
+        <div class="viewer-main" id="viewerMain">
+            <div class="viewer-slides" id="viewerSlides" style="transform: translateX(0px);"></div>
+            
+            <div class="zoom-lens" id="zoomLens"></div>
+            
+            <button class="viewer-nav prev" onclick="navigateSlide(-1)"><i class="fas fa-chevron-right"></i></button>
+            <button class="viewer-nav next" onclick="navigateSlide(1)"><i class="fas fa-chevron-left"></i></button>
+            
+            <button class="auto-play-toggle" id="autoPlayToggle" onclick="toggleAutoPlay()">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+        
+        <div class="viewer-progress" id="viewerProgress"></div>
+    </div>
+</div>
 </body>
 </html>
