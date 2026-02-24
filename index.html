@@ -77,144 +77,138 @@
 
         footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 20px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; }
         
-        .doc-list-btn { background: white; padding: 20px; border-radius: 15px; margin-bottom: 10px; cursor: pointer; border: 1px solid #eee; font-weight: 700; transition: 0.3s; }
+        #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; max-height: 400px; overflow-y: auto; }
         
-        /* مشغلات الفيديو المطورة */
-        .vid-frame-wide { position: relative; padding-top: 56.25%; background: #000; border-radius: 20px; overflow: hidden; margin-bottom: 15px; width: 100%; }
-        .reel-container { position: relative; padding-top: 177.7%; background: #000; border-radius: 20px; overflow: hidden; }
-        .auto-video, .vid-frame-wide iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        /* تنسيق أقسام المنتجات */
+        #categoriesList {
+            display: grid !important;
+            grid-template-columns: repeat(5, 1fr) !important; 
+            gap: 15px;
+            padding: 20px 5%;
+        }
+
+        .cat-card-new {
+            position: relative;
+            height: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
         
-        #searchRes { position: absolute; top: 110px; left: 5%; width: 90%; background: white; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 15px; display: none; }
-  /* حل مشكلة التمرير وتنسيق الصور في المتصفح */
-.admin-table {
-    width: 100%;
-    table-layout: fixed; /* يمنع التمدد الجانبي */
-}
-.admin-table img {
-    width: 60px !important; 
-    height: 60px !important;
-    object-fit: cover;
-    border-radius: 8px;
-}
-.admin-table td {
-    word-wrap: break-word;
-    font-size: 0.8rem;
-}
-   /* تنسيق ذكي: شبكة للمتصفح وتمرير للهاتف */
-#categoriesList {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 أقسام في السطر للمتصفح */
-    gap: 20px;
-    padding: 20px 5%;
-}
+        .cat-card-new:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .cat-card-new img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+        
+        .cat-card-new:hover img {
+            transform: scale(1.1);
+        }
+        
+        .cat-card-new > div:last-child {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 12px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
 
-@media (max-width: 768px) {
-    #categoriesList {
-        display: flex; /* العودة لنظام الصف للهاتف */
-        grid-template-columns: none;
-        overflow-x: auto; /* تفعيل التمرير الجانبي */
-        gap: 15px;
-        padding: 20px;
-        scrollbar-width: none;
-    }
-    #categoriesList div {
-        flex: 0 0 250px; /* عرض ثابت لكل قسم ليسمح بالتمرير */
-    }
-}
+        @media (max-width: 768px) {
+            #categoriesList {
+                display: flex !important;
+                grid-template-columns: none !important;
+                overflow-x: auto !important;
+                scroll-snap-type: x mandatory;
+                gap: 15px;
+                padding: 20px;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            #categoriesList .cat-card-new {
+                flex: 0 0 250px !important;
+                height: 300px;
+                scroll-snap-align: start;
+            }
+        }
 
-/* تنسيق الكارت ليكون أنيقاً */
-.cat-card-new {
-    position: relative;
-    height: 350px;
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
- /* تنسيق المتصفح (الكمبيوتر) - شبكة 5 في كل سطر */
-#categoriesList {
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 15px;
-    padding: 20px 5%;
-}
-
-/* تنسيق الهاتف - تمرير جانبي حصراً */
-@media (max-width: 768px) {
-    #categoriesList {
-        display: flex !important; /* إجبار الهاتف على وضع الأقسام في صف واحد */
-        grid-template-columns: none !important;
-        overflow-x: auto !important; /* تفعيل التمرير */
-        scroll-snap-type: x mandatory;
-        gap: 15px;
-        padding: 20px;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    #categoriesList .cat-card-new {
-        flex: 0 0 250px !important; /* منع انضغاط الصور وإجبارها على العرض الكامل */
-        height: 300px;
-        scroll-snap-align: start;
-    }
-}
-
-/* ===== تنسيق طرق الدفع مثل المنتدى ===== */
-#paymentList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.payment-card {
-    position: relative;
-    height: 400px;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-    border: 1px solid #f0f0f0;
-    background: white;
-    transition: 0.4s;
-}
-
-.payment-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-}
-
-.payment-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 30px;
-    display: block;
-}
-
-.payment-card .payment-overlay {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    background: var(--gold);
-    color: white;
-    padding: 8px 5px;
-    text-align: center;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 10;
-    font-weight: 900;
-    font-size: 1rem;
-}
-
-@media (max-width: 768px) {
-    #paymentList {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    }
-    .payment-card {
-        height: 320px;
-    }
-}
+        /* تنسيق شبكة المنتجات */
+        #catGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 20px 5%;
+        }
+        
+        /* تنسيق طرق الدفع */
+        #paymentList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .payment-card {
+            position: relative;
+            height: 400px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            background: white;
+            transition: 0.4s;
+        }
+        
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        
+        .payment-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 30px;
+            display: block;
+        }
+        
+        .payment-card .payment-overlay {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: var(--gold);
+            color: white;
+            padding: 8px 5px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+            font-weight: 900;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            #paymentList {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            .payment-card {
+                height: 320px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -258,21 +252,20 @@
             <div id="cartItemsList"></div>
             
            <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
-    <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
-    <select id="userCity">
-        <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="المثنى">المثنى</option><option value="كركوك">كركوك</option><option value="صلاح الدين">صلاح الدين</option><option value="دهوك">دهوك</option><option value="السليمانية">السليمانية</option><option value="القادسية">القادسية</option>
-    </select>
+                <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
+                <select id="userCity">
+                    <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="نينوى">نينوى</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="ميسان">ميسان</option><option value="واسط">واسط</option><option value="المثنى">المثنى</option><option value="كركوك">كركوك</option><option value="صلاح الدين">صلاح الدين</option><option value="دهوك">دهوك</option><option value="السليمانية">السليمانية</option><option value="القادسية">القادسية</option>
+                </select>
 
-    <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">هل تحتاج خدمة تركيب؟</label>
-    <select id="userInstall">
-        <option value="بدون تركيب">لا، بدون تركيب</option>
-        <option value="مع التركيب">نعم، أحتاج تركيب</option>
-    </select>
+                <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">هل تحتاج خدمة تركيب؟</label>
+                <select id="userInstall">
+                    <option value="بدون تركيب">لا، بدون تركيب</option>
+                    <option value="مع التركيب">نعم، أحتاج تركيب</option>
+                </select>
 
-    <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
-    <select id="userPayment">
-        </select>
-</div>
+                <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
+                <select id="userPayment"></select>
+            </div>
 
             <div style="margin-top:20px;">
                 <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
@@ -286,7 +279,7 @@
             <section class="hero">
                 <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
                 <div class="hero-btns">
-                    <button onclick="document.getElementById('categories').scrollIntoView()" class="btn-gold">احسب سعر ستائرك الآن</button>
+                    <button onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-gold">احسب سعر ستائرك الآن</button>
                     <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
                 </div>
                 <div class="social-hero">
@@ -300,7 +293,7 @@
             </section>
             <section id="categories" style="padding: 40px 0;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
-                <div id="categoriesList" style="display:flex; overflow-x:auto; gap:20px; padding:20px 5%; scrollbar-width:none;"></div>
+                <div id="categoriesList"></div>
             </section>
             <section class="features-section">
                 <h2 style="margin-bottom:35px; font-weight:900;">لماذا شبابيك؟</h2>
@@ -313,98 +306,224 @@
             </section>
         </div>
 
-       <div id="doctorPage" class="page">
-    <div style="padding: 40px 5%; max-width: 800px; margin: auto;">
-        <h2 style="text-align:center; font-weight:900; margin-bottom:30px;">دكتور ديكور</h2>
-        
-        <div id="ai-consultant" style="background: #fdfaf5; border: 2px solid var(--gold); padding: 25px; border-radius: 20px; margin-bottom: 40px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
-            <div id="avatar-container" style="margin-bottom: 15px; height: 160px; display: flex; align-items: center; justify-content: center;">
-                <img id="drAvatar" src="https://i.ibb.co/q3z1RscN/Neutral-removebg-preview.png" style="height: 100%; object-fit: contain; transition: 0.4s ease-in-out;">
-            </div>
-            <h3 id="drStatus" style="font-weight: 900; color: var(--brown); margin-bottom: 5px;">أهلاً بك! أنا دكتور ديكور</h3>
-            <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">التقط صورة لغرفتك وسأقترح عليك الستارة المثالية!</p>
-
-            <input type="file" id="aiCamera" accept="image/*" capture="environment" style="display: none;" onchange="handleDrImage(this)">
-            <button onclick="document.getElementById('aiCamera').click()" class="btn-gold" style="width: 100%; padding: 18px;">📸 استشارة بالكاميرا</button>
-            
-            <div id="aiResponse" style="margin-top: 20px; text-align: right; line-height: 1.8;"></div>
-        </div>
-
-        <div id="docSectionsNav" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:30px;"></div>
-    </div>
-</div>
-
-        <div id="docInsidePage" class="page">
-            <div style="padding: 40px 5%; max-width: 600px; margin: auto;">
-                <h2 id="currentDocTitle" style="text-align:center; margin-bottom:30px; color:var(--gold);"></h2>
-                <div id="docTopicsList"></div>
-                <button onclick="showPage('doctorPage')" class="btn-gold" style="width:100%; margin-top:20px; background:var(--brown);">العودة</button>
-            </div>
-        </div>
-
         <div id="adminPanel" class="page">
             <div style="padding: 40px 5%; max-width: 900px; margin: auto;">
                 <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">لوحة الإدارة السحابية</h2>
                 <div class="admin-box">
                     <h3>١. إدارة الأقسام</h3>
                     <input type="text" id="admCatName" placeholder="اسم القسم">
-                   <input type="file" id="admCatFile" accept="image/*" style="margin: 10px 0; width: 100%;">
-<button onclick="publishCat()" class="btn-gold">حفظ القسم</button>
-
+                    <input type="file" id="admCatFile" accept="image/*" style="margin: 10px 0; width: 100%;">
+                    <button onclick="publishCat()" class="btn-gold">حفظ القسم</button>
                     <table class="admin-table"><tbody id="admListCats"></tbody></table>
                 </div>
                 <div class="admin-box">
                     <h3>٢. إدارة المنتجات</h3>
-                   <select id="admProdCatSelect"></select>
+                    <select id="admProdCatSelect"></select>
                     <input type="text" id="admProdName" placeholder="اسم الموديل">
                     <input type="number" id="admProdPrice" placeholder="السعر">
                     <input type="file" id="admProdFile" accept="image/*" style="margin: 10px 0; width: 100%;">
-<button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
+                    <button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
                     <table class="admin-table"><tbody id="admListProds"></tbody></table>
-                    <h3>٤. طرق الدفع</h3>
+                </div>
+                <div class="admin-box">
+                    <h3>٣. إدارة طرق الدفع</h3>
                     <input type="text" id="admPayName" placeholder="اسم الطريقة">
                     <input type="file" id="admPayFile" accept="image/*" style="margin: 10px 0; width: 100%;">
-<button onclick="publishPayment()" class="btn-gold">حفظ طريقة الدفع</button>
+                    <button onclick="publishPayment()" class="btn-gold">حفظ طريقة الدفع</button>
                     <table class="admin-table"><tbody id="admListPays"></tbody></table>
                 </div>
             </div>
         </div>
 
-        <div id="aboutPage" class="page"><div style="padding: 60px 5%; max-width: 1100px; margin: auto;"><h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2><p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.
-
-نقدم مجموعة واسعة من الستائر تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية. كما نوفر خدمة التفصيل حسب المقاسات وخدمة التركيب المنزلي بأيدي فنيين متخصصين.
-
-رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق، ونسعى دائماً لتحقيق رضا عملائنا من خلال الجودة العالية والأسعار المنافسة والخدمة المتميزة....</p><div class="stat-grid"><div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div><div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div><div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div></div></div></div>
-        <div id="contactPage" class="page"><div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;"><h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2><div><i class="fa-solid fa-phone"></i> 07883002797</div><div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div><a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a></div></div>
-        <div id="categoryView" class="page"><h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2><div id="catGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:25px; padding:0 5%;"></div></div>
-        <div id="productCalculator" class="page"><div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;"><img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;"><h2 id="pName"></h2><div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div><input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;"><button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button><button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button></div></div>
-       <div id="paymentPage" class="page">
-    <div style="padding: 40px 5%; text-align: center;">
-        <h2 style="font-weight:900; margin-bottom:30px;">طرق الدفع الآمنة</h2>
-        <div id="paymentList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 20px;"></div>
-    </div>
-</div>
+        <div id="aboutPage" class="page">
+            <div style="padding: 60px 5%; max-width: 1100px; margin: auto;">
+                <h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">شبابيك للستائر</h2>
+                <p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة. نقدم مجموعة واسعة من الستائر تشمل البلاك أوت والشفافة والديكورية وستائر الرول، بأقمشة مستوردة من أفضل المصانع العالمية. كما نوفر خدمة التفصيل حسب المقاسات وخدمة التركيب المنزلي بأيدي فنيين متخصصين. رؤيتنا هي أن نكون الوجهة الأولى للستائر الفاخرة في العراق، ونسعى دائماً لتحقيق رضا عملائنا من خلال الجودة العالية والأسعار المنافسة والخدمة المتميزة.</p>
+                <div class="stat-grid">
+                    <div class="stat-card"><span class="stat-num">500+</span><p>عميل سعيد</p></div>
+                    <div class="stat-card"><span class="stat-num">50+</span><p>تصميم حصري</p></div>
+                    <div class="stat-card"><span class="stat-num">10+</span><p>سنوات خبرة</p></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="contactPage" class="page">
+            <div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;">
+                <h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">تواصل معنا</h2>
+                <div><i class="fa-solid fa-phone"></i> 07883002797</div>
+                <div style="margin-top:10px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد</div>
+                <a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px;">مراسلة واتساب مباشر</a>
+            </div>
+        </div>
+        
+        <div id="categoryView" class="page">
+            <h2 id="catTitle" style="text-align:center; padding:40px 0; font-weight:900;"></h2>
+            <div id="catGrid"></div>
+        </div>
+        
+        <div id="productCalculator" class="page">
+            <div style="padding:40px 5%; max-width:650px; margin:auto; text-align:center;">
+                <img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;">
+                <h2 id="pName"></h2>
+                <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div>
+                <input type="number" id="hIn" placeholder="أدخل الطول بالمتر" style="text-align:center;">
+                <button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button>
+                <button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button>
+            </div>
+        </div>
+        
+        <div id="paymentPage" class="page">
+            <div style="padding: 40px 5%; text-align: center;">
+                <h2 style="font-weight:900; margin-bottom:30px;">طرق الدفع الآمنة</h2>
+                <div id="paymentList"></div>
+            </div>
+        </div>
     </main>
 
     <div class="footer-cta">
         <h2>جاهز لتجديد ستائر منزلك؟</h2>
         <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
             <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView()" class="btn-footer-prod">تصفح المنتجات</a>
+            <a onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-footer-prod">تصفح المنتجات</a>
         </div>
     </div>
 
-    <footer><div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div><p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p></footer>
-<script>
-// 1. تهيئة Firebase
-const firebaseConfig = { 
-    apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
-    authDomain: "shababekcurtain.firebaseapp.com", 
-    databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
-    projectId: "shababekcurtain" 
-};
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+    <footer>
+        <div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div>
+        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
+    </footer>
 
-// متغيرات عامة
-const CLOUD_NAME = "dnkuwf8q9", UPLOAD_PRESET = "afsx4w9k",
+    <script>
+        // تهيئة Firebase
+        const firebaseConfig = { 
+            apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
+            authDomain: "shababekcurtain.firebaseapp.com", 
+            databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
+            projectId: "shababekcurtain" 
+        };
+        
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // متغيرات عامة
+        const CLOUD_NAME = "dnkuwf8q9";
+        const UPLOAD_PRESET = "afsx4w9k";
+        const LOGO_ID = "shababek_logo";
+        let currentProduct = null;
+        let cart = [];
+        let adminClicks = 0;
+        let clickTimer;
+
+        // دالة جلب القيم
+        function getValue(id) { 
+            const el = document.getElementById(id);
+            return el ? el.value : ""; 
+        }
+
+        // نظام التنقل بين الصفحات
+        function showPage(pageId, pushToHistory = true) {
+            // إخفاء كل الصفحات
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // إظهار الصفحة المطلوبة
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo(0, 0);
+                
+                if (pushToHistory) {
+                    history.pushState({ page: pageId }, '', `#${pageId}`);
+                }
+            }
+        }
+
+        // معالجة النقر على الشعار (الدخول للوحة التحكم)
+        function handleLogoClick() {
+            adminClicks++;
+            clearTimeout(clickTimer);
+            
+            if (adminClicks >= 5) {
+                adminClicks = 0;
+                const pass = prompt("أدخل رمز الدخول السحابي لشبابيك:");
+                if (pass === "8496") {
+                    showPage('adminPanel');
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 100, spread: 70 });
+                    }
+                } else if (pass !== null) { 
+                    alert("الرمز غير صحيح!"); 
+                }
+                return;
+            }
+            
+            clickTimer = setTimeout(() => {
+                if (adminClicks === 1) showPage('homePage');
+                adminClicks = 0;
+            }, 400);
+        }
+
+        // رفع الصور إلى Cloudinary
+        async function uploadImage(file) {
+            if (!file) return "";
+            
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", UPLOAD_PRESET);
+            
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { 
+                    method: "POST", 
+                    body: formData 
+                });
+                const data = await res.json();
+                return data.secure_url;
+            } catch (error) {
+                console.error("خطأ في رفع الصورة:", error);
+                alert("فشل في رفع الصورة");
+                return "";
+            }
+        }
+
+        // إضافة علامة مائية
+        function getWatermarkedUrl(url) {
+            if (!url || !url.includes("cloudinary.com")) return url;
+            return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
+        }
+
+        // نشر قسم جديد
+        async function publishCat() {
+            const file = document.getElementById('admCatFile').files[0];
+            const name = getValue('admCatName');
+            
+            if(!file || !name) {
+                alert("أكمل بيانات القسم");
+                return;
+            }
+            
+            const url = await uploadImage(file);
+            if (url) {
+                db.ref('categories').push({name: name, img: url}).then(() => {
+                    alert("تم إضافة القسم بنجاح");
+                    document.getElementById('admCatName').value = "";
+                    document.getElementById('admCatFile').value = "";
+                });
+            }
+        }
+
+        // نشر منتج جديد
+        async function publishProd() {
+            const file = document.getElementById('admProdFile').files[0];
+            const cat = document.getElementById('admProdCatSelect').value;
+            const name = getValue('admProdName');
+            const price = getValue('admProdPrice');
+            
+            if(!file || !name || !price || cat === "اختر قسم المنتجات") {
+                alert("أكمل بيانات المنتج");
+                return;
+            }
+            
+            const url = await uploadImage(file);
+            if (url) {
+                db.ref('products').
