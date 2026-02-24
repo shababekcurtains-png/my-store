@@ -698,12 +698,17 @@ window.addEventListener('load', () => {
 
     // عرض الكروت في صفحة طرق الدفع للزبائن (كما فعلنا سابقاً)
     if(userList) {
-        userList.innerHTML = Object.values(data).map(pay => `
-            <div class="cat-card-new" style="height: 180px; background: white; cursor: default;">
-                <img src="${pay.img}" style="width:100%; height:100%; object-fit: contain; padding: 20px;">
-                <div style="position:absolute; bottom:0; width:100%; background:var(--brown); color:white; padding:8px; font-weight:900; text-align:center;">${pay.name}</div>
-            </div>`).join('');
-    }
+    userList.innerHTML = Object.values(data).map(pay => `
+        <div class="cat-card-new" onclick="void(0)">
+            <img src="${pay.img}" style="width:100%;height:100%;object-fit:cover;">
+            <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+                        background:var(--gold);color:white;
+                        padding:10px 25px;border-radius:12px;font-weight:900;">
+                ${pay.name}
+            </div>
+        </div>
+    `).join('');
+}
 });
     // إدارة التنقل والهاش
     const hash = location.hash.replace('#', '');
