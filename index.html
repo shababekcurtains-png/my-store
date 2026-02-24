@@ -514,7 +514,66 @@ function openCalc(p) {
     document.getElementById('pPrice').innerText = parseInt(p.price).toLocaleString(); 
     document.getElementById('pImg').src = getWatermarkedUrl(p.img); 
 }
+// --- دالة البحث الشاملة (لا تلمس السلة) ---
+async function handleSearch() {
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    const resBox = document.getElementById('searchRes');
+    
+    // إذا كان المكتوب أقل من حرفين أخفِ النتائج
+    if (query.length < 2) { 
+        resBox.style.display = 'none'; 
+        return; 
+    }
 
+    // جلب البيانات
+    const [prodsSnap, topicsSnap] = await Promise.all([
+        db.ref('products').once('value'),
+        db.ref('forumTopics').once('value')
+    ]);
+
+    const prods = prodsSnap.val() || {};
+    const topics = topicsSnap.val() || {};
+    let html = "";
+
+    // البحث في المنتجات (عرض الاسم والقسم)
+    Object.values(prods).filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)).forEach(p => {
+        html += `
+            <div style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee;cursor:pointer;" 
+                 onclick='openCalc(${JSON.stringify(p)}); document.getElementById("searchRes").style.display="none";'>
+                <img src="${p.img.split(',')[0]}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
+                <div>
+                    <div style="font-weight:bold;font-size:0.9rem;">${p.name}</div>
+                    <div style="font-size:0.7rem;color:var(--gold);">${p.category}</div>
+                </div>
+            </div>`;
+    });
+
+    // البحث في مواضيع المنتدى
+    Object.values(topics).filter(t => t.title.toLowerCase().includes(query)).forEach(t => {
+        html += `
+            <div style="padding:12px;border-bottom:1px solid #eee;cursor:pointer;" onclick="window.location.href='ai.html'">
+                <div style="font-weight:bold;font-size:0.9rem;color:var(--brown);">${t.title}</div>
+                <div style="font-size:0.7rem;color:#28a745;">موضوع في المنتدى</div>
+            </div>`;
+    });
+
+    // إظهار الصندوق بالنتائج
+    if (html !== "") {
+        resBox.innerHTML = html;
+        resBox.style.display = 'block';
+    } else {
+        resBox.innerHTML = `<div style="padding:15px;text-align:center;color:#999;">لا توجد نتائج مطابقة</div>`;
+        resBox.style.display = 'block';
+    }
+}
+
+// دالة إغلاق البحث عند الضغط في أي مكان خارج الحقل
+document.addEventListener('click', (e) => {
+    const searchBox = document.querySelector('.search-box');
+    if (!searchBox.contains(e.target)) {
+        document.getElementById('searchRes').style.display = 'none';
+    }
+});
 function addToCart() {
     const h = v('hIn'); if(!h || h <= 0) return alert("أدخل الطول");
     cart.push({ n: cur.name, p: Math.round(h * cur.price), img: getWatermarkedUrl(cur.img) });
