@@ -325,7 +325,7 @@
             overflow: hidden;
         }
         
-        /* الصورة الرئيسية - حجم مناسب */
+        /* الصورة الرئيسية - بدون زوم */
         .alibaba-main-image-container {
             background: #f5f5f5;
             border-radius: 15px;
@@ -346,13 +346,6 @@
             width: auto;
             height: auto;
             object-fit: contain;
-            cursor: crosshair;
-            transition: transform 0.2s;
-        }
-        
-        .alibaba-main-image.zoomed {
-            transform: scale(2);
-            cursor: zoom-out;
         }
         
         /* معرض الصور المصغرة - أفقي */
@@ -415,24 +408,6 @@
             font-size: 0.7rem;
         }
         
-        /* عدسة التكبير */
-        .alibaba-zoom-lens {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border: 3px solid var(--gold);
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            pointer-events: none;
-            display: none;
-            z-index: 10;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-        
-        .alibaba-main-image-container:hover .alibaba-zoom-lens {
-            display: block;
-        }
-        
         /* أزرار التنقل */
         .alibaba-slide-nav {
             position: absolute;
@@ -464,34 +439,6 @@
         
         .alibaba-slide-nav.next {
             right: 10px;
-        }
-        
-        /* زر التشغيل التلقائي */
-        .alibaba-auto-play-toggle {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: var(--gold);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: 0.3s;
-        }
-        
-        .alibaba-auto-play-toggle.paused {
-            background: #666;
-        }
-        
-        .alibaba-auto-play-toggle:hover {
-            transform: scale(1.1);
         }
         
         /* الجانب الأيسر - معلومات المنتج - بدون تمرير */
@@ -669,7 +616,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         
-        .alibaba-buy-now-btn {
+        .alibaba-checkout-btn {
             background: white;
             color: var(--brown);
             border: 2px solid var(--gold);
@@ -685,7 +632,7 @@
             gap: 8px;
         }
         
-        .alibaba-buy-now-btn:hover {
+        .alibaba-checkout-btn:hover {
             background: var(--gold);
             color: white;
         }
@@ -799,19 +746,13 @@
             <div class="alibaba-viewer-body">
                 <!-- الجانب الأيمن: عرض الوسائط -->
                 <div class="alibaba-viewer-media">
-                    <!-- الصورة الرئيسية -->
+                    <!-- الصورة الرئيسية - بدون زوم -->
                     <div class="alibaba-main-image-container" id="alibabaMainImageContainer">
                         <img id="alibabaMainImage" class="alibaba-main-image" src="" alt="">
-                        <div class="alibaba-zoom-lens" id="alibabaZoomLens"></div>
                         
                         <!-- أزرار التنقل بين الصور -->
                         <button class="alibaba-slide-nav prev" onclick="changeAlibabaSlide(alibabaViewerData.currentIndex - 1)"><i class="fas fa-chevron-right"></i></button>
                         <button class="alibaba-slide-nav next" onclick="changeAlibabaSlide(alibabaViewerData.currentIndex + 1)"><i class="fas fa-chevron-left"></i></button>
-                        
-                        <!-- زر التشغيل التلقائي -->
-                        <button class="alibaba-auto-play-toggle" id="alibabaAutoPlayToggle" onclick="toggleAlibabaAutoPlay()">
-                            <i class="fas fa-play"></i>
-                        </button>
                     </div>
                     
                     <!-- المعرض المصغر -->
@@ -865,9 +806,9 @@
                             <i class="fas fa-cart-plus"></i>
                             إضافة إلى السلة
                         </button>
-                        <button class="alibaba-buy-now-btn" onclick="buyNowFromAlibabaViewer()">
-                            <i class="fas fa-bolt"></i>
-                            شراء الآن
+                        <button class="alibaba-checkout-btn" onclick="checkoutFromAlibabaViewer()">
+                            <i class="fas fa-credit-card"></i>
+                            إتمام الطلب
                         </button>
                     </div>
                 </div>
@@ -1438,7 +1379,6 @@
             alibabaViewerData.currentIndex = 0;
             alibabaViewerData.isOpen = true;
             alibabaViewerData.isZoomed = false;
-            alibabaViewerData.isAutoPlaying = false;
             
             // تجهيز وسائط المنتج المتعددة
             alibabaViewerData.mediaItems = [];
@@ -1488,10 +1428,8 @@
             
             viewer.classList.add('active');
             
-            // إعادة تعيين زر التشغيل التلقائي
-            const toggle = document.getElementById('alibabaAutoPlayToggle');
-            toggle.classList.remove('paused');
-            toggle.innerHTML = '<i class="fas fa-play"></i>';
+            // بدء التشغيل التلقائي فوراً
+            startAlibabaAutoPlay();
         }
 
         // تحديث المعرض المصغر
@@ -1556,8 +1494,6 @@
             
             // تحديث الثمبنايل
             updateThumbnailGallery();
-            
-            resetAlibabaZoom();
         }
 
         // حساب الإجمالي
@@ -1592,83 +1528,34 @@
             alert("تمت الإضافة للسلة!");
         }
 
-        // شراء الآن - يضيف للسلة ويفتحها فقط
-        function buyNowFromAlibabaViewer() {
-            addFromAlibabaViewer();
+        // إتمام الطلب - يضيف للسلة ويفتحها مباشرة (دون إضافة مزدوجة)
+        function checkoutFromAlibabaViewer() {
+            if (!alibabaViewerData.product) return;
+            
+            const meters = parseFloat(document.getElementById('alibabaMetersInput').value);
+            if (!meters || meters <= 0) {
+                alert("الرجاء إدخال عدد الأمتار");
+                return;
+            }
+            
+            const totalPrice = meters * alibabaViewerData.product.price;
+            
+            cart.push({ 
+                n: alibabaViewerData.product.name, 
+                p: Math.round(totalPrice), 
+                img: getWatermarkedUrl(alibabaViewerData.product.img || (alibabaViewerData.product.images && alibabaViewerData.product.images[0])),
+                length: meters
+            });
+            
+            document.getElementById('globalCartCount').innerText = cart.length; 
+            localStorage.setItem('shababek_cart', JSON.stringify(cart));
+            
+            // إغلاق المستعرض وفتح السلة
             closeAlibabaViewer();
             toggleCartModal();
         }
 
-        // إعادة تعيين التكبير
-        function resetAlibabaZoom() {
-            alibabaViewerData.isZoomed = false;
-            const mainImage = document.getElementById('alibabaMainImage');
-            if (mainImage && mainImage.tagName === 'IMG') {
-                mainImage.classList.remove('zoomed');
-                mainImage.style.transform = 'scale(1)';
-            }
-            document.getElementById('alibabaZoomLens').style.display = 'none';
-        }
-
-        // إعداد التكبير
-        function setupAlibabaZoom() {
-            const container = document.getElementById('alibabaMainImageContainer');
-            const mainImage = document.getElementById('alibabaMainImage');
-            const lens = document.getElementById('alibabaZoomLens');
-            
-            if (!mainImage || mainImage.tagName !== 'IMG') return;
-            
-            container.addEventListener('mousemove', (e) => {
-                if (alibabaViewerData.isZoomed) return;
-                
-                const rect = container.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                lens.style.display = 'block';
-                lens.style.left = (x - 60) + 'px';
-                lens.style.top = (y - 60) + 'px';
-                
-                const percentX = (x / rect.width) * 100;
-                const percentY = (y / rect.height) * 100;
-                mainImage.style.transformOrigin = `${percentX}% ${percentY}%`;
-                mainImage.style.transform = 'scale(2)';
-            });
-            
-            container.addEventListener('mouseleave', () => {
-                if (!alibabaViewerData.isZoomed) {
-                    lens.style.display = 'none';
-                    mainImage.style.transform = 'scale(1)';
-                }
-            });
-            
-            container.addEventListener('click', () => {
-                alibabaViewerData.isZoomed = !alibabaViewerData.isZoomed;
-                if (alibabaViewerData.isZoomed) {
-                    mainImage.classList.add('zoomed');
-                    lens.style.display = 'none';
-                } else {
-                    mainImage.classList.remove('zoomed');
-                    mainImage.style.transform = 'scale(1)';
-                }
-            });
-        }
-
-        // التمرير التلقائي
-        function toggleAlibabaAutoPlay() {
-            const toggle = document.getElementById('alibabaAutoPlayToggle');
-            
-            if (alibabaViewerData.isAutoPlaying) {
-                stopAlibabaAutoPlay();
-                toggle.classList.add('paused');
-                toggle.innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                startAlibabaAutoPlay();
-                toggle.classList.remove('paused');
-                toggle.innerHTML = '<i class="fas fa-pause"></i>';
-            }
-        }
-
+        // التمرير التلقائي - يبدأ تلقائياً
         function startAlibabaAutoPlay() {
             if (alibabaViewerData.mediaItems.length <= 1) return;
             
@@ -1692,8 +1579,6 @@
 
         // إعداد أحداث المستعرض
         function setupAlibabaViewerEvents() {
-            setupAlibabaZoom();
-            
             // تحديث الإجمالي عند تغيير عدد الأمتار
             document.getElementById('alibabaMetersInput').addEventListener('input', calculateAlibabaTotal);
             
