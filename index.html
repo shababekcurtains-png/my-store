@@ -1528,29 +1528,9 @@
             alert("تمت الإضافة للسلة!");
         }
 
-        // إتمام الطلب - يضيف للسلة ويفتحها مباشرة (دون إضافة مزدوجة)
+        // إتمام الطلب - يفتح السلة فقط دون إضافة المنتج
         function checkoutFromAlibabaViewer() {
-            if (!alibabaViewerData.product) return;
-            
-            const meters = parseFloat(document.getElementById('alibabaMetersInput').value);
-            if (!meters || meters <= 0) {
-                alert("الرجاء إدخال عدد الأمتار");
-                return;
-            }
-            
-            const totalPrice = meters * alibabaViewerData.product.price;
-            
-            cart.push({ 
-                n: alibabaViewerData.product.name, 
-                p: Math.round(totalPrice), 
-                img: getWatermarkedUrl(alibabaViewerData.product.img || (alibabaViewerData.product.images && alibabaViewerData.product.images[0])),
-                length: meters
-            });
-            
-            document.getElementById('globalCartCount').innerText = cart.length; 
-            localStorage.setItem('shababek_cart', JSON.stringify(cart));
-            
-            // إغلاق المستعرض وفتح السلة
+            // فقط يغلق المستعرض ويفتح السلة
             closeAlibabaViewer();
             toggleCartModal();
         }
