@@ -228,341 +228,14 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== مستعرض المنتجات المتطور (القديم) ===== */
-        .product-viewer-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .product-viewer-container.active {
-            display: flex;
-            opacity: 1;
-        }
-        
-        .viewer-content {
-            position: relative;
-            width: 90%;
-            max-width: 1200px;
-            height: 90vh;
-            background: #111;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        
-        .viewer-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--gold);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 2rem;
-            cursor: pointer;
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        
-        .viewer-close:hover {
-            transform: scale(1.1);
-            background: var(--brown);
-        }
-        
-        .viewer-main {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .viewer-slides {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.3s ease;
-        }
-        
-        .viewer-slide {
-            flex: 0 0 100%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .viewer-slide img,
-        .viewer-slide video {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            cursor: crosshair;
-            transition: transform 0.1s ease;
-            user-select: none;
-        }
-        
-        .viewer-slide img.zoomed,
-        .viewer-slide video.zoomed {
-            transform: scale(2);
-            cursor: zoom-out;
-        }
-        
-        /* عدسة التكبير */
-        .zoom-lens {
-            position: absolute;
-            border: 3px solid var(--gold);
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            pointer-events: none;
-            z-index: 10;
-            display: none;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        }
-        
-        .viewer-slide:hover .zoom-lens {
-            display: block;
-        }
-        
-        /* أزرار التنقل */
-        .viewer-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 60px;
-            background: var(--gold);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 2rem;
-            cursor: pointer;
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        
-        .viewer-nav:hover {
-            background: var(--brown);
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        .viewer-nav.prev {
-            left: 20px;
-        }
-        
-        .viewer-nav.next {
-            right: 20px;
-        }
-        
-        /* مؤشر التقدم */
-        .viewer-progress {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 10001;
-            background: rgba(0,0,0,0.5);
-            padding: 15px 30px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .progress-dot {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: 0.3s;
-            opacity: 0.7;
-        }
-        
-        .progress-dot.active {
-            border-color: var(--gold);
-            transform: scale(1.1);
-            opacity: 1;
-        }
-        
-        .progress-dot img,
-        .progress-dot video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .progress-dot.video-thumb {
-            position: relative;
-        }
-        
-        .progress-dot.video-thumb::after {
-            content: '▶';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            background: rgba(0,0,0,0.5);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-        }
-        
-        /* معلومات المنتج */
-        .viewer-info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            border: 1px solid var(--gold);
-        }
-        
-        .viewer-info h3 {
-            font-size: 1.3rem;
-            font-weight: 900;
-        }
-        
-        .viewer-info .price {
-            color: var(--gold);
-            font-weight: 900;
-            font-size: 1.3rem;
-        }
-        
-        .viewer-info .add-to-cart {
-            background: var(--gold);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
-        .viewer-info .add-to-cart:hover {
-            background: white;
-            color: var(--brown);
-        }
-        
-        /* التمرير التلقائي */
-        .auto-play-toggle {
-            position: absolute;
-            bottom: 100px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--gold);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-        
-        .auto-play-toggle.paused {
-            background: #666;
-        }
-        
-        /* للهواتف */
-        @media (max-width: 768px) {
-            .viewer-nav {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-            
-            .viewer-progress {
-                bottom: 20px;
-                padding: 10px 15px;
-                gap: 8px;
-            }
-            
-            .progress-dot {
-                width: 35px;
-                height: 35px;
-            }
-            
-            .viewer-info {
-                flex-direction: column;
-                align-items: flex-start;
-                top: 10px;
-                left: 10px;
-                padding: 10px 15px;
-                gap: 10px;
-            }
-            
-            .viewer-info h3 {
-                font-size: 1rem;
-            }
-            
-            .viewer-info .price {
-                font-size: 1rem;
-            }
-            
-            .viewer-info .add-to-cart {
-                padding: 8px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .auto-play-toggle {
-                bottom: 80px;
-                right: 15px;
-                width: 40px;
-                height: 40px;
-            }
-        }
-        
-        /* ===== مستعرض المنتجات بنظام Alibaba ===== */
+        /* ===== مستعرض المنتجات بنظام Alibaba - شاشة كاملة بدون تمرير ===== */
         .alibaba-viewer-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
             z-index: 10000;
             display: none;
             justify-content: center;
@@ -577,37 +250,36 @@
         }
         
         .alibaba-viewer-content {
-            width: 95%;
-            max-width: 1400px;
-            height: 95vh;
+            width: 100vw;
+            height: 100vh;
             background: white;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
         
-        /* رأس المستعرض */
+        /* رأس المستعرض - تصغير الحجم */
         .alibaba-viewer-header {
             background: var(--brown);
             color: white;
-            padding: 15px 25px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            height: 60px;
+            flex-shrink: 0;
         }
         
         .alibaba-viewer-header h2 {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 900;
             margin: 0;
         }
         
         .alibaba-viewer-header .product-code {
             color: var(--gold);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
         .alibaba-viewer-close {
@@ -623,6 +295,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
         
         .alibaba-viewer-close:hover {
@@ -630,33 +303,38 @@
             background: var(--brown);
         }
         
-        /* الجسم الرئيسي */
+        /* الجسم الرئيسي - شاشة كاملة بدون تمرير */
         .alibaba-viewer-body {
             display: flex;
             flex: 1;
+            min-height: 0;
+            height: calc(100vh - 60px);
             overflow: hidden;
             background: #f8f8f8;
         }
         
-        /* الجانب الأيمن - عرض الوسائط */
+        /* الجانب الأيمن - عرض الوسائط - بدون تمرير */
         .alibaba-viewer-media {
             flex: 1.5;
-            padding: 20px;
+            padding: 15px;
             background: white;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            min-height: 0;
+            height: 100%;
+            overflow: hidden;
         }
         
-        /* الصورة الرئيسية */
+        /* الصورة الرئيسية - حجم مناسب */
         .alibaba-main-image-container {
             background: #f5f5f5;
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border: 1px solid #eee;
             position: relative;
-            height: 400px;
+            height: calc(100% - 100px);
+            min-height: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -665,6 +343,8 @@
         .alibaba-main-image {
             max-width: 100%;
             max-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: contain;
             cursor: crosshair;
             transition: transform 0.2s;
@@ -675,19 +355,21 @@
             cursor: zoom-out;
         }
         
-        /* معرض الصور المصغرة */
+        /* معرض الصور المصغرة - أفقي */
         .alibaba-thumbnail-gallery {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             overflow-x: auto;
-            padding: 10px 0;
+            padding: 5px 0;
             scrollbar-width: thin;
+            height: 80px;
+            flex-shrink: 0;
         }
         
         .alibaba-thumbnail {
-            width: 80px;
-            height: 80px;
-            border-radius: 12px;
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
             overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
@@ -724,20 +406,20 @@
             transform: translate(-50%, -50%);
             color: white;
             background: rgba(0,0,0,0.5);
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
         
         /* عدسة التكبير */
         .alibaba-zoom-lens {
             position: absolute;
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border: 3px solid var(--gold);
             border-radius: 50%;
             background: rgba(255,255,255,0.2);
@@ -751,37 +433,103 @@
             display: block;
         }
         
-        /* الجانب الأيسر - معلومات المنتج */
+        /* أزرار التنقل */
+        .alibaba-slide-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gold);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        
+        .alibaba-slide-nav:hover {
+            background: var(--brown);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .alibaba-slide-nav.prev {
+            left: 10px;
+        }
+        
+        .alibaba-slide-nav.next {
+            right: 10px;
+        }
+        
+        /* زر التشغيل التلقائي */
+        .alibaba-auto-play-toggle {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--gold);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        
+        .alibaba-auto-play-toggle.paused {
+            background: #666;
+        }
+        
+        .alibaba-auto-play-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        /* الجانب الأيسر - معلومات المنتج - بدون تمرير */
         .alibaba-viewer-info {
             flex: 1;
-            padding: 30px;
+            padding: 20px;
             background: white;
             border-left: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            height: 100%;
             overflow-y: auto;
         }
         
         .alibaba-product-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 900;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: var(--brown);
-            line-height: 1.3;
+            line-height: 1.2;
         }
         
         .alibaba-product-meta {
             display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
         }
         
         .alibaba-meta-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .alibaba-meta-item i {
@@ -791,20 +539,20 @@
         /* سعر المنتج */
         .alibaba-price-section {
             background: #faf5f0;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
             border: 1px solid #f0e0d0;
         }
         
         .alibaba-price-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
             margin-bottom: 5px;
         }
         
         .alibaba-price {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 900;
             color: var(--gold);
             display: flex;
@@ -813,52 +561,47 @@
         }
         
         .alibaba-price-unit {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #999;
             font-weight: normal;
-        }
-        
-        .alibaba-price-note {
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 5px;
         }
         
         /* قسم عدد الأمتار */
         .alibaba-meters-section {
             background: #f8f8f8;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
             border: 1px solid #e0e0e0;
         }
         
         .alibaba-meters-label {
             font-weight: 900;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: var(--brown);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
+            font-size: 0.95rem;
         }
         
         .alibaba-meters-label i {
             color: var(--gold);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         
         .alibaba-meters-input-group {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
         }
         
         .alibaba-meters-input {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1rem;
             font-family: 'Cairo', sans-serif;
             transition: 0.3s;
         }
@@ -870,14 +613,14 @@
         }
         
         .alibaba-meters-unit {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #666;
             font-weight: 900;
         }
         
         .alibaba-total-price {
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px dashed #ccc;
             display: flex;
             justify-content: space-between;
@@ -887,10 +630,11 @@
         .alibaba-total-label {
             font-weight: 900;
             color: var(--brown);
+            font-size: 0.95rem;
         }
         
         .alibaba-total-value {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 900;
             color: var(--gold);
         }
@@ -899,24 +643,24 @@
         .alibaba-action-buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 10px;
+            margin-top: 10px;
         }
         
         .alibaba-add-to-cart-btn {
             background: var(--gold);
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 10px;
             font-weight: 900;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .alibaba-add-to-cart-btn:hover {
@@ -929,58 +673,21 @@
             background: white;
             color: var(--brown);
             border: 2px solid var(--gold);
-            padding: 18px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 10px;
             font-weight: 900;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .alibaba-buy-now-btn:hover {
             background: var(--gold);
             color: white;
-        }
-        
-        /* خصائص المنتج */
-        .alibaba-specs-section {
-            margin-top: 30px;
-        }
-        
-        .alibaba-specs-title {
-            font-weight: 900;
-            margin-bottom: 15px;
-            color: var(--brown);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--gold);
-        }
-        
-        .alibaba-specs-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .alibaba-spec-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .alibaba-spec-label {
-            font-size: 0.8rem;
-            color: #999;
-        }
-        
-        .alibaba-spec-value {
-            font-weight: 700;
-            color: var(--brown);
         }
         
         /* للهواتف */
@@ -990,19 +697,25 @@
             }
             
             .alibaba-main-image-container {
-                height: 250px;
+                height: 300px;
             }
             
             .alibaba-product-title {
-                font-size: 1.4rem;
-            }
-            
-            .alibaba-specs-grid {
-                grid-template-columns: 1fr;
+                font-size: 1.2rem;
             }
             
             .alibaba-viewer-header h2 {
                 font-size: 1rem;
+            }
+            
+            .alibaba-slide-nav {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .alibaba-thumbnail {
+                width: 60px;
+                height: 60px;
             }
         }
     </style>
@@ -1070,35 +783,7 @@
         </div>
     </div>
 
-    <!-- مستعرض المنتجات المتطور (القديم) - مخفي لكن محتفظ به للتوافق -->
-    <div class="product-viewer-container" id="productViewer" onclick="if(event.target===this) closeViewer()" style="display:none;">
-        <div class="viewer-content">
-            <button class="viewer-close" onclick="closeViewer()"><i class="fas fa-times"></i></button>
-            
-            <div class="viewer-info" id="viewerInfo">
-                <h3 id="viewerProductName"></h3>
-                <span class="price" id="viewerProductPrice"></span>
-                <button class="add-to-cart" onclick="addCurrentToCart()"><i class="fas fa-cart-plus"></i> أضف للسلة</button>
-            </div>
-            
-            <div class="viewer-main" id="viewerMain">
-                <div class="viewer-slides" id="viewerSlides" style="transform: translateX(0px);"></div>
-                
-                <div class="zoom-lens" id="zoomLens"></div>
-                
-                <button class="viewer-nav prev" onclick="navigateSlide(-1)"><i class="fas fa-chevron-right"></i></button>
-                <button class="viewer-nav next" onclick="navigateSlide(1)"><i class="fas fa-chevron-left"></i></button>
-                
-                <button class="auto-play-toggle" id="autoPlayToggle" onclick="toggleAutoPlay()">
-                    <i class="fas fa-play"></i>
-                </button>
-            </div>
-            
-            <div class="viewer-progress" id="viewerProgress"></div>
-        </div>
-    </div>
-
-    <!-- مستعرض المنتجات بنظام Alibaba (الجديد) -->
+    <!-- مستعرض المنتجات بنظام Alibaba - شاشة كاملة -->
     <div class="alibaba-viewer-container" id="alibabaViewer" onclick="if(event.target===this) closeAlibabaViewer()">
         <div class="alibaba-viewer-content">
             <!-- رأس المستعرض -->
@@ -1118,6 +803,15 @@
                     <div class="alibaba-main-image-container" id="alibabaMainImageContainer">
                         <img id="alibabaMainImage" class="alibaba-main-image" src="" alt="">
                         <div class="alibaba-zoom-lens" id="alibabaZoomLens"></div>
+                        
+                        <!-- أزرار التنقل بين الصور -->
+                        <button class="alibaba-slide-nav prev" onclick="changeAlibabaSlide(alibabaViewerData.currentIndex - 1)"><i class="fas fa-chevron-right"></i></button>
+                        <button class="alibaba-slide-nav next" onclick="changeAlibabaSlide(alibabaViewerData.currentIndex + 1)"><i class="fas fa-chevron-left"></i></button>
+                        
+                        <!-- زر التشغيل التلقائي -->
+                        <button class="alibaba-auto-play-toggle" id="alibabaAutoPlayToggle" onclick="toggleAlibabaAutoPlay()">
+                            <i class="fas fa-play"></i>
+                        </button>
                     </div>
                     
                     <!-- المعرض المصغر -->
@@ -1146,7 +840,6 @@
                             <span id="alibabaProductPrice">0</span>
                             <span class="alibaba-price-unit">د.ع</span>
                         </div>
-                        <div class="alibaba-price-note">السعر شامل الضريبة</div>
                     </div>
                     
                     <!-- قسم عدد الأمتار -->
@@ -1176,15 +869,6 @@
                             <i class="fas fa-bolt"></i>
                             شراء الآن
                         </button>
-                    </div>
-                    
-                    <!-- خصائص المنتج -->
-                    <div class="alibaba-specs-section">
-                        <div class="alibaba-specs-title">
-                            <i class="fas fa-clipboard-list"></i>
-                            المواصفات
-                        </div>
-                        <div class="alibaba-specs-grid" id="alibabaProductSpecs"></div>
                     </div>
                 </div>
             </div>
@@ -1234,12 +918,36 @@
                     <table class="admin-table"><tbody id="admListCats"></tbody></table>
                 </div>
                 <div class="admin-box">
-                    <h3>٢. إدارة المنتجات</h3>
+                    <h3>٢. إدارة المنتجات - صور وفيديوهات متعددة</h3>
                     <select id="admProdCatSelect"></select>
                     <input type="text" id="admProdName" placeholder="اسم الموديل">
                     <input type="number" id="admProdPrice" placeholder="السعر">
-                    <input type="file" id="admProdFile" accept="image/*" style="margin: 10px 0; width: 100%;">
-                    <input type="text" id="admProdVideo" placeholder="رابط فيديو (اختياري)">
+                    
+                    <!-- قسم رفع الصور المتعددة -->
+                    <div style="margin: 15px 0; padding: 15px; background: #eee; border-radius: 10px;">
+                        <label style="font-weight: bold; display: block; margin-bottom: 10px;">
+                            <i class="fas fa-images"></i> صور المنتج (يمكنك اختيار عدة صور)
+                        </label>
+                        <input type="file" id="admProdImages" accept="image/*" multiple style="margin: 10px 0; width: 100%;">
+                        <small style="color: #666;">يمكنك اختيار أكثر من صورة بالضغط على Ctrl أو Shift</small>
+                    </div>
+                    
+                    <!-- قسم روابط الفيديوهات المتعددة -->
+                    <div style="margin: 15px 0; padding: 15px; background: #eee; border-radius: 10px;">
+                        <label style="font-weight: bold; display: block; margin-bottom: 10px;">
+                            <i class="fas fa-video"></i> روابط فيديوهات متعددة
+                        </label>
+                        <div id="videoInputsContainer">
+                            <div class="video-input-group" style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <input type="url" class="admProdVideo" placeholder="رابط فيديو 1">
+                                <button type="button" onclick="addVideoInput()" style="background: var(--gold); color: white; border: none; width: 40px; border-radius: 8px; cursor: pointer;">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <small style="color: #666;">أضف روابط فيديوهات متعددة من يوتيوب</small>
+                    </div>
+                    
                     <button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
                     <table class="admin-table"><tbody id="admListProds"></tbody></table>
                 </div>
@@ -1428,33 +1136,88 @@
             }
         }
 
-        // نشر منتج جديد
+        // دالة إضافة حقل فيديو جديد
+        function addVideoInput() {
+            const container = document.getElementById('videoInputsContainer');
+            const newIndex = container.children.length + 1;
+            
+            const div = document.createElement('div');
+            div.className = 'video-input-group';
+            div.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px;';
+            
+            div.innerHTML = `
+                <input type="url" class="admProdVideo" placeholder="رابط فيديو ${newIndex}" style="flex: 1;">
+                <button type="button" onclick="removeVideoInput(this)" style="background: var(--red); color: white; border: none; width: 40px; border-radius: 8px; cursor: pointer;">
+                    <i class="fas fa-minus"></i>
+                </button>
+            `;
+            
+            container.appendChild(div);
+        }
+
+        // دالة حذف حقل فيديو
+        function removeVideoInput(button) {
+            if (document.querySelectorAll('.video-input-group').length > 1) {
+                button.closest('.video-input-group').remove();
+            } else {
+                alert("يجب أن يبقى حقل فيديو واحد على الأقل");
+            }
+        }
+
+        // نشر منتج جديد بصور وفيديوهات متعددة
         async function publishProd() {
-            const file = document.getElementById('admProdFile').files[0];
+            const files = document.getElementById('admProdImages').files;
             const cat = document.getElementById('admProdCatSelect').value;
             const name = getValue('admProdName');
             const price = getValue('admProdPrice');
-            const video = getValue('admProdVideo');
             
-            if(!file || !name || !price || cat === "اختر قسم المنتجات") {
-                alert("أكمل بيانات المنتج");
+            // جمع روابط الفيديوهات
+            const videoInputs = document.querySelectorAll('.admProdVideo');
+            const videos = [];
+            videoInputs.forEach(input => {
+                if (input.value.trim()) {
+                    videos.push(input.value.trim());
+                }
+            });
+            
+            if(files.length === 0 || !name || !price || cat === "اختر قسم المنتجات") {
+                alert("أكمل بيانات المنتج (صورة واحدة على الأقل)");
                 return;
             }
             
-            const url = await uploadImage(file);
-            if (url) {
+            // رفع الصور المتعددة إلى Cloudinary
+            const imageUrls = [];
+            for (let i = 0; i < files.length; i++) {
+                const url = await uploadImage(files[i]);
+                if (url) {
+                    imageUrls.push(url);
+                }
+            }
+            
+            if (imageUrls.length > 0) {
                 db.ref('products').push({ 
                     category: cat, 
                     name: name, 
                     price: parseInt(price), 
-                    img: url,
-                    video: video || ""
+                    images: imageUrls,  // مصفوفة الصور
+                    videos: videos,      // مصفوفة الفيديوهات
+                    img: imageUrls[0] // أول صورة كصورة رئيسية للتوافق
                 }).then(() => {
-                    alert("تم نشر المنتج بنجاح");
+                    alert("تم نشر المنتج بنجاح مع " + imageUrls.length + " صور و " + videos.length + " فيديو");
+                    // تفريغ الحقول
                     document.getElementById('admProdName').value = "";
                     document.getElementById('admProdPrice').value = "";
-                    document.getElementById('admProdFile').value = "";
-                    document.getElementById('admProdVideo').value = "";
+                    document.getElementById('admProdImages').value = "";
+                    
+                    // إعادة تعيين حقول الفيديو
+                    document.getElementById('videoInputsContainer').innerHTML = `
+                        <div class="video-input-group" style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="url" class="admProdVideo" placeholder="رابط فيديو 1">
+                            <button type="button" onclick="addVideoInput()" style="background: var(--gold); color: white; border: none; width: 40px; border-radius: 8px; cursor: pointer;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    `;
                 });
             }
         }
@@ -1502,7 +1265,7 @@
                 } else {
                     document.getElementById('catGrid').innerHTML = items.map(x => `
                         <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x).replace(/'/g, "&apos;")})'>
-                            <img src="${x.img}" style="width:100%;height:250px;object-fit:cover;">
+                            <img src="${x.img || (x.images && x.images[0])}" style="width:100%;height:250px;object-fit:cover;">
                             <div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div>
                         </div>`).join('');
                 }
@@ -1510,18 +1273,18 @@
             }); 
         }
 
-        // فتح حاسبة المنتج - معدلة لفتح المستعرض الجديد
+        // فتح حاسبة المنتج - معدلة لفتح المستعرض الجديد مع الوسائط المتعددة
         function openCalc(product) { 
             currentProduct = product; 
             localStorage.setItem('lastProd', JSON.stringify(product));
             
-            // فتح المستعرض الجديد
+            // فتح المستعرض الجديد مع الوسائط المتعددة
             openAlibabaViewer(product);
             
             // تحديث معلومات الحاسبة (للتوافق مع الكود القديم)
             document.getElementById('pName').innerText = product.name; 
             document.getElementById('pPrice').innerText = parseInt(product.price).toLocaleString(); 
-            document.getElementById('pImg').src = getWatermarkedUrl(product.img); 
+            document.getElementById('pImg').src = getWatermarkedUrl(product.img || (product.images && product.images[0])); 
             document.getElementById('hIn').value = '';
         }
 
@@ -1546,7 +1309,7 @@
                 html += `
                     <div style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee;cursor:pointer;" 
                          onclick='openCalc(${JSON.stringify(p).replace(/'/g, "&apos;")}); document.getElementById("searchRes").style.display="none";'>
-                        <img src="${p.img}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
+                        <img src="${p.img || (p.images && p.images[0])}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
                         <div>
                             <div style="font-weight:bold;font-size:0.9rem;">${p.name}</div>
                             <div style="font-size:0.7rem;color:var(--gold);">${p.category}</div>
@@ -1572,7 +1335,7 @@
             cart.push({ 
                 n: currentProduct.name, 
                 p: Math.round(h * currentProduct.price), 
-                img: getWatermarkedUrl(currentProduct.img),
+                img: getWatermarkedUrl(currentProduct.img || (currentProduct.images && currentProduct.images[0])),
                 length: h
             });
             
@@ -1656,8 +1419,8 @@
             toggleCartModal();
         }
 
-        // ===== نظام المستعرض القديم (محذوف ولكن نحتفظ بالدوال للتوافق) =====
-        let viewerData = {
+        // ===== نظام المستعرض الجديد بنظام Alibaba =====
+        let alibabaViewerData = {
             isOpen: false,
             currentIndex: 0,
             mediaItems: [],
@@ -1669,45 +1432,34 @@
             isDragging: false
         };
 
-        function openProductViewer(product, mediaItems) { /* kept for compatibility */ }
-        function closeViewer() { /* kept for compatibility */ }
-        function navigateSlide(direction) { /* kept for compatibility */ }
-        function goToSlide(index) { /* kept for compatibility */ }
-        function updateSlidePosition() { /* kept for compatibility */ }
-        function updateProgressDots() { /* kept for compatibility */ }
-        function resetZoom() { /* kept for compatibility */ }
-        function setupZoom() { /* kept for compatibility */ }
-        function toggleAutoPlay() { /* kept for compatibility */ }
-        function startAutoPlay() { /* kept for compatibility */ }
-        function stopAutoPlay() { /* kept for compatibility */ }
-        function setupTouchEvents() { /* kept for compatibility */ }
-        function setupViewerEvents() { /* kept for compatibility */ }
-        function addCurrentToCart() { /* kept for compatibility */ }
-
-        // ===== نظام المستعرض الجديد بنظام Alibaba =====
-        let alibabaViewerData = {
-            isOpen: false,
-            currentIndex: 0,
-            mediaItems: [],
-            product: null,
-            isZoomed: false,
-            startX: 0,
-            isDragging: false
-        };
-
-        // فتح المستعرض
+        // فتح المستعرض مع الوسائط المتعددة
         function openAlibabaViewer(product) {
             alibabaViewerData.product = product;
             alibabaViewerData.currentIndex = 0;
             alibabaViewerData.isOpen = true;
             alibabaViewerData.isZoomed = false;
+            alibabaViewerData.isAutoPlaying = false;
             
-            // تجهيز وسائط المنتج
-            alibabaViewerData.mediaItems = [
-                { type: 'image', url: product.img }
-            ];
+            // تجهيز وسائط المنتج المتعددة
+            alibabaViewerData.mediaItems = [];
             
-            if (product.video) {
+            // إضافة الصور المتعددة
+            if (product.images && Array.isArray(product.images)) {
+                product.images.forEach(img => {
+                    alibabaViewerData.mediaItems.push({ type: 'image', url: img });
+                });
+            } else if (product.img) {
+                alibabaViewerData.mediaItems.push({ type: 'image', url: product.img });
+            }
+            
+            // إضافة الفيديوهات المتعددة
+            if (product.videos && Array.isArray(product.videos)) {
+                product.videos.forEach(video => {
+                    if (video) {
+                        alibabaViewerData.mediaItems.push({ type: 'video', url: video });
+                    }
+                });
+            } else if (product.video) {
                 alibabaViewerData.mediaItems.push({ type: 'video', url: product.video });
             }
             
@@ -1725,30 +1477,28 @@
             document.getElementById('alibabaProductRating').textContent = `4.8 (${Math.floor(Math.random() * 200) + 50} تقييم)`;
             document.getElementById('alibabaProductSold').textContent = `أكثر من ${Math.floor(Math.random() * 500) + 200} قطعة مباعة`;
             
-            // إنشاء المواصفات
-            const specs = [
-                { label: 'الخامة', value: 'قماش فاخر' },
-                { label: 'النوع', value: 'بلاك أوت' },
-                { label: 'اللون', value: 'متعدد الألوان' },
-                { label: 'الضمان', value: 'سنتان' },
-                { label: 'التوصيل', value: 'مجاني' },
-                { label: 'التركيب', value: 'متوفر' }
-            ];
-            
-            document.getElementById('alibabaProductSpecs').innerHTML = specs.map(s => `
-                <div class="alibaba-spec-item">
-                    <span class="alibaba-spec-label">${s.label}</span>
-                    <span class="alibaba-spec-value">${s.value}</span>
-                </div>
-            `).join('');
-            
             // عرض الصورة الرئيسية
-            document.getElementById('alibabaMainImage').src = product.img;
+            document.getElementById('alibabaMainImage').src = alibabaViewerData.mediaItems[0].url;
             
             // إنشاء المعرض المصغر
+            updateThumbnailGallery();
+            
+            // حساب الإجمالي الأولي
+            calculateAlibabaTotal();
+            
+            viewer.classList.add('active');
+            
+            // إعادة تعيين زر التشغيل التلقائي
+            const toggle = document.getElementById('alibabaAutoPlayToggle');
+            toggle.classList.remove('paused');
+            toggle.innerHTML = '<i class="fas fa-play"></i>';
+        }
+
+        // تحديث المعرض المصغر
+        function updateThumbnailGallery() {
             const gallery = document.getElementById('alibabaThumbnailGallery');
             gallery.innerHTML = alibabaViewerData.mediaItems.map((item, index) => `
-                <div class="alibaba-thumbnail ${item.type === 'video' ? 'video-thumb' : ''} ${index === 0 ? 'active' : ''}" 
+                <div class="alibaba-thumbnail ${item.type === 'video' ? 'video-thumb' : ''} ${index === alibabaViewerData.currentIndex ? 'active' : ''}" 
                      onclick="changeAlibabaSlide(${index})">
                     ${item.type === 'video' 
                         ? `<video src="${item.url}" muted></video>` 
@@ -1756,25 +1506,20 @@
                     }
                 </div>
             `).join('');
-            
-            // حساب الإجمالي الأولي
-            calculateAlibabaTotal();
-            
-            viewer.classList.add('active');
-            
-            // إضافة مستمعي الأحداث
-            setTimeout(() => setupAlibabaViewerEvents(), 100);
         }
 
         // إغلاق المستعرض
         function closeAlibabaViewer() {
             document.getElementById('alibabaViewer').classList.remove('active');
             alibabaViewerData.isOpen = false;
+            stopAlibabaAutoPlay();
         }
 
         // تغيير الشريحة
         function changeAlibabaSlide(index) {
-            if (index < 0 || index >= alibabaViewerData.mediaItems.length) return;
+            // التأكد من أن الفهرس ضمن النطاق
+            if (index < 0) index = alibabaViewerData.mediaItems.length - 1;
+            if (index >= alibabaViewerData.mediaItems.length) index = 0;
             
             alibabaViewerData.currentIndex = index;
             
@@ -1810,13 +1555,7 @@
             }
             
             // تحديث الثمبنايل
-            document.querySelectorAll('.alibaba-thumbnail').forEach((thumb, i) => {
-                if (i === index) {
-                    thumb.classList.add('active');
-                } else {
-                    thumb.classList.remove('active');
-                }
-            });
+            updateThumbnailGallery();
             
             resetAlibabaZoom();
         }
@@ -1844,7 +1583,7 @@
             cart.push({ 
                 n: alibabaViewerData.product.name, 
                 p: Math.round(totalPrice), 
-                img: getWatermarkedUrl(alibabaViewerData.product.img),
+                img: getWatermarkedUrl(alibabaViewerData.product.img || (alibabaViewerData.product.images && alibabaViewerData.product.images[0])),
                 length: meters
             });
             
@@ -1853,7 +1592,7 @@
             alert("تمت الإضافة للسلة!");
         }
 
-        // شراء الآن
+        // شراء الآن - يضيف للسلة ويفتحها فقط
         function buyNowFromAlibabaViewer() {
             addFromAlibabaViewer();
             closeAlibabaViewer();
@@ -1887,8 +1626,8 @@
                 const y = e.clientY - rect.top;
                 
                 lens.style.display = 'block';
-                lens.style.left = (x - 75) + 'px';
-                lens.style.top = (y - 75) + 'px';
+                lens.style.left = (x - 60) + 'px';
+                lens.style.top = (y - 60) + 'px';
                 
                 const percentX = (x / rect.width) * 100;
                 const percentY = (y / rect.height) * 100;
@@ -1915,12 +1654,76 @@
             });
         }
 
+        // التمرير التلقائي
+        function toggleAlibabaAutoPlay() {
+            const toggle = document.getElementById('alibabaAutoPlayToggle');
+            
+            if (alibabaViewerData.isAutoPlaying) {
+                stopAlibabaAutoPlay();
+                toggle.classList.add('paused');
+                toggle.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                startAlibabaAutoPlay();
+                toggle.classList.remove('paused');
+                toggle.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+        }
+
+        function startAlibabaAutoPlay() {
+            if (alibabaViewerData.mediaItems.length <= 1) return;
+            
+            alibabaViewerData.isAutoPlaying = true;
+            alibabaViewerData.autoPlayInterval = setInterval(() => {
+                let nextIndex = alibabaViewerData.currentIndex + 1;
+                if (nextIndex >= alibabaViewerData.mediaItems.length) {
+                    nextIndex = 0;
+                }
+                changeAlibabaSlide(nextIndex);
+            }, 3000);
+        }
+
+        function stopAlibabaAutoPlay() {
+            alibabaViewerData.isAutoPlaying = false;
+            if (alibabaViewerData.autoPlayInterval) {
+                clearInterval(alibabaViewerData.autoPlayInterval);
+                alibabaViewerData.autoPlayInterval = null;
+            }
+        }
+
         // إعداد أحداث المستعرض
         function setupAlibabaViewerEvents() {
             setupAlibabaZoom();
             
             // تحديث الإجمالي عند تغيير عدد الأمتار
             document.getElementById('alibabaMetersInput').addEventListener('input', calculateAlibabaTotal);
+            
+            // إضافة أحداث اللمس للتمرير
+            const container = document.getElementById('alibabaMainImageContainer');
+            container.addEventListener('touchstart', (e) => {
+                alibabaViewerData.startX = e.touches[0].clientX;
+                alibabaViewerData.isDragging = true;
+            });
+            
+            container.addEventListener('touchmove', (e) => {
+                if (!alibabaViewerData.isDragging) return;
+                e.preventDefault();
+                
+                const currentX = e.touches[0].clientX;
+                const diff = alibabaViewerData.startX - currentX;
+                
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        changeAlibabaSlide(alibabaViewerData.currentIndex + 1);
+                    } else {
+                        changeAlibabaSlide(alibabaViewerData.currentIndex - 1);
+                    }
+                    alibabaViewerData.isDragging = false;
+                }
+            });
+            
+            container.addEventListener('touchend', () => {
+                alibabaViewerData.isDragging = false;
+            });
         }
 
         // إغلاق نتائج البحث عند النقر خارجها
@@ -2032,6 +1835,9 @@
 
             // تحديث عداد السلة
             document.getElementById('globalCartCount').innerText = cart.length;
+            
+            // إعداد أحداث المستعرض
+            setupAlibabaViewerEvents();
         });
     </script>
 </body>
