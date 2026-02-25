@@ -64,13 +64,19 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(1.1);
             min-width: 100%;
             min-height: 100%;
             width: auto;
             height: auto;
             object-fit: cover;
             z-index: 0;
+            animation: slowZoomOut 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes slowZoomOut {
+            from { transform: translate(-50%, -50%) scale(1.1); }
+            to { transform: translate(-50%, -50%) scale(1.2); }
         }
 
         /* إزالة عناصر التحكم في الفيديو */
@@ -954,18 +960,18 @@
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
-            <!-- قسم الهيرو مع الفيديو -->
+            <!-- قسم الهيرو مع الفيديو - زووم أوت -->
             <section class="hero">
                 <div class="hero-video-container">
-                    <!-- فيديو الخلفية من قناة شبابيك -->
+                    <!-- فيديو الخلفية مع تأثير الزووم أوت -->
                     <video class="hero-video" autoplay loop muted playsinline webkit-playsinline>
-                        <source src="https://github.com/bilal-a100/videos/raw/main/curtains-video.mp4" type="video/mp4">
+                        <source src="https://res.cloudinary.com/dnkuwf8q9/video/upload/v1772017742/6446152-hd_1920_1080_25fps_earwmb.mp4" type="video/mp4">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-white-curtain-blowing-in-the-wind-4090-large.mp4" type="video/mp4">
                     </video>
                     <!-- طبقة داكنة فوق الفيديو -->
                     <div class="hero-overlay"></div>
                     
-                    <!-- المحتوى النصي -->
+                    <!-- المحتوى النصي مع أيقونات التواصل الاجتماعي -->
                     <div class="hero-content">
                         <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
                         <div class="hero-btns">
