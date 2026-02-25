@@ -47,15 +47,138 @@
         .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; max-height: 90vh; overflow-y: auto; }
         .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
 
-        .hero { height: 70vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.3)), url('https://i.ibb.co/0R1MK2d7/Gemini-Generated-Image-tnocdatnocdatnoc.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 20px; }
-        .hero h1 { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 25px; text-shadow: 0 2px 15px rgba(0,0,0,0.4); }
-        .hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; margin-bottom: 30px; }
-        .btn-gold { background: var(--gold); color: white; border: none; padding: 16px 35px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
-        .btn-trans { background: transparent; color: white; border: 2px solid white; padding: 16px 35px; border-radius: 12px; font-weight: 900; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+        /* ===== قسم الهيرو مع الفيديو ===== */
+        .hero {
+            height: 70vh;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .social-hero { display: flex; gap: 20px; }
-        .social-hero a { color: var(--white); font-size: 1.8rem; transition: 0.4s; }
-        .social-hero a:hover { color: var(--gold); transform: translateY(-8px) scale(1.2); }
+        .hero-video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 { 
+            font-size: clamp(1.8rem, 5vw, 3.5rem); 
+            font-weight: 900; 
+            margin-bottom: 25px; 
+            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-btns { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            width: 100%; 
+            max-width: 320px; 
+            margin-bottom: 30px; 
+        }
+
+        .btn-gold { 
+            background: var(--gold); 
+            color: white; 
+            border: none; 
+            padding: 16px 35px; 
+            border-radius: 12px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            font-size: 1.1rem; 
+            transition: 0.3s; 
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-trans { 
+            background: transparent; 
+            color: white; 
+            border: 2px solid white; 
+            padding: 16px 35px; 
+            border-radius: 12px; 
+            font-weight: 900; 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            transition: 0.3s; 
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-trans:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .social-hero { 
+            display: flex; 
+            gap: 20px; 
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .social-hero a { 
+            color: var(--white); 
+            font-size: 1.8rem; 
+            transition: 0.4s; 
+        }
+
+        .social-hero a:hover { 
+            color: var(--gold); 
+            transform: translateY(-8px) scale(1.2); 
+        }
 
         .features-section { background: var(--bg); padding: 50px 5%; text-align: center; }
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 1200px; margin: auto; }
@@ -822,21 +945,38 @@
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
+            <!-- قسم الهيرو مع الفيديو -->
             <section class="hero">
-                <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                <div class="hero-btns">
-                    <button onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-gold">احسب سعر ستائرك الآن</button>
-                    <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
-                </div>
-                <div class="social-hero">
-                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en-IQ" target="_blank"><i class="fab fa-snapchat"></i></a>
+                <div class="hero-video-container">
+                    <!-- فيديو الخلفية - ستائر متطايرة -->
+                    <video class="hero-video" autoplay loop muted playsinline id="heroVideo">
+                        <!-- يمكنك تغيير هذا الرابط بأي فيديو تريده -->
+                        <source src="https://player.vimeo.com/external/371837261.sd.mp4?s=1f2b7c8c9b5e6d8f9a0b1c2d3e4f5a6b7c8d9e0f&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+                        <!-- رابط احتياطي -->
+                        <source src="https://cdn.pixabay.com/vimeo/490022977/Curtains%20-%2040259.mp4?width=640&hash=0b5c7d9f1e3a5b7c9d1e3f5a7b9c1e3d5f7a9b1c" type="video/mp4">
+                    </video>
+                    <!-- طبقة داكنة فوق الفيديو -->
+                    <div class="hero-overlay"></div>
+                    
+                    <!-- المحتوى النصي -->
+                    <div class="hero-content">
+                        <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
+                        <div class="hero-btns">
+                            <button onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-gold">احسب سعر ستائرك الآن</button>
+                            <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
+                        </div>
+                        <div class="social-hero">
+                            <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
+                            <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en-IQ" target="_blank"><i class="fab fa-snapchat"></i></a>
+                        </div>
+                    </div>
                 </div>
             </section>
+
             <section id="categories" style="padding: 40px 0;">
                 <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
                 <div id="categoriesList"></div>
@@ -1363,6 +1503,19 @@
             localStorage.setItem('shababek_cart', JSON.stringify(cart));
             toggleCartModal();
         }
+
+        // التحكم في فيديو الهيرو - يتوقف عند التمرير
+        const heroVideo = document.getElementById('heroVideo');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                heroVideo.pause();
+            } else {
+                heroVideo.play().catch(() => {
+                    // المتصفح قد يمنع التشغيل التلقائي
+                });
+            }
+        });
 
         // ===== نظام المستعرض الجديد بنظام Alibaba =====
         let alibabaViewerData = {
