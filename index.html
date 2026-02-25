@@ -47,7 +47,7 @@
         .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; max-height: 90vh; overflow-y: auto; }
         .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
 
-        /* ===== قسم الهيرو مع الفيديو ===== */
+        /* ===== قسم الهيرو مع تأثير حلمي ===== */
         .hero {
             height: 70vh;
             position: relative;
@@ -69,6 +69,111 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
+            /* تأثير حلمي ناعم */
+            filter: blur(1.5px) brightness(1.1) contrast(0.95) saturate(1.2);
+            opacity: 0.92;
+            transition: filter 0.5s ease;
+        }
+
+        /* تأثير زووم بطيء جداً (فخم) */
+        @keyframes dreamyZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        .hero-video {
+            animation: dreamyZoom 40s infinite alternate ease-in-out;
+        }
+
+        /* طبقة متدرجة حلمية متحركة */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(217, 179, 130, 0.3) 0%,
+                rgba(61, 46, 36, 0.4) 50%,
+                rgba(217, 179, 130, 0.3) 100%);
+            z-index: 1;
+            animation: dreamyGradient 12s infinite alternate ease-in-out;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes dreamyGradient {
+            0% { 
+                background: linear-gradient(135deg, 
+                    rgba(217, 179, 130, 0.3) 0%,
+                    rgba(61, 46, 36, 0.4) 50%,
+                    rgba(217, 179, 130, 0.3) 100%);
+                opacity: 0.6;
+            }
+            100% { 
+                background: linear-gradient(135deg, 
+                    rgba(217, 179, 130, 0.5) 0%,
+                    rgba(61, 46, 36, 0.2) 50%,
+                    rgba(217, 179, 130, 0.5) 100%);
+                opacity: 0.8;
+            }
+        }
+
+        /* تأثير وهج ناعم متحرك */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, 
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(217, 179, 130, 0.1) 30%,
+                transparent 70%);
+            animation: rotateGlow 30s linear infinite;
+            z-index: 1;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes rotateGlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* تأثير ضوء ناعم متحرك */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, 
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 70%);
+            animation: lightMove 15s infinite alternate ease-in-out;
+            z-index: 1;
+            pointer-events: none;
+            mix-blend-mode: soft-light;
+        }
+
+        @keyframes lightMove {
+            0% { 
+                background: radial-gradient(circle at 30% 50%, 
+                    rgba(255, 255, 255, 0.2) 0%,
+                    transparent 70%);
+            }
+            50% { 
+                background: radial-gradient(circle at 70% 50%, 
+                    rgba(217, 179, 130, 0.2) 0%,
+                    transparent 70%);
+            }
+            100% { 
+                background: radial-gradient(circle at 50% 30%, 
+                    rgba(255, 255, 255, 0.2) 0%,
+                    transparent 70%);
+            }
         }
 
         .hero-video::-webkit-media-controls {
@@ -79,19 +184,9 @@
             display: none !important;
         }
 
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%);
-            z-index: 1;
-        }
-
         .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -106,8 +201,13 @@
             font-size: clamp(1.8rem, 5vw, 3.5rem); 
             font-weight: 900; 
             margin-bottom: 25px; 
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
-            animation: fadeInUp 1s ease;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 0 30px rgba(217,179,130,0.3);
+            animation: fadeInUp 1s ease, dreamyGlow 4s infinite alternate;
+        }
+
+        @keyframes dreamyGlow {
+            0% { text-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 0 30px rgba(217,179,130,0.3); }
+            100% { text-shadow: 0 2px 30px rgba(0,0,0,0.6), 0 0 50px rgba(217,179,130,0.6); }
         }
 
         @keyframes fadeInUp {
@@ -139,12 +239,33 @@
             font-weight: 900; 
             cursor: pointer; 
             font-size: 1.1rem; 
-            transition: 0.3s; 
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-gold::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-gold:hover::after {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-gold:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2), 0 0 20px rgba(217,179,130,0.5);
         }
 
         .btn-trans { 
@@ -161,12 +282,33 @@
             gap: 10px; 
             transition: 0.3s; 
             backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-trans::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-trans:hover::after {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-trans:hover {
             background: var(--gold);
             border-color: var(--gold);
             transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .social-hero { 
@@ -178,12 +320,30 @@
         .social-hero a { 
             color: var(--white); 
             font-size: 1.8rem; 
-            transition: 0.4s; 
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-hero a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .social-hero a:hover::before {
+            left: 100%;
         }
 
         .social-hero a:hover { 
             color: var(--gold); 
-            transform: translateY(-8px) scale(1.2); 
+            transform: translateY(-8px) scale(1.2);
+            filter: drop-shadow(0 0 20px var(--gold));
         }
 
         .features-section { background: var(--bg); padding: 50px 5%; text-align: center; }
@@ -792,6 +952,16 @@
                 width: 60px;
                 height: 60px;
             }
+            
+            /* تخفيف التأثيرات على الهاتف */
+            .hero-video {
+                filter: blur(0.8px) brightness(1.05);
+                animation: dreamyZoom 50s infinite alternate;
+            }
+            
+            .hero-overlay {
+                animation: dreamyGradient 15s infinite alternate;
+            }
         }
     </style>
 </head>
@@ -930,6 +1100,7 @@
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
+            <!-- قسم الهيرو مع تأثير حلمي -->
             <section class="hero">
                 <div class="hero-video-container">
                     <video class="hero-video" autoplay loop muted playsinline webkit-playsinline>
@@ -1095,7 +1266,7 @@
         // متغيرات عامة
         const CLOUD_NAME = "dnkuwf8q9";
         const UPLOAD_PRESET = "afsx4w9k";
-        const LOGO_ID = "shababek_logo"; // معرف الشعار في Cloudinary
+        const LOGO_ID = "shababek_logo";
         let currentProduct = null;
         let cart = JSON.parse(localStorage.getItem('shababek_cart')) || [];
         let adminClicks = 0;
@@ -1167,13 +1338,14 @@
             }
         }
 
-        // دالة إضافة العلامة المائية - فقط لروابط Cloudinary
+        // دالة إضافة العلامة المائية - بحجم كبير للحماية
         function getWatermarkedUrl(url, type = 'image') {
             if (!url) return url;
             
             // فقط أضف العلامة المائية إذا كان الرابط من Cloudinary
             if (url.includes("cloudinary.com")) {
-                const watermarkTransform = `l_${LOGO_ID},o_25,g_south_east,w_0.15,fl_relative,x_10,y_10,fl_layer_apply`;
+                // علامة مائية كبيرة (30% من العرض) وشفافة 40% لمنع القص
+                const watermarkTransform = `l_${LOGO_ID},o_40,g_south_east,w_0.3,fl_relative,x_5,y_5,fl_layer_apply`;
                 
                 if (type === 'video') {
                     return url.replace("/video/upload/", `/video/upload/${watermarkTransform}/`);
@@ -1241,7 +1413,7 @@
             const videos = [];
             videoInputs.forEach(input => {
                 if (input.value.trim()) {
-                    videos.push(input.value.trim()); // نقبل أي رابط (يوتيوب أو Cloudinary)
+                    videos.push(input.value.trim());
                 }
             });
             
@@ -1344,20 +1516,21 @@
 
             const mediaItems = [];
 
-            if (product.images && Array.isArray(product.images)) {
-                product.images.forEach(img => {
-                    mediaItems.push({ type: 'image', url: getWatermarkedUrl(img, 'image') });
-                });
-            } else if (product.img) {
-                mediaItems.push({ type: 'image', url: getWatermarkedUrl(product.img, 'image') });
-            }
-
+            // ترتيب الوسائط: الفيديوهات أولاً ثم الصور
             if (product.videos && Array.isArray(product.videos)) {
                 product.videos.forEach(video => {
                     if (video) {
                         mediaItems.push({ type: 'video', url: getWatermarkedUrl(video, 'video') });
                     }
                 });
+            }
+
+            if (product.images && Array.isArray(product.images)) {
+                product.images.forEach(img => {
+                    mediaItems.push({ type: 'image', url: getWatermarkedUrl(img, 'image') });
+                });
+            } else if (product.img) {
+                mediaItems.push({ type: 'image', url: getWatermarkedUrl(product.img, 'image') });
             }
 
             openAlibabaViewer({ ...product, mediaItems: mediaItems });
@@ -1585,6 +1758,14 @@
                         iframe.style.height = '100%';
                         iframe.style.border = 'none';
                         container.appendChild(iframe);
+                        
+                        // إيقاف التمرير التلقائي أثناء تشغيل الفيديو
+                        stopAlibabaAutoPlay();
+                        
+                        // محاولة اكتشاف نهاية الفيديو (تقديري)
+                        setTimeout(() => {
+                            startAlibabaAutoPlay();
+                        }, 30000);
                     } else {
                         const video = document.createElement('video');
                         video.src = firstItem.url;
@@ -1601,6 +1782,8 @@
                         });
                         
                         container.appendChild(video);
+                        
+                        stopAlibabaAutoPlay();
                     }
                 } else {
                     const img = document.createElement('img');
@@ -1661,6 +1844,12 @@
                     iframe.style.height = '100%';
                     iframe.style.border = 'none';
                     container.appendChild(iframe);
+                    
+                    stopAlibabaAutoPlay();
+                    
+                    setTimeout(() => {
+                        startAlibabaAutoPlay();
+                    }, 30000);
                 } else {
                     const video = document.createElement('video');
                     video.src = item.url;
@@ -1677,6 +1866,8 @@
                     });
                     
                     container.appendChild(video);
+                    
+                    stopAlibabaAutoPlay();
                 }
             } else {
                 const img = document.createElement('img');
@@ -1721,6 +1912,7 @@
         }
 
         function checkoutFromAlibabaViewer() {
+            // فقط تفتح السلة - لا تضيف المنتج مرة أخرى
             closeAlibabaViewer();
             toggleCartModal();
         }
