@@ -47,7 +47,7 @@
         .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; max-height: 90vh; overflow-y: auto; }
         .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
 
-        /* ===== قسم الهيرو مع الفيديو - يغطي العرض بالكامل ===== */
+        /* ===== قسم الهيرو مع الفيديو ===== */
         .hero {
             height: 70vh;
             position: relative;
@@ -67,11 +67,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* يضمن تغطية المساحة بالكامل مع الحفاظ على الأبعاد */
+            object-fit: cover;
             z-index: 0;
         }
 
-        /* إزالة عناصر التحكم في الفيديو */
         .hero-video::-webkit-media-controls {
             display: none !important;
         }
@@ -358,7 +357,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== مستعرض المنتجات بنظام Alibaba - شاشة كاملة بدون تمرير ===== */
+        /* ===== مستعرض المنتجات بنظام Alibaba - شاشة كاملة ===== */
         .alibaba-viewer-container {
             position: fixed;
             top: 0;
@@ -388,7 +387,6 @@
             overflow: hidden;
         }
         
-        /* رأس المستعرض - تصغير الحجم */
         .alibaba-viewer-header {
             background: var(--brown);
             color: white;
@@ -433,7 +431,6 @@
             background: var(--brown);
         }
         
-        /* الجسم الرئيسي - شاشة كاملة بدون تمرير */
         .alibaba-viewer-body {
             display: flex;
             flex: 1;
@@ -443,7 +440,6 @@
             background: #f8f8f8;
         }
         
-        /* الجانب الأيمن - عرض الوسائط - بدون تمرير */
         .alibaba-viewer-media {
             flex: 1.5;
             padding: 15px;
@@ -455,7 +451,6 @@
             overflow: hidden;
         }
         
-        /* الصورة الرئيسية - دعم iframe */
         .alibaba-main-image-container {
             background: #f5f5f5;
             border-radius: 15px;
@@ -486,7 +481,6 @@
             object-fit: contain;
         }
         
-        /* معرض الصور المصغرة - أفقي */
         .alibaba-thumbnail-gallery {
             display: flex;
             gap: 10px;
@@ -546,7 +540,6 @@
             font-size: 0.7rem;
         }
         
-        /* أزرار التنقل */
         .alibaba-slide-nav {
             position: absolute;
             top: 50%;
@@ -581,7 +574,6 @@
             right: 10px;
         }
         
-        /* الجانب الأيسر - معلومات المنتج - بدون تمرير */
         .alibaba-viewer-info {
             flex: 1;
             padding: 20px;
@@ -623,7 +615,6 @@
             color: var(--gold);
         }
         
-        /* سعر المنتج */
         .alibaba-price-section {
             background: #faf5f0;
             padding: 15px;
@@ -653,7 +644,6 @@
             font-weight: normal;
         }
         
-        /* قسم عدد الأمتار */
         .alibaba-meters-section {
             background: #f8f8f8;
             padding: 15px;
@@ -726,7 +716,6 @@
             color: var(--gold);
         }
         
-        /* أزرار الإجراءات */
         .alibaba-action-buttons {
             display: flex;
             flex-direction: column;
@@ -777,7 +766,6 @@
             color: white;
         }
         
-        /* للهواتف */
         @media (max-width: 768px) {
             .alibaba-viewer-body {
                 flex-direction: column;
@@ -870,10 +858,9 @@
         </div>
     </div>
 
-    <!-- مستعرض المنتجات بنظام Alibaba - شاشة كاملة -->
+    <!-- مستعرض المنتجات بنظام Alibaba -->
     <div class="alibaba-viewer-container" id="alibabaViewer" onclick="if(event.target===this) closeAlibabaViewer()">
         <div class="alibaba-viewer-content">
-            <!-- رأس المستعرض -->
             <div class="alibaba-viewer-header">
                 <div>
                     <h2 id="alibabaProductName">اسم المنتج</h2>
@@ -882,18 +869,12 @@
                 <button class="alibaba-viewer-close" onclick="closeAlibabaViewer()"><i class="fas fa-times"></i></button>
             </div>
             
-            <!-- جسم المستعرض -->
             <div class="alibaba-viewer-body">
-                <!-- الجانب الأيمن: عرض الوسائط -->
                 <div class="alibaba-viewer-media">
-                    <!-- الصورة الرئيسية - سيتم ملؤها ديناميكياً -->
                     <div class="alibaba-main-image-container" id="alibabaMainImageContainer"></div>
-                    
-                    <!-- المعرض المصغر -->
                     <div class="alibaba-thumbnail-gallery" id="alibabaThumbnailGallery"></div>
                 </div>
                 
-                <!-- الجانب الأيسر: معلومات المنتج -->
                 <div class="alibaba-viewer-info">
                     <h1 class="alibaba-product-title" id="alibabaProductTitle">اسم المنتج</h1>
                     
@@ -908,7 +889,6 @@
                         </div>
                     </div>
                     
-                    <!-- قسم السعر -->
                     <div class="alibaba-price-section">
                         <div class="alibaba-price-label">سعر المتر</div>
                         <div class="alibaba-price">
@@ -917,7 +897,6 @@
                         </div>
                     </div>
                     
-                    <!-- قسم عدد الأمتار -->
                     <div class="alibaba-meters-section">
                         <div class="alibaba-meters-label">
                             <i class="fas fa-ruler"></i>
@@ -934,7 +913,6 @@
                         </div>
                     </div>
                     
-                    <!-- أزرار الإجراءات -->
                     <div class="alibaba-action-buttons">
                         <button class="alibaba-add-to-cart-btn" onclick="addFromAlibabaViewer()">
                             <i class="fas fa-cart-plus"></i>
@@ -952,17 +930,13 @@
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
-            <!-- قسم الهيرو مع الفيديو - بدون زوم، الفيديو يغطي العرض بالكامل -->
             <section class="hero">
                 <div class="hero-video-container">
-                    <!-- الفيديو الجديد - يغطي العرض بالكامل -->
                     <video class="hero-video" autoplay loop muted playsinline webkit-playsinline>
                         <source src="https://res.cloudinary.com/dnkuwf8q9/video/upload/v1772027160/gemini_generated_video_077d6d04_ehg756.mp4" type="video/mp4">
                     </video>
-                    <!-- طبقة داكنة فوق الفيديو -->
                     <div class="hero-overlay"></div>
                     
-                    <!-- المحتوى النصي مع أيقونات التواصل الاجتماعي -->
                     <div class="hero-content">
                         <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
                         <div class="hero-btns">
@@ -1012,7 +986,6 @@
                     <input type="text" id="admProdName" placeholder="اسم الموديل">
                     <input type="number" id="admProdPrice" placeholder="السعر">
                     
-                    <!-- قسم رفع الصور المتعددة -->
                     <div style="margin: 15px 0; padding: 15px; background: #eee; border-radius: 10px;">
                         <label style="font-weight: bold; display: block; margin-bottom: 10px;">
                             <i class="fas fa-images"></i> صور المنتج (يمكنك اختيار عدة صور)
@@ -1021,10 +994,9 @@
                         <small style="color: #666;">يمكنك اختيار أكثر من صورة بالضغط على Ctrl أو Shift</small>
                     </div>
                     
-                    <!-- قسم روابط الفيديوهات المتعددة -->
                     <div style="margin: 15px 0; padding: 15px; background: #eee; border-radius: 10px;">
                         <label style="font-weight: bold; display: block; margin-bottom: 10px;">
-                            <i class="fas fa-video"></i> روابط فيديوهات متعددة
+                            <i class="fas fa-video"></i> روابط فيديوهات متعددة (يوتيوب أو Cloudinary)
                         </label>
                         <div id="videoInputsContainer">
                             <div class="video-input-group" style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -1034,7 +1006,7 @@
                                 </button>
                             </div>
                         </div>
-                        <small style="color: #666;">أضف روابط فيديوهات متعددة من يوتيوب</small>
+                        <small style="color: #666;">✅ روابط Cloudinary تحصل على علامة مائية تلقائياً</small>
                     </div>
                     
                     <button onclick="publishProd()" class="btn-gold">نشر المنتج</button>
@@ -1123,19 +1095,17 @@
         // متغيرات عامة
         const CLOUD_NAME = "dnkuwf8q9";
         const UPLOAD_PRESET = "afsx4w9k";
-        const LOGO_ID = "shababek_logo";
+        const LOGO_ID = "shababek_logo"; // معرف الشعار في Cloudinary
         let currentProduct = null;
         let cart = JSON.parse(localStorage.getItem('shababek_cart')) || [];
         let adminClicks = 0;
         let clickTimer;
 
-        // دالة جلب القيم
         function getValue(id) { 
             const el = document.getElementById(id);
             return el ? el.value : ""; 
         }
 
-        // نظام التنقل بين الصفحات
         function showPage(pageId, pushToHistory = true) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
@@ -1152,7 +1122,6 @@
             }
         }
 
-        // معالجة النقر على الشعار (الدخول للوحة التحكم)
         function handleLogoClick() {
             adminClicks++;
             clearTimeout(clickTimer);
@@ -1177,7 +1146,6 @@
             }, 400);
         }
 
-        // رفع الصور إلى Cloudinary
         async function uploadImage(file) {
             if (!file) return "";
             
@@ -1199,13 +1167,25 @@
             }
         }
 
-        // إضافة علامة مائية
-        function getWatermarkedUrl(url) {
-            if (!url || !url.includes("cloudinary.com")) return url;
-            return url.replace("/upload/", `/upload/l_${LOGO_ID},o_25,w_250,g_center/`);
+        // دالة إضافة العلامة المائية - فقط لروابط Cloudinary
+        function getWatermarkedUrl(url, type = 'image') {
+            if (!url) return url;
+            
+            // فقط أضف العلامة المائية إذا كان الرابط من Cloudinary
+            if (url.includes("cloudinary.com")) {
+                const watermarkTransform = `l_${LOGO_ID},o_25,g_south_east,w_0.15,fl_relative,x_10,y_10,fl_layer_apply`;
+                
+                if (type === 'video') {
+                    return url.replace("/video/upload/", `/video/upload/${watermarkTransform}/`);
+                } else {
+                    return url.replace("/image/upload/", `/image/upload/${watermarkTransform}/`);
+                }
+            }
+            
+            // روابط يوتيوب وغيرها ترجع كما هي بدون علامة مائية
+            return url;
         }
 
-        // نشر قسم جديد
         async function publishCat() {
             const file = document.getElementById('admCatFile').files[0];
             const name = getValue('admCatName');
@@ -1225,7 +1205,6 @@
             }
         }
 
-        // دالة إضافة حقل فيديو جديد
         function addVideoInput() {
             const container = document.getElementById('videoInputsContainer');
             const newIndex = container.children.length + 1;
@@ -1244,7 +1223,6 @@
             container.appendChild(div);
         }
 
-        // دالة حذف حقل فيديو
         function removeVideoInput(button) {
             if (document.querySelectorAll('.video-input-group').length > 1) {
                 button.closest('.video-input-group').remove();
@@ -1253,19 +1231,17 @@
             }
         }
 
-        // نشر منتج جديد بصور وفيديوهات متعددة
         async function publishProd() {
             const files = document.getElementById('admProdImages').files;
             const cat = document.getElementById('admProdCatSelect').value;
             const name = getValue('admProdName');
             const price = getValue('admProdPrice');
             
-            // جمع روابط الفيديوهات
             const videoInputs = document.querySelectorAll('.admProdVideo');
             const videos = [];
             videoInputs.forEach(input => {
                 if (input.value.trim()) {
-                    videos.push(input.value.trim());
+                    videos.push(input.value.trim()); // نقبل أي رابط (يوتيوب أو Cloudinary)
                 }
             });
             
@@ -1274,7 +1250,6 @@
                 return;
             }
             
-            // رفع الصور المتعددة إلى Cloudinary
             const imageUrls = [];
             for (let i = 0; i < files.length; i++) {
                 const url = await uploadImage(files[i]);
@@ -1288,17 +1263,21 @@
                     category: cat, 
                     name: name, 
                     price: parseInt(price), 
-                    images: imageUrls,  // مصفوفة الصور
-                    videos: videos,      // مصفوفة الفيديوهات
-                    img: imageUrls[0] // أول صورة كصورة رئيسية للتوافق
+                    images: imageUrls,
+                    videos: videos,
+                    img: imageUrls[0]
                 }).then(() => {
-                    alert("تم نشر المنتج بنجاح مع " + imageUrls.length + " صور و " + videos.length + " فيديو");
-                    // تفريغ الحقول
+                    alert("✅ تم نشر المنتج بنجاح!\n" + 
+                          "🖼️ صور: " + imageUrls.length + "\n" +
+                          "🎥 فيديوهات: " + videos.length + "\n" +
+                          (videos.some(v => v.includes('cloudinary.com')) ? 
+                           "🛡️ فيديوهات Cloudinary محمية بعلامة مائية" : 
+                           "📌 روابط يوتيوب ستعمل بدون علامة مائية"));
+                    
                     document.getElementById('admProdName').value = "";
                     document.getElementById('admProdPrice').value = "";
                     document.getElementById('admProdImages').value = "";
                     
-                    // إعادة تعيين حقول الفيديو
                     document.getElementById('videoInputsContainer').innerHTML = `
                         <div class="video-input-group" style="display: flex; gap: 10px; margin-bottom: 10px;">
                             <input type="url" class="admProdVideo" placeholder="رابط فيديو 1">
@@ -1311,7 +1290,6 @@
             }
         }
 
-        // نشر طريقة دفع جديدة
         async function publishPayment() {
             const file = document.getElementById('admPayFile').files[0];
             const name = getValue('admPayName');
@@ -1334,14 +1312,12 @@
             }
         }
 
-        // حذف عنصر
         function deleteItem(ref, key) { 
             if(confirm("هل تريد الحذف نهائياً؟")) {
                 db.ref(ref).child(key).remove(); 
             }
         }
 
-        // فتح قسم المنتجات
         function openCat(categoryName) { 
             localStorage.setItem('lastCat', categoryName);
             db.ref('products').once('value', snap => { 
@@ -1354,7 +1330,7 @@
                 } else {
                     document.getElementById('catGrid').innerHTML = items.map(x => `
                         <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x).replace(/'/g, "&apos;")})'>
-                            <img src="${x.img || (x.images && x.images[0])}" style="width:100%;height:250px;object-fit:cover;">
+                            <img src="${getWatermarkedUrl(x.img || (x.images && x.images[0]), 'image')}" style="width:100%;height:250px;object-fit:cover;">
                             <div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div>
                         </div>`).join('');
                 }
@@ -1362,22 +1338,36 @@
             }); 
         }
 
-        // فتح حاسبة المنتج - معدلة لفتح المستعرض الجديد مع الوسائط المتعددة
         function openCalc(product) { 
             currentProduct = product; 
             localStorage.setItem('lastProd', JSON.stringify(product));
-            
-            // فتح المستعرض الجديد مع الوسائط المتعددة
-            openAlibabaViewer(product);
-            
-            // تحديث معلومات الحاسبة (للتوافق مع الكود القديم)
-            document.getElementById('pName').innerText = product.name; 
-            document.getElementById('pPrice').innerText = parseInt(product.price).toLocaleString(); 
-            document.getElementById('pImg').src = getWatermarkedUrl(product.img || (product.images && product.images[0])); 
+
+            const mediaItems = [];
+
+            if (product.images && Array.isArray(product.images)) {
+                product.images.forEach(img => {
+                    mediaItems.push({ type: 'image', url: getWatermarkedUrl(img, 'image') });
+                });
+            } else if (product.img) {
+                mediaItems.push({ type: 'image', url: getWatermarkedUrl(product.img, 'image') });
+            }
+
+            if (product.videos && Array.isArray(product.videos)) {
+                product.videos.forEach(video => {
+                    if (video) {
+                        mediaItems.push({ type: 'video', url: getWatermarkedUrl(video, 'video') });
+                    }
+                });
+            }
+
+            openAlibabaViewer({ ...product, mediaItems: mediaItems });
+
+            document.getElementById('pName').innerText = product.name;
+            document.getElementById('pPrice').innerText = parseInt(product.price).toLocaleString();
+            document.getElementById('pImg').src = getWatermarkedUrl(product.img || (product.images && product.images[0]), 'image');
             document.getElementById('hIn').value = '';
         }
 
-        // البحث
         async function handleSearch() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
             const resBox = document.getElementById('searchRes');
@@ -1398,7 +1388,7 @@
                 html += `
                     <div style="display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid #eee;cursor:pointer;" 
                          onclick='openCalc(${JSON.stringify(p).replace(/'/g, "&apos;")}); document.getElementById("searchRes").style.display="none";'>
-                        <img src="${p.img || (p.images && p.images[0])}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
+                        <img src="${getWatermarkedUrl(p.img || (p.images && p.images[0]), 'image')}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;">
                         <div>
                             <div style="font-weight:bold;font-size:0.9rem;">${p.name}</div>
                             <div style="font-size:0.7rem;color:var(--gold);">${p.category}</div>
@@ -1415,7 +1405,6 @@
             }
         }
 
-        // إضافة إلى السلة
         function addToCart() {
             const h = parseFloat(document.getElementById('hIn').value);
             if(!h || h <= 0) return alert("أدخل الطول بالمتر");
@@ -1424,7 +1413,7 @@
             cart.push({ 
                 n: currentProduct.name, 
                 p: Math.round(h * currentProduct.price), 
-                img: getWatermarkedUrl(currentProduct.img || (currentProduct.images && currentProduct.images[0])),
+                img: getWatermarkedUrl(currentProduct.img || (currentProduct.images && currentProduct.images[0]), 'image'),
                 length: h
             });
             
@@ -1434,7 +1423,6 @@
             document.getElementById('hIn').value = '';
         }
 
-        // عرض/إخفاء السلة
         function toggleCartModal() {
             const overlay = document.getElementById('cartOverlay');
             overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
@@ -1462,7 +1450,6 @@
             }
         }
 
-        // حذف من السلة
         function removeFromCart(index) { 
             cart.splice(index, 1); 
             document.getElementById('globalCartCount').innerText = cart.length; 
@@ -1470,7 +1457,6 @@
             toggleCartModal(); 
         }
 
-        // إرسال الطلب
         function sendOrder() {
             if(cart.length === 0) return alert("السلة فارغة");
             
@@ -1508,20 +1494,17 @@
             toggleCartModal();
         }
 
-        // التحكم في فيديو الهيرو - يتوقف عند التمرير
         const heroVideo = document.querySelector('.hero-video');
         
         window.addEventListener('scroll', () => {
             if (window.scrollY > 100) {
                 heroVideo.pause();
             } else {
-                heroVideo.play().catch(() => {
-                    // المتصفح قد يمنع التشغيل التلقائي
-                });
+                heroVideo.play().catch(() => {});
             }
         });
 
-        // ===== نظام المستعرض الجديد بنظام Alibaba =====
+        // ===== نظام المستعرض =====
         let alibabaViewerData = {
             isOpen: false,
             currentIndex: 0,
@@ -1533,11 +1516,9 @@
             isDragging: false
         };
 
-        // دالة استخراج معرف يوتيوب - محسنة
         function extractYoutubeId(url) {
             if (!url) return null;
             
-            // قائمة بأنماط روابط يوتيوب المختلفة
             const patterns = [
                 /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/shorts\/)([^&\n?#]+)/,
                 /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/,
@@ -1549,7 +1530,6 @@
                 if (match && match[1] && match[1].length === 11) {
                     return match[1];
                 }
-                // للأنماط الأخرى
                 if (match && match[7] && match[7].length === 11) {
                     return match[7];
                 }
@@ -1558,7 +1538,6 @@
             return null;
         }
 
-        // دالة مساعدة لإضافة أزرار التنقل
         function addNavigationButtons(container) {
             const prevButton = document.createElement('button');
             prevButton.className = 'alibaba-slide-nav prev';
@@ -1574,124 +1553,73 @@
             container.appendChild(nextButton);
         }
 
-        // فتح المستعرض مع الوسائط المتعددة
         function openAlibabaViewer(product) {
             alibabaViewerData.product = product;
             alibabaViewerData.currentIndex = 0;
             alibabaViewerData.isOpen = true;
             
-            // تجهيز وسائط المنتج المتعددة
-            alibabaViewerData.mediaItems = [];
-            
-            // إضافة الصور المتعددة
-            if (product.images && Array.isArray(product.images)) {
-                product.images.forEach(img => {
-                    alibabaViewerData.mediaItems.push({ type: 'image', url: img });
-                });
-            } else if (product.img) {
-                alibabaViewerData.mediaItems.push({ type: 'image', url: product.img });
-            }
-            
-            // إضافة الفيديوهات المتعددة
-            if (product.videos && Array.isArray(product.videos)) {
-                product.videos.forEach(video => {
-                    if (video) {
-                        alibabaViewerData.mediaItems.push({ type: 'video', url: video });
-                    }
-                });
-            } else if (product.video) {
-                alibabaViewerData.mediaItems.push({ type: 'video', url: product.video });
-            }
-            
-            // ترتيب العناصر بحيث تكون الفيديوهات في المقدمة
-            alibabaViewerData.mediaItems.sort((a, b) => {
-                if (a.type === 'video' && b.type !== 'video') return -1;
-                if (a.type !== 'video' && b.type === 'video') return 1;
-                return 0;
-            });
+            alibabaViewerData.mediaItems = product.mediaItems || [];
             
             const viewer = document.getElementById('alibabaViewer');
             
-            // تحديث معلومات المنتج
             document.getElementById('alibabaProductName').textContent = product.name;
             document.getElementById('alibabaProductTitle').textContent = product.name;
             document.getElementById('alibabaProductPrice').textContent = parseInt(product.price).toLocaleString();
-            
-            // إنشاء رمز المنتج عشوائي
             document.getElementById('alibabaProductCode').textContent = `موديل: ST-${Math.floor(Math.random() * 10000)}`;
-            
-            // إنشاء التقييمات الوهمية
             document.getElementById('alibabaProductRating').textContent = `4.8 (${Math.floor(Math.random() * 200) + 50} تقييم)`;
             document.getElementById('alibabaProductSold').textContent = `أكثر من ${Math.floor(Math.random() * 500) + 200} قطعة مباعة`;
             
-            // عرض الصورة الرئيسية (أول عنصر بعد الترتيب)
             const container = document.getElementById('alibabaMainImageContainer');
             container.innerHTML = '';
             
             const firstItem = alibabaViewerData.mediaItems[0];
-            if (firstItem.type === 'video') {
-                const videoId = extractYoutubeId(firstItem.url);
-                if (videoId) {
-                    const iframe = document.createElement('iframe');
-                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0`;
-                    iframe.allow = "autoplay; encrypted-media";
-                    iframe.allowFullscreen = true;
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = 'none';
-                    container.appendChild(iframe);
-                    
-                    // إضافة مستمع حدث نهاية الفيديو
-                    iframe.onload = function() {
-                        // لا يمكن الاستماع مباشرة لنهاية الفيديو في iframe
-                        // سنستخدم interval للتحقق من الوقت
-                        setTimeout(() => {
-                            // بعد انتهاء الفيديو تقريباً (نستخدم وقت تقديري)
+            if (firstItem) {
+                if (firstItem.type === 'video') {
+                    const videoId = extractYoutubeId(firstItem.url);
+                    if (videoId) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0`;
+                        iframe.allow = "autoplay; encrypted-media";
+                        iframe.allowFullscreen = true;
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                        iframe.style.border = 'none';
+                        container.appendChild(iframe);
+                    } else {
+                        const video = document.createElement('video');
+                        video.src = firstItem.url;
+                        video.controls = true;
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.loop = false;
+                        video.style.width = '100%';
+                        video.style.height = '100%';
+                        video.style.objectFit = 'contain';
+                        
+                        video.addEventListener('ended', () => {
                             startAlibabaAutoPlay();
-                        }, 30000); // 30 ثانية تقريباً مدة الفيديو
-                    };
+                        });
+                        
+                        container.appendChild(video);
+                    }
                 } else {
-                    const video = document.createElement('video');
-                    video.src = firstItem.url;
-                    video.controls = true;
-                    video.autoplay = true;
-                    video.muted = true;
-                    video.loop = false; // لا نريد التكرار
-                    video.style.width = '100%';
-                    video.style.height = '100%';
-                    video.style.objectFit = 'contain';
+                    const img = document.createElement('img');
+                    img.src = firstItem.url;
+                    img.className = 'alibaba-main-image';
+                    img.alt = '';
+                    container.appendChild(img);
                     
-                    // عند انتهاء الفيديو، نبدأ التمرير التلقائي
-                    video.addEventListener('ended', () => {
-                        startAlibabaAutoPlay();
-                    });
-                    
-                    container.appendChild(video);
+                    startAlibabaAutoPlay();
                 }
-            } else {
-                const img = document.createElement('img');
-                img.src = firstItem.url;
-                img.className = 'alibaba-main-image';
-                img.alt = '';
-                container.appendChild(img);
-                
-                // إذا كان أول عنصر صورة، نبدأ التمرير التلقائي فوراً
-                startAlibabaAutoPlay();
             }
             
-            // إضافة أزرار التنقل
             addNavigationButtons(container);
-            
-            // إنشاء المعرض المصغر
             updateThumbnailGallery();
-            
-            // حساب الإجمالي الأولي
             calculateAlibabaTotal();
             
             viewer.classList.add('active');
         }
 
-        // تحديث المعرض المصغر
         function updateThumbnailGallery() {
             const gallery = document.getElementById('alibabaThumbnailGallery');
             gallery.innerHTML = alibabaViewerData.mediaItems.map((item, index) => `
@@ -1705,34 +1633,26 @@
             `).join('');
         }
 
-        // إغلاق المستعرض
         function closeAlibabaViewer() {
             document.getElementById('alibabaViewer').classList.remove('active');
             alibabaViewerData.isOpen = false;
             stopAlibabaAutoPlay();
         }
 
-        // تغيير الشريحة - نسخة معدلة للفيديو
         function changeAlibabaSlide(index) {
-            // التأكد من أن الفهرس ضمن النطاق
             if (index < 0) index = alibabaViewerData.mediaItems.length - 1;
             if (index >= alibabaViewerData.mediaItems.length) index = 0;
             
             alibabaViewerData.currentIndex = index;
             
-            // تحديث الصورة الرئيسية
             const container = document.getElementById('alibabaMainImageContainer');
             const item = alibabaViewerData.mediaItems[index];
             
-            // مسح المحتوى السابق
             container.innerHTML = '';
             
             if (item.type === 'video') {
-                // استخراج معرف الفيديو من رابط يوتيوب
                 const videoId = extractYoutubeId(item.url);
-                
                 if (videoId) {
-                    // إنشاء iframe ليوتيوب
                     const iframe = document.createElement('iframe');
                     iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0`;
                     iframe.allow = "autoplay; encrypted-media";
@@ -1741,17 +1661,7 @@
                     iframe.style.height = '100%';
                     iframe.style.border = 'none';
                     container.appendChild(iframe);
-                    
-                    // إيقاف التمرير التلقائي أثناء تشغيل الفيديو
-                    stopAlibabaAutoPlay();
-                    
-                    // محاولة اكتشاف نهاية الفيديو (تقديري)
-                    setTimeout(() => {
-                        startAlibabaAutoPlay();
-                    }, 30000); // 30 ثانية
-                    
                 } else {
-                    // إذا لم يكن رابط يوتيوب، نستخدم video tag عادي
                     const video = document.createElement('video');
                     video.src = item.url;
                     video.controls = true;
@@ -1762,18 +1672,13 @@
                     video.style.height = '100%';
                     video.style.objectFit = 'contain';
                     
-                    // عند انتهاء الفيديو، نبدأ التمرير التلقائي
                     video.addEventListener('ended', () => {
                         startAlibabaAutoPlay();
                     });
                     
                     container.appendChild(video);
-                    
-                    // إيقاف التمرير التلقائي أثناء تشغيل الفيديو
-                    stopAlibabaAutoPlay();
                 }
             } else {
-                // إذا كان صورة
                 const img = document.createElement('img');
                 img.src = item.url;
                 img.className = 'alibaba-main-image';
@@ -1781,14 +1686,10 @@
                 container.appendChild(img);
             }
             
-            // إعادة إضافة أزرار التنقل
             addNavigationButtons(container);
-            
-            // تحديث الثمبنايل
             updateThumbnailGallery();
         }
 
-        // حساب الإجمالي
         function calculateAlibabaTotal() {
             const meters = parseFloat(document.getElementById('alibabaMetersInput').value) || 1;
             const price = alibabaViewerData.product ? alibabaViewerData.product.price : 0;
@@ -1796,7 +1697,6 @@
             document.getElementById('alibabaTotalPrice').textContent = total.toLocaleString() + ' د.ع';
         }
 
-        // إضافة من المستعرض إلى السلة
         function addFromAlibabaViewer() {
             if (!alibabaViewerData.product) return;
             
@@ -1811,7 +1711,7 @@
             cart.push({ 
                 n: alibabaViewerData.product.name, 
                 p: Math.round(totalPrice), 
-                img: getWatermarkedUrl(alibabaViewerData.product.img || (alibabaViewerData.product.images && alibabaViewerData.product.images[0])),
+                img: getWatermarkedUrl(alibabaViewerData.product.img || (alibabaViewerData.product.images && alibabaViewerData.product.images[0]), 'image'),
                 length: meters
             });
             
@@ -1820,14 +1720,11 @@
             alert("تمت الإضافة للسلة!");
         }
 
-        // إتمام الطلب - يفتح السلة فقط دون إضافة المنتج
         function checkoutFromAlibabaViewer() {
-            // فقط يغلق المستعرض ويفتح السلة
             closeAlibabaViewer();
             toggleCartModal();
         }
 
-        // التمرير التلقائي - يبدأ عند الحاجة
         function startAlibabaAutoPlay() {
             if (alibabaViewerData.mediaItems.length <= 1) return;
             if (alibabaViewerData.isAutoPlaying) return;
@@ -1850,12 +1747,9 @@
             }
         }
 
-        // إعداد أحداث المستعرض
         function setupAlibabaViewerEvents() {
-            // تحديث الإجمالي عند تغيير عدد الأمتار
             document.getElementById('alibabaMetersInput').addEventListener('input', calculateAlibabaTotal);
             
-            // إضافة أحداث اللمس للتمرير
             const container = document.getElementById('alibabaMainImageContainer');
             container.addEventListener('touchstart', (e) => {
                 alibabaViewerData.startX = e.touches[0].clientX;
@@ -1884,7 +1778,6 @@
             });
         }
 
-        // إغلاق نتائج البحث عند النقر خارجها
         document.addEventListener('click', (e) => {
             const searchBox = document.querySelector('.search-box');
             const searchRes = document.getElementById('searchRes');
@@ -1893,7 +1786,6 @@
             }
         });
 
-        // معالجة زر الرجوع
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.page) {
                 showPage(event.state.page, false); 
@@ -1902,9 +1794,7 @@
             }
         });
 
-        // تحميل البيانات
         window.addEventListener('load', () => {
-            // الأقسام
             db.ref('categories').on('value', snap => {
                 const cats = snap.val() || {};
                 const list = document.getElementById('categoriesList');
@@ -1935,7 +1825,6 @@
                 }
             });
 
-            // المنتجات
             db.ref('products').on('value', snap => {
                 const data = snap.val() || {};
                 const list = document.getElementById('admListProds');
@@ -1946,7 +1835,6 @@
                 }
             });
 
-            // طرق الدفع
             db.ref('payments').on('value', snap => {
                 const data = snap.val() || {};
                 const userList = document.getElementById('paymentList');
@@ -1979,7 +1867,6 @@
                 }
             });
 
-            // استعادة آخر صفحة
             const hash = location.hash.replace('#', '');
             if (hash === 'categoryView') {
                 const lastCat = localStorage.getItem('lastCat');
@@ -1991,10 +1878,7 @@
                 showPage(hash || 'homePage', false);
             }
 
-            // تحديث عداد السلة
             document.getElementById('globalCartCount').innerText = cart.length;
-            
-            // إعداد أحداث المستعرض
             setupAlibabaViewerEvents();
         });
     </script>
