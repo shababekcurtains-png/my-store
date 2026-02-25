@@ -73,6 +73,15 @@
             z-index: 0;
         }
 
+        /* إزالة عناصر التحكم في الفيديو */
+        .hero-video::-webkit-media-controls {
+            display: none !important;
+        }
+
+        .hero-video::-webkit-media-controls-start-playback-button {
+            display: none !important;
+        }
+
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -948,12 +957,10 @@
             <!-- قسم الهيرو مع الفيديو -->
             <section class="hero">
                 <div class="hero-video-container">
-                    <!-- فيديو الخلفية - ستائر متطايرة -->
-                    <video class="hero-video" autoplay loop muted playsinline id="heroVideo">
-                        <!-- يمكنك تغيير هذا الرابط بأي فيديو تريده -->
-                        <source src="https://player.vimeo.com/external/371837261.sd.mp4?s=1f2b7c8c9b5e6d8f9a0b1c2d3e4f5a6b7c8d9e0f&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
-                        <!-- رابط احتياطي -->
-                        <source src="https://cdn.pixabay.com/vimeo/490022977/Curtains%20-%2040259.mp4?width=640&hash=0b5c7d9f1e3a5b7c9d1e3f5a7b9c1e3d5f7a9b1c" type="video/mp4">
+                    <!-- فيديو الخلفية من قناة شبابيك -->
+                    <video class="hero-video" autoplay loop muted playsinline webkit-playsinline>
+                        <source src="https://github.com/bilal-a100/videos/raw/main/curtains-video.mp4" type="video/mp4">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-white-curtain-blowing-in-the-wind-4090-large.mp4" type="video/mp4">
                     </video>
                     <!-- طبقة داكنة فوق الفيديو -->
                     <div class="hero-overlay"></div>
@@ -1505,7 +1512,7 @@
         }
 
         // التحكم في فيديو الهيرو - يتوقف عند التمرير
-        const heroVideo = document.getElementById('heroVideo');
+        const heroVideo = document.querySelector('.hero-video');
         
         window.addEventListener('scroll', () => {
             if (window.scrollY > 100) {
