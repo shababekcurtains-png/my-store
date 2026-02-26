@@ -13,14 +13,12 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style">
     <link rel="preload" href="https://res.cloudinary.com/dnkuwf8q9/video/upload/v1772027160/gemini_generated_video_077d6d04_ehg756.mp4" as="video">
     
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; --teal: #2A9D8F; }
+        :root { --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; --whatsapp: #25D366; --red: #ff4d4d; }
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         
@@ -39,7 +37,7 @@
         }
 
         /* تحسين اللمس للجوال */
-        button, a, .cat-card-new, .cart-icon, .search-box, .ai-camera-btn {
+        button, a, .cat-card-new, .cart-icon, .search-box {
             touch-action: manipulation;
         }
 
@@ -54,12 +52,9 @@
         .cart-icon { position: relative; cursor: pointer; font-size: 2.2rem; color: var(--brown); background: white; padding: 5px; border-radius: 12px; transition: 0.3s; border: 1px solid #eee; }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; font-size: 0.85rem; padding: 2px 8px; border-radius: 50%; font-weight: 900; }
         
-        /* تحسين البحث مع زر الكاميرا */
+        /* تحسين البحث مع الاقتراحات */
         .search-container {
             position: relative;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
         
         .search-box { 
@@ -92,28 +87,6 @@
             padding: 10px; 
             color: var(--brown); 
             cursor: pointer; 
-        }
-        
-        /* زر الكاميرا الجديد */
-        .ai-camera-btn {
-            background: var(--teal);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.3rem;
-            transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .ai-camera-btn:hover {
-            background: var(--gold);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         #searchSuggestions {
@@ -161,236 +134,11 @@
             font-size: 0.8rem;
         }
 
-        /* ===== نافذة الكاميرا والذكاء الاصطناعي ===== */
-        .ai-camera-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 20000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .ai-camera-modal.active {
-            display: flex;
-        }
-        
-        .ai-camera-content {
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 30px;
-            padding: 25px;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .ai-camera-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .ai-camera-header h2 {
-            font-weight: 900;
-            color: var(--brown);
-            font-size: 1.4rem;
-        }
-        
-        .ai-camera-close {
-            background: var(--red);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .ai-camera-close:hover {
-            transform: scale(1.1);
-        }
-        
-        .camera-preview {
-            width: 100%;
-            height: 300px;
-            background: #f0f0f0;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .camera-preview video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .camera-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        .camera-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .camera-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 0.95rem;
-        }
-        
-        .camera-btn.capture {
-            background: var(--teal);
-            color: white;
-        }
-        
-        .camera-btn.upload {
-            background: var(--gold);
-            color: white;
-        }
-        
-        .camera-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .ai-analysis-status {
-            background: var(--bg);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            text-align: center;
-            display: none;
-        }
-        
-        .ai-analysis-status.active {
-            display: block;
-        }
-        
-        .ai-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 10px auto;
-        }
-        
-        .ai-recommendations {
-            display: none;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .ai-recommendations.active {
-            display: grid;
-        }
-        
-        .ai-recommendation-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-        }
-        
-        .ai-recommendation-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .ai-recommendation-card img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-        }
-        
-        .ai-recommendation-card .info {
-            padding: 10px;
-        }
-        
-        .ai-recommendation-card h4 {
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-        
-        .ai-recommendation-card .price {
-            color: var(--gold);
-            font-weight: 900;
-            font-size: 0.9rem;
-        }
-        
-        .ai-recommendation-card .match-badge {
-            background: var(--teal);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-top: 5px;
-        }
-
-        /* شريط التنقل الرئيسي */
-        .nav-bar { 
-            background: #fcfcfc; 
-            border-bottom: 1px solid #eee; 
-            padding: 12px 0; 
-            overflow-x: auto; 
-            white-space: nowrap; 
-            -webkit-overflow-scrolling: touch; 
-            scrollbar-width: none; 
-        }
-        .nav-menu { 
-            display: inline-flex; 
-            gap: 25px; 
-            list-style: none; 
-            padding: 0 20px; 
-        }
-        .nav-menu a { 
-            text-decoration: none; 
-            color: var(--brown); 
-            font-weight: 700; 
-            cursor: pointer; 
-            font-size: 1rem; 
-            transition: 0.3s; 
-        }
-        .nav-menu a:hover { 
-            color: var(--gold); 
-        }
-        .nav-menu a.active { 
-            color: var(--gold); 
-        }
+        .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
+        .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        .nav-menu a:hover { color: var(--gold); }
+        .nav-menu a.active { color: var(--gold); }
 
         .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
         .active { display: block !important; }
@@ -697,10 +445,6 @@
             
             .recommendations-grid {
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            }
-            
-            .camera-controls {
-                flex-direction: column;
             }
         }
 
@@ -1240,9 +984,6 @@
                     <i class="fas fa-search" onclick="handleSmartSearch()"></i>
                     <input type="text" id="searchInput" placeholder="ابحث عن موديل.." onkeyup="debounce(handleSmartSearch, 300)()">
                 </div>
-                <div class="ai-camera-btn" onclick="openAICamera()">
-                    <i class="fas fa-camera"></i>
-                </div>
                 <div id="searchSuggestions"></div>
             </div>
             <div class="cart-icon" onclick="toggleCartModal()">
@@ -1252,7 +993,8 @@
         </div>
     </header>
     
-    <!-- شريط التنقل الرئيسي -->
+    <div id="searchRes"></div>
+
     <div class="nav-bar">
         <ul class="nav-menu">
             <li><a onclick="showPage('homePage')">الرئيسية</a></li>
@@ -1262,38 +1004,6 @@
             <li><a onclick="showPage('aboutPage')">من نحن</a></li>
             <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
         </ul>
-    </div>
-    
-    <!-- نافذة الكاميرا والذكاء الاصطناعي -->
-    <div class="ai-camera-modal" id="aiCameraModal">
-        <div class="ai-camera-content">
-            <div class="ai-camera-header">
-                <h2><i class="fas fa-robot"></i> دكتور ستائر الذكي</h2>
-                <button class="ai-camera-close" onclick="closeAICamera()"><i class="fas fa-times"></i></button>
-            </div>
-            
-            <div class="camera-preview" id="cameraPreview">
-                <video id="cameraStream" autoplay playsinline></video>
-                <img id="capturedImage" style="display: none;">
-            </div>
-            
-            <div class="camera-controls">
-                <button class="camera-btn capture" onclick="captureImage()">
-                    <i class="fas fa-camera"></i> التقط صورة
-                </button>
-                <button class="camera-btn upload" onclick="uploadImage()">
-                    <i class="fas fa-cloud-upload-alt"></i> ارفع صورة
-                </button>
-                <input type="file" id="imageUploadInput" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
-            </div>
-            
-            <div class="ai-analysis-status" id="aiAnalysisStatus">
-                <p>جاري تحليل الصورة باستخدام الذكاء الاصطناعي...</p>
-                <div class="ai-spinner"></div>
-            </div>
-            
-            <div class="ai-recommendations" id="aiRecommendations"></div>
-        </div>
     </div>
 
     <div id="cartOverlay" onclick="if(event.target===this) toggleCartModal()">
@@ -1562,9 +1272,6 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // مفتاح Gemini API
-        const GEMINI_API_KEY = "AIzaSyBQzcGsFRGcWKThXP4WKDYlAm2KCXuWO28";
-
         // متغيرات عامة
         const CLOUD_NAME = "dnkuwf8q9";
         const UPLOAD_PRESET = "afsx4w9k";
@@ -1573,7 +1280,6 @@
         let cart = JSON.parse(localStorage.getItem('shababek_cart')) || [];
         let adminClicks = 0;
         let clickTimer;
-        let cameraStream = null;
         
         // نظام التخزين المؤقت (Cache)
         let cache = {
@@ -1693,364 +1399,6 @@
             return url;
         }
 
-        // دوال الكاميرا والذكاء الاصطناعي
-        function openAICamera() {
-            const modal = document.getElementById('aiCameraModal');
-            modal.classList.add('active');
-            startCamera();
-        }
-        
-        function closeAICamera() {
-            const modal = document.getElementById('aiCameraModal');
-            modal.classList.remove('active');
-            
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-                cameraStream = null;
-            }
-            
-            document.getElementById('aiRecommendations').classList.remove('active');
-            document.getElementById('aiAnalysisStatus').classList.remove('active');
-            document.getElementById('capturedImage').style.display = 'none';
-            document.getElementById('cameraStream').style.display = 'block';
-        }
-        
-        async function startCamera() {
-            try {
-                cameraStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        facingMode: 'environment',
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    } 
-                });
-                const video = document.getElementById('cameraStream');
-                video.srcObject = cameraStream;
-            } catch (err) {
-                console.error("خطأ في تشغيل الكاميرا:", err);
-                alert("تعذر تشغيل الكاميرا. يرجى التأكد من سماح الموقع باستخدام الكاميرا.");
-            }
-        }
-        
-        function captureImage() {
-            const video = document.getElementById('cameraStream');
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            
-            canvas.toBlob(async (blob) => {
-                const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
-                await analyzeImageWithGemini(file);
-            }, 'image/jpeg');
-        }
-        
-        function uploadImage() {
-            document.getElementById('imageUploadInput').click();
-        }
-        
-        async function handleImageUpload(input) {
-            if (input.files && input.files[0]) {
-                await analyzeImageWithGemini(input.files[0]);
-            }
-        }
-        
-        // دوال مساعدة للصورة
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => {
-                    const base64String = reader.result.split(',')[1];
-                    resolve(base64String);
-                };
-                reader.onerror = error => reject(error);
-            });
-        }
-        
-        // تحليل الصورة باستخدام Gemini API
-        async function analyzeImageWithGemini(file) {
-            // إظهار الصورة الملتقطة
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = document.getElementById('capturedImage');
-                if (img) {
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                    const video = document.getElementById('cameraStream');
-                    if (video) video.style.display = 'none';
-                }
-            };
-            reader.readAsDataURL(file);
-            
-            // إظهار حالة التحليل
-            const statusEl = document.getElementById('aiAnalysisStatus');
-            const recsEl = document.getElementById('aiRecommendations');
-            if (statusEl) statusEl.classList.add('active');
-            if (recsEl) recsEl.classList.remove('active');
-            
-            try {
-                // تحويل الصورة إلى Base64
-                const base64Image = await fileToBase64(file);
-                
-                // نموذج Gemini المتاح
-                const model = 'gemini-1.5-pro';
-                
-                const prompt = "أنت خبير ديكور وستائر متخصص. حلل هذه الصورة واقترح لي 3 ألوان للستائر تتناغم مع الغرفة. أجب فقط بالألوان مفصولة بفواصل.";
-                
-                const requestBody = {
-                    contents: [{
-                        parts: [
-                            { text: prompt },
-                            {
-                                inlineData: {
-                                    mimeType: file.type,
-                                    data: base64Image
-                                }
-                            }
-                        ]
-                    }]
-                };
-                
-                console.log(`إرسال الطلب إلى Gemini API باستخدام نموذج ${model}...`);
-                
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    console.error("خطأ من Gemini API:", data);
-                    throw new Error(data.error?.message || "خطأ في الاتصال");
-                }
-                
-                console.log("استجابة Gemini:", data);
-                
-                let analysis = "";
-                if (data.candidates && 
-                    data.candidates[0] && 
-                    data.candidates[0].content && 
-                    data.candidates[0].content.parts && 
-                    data.candidates[0].content.parts[0]) {
-                    analysis = data.candidates[0].content.parts[0].text;
-                } else {
-                    throw new Error("تنسيق استجابة غير متوقع");
-                }
-                
-                console.log("تحليل Gemini:", analysis);
-                
-                const colors = extractColorsSimple(analysis);
-                
-                await findMatchingProductsByColors(colors);
-                
-            } catch (error) {
-                console.error("خطأ في تحليل الصورة:", error);
-                
-                let errorMessage = "حدث خطأ في تحليل الصورة. ";
-                
-                if (error.message.includes("API key")) {
-                    errorMessage += "مفتاح API غير صالح.";
-                } else if (error.message.includes("not found") || error.message.includes("not supported")) {
-                    errorMessage += "النموذج غير متاح. سيتم استخدام المحاكاة المحلية.";
-                    // استخدم المحاكاة المحلية كبديل
-                    await analyzeImageWithFallback(file);
-                    return;
-                } else {
-                    errorMessage += "الرجاء المحاولة مرة أخرى.";
-                }
-                
-                alert(errorMessage);
-                
-                if (statusEl) statusEl.classList.remove('active');
-            }
-        }
-
-        // نسخة احتياطية - محاكاة محلية
-        async function analyzeImageWithFallback(file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = document.getElementById('capturedImage');
-                if (img) {
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                    const video = document.getElementById('cameraStream');
-                    if (video) video.style.display = 'none';
-                }
-            };
-            reader.readAsDataURL(file);
-            
-            const statusEl = document.getElementById('aiAnalysisStatus');
-            const recsEl = document.getElementById('aiRecommendations');
-            if (statusEl) statusEl.classList.add('active');
-            if (recsEl) recsEl.classList.remove('active');
-            
-            try {
-                // محاكاة تأخير التحليل
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // اقتراح ألوان افتراضية
-                const suggestedColors = ['ذهبي', 'بيج', 'بني'];
-                
-                console.log("ألوان مقترحة (محاكاة):", suggestedColors);
-                
-                await findMatchingProductsByColors(suggestedColors);
-                
-            } catch (error) {
-                console.error("خطأ في المحاكاة المحلية:", error);
-                alert("حدث خطأ. الرجاء المحاولة مرة أخرى.");
-                if (statusEl) statusEl.classList.remove('active');
-            }
-        }
-
-        // دالة مبسطة لاستخراج الألوان
-        function extractColorsSimple(text) {
-            const colors = [];
-            
-            // قائمة الألوان الشائعة في متجرك
-            const colorKeywords = {
-                'ذهبي': ['ذهبي', 'ذهب', 'gold'],
-                'بني': ['بني', 'brown'],
-                'بيج': ['بيج', 'beige', 'كريم', 'cream'],
-                'أبيض': ['أبيض', 'white'],
-                'رمادي': ['رمادي', 'gray', 'grey'],
-                'أسود': ['أسود', 'black'],
-                'أزرق': ['أزرق', 'blue'],
-                'أخضر': ['أخضر', 'green'],
-                'أحمر': ['أحمر', 'red']
-            };
-            
-            // البحث عن الألوان في النص
-            for (const [arColor, keywords] of Object.entries(colorKeywords)) {
-                for (const keyword of keywords) {
-                    if (text.toLowerCase().includes(keyword.toLowerCase())) {
-                        if (!colors.includes(arColor)) {
-                            colors.push(arColor);
-                        }
-                        break;
-                    }
-                }
-            }
-            
-            // إذا لم يجد ألوان، استخدم ألوان افتراضية
-            if (colors.length === 0) {
-                return ['ذهبي', 'بيج', 'بني'];
-            }
-            
-            return colors.slice(0, 3);
-        }
-        
-        // البحث عن منتجات حسب الألوان - نسخة محسنة
-        async function findMatchingProductsByColors(colors) {
-            const products = await getCachedData('products') || {};
-            const productsList = Object.values(products);
-            
-            // التحقق من وجود منتجات
-            if (productsList.length === 0) {
-                console.log("لا توجد منتجات في قاعدة البيانات");
-                
-                // عرض رسالة للمستخدم
-                const container = document.getElementById('aiRecommendations');
-                const statusEl = document.getElementById('aiAnalysisStatus');
-                
-                if (container && statusEl) {
-                    container.innerHTML = `
-                        <div style="text-align:center; padding:30px;">
-                            <i class="fas fa-palette" style="font-size:4rem; color:var(--gold); margin-bottom:15px;"></i>
-                            <h3 style="color:var(--brown); margin-bottom:10px;">الألوان المقترحة:</h3>
-                            <div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px; flex-wrap:wrap;">
-                                ${colors.map(color => `
-                                    <span style="background:var(--gold); color:white; padding:8px 20px; border-radius:30px; font-weight:700;">${color}</span>
-                                `).join('')}
-                            </div>
-                            <p style="color:#666; font-size:1.1rem;">لا توجد منتجات بعد!</p>
-                            <p style="color:#999; margin-top:15px;">سيتم إضافة منتجات قريباً</p>
-                            <p style="color:#999; font-size:0.85rem; margin-top:10px;">يمكنك إضافة منتجات من لوحة الإدارة</p>
-                        </div>
-                    `;
-                    statusEl.classList.remove('active');
-                    container.classList.add('active');
-                }
-                return;
-            }
-            
-            // خريطة الألوان
-            const colorMap = {
-                'ذهبي': ['ذهب', 'gold', 'ذهبية'],
-                'بني': ['brown', 'بنية'],
-                'بيج': ['beige', 'كريم', 'cream'],
-                'أبيض': ['white'],
-                'رمادي': ['gray', 'grey']
-            };
-            
-            const searchTerms = [];
-            colors.forEach(color => {
-                searchTerms.push(color);
-                for (const [key, values] of Object.entries(colorMap)) {
-                    if (color.includes(key) || values.some(v => color.includes(v))) {
-                        searchTerms.push(key);
-                        searchTerms.push(...values);
-                    }
-                }
-            });
-            
-            console.log("كلمات البحث:", searchTerms);
-            
-            const matches = productsList.filter(p => {
-                const nameLower = p.name.toLowerCase();
-                const catLower = p.category.toLowerCase();
-                
-                return searchTerms.some(term => 
-                    nameLower.includes(term.toLowerCase()) || catLower.includes(term.toLowerCase())
-                );
-            }).slice(0, 6);
-            
-            displayRecommendations(matches, colors);
-        }
-        
-        // تعديل دالة عرض التوصيات
-        function displayRecommendations(matches, suggestedColors = []) {
-            const container = document.getElementById('aiRecommendations');
-            const statusEl = document.getElementById('aiAnalysisStatus');
-            
-            if (container && statusEl) {
-                if (matches.length === 0) {
-                    // إذا لم يجد منتجات مطابقة
-                    container.innerHTML = `
-                        <div style="text-align:center; padding:20px;">
-                            <i class="fas fa-palette" style="font-size:3rem; color:var(--gold); margin-bottom:10px;"></i>
-                            <p style="color:var(--brown); font-weight:700; margin-bottom:10px;">الألوان المقترحة:</p>
-                            <div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px; flex-wrap:wrap;">
-                                ${suggestedColors.map(color => `
-                                    <span style="background:var(--gold); color:white; padding:5px 15px; border-radius:20px;">${color}</span>
-                                `).join('')}
-                            </div>
-                            <p style="color:#666;">لا توجد منتجات بهذه الألوان حالياً</p>
-                            <p style="color:#999; font-size:0.85rem; margin-top:10px;">يمكنك إضافة منتجات من لوحة الإدارة</p>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = matches.map(p => `
-                        <div class="ai-recommendation-card" onclick='openCalc(${JSON.stringify(p).replace(/'/g, "&apos;")}); closeAICamera()'>
-                            <img src="${getWatermarkedUrl(p.img || (p.images && p.images[0]), 'image')}" loading="lazy">
-                            <div class="info">
-                                <h4>${p.name}</h4>
-                                <div class="price">${parseInt(p.price).toLocaleString()} د.ع</div>
-                                <div class="match-badge">✔ مناسب</div>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-                
-                statusEl.classList.remove('active');
-                container.classList.add('active');
-            }
-        }
-
         // البحث الذكي مع الاقتراحات
         async function handleSmartSearch() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -2128,6 +1476,7 @@
                     alert("تم إضافة القسم بنجاح");
                     document.getElementById('admCatName').value = "";
                     document.getElementById('admCatFile').value = "";
+                    // تحديث الكاش
                     cache.categories = null;
                 });
             }
@@ -2215,6 +1564,7 @@
                         </div>
                     `;
                     
+                    // تحديث الكاش
                     cache.products = null;
                 });
             }
@@ -2238,6 +1588,7 @@
                     alert("تم إضافة طريقة الدفع بنجاح");
                     document.getElementById('admPayName').value = "";
                     document.getElementById('admPayFile').value = "";
+                    // تحديث الكاش
                     cache.payments = null;
                 });
             }
@@ -2246,6 +1597,7 @@
         function deleteItem(ref, key) { 
             if(confirm("هل تريد الحذف نهائياً؟")) {
                 db.ref(ref).child(key).remove().then(() => {
+                    // تحديث الكاش
                     if (ref === 'categories') cache.categories = null;
                     if (ref === 'products') cache.products = null;
                     if (ref === 'payments') cache.payments = null;
@@ -2278,8 +1630,10 @@
 
             const mediaItems = [];
 
+            // عرض التوصيات
             getRecommendations(product);
 
+            // ترتيب الوسائط: الفيديوهات أولاً ثم الصور
             if (product.videos && Array.isArray(product.videos)) {
                 product.videos.forEach(video => {
                     if (video) {
@@ -2405,6 +1759,7 @@
             }
         });
 
+        // إغلاق الاقتراحات عند النقر خارجها
         document.addEventListener('click', (e) => {
             const searchContainer = document.querySelector('.search-container');
             const suggestions = document.getElementById('searchSuggestions');
@@ -2422,6 +1777,7 @@
         });
 
         window.addEventListener('load', () => {
+            // الأقسام
             getCachedData('categories').then(cats => {
                 const list = document.getElementById('categoriesList');
                 if(list) {
@@ -2451,6 +1807,7 @@
                 }
             });
 
+            // المنتجات
             getCachedData('products').then(data => {
                 const list = document.getElementById('admListProds');
                 if(list) {
@@ -2460,6 +1817,7 @@
                 }
             });
 
+            // طرق الدفع
             getCachedData('payments').then(data => {
                 const userList = document.getElementById('paymentList');
                 const selectBox = document.getElementById('userPayment');
