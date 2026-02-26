@@ -310,67 +310,6 @@
         .f-card { background: white; padding: 25px 15px; border-radius: 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: 0.3s; }
         .f-card:hover { transform: translateY(-5px); border: 1px solid var(--gold); }
 
-        /* ===== فتات الخبز (Breadcrumbs) ===== */
-        .breadcrumbs {
-            padding: 15px 5%;
-            background: var(--bg);
-            border-bottom: 1px solid #eee;
-            font-size: 0.9rem;
-        }
-        
-        .breadcrumbs a {
-            color: var(--brown);
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .breadcrumbs a:hover {
-            color: var(--gold);
-        }
-        
-        .breadcrumbs span {
-            color: #999;
-            margin: 0 5px;
-        }
-
-        /* ===== شوهد مؤخراً ===== */
-        .recently-viewed {
-            padding: 40px 5%;
-            background: white;
-        }
-        
-        .recently-viewed h3 {
-            font-weight: 900;
-            margin-bottom: 20px;
-            color: var(--brown);
-            font-size: 1.3rem;
-        }
-        
-        .viewed-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
-        }
-        
-        .viewed-grid div {
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
-        
-        .viewed-grid div:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .viewed-grid img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-        }
-
         /* ===== التوصيات ===== */
         .recommendations {
             padding: 40px 5%;
@@ -502,10 +441,6 @@
                 flex: 0 0 250px !important;
                 height: 300px;
                 scroll-snap-align: start;
-            }
-            
-            .viewed-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             }
             
             .recommendations-grid {
@@ -1071,11 +1006,6 @@
         </ul>
     </div>
 
-    <!-- فتات الخبز (Breadcrumbs) -->
-    <div class="breadcrumbs" id="breadcrumbs">
-        <a href="#" onclick="showPage('homePage')">الرئيسية</a>
-    </div>
-
     <div id="cartOverlay" onclick="if(event.target===this) toggleCartModal()">
         <div class="cart-modal">
             <h2 style="margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:10px; font-weight:900;">سلة المشتريات</h2>
@@ -1173,9 +1103,6 @@
             </div>
         </div>
     </div>
-
-    <!-- شوهد مؤخراً -->
-    <div id="recentlyViewed" class="recently-viewed" style="display: none;"></div>
 
     <!-- التوصيات -->
     <div id="recommendations" class="recommendations" style="display: none;"></div>
@@ -1361,9 +1288,6 @@
             payments: null,
             lastFetch: 0
         };
-        
-        // شوهد مؤخراً
-        let viewedProducts = JSON.parse(localStorage.getItem('viewed')) || [];
 
         // دالة منع التنفيذ المتكرر (Debounce)
         function debounce(func, wait) {
@@ -1407,49 +1331,9 @@
                 targetPage.classList.add('active');
                 window.scrollTo(0, 0);
                 
-                // تحديث فتات الخبز
-                updateBreadcrumbs(pageId);
-                
                 if (pushToHistory) {
                     history.pushState({ page: pageId }, '', `#${pageId}`);
                 }
-            }
-        }
-        
-        // تحديث فتات الخبز
-        function updateBreadcrumbs(pageId) {
-            const breadcrumbs = document.getElementById('breadcrumbs');
-            if (pageId === 'homePage') {
-                breadcrumbs.innerHTML = `<a href="#" onclick="showPage('homePage')">الرئيسية</a>`;
-            } else if (pageId === 'categoryView') {
-                const catName = document.getElementById('catTitle').innerText;
-                breadcrumbs.innerHTML = `
-                    <a href="#" onclick="showPage('homePage')">الرئيسية</a>
-                    <span> > </span>
-                    <a href="#" onclick="showPage('categoryView')">${catName}</a>
-                `;
-            } else if (pageId === 'productCalculator') {
-                const catName = localStorage.getItem('lastCat') || '';
-                const prodName = currentProduct ? currentProduct.name : '';
-                breadcrumbs.innerHTML = `
-                    <a href="#" onclick="showPage('homePage')">الرئيسية</a>
-                    <span> > </span>
-                    <a href="#" onclick="openCat('${catName}')">${catName}</a>
-                    <span> > </span>
-                    <span>${prodName}</span>
-                `;
-            } else {
-                const pageNames = {
-                    'paymentPage': 'طرق الدفع',
-                    'aboutPage': 'من نحن',
-                    'contactPage': 'تواصل معنا',
-                    'adminPanel': 'لوحة الإدارة'
-                };
-                breadcrumbs.innerHTML = `
-                    <a href="#" onclick="showPage('homePage')">الرئيسية</a>
-                    <span> > </span>
-                    <span>${pageNames[pageId] || ''}</span>
-                `;
             }
         }
 
@@ -1544,34 +1428,6 @@
             } else {
                 suggestions.style.display = 'none';
             }
-        }
-
-        // إضافة للمشاهدة مؤخراً
-        function addToViewed(product) {
-            viewedProducts = [product, ...viewedProducts.filter(p => p.name !== product.name)].slice(0, 10);
-            localStorage.setItem('viewed', JSON.stringify(viewedProducts));
-            displayViewedProducts();
-        }
-
-        // عرض المنتجات التي شوهدت مؤخراً
-        function displayViewedProducts() {
-            const container = document.getElementById('recentlyViewed');
-            if (viewedProducts.length === 0) {
-                container.style.display = 'none';
-                return;
-            }
-            
-            container.innerHTML = `
-                <h3>شوهد مؤخراً</h3>
-                <div class="viewed-grid">
-                    ${viewedProducts.map(p => `
-                        <div onclick='openCalc(${JSON.stringify(p).replace(/'/g, "&apos;")})'>
-                            <img src="${getWatermarkedUrl(p.img || (p.images && p.images[0]), 'image')}" loading="lazy">
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            container.style.display = 'block';
         }
 
         // عرض التوصيات
@@ -1765,7 +1621,6 @@
                         </div>`).join('');
                 }
                 showPage('categoryView'); 
-                updateBreadcrumbs('categoryView');
             }); 
         }
 
@@ -1775,9 +1630,6 @@
 
             const mediaItems = [];
 
-            // إضافة للمشاهدة مؤخراً
-            addToViewed(product);
-            
             // عرض التوصيات
             getRecommendations(product);
 
@@ -1806,7 +1658,6 @@
             document.getElementById('hIn').value = '';
             
             showPage('productCalculator');
-            updateBreadcrumbs('productCalculator');
         }
 
         function addToCart() {
@@ -1926,9 +1777,6 @@
         });
 
         window.addEventListener('load', () => {
-            // عرض المشاهدة مؤخراً
-            displayViewedProducts();
-            
             // الأقسام
             getCachedData('categories').then(cats => {
                 const list = document.getElementById('categoriesList');
