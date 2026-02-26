@@ -16,11 +16,6 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app-check.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-ai.js"></script>
-    
-    <!-- reCAPTCHA Enterprise for App Check -->
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcQmQUqAAAAANk8nJ5xQk8nJ5x"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -1232,7 +1227,7 @@
         </div>
     </header>
     
-    <!-- نافذة الكاميرا والذكاء الاصطناعي الحقيقي -->
+    <!-- نافذة الكاميرا والذكاء الاصطناعي -->
     <div class="ai-camera-modal" id="aiCameraModal">
         <div class="ai-camera-content">
             <div class="ai-camera-header">
@@ -1530,12 +1525,8 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // تفعيل App Check لحماية المشروع
-        const appCheck = firebase.appCheck();
-        appCheck.activate(
-            '6LcQmQUqAAAAANk8nJ5xQk8nJ5x', // Site Key
-            true // true للـ debug mode أثناء التطوير
-        );
+        // مفتاح Gemini API
+        const GEMINI_API_KEY = "AIzaSyBQzcGsFRGcWKThXP4WKDYlAm2KCXuWO28";
 
         // متغيرات عامة
         const CLOUD_NAME = "dnkuwf8q9";
@@ -1546,7 +1537,6 @@
         let adminClicks = 0;
         let clickTimer;
         let cameraStream = null;
-        let geminiModel = null;
         
         // نظام التخزين المؤقت (Cache)
         let cache = {
@@ -1555,23 +1545,6 @@
             payments: null,
             lastFetch: 0
         };
-
-        // تهيئة نموذج Gemini
-        async function initGemini() {
-            try {
-                const googleAI = firebase.ai();
-                geminiModel = googleAI.getGenerativeModel({
-                    modelName: 'gemini-2.5-flash-lite', // أحدث نموذج مجاني
-                    mode: 'prefer_in_cloud'
-                });
-                console.log("Gemini initialized successfully");
-            } catch (error) {
-                console.error("Error initializing Gemini:", error);
-            }
-        }
-
-        // استدعاء تهيئة Gemini عند تحميل الصفحة
-        initGemini();
 
         // دالة منع التنفيذ المتكرر (Debounce)
         function debounce(func, wait) {
@@ -1683,32 +1656,10 @@
             return url;
         }
 
-        // دوال مساعدة للصورة
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = error => reject(error);
-            });
-        }
-
-        async function fileToGenerativePart(file) {
-            const base64Data = await fileToBase64(file);
-            return {
-                inlineData: {
-                    data: base64Data,
-                    mimeType: file.type
-                }
-            };
-        }
-
-        // دوال الكاميرا والذكاء الاصطناعي الحقيقي
+        // دوال الكاميرا والذكاء الاصطناعي
         function openAICamera() {
             const modal = document.getElementById('aiCameraModal');
             modal.classList.add('active');
-            
-            // تشغيل الكاميرا
             startCamera();
         }
         
@@ -1716,13 +1667,11 @@
             const modal = document.getElementById('aiCameraModal');
             modal.classList.remove('active');
             
-            // إيقاف الكاميرا
             if (cameraStream) {
                 cameraStream.getTracks().forEach(track => track.stop());
                 cameraStream = null;
             }
             
-            // إخفاء النتائج
             document.getElementById('aiRecommendations').classList.remove('active');
             document.getElementById('aiAnalysisStatus').classList.remove('active');
             document.getElementById('capturedImage').style.display = 'none';
@@ -1755,8 +1704,6 @@
             
             canvas.toBlob(async (blob) => {
                 const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
-                
-                // استخدام Gemini الحقيقي
                 await analyzeImageWithGemini(file);
             }, 'image/jpeg');
         }
@@ -1767,66 +1714,117 @@
         
         async function handleImageUpload(input) {
             if (input.files && input.files[0]) {
-                // استخدام Gemini الحقيقي
                 await analyzeImageWithGemini(input.files[0]);
             }
         }
         
-        // تحليل الصورة باستخدام Gemini الحقيقي
+        // دوال مساعدة للصورة
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    const base64String = reader.result.split(',')[1];
+                    resolve(base64String);
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+        
+        // تحليل الصورة باستخدام Gemini API
         async function analyzeImageWithGemini(file) {
             // إظهار الصورة الملتقطة
             const reader = new FileReader();
             reader.onload = (e) => {
                 const img = document.getElementById('capturedImage');
-                img.src = e.target.result;
-                img.style.display = 'block';
-                document.getElementById('cameraStream').style.display = 'none';
+                if (img) {
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    const video = document.getElementById('cameraStream');
+                    if (video) video.style.display = 'none';
+                }
             };
             reader.readAsDataURL(file);
             
             // إظهار حالة التحليل
-            document.getElementById('aiAnalysisStatus').classList.add('active');
-            document.getElementById('aiRecommendations').classList.remove('active');
+            const statusEl = document.getElementById('aiAnalysisStatus');
+            const recsEl = document.getElementById('aiRecommendations');
+            if (statusEl) statusEl.classList.add('active');
+            if (recsEl) recsEl.classList.remove('active');
             
             try {
-                if (!geminiModel) {
-                    await initGemini();
-                }
+                // تحويل الصورة إلى Base64
+                const base64Image = await fileToBase64(file);
                 
-                // البرومبت المثالي لتحليل الستائر
+                // تحضير الطلب إلى Gemini API
                 const prompt = `أنت خبير ديكور وستائر متخصص. حلل هذه الصورة وأخبرني:
                 
                 1. ما هي الألوان الرئيسية في الغرفة؟
                 2. ما هو نمط الديكور (حديث، كلاسيكي، بسيط، فاخر)؟
-                3. ما نوع الستائر المناسبة لهذه الغرفة؟
-                4. اقترح لي 3 ألوان للستائر تتناغم مع ألوان الغرفة.
+                3. اقترح لي 3 ألوان للستائر تتناغم مع ألوان الغرفة.
                 
-                المطلوب مني: البحث في متجري عن ستائر بهذه الألوان المقترحة.
+                أجب فقط بهذا التنسيق:
+                الألوان الرئيسية: [اكتب الألوان]
+                النمط: [اكتب النمط]
+                الألوان المقترحة للستائر: [لون1، لون2، لون3]`;
                 
-                أجب فقط بـ:
-                الألوان الرئيسية: (اكتب الألوان)
-                النمط: (اكتب النمط)
-                الألوان المقترحة للستائر: (اكتب 3 ألوان مفصولة بفواصل)`;
+                // استدعاء Gemini API مباشرة
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [
+                                { text: prompt },
+                                {
+                                    inlineData: {
+                                        mimeType: file.type,
+                                        data: base64Image
+                                    }
+                                }
+                            ]
+                        }],
+                        generationConfig: {
+                            temperature: 0.7,
+                            maxOutputTokens: 1024,
+                        }
+                    })
+                });
                 
-                // تحضير الصورة
-                const imagePart = await fileToGenerativePart(file);
+                const data = await response.json();
                 
-                // إرسال الطلب إلى Gemini
-                const result = await geminiModel.generateContent([prompt, imagePart]);
-                const analysis = result.response.text();
+                if (!response.ok) {
+                    console.error("Gemini API error:", data);
+                    throw new Error(data.error?.message || "خطأ في الاتصال بـ Gemini");
+                }
                 
+                const analysis = data.candidates[0].content.parts[0].text;
                 console.log("تحليل Gemini:", analysis);
                 
-                // استخراج الألوان المقترحة من التحليل
+                // استخراج الألوان من التحليل
                 const suggestedColors = extractColorsFromAnalysis(analysis);
                 
                 // البحث في المنتجات
-                await findMatchingProductsByColors(suggestedColors, analysis);
+                await findMatchingProductsByColors(suggestedColors);
                 
             } catch (error) {
                 console.error("خطأ في تحليل الصورة:", error);
-                alert("حدث خطأ في تحليل الصورة. يرجى المحاولة مرة أخرى.");
-                document.getElementById('aiAnalysisStatus').classList.remove('active');
+                
+                let errorMessage = "حدث خطأ في تحليل الصورة. ";
+                
+                if (error.message.includes("API key")) {
+                    errorMessage += "مفتاح API غير صالح.";
+                } else if (error.message.includes("quota")) {
+                    errorMessage += "لقد تجاوزت الحد المسموح.";
+                } else {
+                    errorMessage += "الرجاء المحاولة مرة أخرى.";
+                }
+                
+                alert(errorMessage);
+                
+                if (statusEl) statusEl.classList.remove('active');
             }
         }
         
@@ -1834,44 +1832,38 @@
         function extractColorsFromAnalysis(analysis) {
             const colors = [];
             
-            // ابحث عن سطر "الألوان المقترحة للستائر:"
-            const lines = analysis.split('\n');
-            for (const line of lines) {
-                if (line.includes('الألوان المقترحة للستائر:')) {
-                    const colorsPart = line.split(':')[1];
-                    if (colorsPart) {
-                        const extracted = colorsPart.split(',').map(c => c.trim().toLowerCase());
-                        return extracted;
-                    }
-                }
+            const colorMatch = analysis.match(/الألوان المقترحة للستائر:\s*\[?(.*?)\]?/i) || 
+                               analysis.match(/الألوان المقترحة للستائر:\s*(.*?)(?:\n|$)/i);
+            
+            if (colorMatch) {
+                const colorsText = colorMatch[1] || colorMatch[0];
+                const extracted = colorsText.split(/[,،]/).map(c => c.trim().toLowerCase());
+                return extracted.filter(c => c.length > 0).slice(0, 3);
             }
             
-            // إذا لم يجد، ابحث عن كلمات ألوان شائعة
-            const colorKeywords = ['ذهبي', 'بني', 'بيج', 'أبيض', 'كريم', 'رمادي', 'ذهبي'];
+            const colorKeywords = ['ذهبي', 'بني', 'بيج', 'أبيض', 'كريم', 'رمادي'];
             for (const color of colorKeywords) {
-                if (analysis.includes(color)) {
+                if (analysis.includes(color) && colors.length < 3) {
                     colors.push(color);
                 }
             }
             
-            return colors.length > 0 ? colors : ['ذهبي', 'بيج', 'بني']; // ألوان افتراضية
+            return colors.length > 0 ? colors : ['ذهبي', 'بيج', 'بني'];
         }
         
         // البحث عن منتجات حسب الألوان
-        async function findMatchingProductsByColors(colors, analysis) {
+        async function findMatchingProductsByColors(colors) {
             const products = await getCachedData('products') || {};
             const productsList = Object.values(products);
             
-            // توسيع الألوان لتشمل مرادفاتها
             const colorMap = {
-                'ذهبي': ['ذهب', 'gold', 'ذهبية', 'ذهبي'],
+                'ذهبي': ['ذهب', 'gold', 'ذهبية'],
                 'بني': ['brown', 'بنية'],
-                'بيج': ['beige', 'كريم', 'cream', 'بيج'],
-                'أبيض': ['white', 'أبيض'],
-                'رمادي': ['gray', 'grey', 'رمادي']
+                'بيج': ['beige', 'كريم', 'cream'],
+                'أبيض': ['white'],
+                'رمادي': ['gray', 'grey']
             };
             
-            // بناء كلمات البحث
             const searchTerms = [];
             colors.forEach(color => {
                 searchTerms.push(color);
@@ -1885,7 +1877,6 @@
             
             console.log("كلمات البحث:", searchTerms);
             
-            // فلترة المنتجات
             const matches = productsList.filter(p => {
                 const nameLower = p.name.toLowerCase();
                 const catLower = p.category.toLowerCase();
@@ -1895,30 +1886,32 @@
                 );
             }).slice(0, 6);
             
-            // عرض النتائج
             displayRecommendations(matches);
         }
         
         function displayRecommendations(matches) {
             const container = document.getElementById('aiRecommendations');
+            const statusEl = document.getElementById('aiAnalysisStatus');
             
-            if (matches.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">عذراً، لا توجد ستائر مطابقة حالياً</p>';
-            } else {
-                container.innerHTML = matches.map(p => `
-                    <div class="ai-recommendation-card" onclick='openCalc(${JSON.stringify(p).replace(/'/g, "&apos;")}); closeAICamera()'>
-                        <img src="${getWatermarkedUrl(p.img || (p.images && p.images[0]), 'image')}" loading="lazy">
-                        <div class="info">
-                            <h4>${p.name}</h4>
-                            <div class="price">${parseInt(p.price).toLocaleString()} د.ع</div>
-                            <div class="match-badge">✔ مناسب</div>
+            if (container && statusEl) {
+                if (matches.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; padding:20px;">عذراً، لا توجد ستائر مطابقة حالياً</p>';
+                } else {
+                    container.innerHTML = matches.map(p => `
+                        <div class="ai-recommendation-card" onclick='openCalc(${JSON.stringify(p).replace(/'/g, "&apos;")}); closeAICamera()'>
+                            <img src="${getWatermarkedUrl(p.img || (p.images && p.images[0]), 'image')}" loading="lazy">
+                            <div class="info">
+                                <h4>${p.name}</h4>
+                                <div class="price">${parseInt(p.price).toLocaleString()} د.ع</div>
+                                <div class="match-badge">✔ مناسب</div>
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                    `).join('');
+                }
+                
+                statusEl.classList.remove('active');
+                container.classList.add('active');
             }
-            
-            document.getElementById('aiAnalysisStatus').classList.remove('active');
-            container.classList.add('active');
         }
 
         // البحث الذكي مع الاقتراحات
@@ -1998,7 +1991,6 @@
                     alert("تم إضافة القسم بنجاح");
                     document.getElementById('admCatName').value = "";
                     document.getElementById('admCatFile').value = "";
-                    // تحديث الكاش
                     cache.categories = null;
                 });
             }
@@ -2086,7 +2078,6 @@
                         </div>
                     `;
                     
-                    // تحديث الكاش
                     cache.products = null;
                 });
             }
@@ -2110,7 +2101,6 @@
                     alert("تم إضافة طريقة الدفع بنجاح");
                     document.getElementById('admPayName').value = "";
                     document.getElementById('admPayFile').value = "";
-                    // تحديث الكاش
                     cache.payments = null;
                 });
             }
@@ -2119,7 +2109,6 @@
         function deleteItem(ref, key) { 
             if(confirm("هل تريد الحذف نهائياً؟")) {
                 db.ref(ref).child(key).remove().then(() => {
-                    // تحديث الكاش
                     if (ref === 'categories') cache.categories = null;
                     if (ref === 'products') cache.products = null;
                     if (ref === 'payments') cache.payments = null;
@@ -2152,10 +2141,8 @@
 
             const mediaItems = [];
 
-            // عرض التوصيات
             getRecommendations(product);
 
-            // ترتيب الوسائط: الفيديوهات أولاً ثم الصور
             if (product.videos && Array.isArray(product.videos)) {
                 product.videos.forEach(video => {
                     if (video) {
@@ -2281,7 +2268,6 @@
             }
         });
 
-        // إغلاق الاقتراحات عند النقر خارجها
         document.addEventListener('click', (e) => {
             const searchContainer = document.querySelector('.search-container');
             const suggestions = document.getElementById('searchSuggestions');
@@ -2299,7 +2285,6 @@
         });
 
         window.addEventListener('load', () => {
-            // الأقسام
             getCachedData('categories').then(cats => {
                 const list = document.getElementById('categoriesList');
                 if(list) {
@@ -2329,7 +2314,6 @@
                 }
             });
 
-            // المنتجات
             getCachedData('products').then(data => {
                 const list = document.getElementById('admListProds');
                 if(list) {
@@ -2339,7 +2323,6 @@
                 }
             });
 
-            // طرق الدفع
             getCachedData('payments').then(data => {
                 const userList = document.getElementById('paymentList');
                 const selectBox = document.getElementById('userPayment');
