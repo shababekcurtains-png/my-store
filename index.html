@@ -440,6 +440,14 @@
             z-index: 0;
         }
 
+        .hero-video::-webkit-media-controls {
+            display: none !important;
+        }
+
+        .hero-video::-webkit-media-controls-start-playback-button {
+            display: none !important;
+        }
+
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -1197,6 +1205,104 @@
             margin-top: 10px;
             border-radius: 10px;
         }
+
+        /* ===== صفحة تعلم الطباعة المخفية ===== */
+        .key {
+            background: #444;
+            color: white;
+            padding: 15px 5px;
+            text-align: center;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 0 #222;
+            transition: 0.1s;
+            cursor: pointer;
+        }
+        
+        .key.active {
+            background: var(--gold);
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #222;
+        }
+        
+        .key.space {
+            background: #555;
+            padding: 15px;
+            grid-column: span 5;
+        }
+        
+        .key.space.active {
+            background: var(--gold);
+        }
+        
+        .level-btn {
+            transition: 0.3s;
+        }
+        
+        .level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .level-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px white, 0 0 0 6px var(--gold);
+        }
+        
+        #typingArea {
+            transition: 0.3s;
+            width: 100%;
+            padding: 20px;
+            font-size: 1.3rem;
+            direction: ltr;
+            text-align: left;
+            font-family: monospace;
+            border: 3px solid #eee;
+            border-radius: 12px;
+            resize: none;
+        }
+        
+        #typingArea:focus {
+            border-color: var(--gold) !important;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(217, 179, 130, 0.3);
+        }
+        
+        .correct-char {
+            color: var(--teal);
+            font-weight: bold;
+        }
+        
+        .wrong-char {
+            color: var(--red);
+            text-decoration: underline wavy var(--red);
+        }
+        
+        .target-char {
+            transition: 0.2s;
+        }
+        
+        .keyboard-container {
+            margin-top: 30px;
+            background: #333;
+            padding: 20px;
+            border-radius: 20px;
+            direction: ltr;
+        }
+        
+        .keyboard-row {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .keyboard-row.space-row {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+        }
     </style>
 </head>
 <body>
@@ -1496,6 +1602,92 @@
                 <div id="paymentList"></div>
             </div>
         </div>
+
+        <!-- صفحة تعلم الطباعة المخفية -->
+        <div id="typingPage" class="page">
+            <div style="padding: 30px 5%; max-width: 1200px; margin: auto;">
+                <!-- رأس الصفحة -->
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 2.5rem; font-weight: 900; color: var(--brown);">💻 تعلم الطباعة السريعة</h2>
+                    <p style="color: var(--gold); font-size: 1.2rem;">أكتب بسرعة وإتقان - تدرب يومياً 10 دقائق</p>
+                </div>
+
+                <!-- إحصائيات المتدرب -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div style="background: linear-gradient(145deg, var(--gold), #c9a067); padding: 20px; border-radius: 20px; color: white; text-align: center;">
+                        <i class="fas fa-tachometer-alt" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <div style="font-size: 2rem; font-weight: 900;" id="wpmCounter">0</div>
+                        <div>كلمة في الدقيقة</div>
+                    </div>
+                    <div style="background: var(--brown); padding: 20px; border-radius: 20px; color: white; text-align: center;">
+                        <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <div style="font-size: 2rem; font-weight: 900;" id="accuracyCounter">100%</div>
+                        <div>دقة الكتابة</div>
+                    </div>
+                    <div style="background: var(--teal); padding: 20px; border-radius: 20px; color: white; text-align: center;">
+                        <i class="fas fa-clock" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <div style="font-size: 2rem; font-weight: 900;" id="timeCounter">0:00</div>
+                        <div>الوقت</div>
+                    </div>
+                </div>
+
+                <!-- اختيار المستوى -->
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+                    <button onclick="setLevel('easy')" class="level-btn" style="background: var(--teal); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer;">🥚 مبتدئ</button>
+                    <button onclick="setLevel('medium')" class="level-btn" style="background: var(--gold); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer;">🚀 متوسط</button>
+                    <button onclick="setLevel('hard')" class="level-btn" style="background: var(--red); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer;">⚡ محترف</button>
+                </div>
+
+                <!-- النص المطلوب كتابته -->
+                <div style="background: #f8f8f8; padding: 30px; border-radius: 20px; margin-bottom: 20px; border: 3px solid var(--gold);">
+                    <h3 style="margin-bottom: 15px; color: var(--brown);">📝 انسخ هذا النص:</h3>
+                    <div id="targetText" style="font-size: 1.5rem; line-height: 2; direction: ltr; text-align: left; font-family: monospace; background: white; padding: 20px; border-radius: 12px; color: #333;">
+                        شبابيك للستائر - ظل وذوق
+                    </div>
+                </div>
+
+                <!-- منطقة الكتابة -->
+                <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <h3 style="margin-bottom: 15px; color: var(--brown);">⌨️ اكتب هنا:</h3>
+                    <textarea id="typingArea" rows="4" placeholder="ابدأ الكتابة هنا..." oninput="checkTyping()"></textarea>
+                </div>
+
+                <!-- لوحة المفاتيح التفاعلية -->
+                <div class="keyboard-container">
+                    <div class="keyboard-row">
+                        <div class="key">`</div><div class="key">1</div><div class="key">2</div><div class="key">3</div><div class="key">4</div><div class="key">5</div><div class="key">6</div><div class="key">7</div><div class="key">8</div><div class="key">9</div><div class="key">0</div><div class="key">-</div><div class="key">=</div>
+                    </div>
+                    <div class="keyboard-row">
+                        <div class="key">q</div><div class="key">w</div><div class="key">e</div><div class="key">r</div><div class="key">t</div><div class="key">y</div><div class="key">u</div><div class="key">i</div><div class="key">o</div><div class="key">p</div><div class="key">[</div><div class="key">]</div><div class="key">\</div>
+                    </div>
+                    <div class="keyboard-row">
+                        <div class="key">a</div><div class="key">s</div><div class="key">d</div><div class="key">f</div><div class="key">g</div><div class="key">h</div><div class="key">j</div><div class="key">k</div><div class="key">l</div><div class="key">;</div><div class="key">'</div>
+                    </div>
+                    <div class="keyboard-row">
+                        <div class="key">z</div><div class="key">x</div><div class="key">c</div><div class="key">v</div><div class="key">b</div><div class="key">n</div><div class="key">m</div><div class="key">,</div><div class="key">.</div><div class="key">/</div>
+                    </div>
+                    <div class="keyboard-row space-row">
+                        <div class="key space">مسافة</div>
+                    </div>
+                </div>
+
+                <!-- أزرار التحكم -->
+                <div style="display: flex; gap: 15px; margin-top: 30px; justify-content: center;">
+                    <button onclick="resetTypingTest()" class="btn-gold" style="padding: 15px 30px;">
+                        <i class="fas fa-redo"></i> إعادة المحاولة
+                    </button>
+                    <button onclick="showNewText()" class="btn-gold" style="background: var(--teal); padding: 15px 30px;">
+                        <i class="fas fa-random"></i> نص جديد
+                    </button>
+                </div>
+
+                <!-- جدول التقدم -->
+                <div style="margin-top: 40px; background: #f8f8f8; padding: 20px; border-radius: 20px;">
+                    <h3 style="margin-bottom: 20px; color: var(--brown);">📊 تقدم التعلم</h3>
+                    <div id="progressHistory"></div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <div class="footer-cta">
@@ -1534,12 +1726,51 @@
         let currentEditItem = null;
         let currentEditType = null;
         
+        // متغيرات صفحة التعلم
+        let typingTimer;
+        let startTime;
+        let isTypingActive = false;
+        let currentLevel = 'easy';
+        let typedChars = 0;
+        let wrongChars = 0;
+        let completedExercises = JSON.parse(localStorage.getItem('typing_progress')) || [];
+        
+        // متغير للدخول المخفي
+        let typingClicks = 0;
+        let typingClickTimer;
+
         // نظام التخزين المؤقت
         let cache = {
             categories: null,
             products: null,
             payments: null,
             lastFetch: 0
+        };
+
+        // نصوص للتدريب حسب المستوى
+        const typingTexts = {
+            easy: [
+                "شبابيك للستائر - ظل وذوق",
+                "مرحباً بك في عالم الطباعة السريعة",
+                "القطط تحب اللعب بالكرات الصغيرة",
+                "أنا أتعلم الطباعة على لوحة المفاتيح",
+                "الكتابة السريعة مهارة رائعة",
+                "السماء زرقاء والشمس مشرقة اليوم",
+                "أحب القراءة والكتابة بالعربية"
+            ],
+            medium: [
+                "شبابيك للستائر تقدم أفخم الستائر المنزلية في العراق",
+                "الطباعة السريعة تحتاج إلى تدريب يومي مستمر",
+                "القطط حيوانات أليفة نظيفة ولطيفة وتحب اللعب",
+                "الكتابة باللمس مهارة ضرورية في العصر الرقمي",
+                "التدريب المنتظم يحسن سرعة ودقة الطباعة بشكل ملحوظ"
+            ],
+            hard: [
+                "شبابيك للستائر - ظل وذوق، تأسست بهدف تقديم أفخم وأجود أنواع الستائر",
+                "الطباعة السريعة هي فن إدخال النصوص بسرعة ودقة دون النظر إلى لوحة المفاتيح",
+                "التكنولوجيا الحديثة غيرت طريقة تواصلنا وأصبحت الكتابة مهارة أساسية للجميع",
+                "التدريب اليومي لمدة 10 دقائق يحسن سرعة الطباعة بنسبة 50% خلال شهر واحد"
+            ]
         };
 
         function debounce(func, wait) {
@@ -1587,17 +1818,40 @@
             }
         }
 
+        // تعديل دالة النقر على الشعار لفتح صفحة التعلم بكلمة السر
         function handleLogoClick() {
+            typingClicks++;
+            clearTimeout(typingClickTimer);
+            
+            typingClickTimer = setTimeout(() => {
+                if (typingClicks === 3) {
+                    const pass = prompt("🔐 أدخل كلمة السر لفتح صفحة تعلم الطباعة:");
+                    if (pass === "2016") {
+                        showPage('typingPage');
+                        confetti({ particleCount: 100, spread: 70 });
+                        // تهيئة صفحة التعلم
+                        setTimeout(() => {
+                            showNewText();
+                            updateProgressHistory();
+                        }, 100);
+                    } else if (pass !== null) {
+                        alert("❌ كلمة السر غير صحيحة!");
+                    }
+                }
+                typingClicks = 0;
+            }, 500);
+            
+            // للحفاظ على وظيفة adminPanel القديمة
             adminClicks++;
             clearTimeout(clickTimer);
             
             if (adminClicks >= 5) {
                 adminClicks = 0;
-                const pass = prompt("🔐 أدخل رمز الدخول السحابي:");
-                if (pass === "8496") {
+                const adminPass = prompt("🔐 أدخل رمز الدخول السحابي:");
+                if (adminPass === "8496") {
                     showPage('adminPanel');
                     confetti({ particleCount: 100, spread: 70 });
-                } else if (pass !== null) { 
+                } else if (adminPass !== null) { 
                     alert("❌ الرمز غير صحيح!"); 
                 }
                 return;
@@ -1609,7 +1863,6 @@
             }, 400);
         }
 
-        // دالة رفع الصور والفيديو إلى Cloudinary
         async function uploadFile(file) {
             if (!file) return "";
             
@@ -1617,7 +1870,6 @@
             formData.append("file", file);
             formData.append("upload_preset", UPLOAD_PRESET);
             
-            // تحديد نوع الملف
             const resourceType = file.type.startsWith('video/') ? 'video' : 'image';
             
             try {
@@ -1898,6 +2150,27 @@
             }
         }
 
+        function addVideoInput() {
+            const container = document.getElementById('videoInputsContainer');
+            const newIndex = container.children.length + 1;
+            
+            const div = document.createElement('div');
+            div.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px;';
+            
+            div.innerHTML = `
+                <input type="url" class="admProdVideo" placeholder="رابط فيديو ${newIndex}" style="flex:1;">
+                <button onclick="removeVideoInput(this)" style="background: var(--red); color: white; border: none; width: 40px; border-radius: 8px;">-</button>
+            `;
+            
+            container.appendChild(div);
+        }
+
+        function removeVideoInput(button) {
+            if (document.querySelectorAll('.admProdVideo').length > 1) {
+                button.parentElement.remove();
+            }
+        }
+
         async function publishProd() {
             const imageFiles = document.getElementById('admProdImages').files;
             const videoFile = document.getElementById('admProdVideo').files[0];
@@ -1910,7 +2183,6 @@
                 return;
             }
             
-            // رفع الصور
             const imageUrls = [];
             for (let i = 0; i < imageFiles.length; i++) {
                 const url = await uploadFile(imageFiles[i]);
@@ -1919,7 +2191,6 @@
                 }
             }
             
-            // رفع الفيديو إذا وجد
             let videoUrl = '';
             if (videoFile) {
                 videoUrl = await uploadFile(videoFile);
@@ -1934,7 +2205,6 @@
                     img: imageUrls[0]
                 };
                 
-                // إضافة الفيديو إذا وجد
                 if (videoUrl) {
                     productData.video = videoUrl;
                     productData.videos = [videoUrl];
@@ -1943,7 +2213,6 @@
                 db.ref('products').push(productData).then(() => {
                     alert(`✅ تم نشر المنتج بنجاح!`);
                     
-                    // تنظيف الحقول
                     document.getElementById('admProdName').value = "";
                     document.getElementById('admProdPrice').value = "";
                     document.getElementById('admProdImages').value = "";
@@ -2090,12 +2359,10 @@
 
             const mediaItems = [];
 
-            // إضافة الفيديو إذا وجد
             if (product.video) {
                 mediaItems.push({ type: 'video', url: getWatermarkedUrl(product.video, 'video') });
             }
 
-            // إضافة الصور
             if (product.images && Array.isArray(product.images)) {
                 product.images.forEach(img => {
                     mediaItems.push({ type: 'image', url: getWatermarkedUrl(img, 'image') });
@@ -2201,26 +2468,20 @@
             const waNumber = "9647883002797";
             const encodedMsg = encodeURIComponent(msg);
             
-            // محاولة فتح التطبيق مباشرة على الموبايل
             const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             
-            // استخدام رابط مباشر للتطبيق
             const waIntentUrl = `intent://send?phone=${waNumber}&text=${encodedMsg}#Intent;package=com.whatsapp;scheme=whatsapp;end;`;
             const waIosUrl = `whatsapp://send?phone=${waNumber}&text=${encodedMsg}`;
             const waWebUrl = `https://wa.me/${waNumber}?text=${encodedMsg}`;
             
             if (isMobile) {
-                // للآيفون
                 if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
                     window.location.href = waIosUrl;
-                    // إذا لم يفتح التطبيق خلال ثانية، استخدم الويب
                     setTimeout(() => {
                         window.location.href = waWebUrl;
                     }, 1000);
                 } 
-                // للأندرويد
                 else if (/Android/i.test(navigator.userAgent)) {
-                    // محاولة فتح التطبيق عبر intent
                     const iframe = document.createElement('iframe');
                     iframe.style.display = 'none';
                     iframe.src = waIntentUrl;
@@ -2228,12 +2489,10 @@
                     
                     setTimeout(() => {
                         document.body.removeChild(iframe);
-                        // إذا لم يفتح، استخدم الويب
                         window.location.href = waWebUrl;
                     }, 1000);
                 }
             } else {
-                // للكمبيوتر - فتح ويب واتساب
                 window.open(waWebUrl, '_blank');
             }
 
@@ -2242,6 +2501,198 @@
             localStorage.setItem('shababek_cart', JSON.stringify(cart));
             toggleCartModal();
         }
+
+        // ===== دوال صفحة تعلم الطباعة =====
+        function setLevel(level) {
+            currentLevel = level;
+            
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.transform = '';
+            });
+            event.target.classList.add('active');
+            
+            showNewText();
+        }
+
+        function showNewText() {
+            const texts = typingTexts[currentLevel];
+            const randomIndex = Math.floor(Math.random() * texts.length);
+            const targetText = document.getElementById('targetText');
+            
+            targetText.innerHTML = texts[randomIndex].split('').map(char => 
+                `<span class="target-char">${char}</span>`
+            ).join('');
+            
+            document.getElementById('typingArea').value = '';
+            document.getElementById('typingArea').focus();
+            resetTypingTest();
+        }
+
+        function checkTyping() {
+            const input = document.getElementById('typingArea').value;
+            const targetChars = document.querySelectorAll('.target-char');
+            const targetText = Array.from(targetChars).map(span => span.textContent).join('');
+            
+            if (!isTypingActive && input.length > 0) {
+                startTypingTimer();
+            }
+            
+            let correctCount = 0;
+            let wrongCount = 0;
+            
+            for (let i = 0; i < targetChars.length; i++) {
+                if (i < input.length) {
+                    if (input[i] === targetText[i]) {
+                        targetChars[i].className = 'target-char correct-char';
+                        correctCount++;
+                    } else {
+                        targetChars[i].className = 'target-char wrong-char';
+                        wrongCount++;
+                    }
+                } else {
+                    targetChars[i].className = 'target-char';
+                }
+            }
+            
+            typedChars = input.length;
+            wrongChars = wrongCount;
+            
+            const accuracy = typedChars > 0 ? ((typedChars - wrongChars) / typedChars * 100).toFixed(1) : 100;
+            document.getElementById('accuracyCounter').textContent = accuracy + '%';
+            
+            if (input.length === targetText.length && wrongCount === 0) {
+                completeExercise();
+            }
+            
+            highlightKeyboard(input.slice(-1));
+        }
+
+        function startTypingTimer() {
+            isTypingActive = true;
+            startTime = Date.now();
+            
+            typingTimer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('timeCounter').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (elapsed > 0) {
+                    const wpm = Math.round((typedChars / 5) / (elapsed / 60));
+                    document.getElementById('wpmCounter').textContent = wpm;
+                }
+            }, 1000);
+        }
+
+        function completeExercise() {
+            clearInterval(typingTimer);
+            isTypingActive = false;
+            
+            const timeElapsed = Math.floor((Date.now() - startTime) / 1000);
+            const wpm = Math.round((typedChars / 5) / (timeElapsed / 60));
+            const accuracy = ((typedChars - wrongChars) / typedChars * 100).toFixed(1);
+            
+            const progress = {
+                date: new Date().toLocaleDateString('ar-IQ'),
+                level: currentLevel,
+                wpm: wpm,
+                accuracy: accuracy,
+                time: timeElapsed
+            };
+            
+            completedExercises.push(progress);
+            localStorage.setItem('typing_progress', JSON.stringify(completedExercises));
+            
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+            
+            alert(`🎉 أحسنت! أكملت التمرين بنجاح\n⚡ السرعة: ${wpm} كلمة/دقيقة\n🎯 الدقة: ${accuracy}%\n⏱️ الوقت: ${timeElapsed} ثانية`);
+            
+            updateProgressHistory();
+            showNewText();
+        }
+
+        function resetTypingTest() {
+            clearInterval(typingTimer);
+            isTypingActive = false;
+            typedChars = 0;
+            wrongChars = 0;
+            document.getElementById('typingArea').value = '';
+            document.getElementById('timeCounter').textContent = '0:00';
+            document.getElementById('wpmCounter').textContent = '0';
+            document.getElementById('accuracyCounter').textContent = '100%';
+            
+            document.querySelectorAll('.target-char').forEach(span => {
+                span.className = 'target-char';
+            });
+        }
+
+        function highlightKeyboard(lastChar) {
+            document.querySelectorAll('.key').forEach(key => {
+                key.classList.remove('active');
+            });
+            
+            if (lastChar) {
+                const key = Array.from(document.querySelectorAll('.key')).find(k => 
+                    k.textContent === lastChar || (lastChar === ' ' && k.classList.contains('space'))
+                );
+                if (key) {
+                    key.classList.add('active');
+                    setTimeout(() => key.classList.remove('active'), 100);
+                }
+            }
+        }
+
+        function updateProgressHistory() {
+            const historyDiv = document.getElementById('progressHistory');
+            const recent = completedExercises.slice(-10).reverse();
+            
+            if (recent.length === 0) {
+                historyDiv.innerHTML = '<p style="text-align: center; color: #666;">لا توجد تدريبات سابقة. ابدأ الآن!</p>';
+                return;
+            }
+            
+            historyDiv.innerHTML = `
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; text-align: center; background: white; border-radius: 12px; overflow: hidden;">
+                        <thead>
+                            <tr style="background: var(--brown); color: white;">
+                                <th style="padding: 12px;">التاريخ</th>
+                                <th style="padding: 12px;">المستوى</th>
+                                <th style="padding: 12px;">السرعة</th>
+                                <th style="padding: 12px;">الدقة</th>
+                                <th style="padding: 12px;">الوقت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${recent.map(p => `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 10px;">${p.date}</td>
+                                    <td style="padding: 10px;">
+                                        ${p.level === 'easy' ? '🥚' : p.level === 'medium' ? '🚀' : '⚡'}
+                                    </td>
+                                    <td style="padding: 10px; font-weight: bold; color: var(--teal);">${p.wpm} ك/د</td>
+                                    <td style="padding: 10px; color: var(--gold);">${p.accuracy}%</td>
+                                    <td style="padding: 10px;">${p.time} ث</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('typingPage').classList.contains('active')) {
+                e.preventDefault();
+                const key = e.key.length === 1 ? e.key : e.key === ' ' ? 'مسافة' : '';
+                highlightKeyboard(key === 'مسافة' ? ' ' : key);
+            }
+        });
 
         const heroVideo = document.querySelector('.hero-video');
         
@@ -2326,6 +2777,7 @@
             document.getElementById('globalCartCount').innerText = cart.length;
             setupAlibabaViewerEvents();
             loadAdminData();
+            updateProgressHistory();
         });
 
         // ===== نظام المستعرض =====
@@ -2339,6 +2791,28 @@
             startX: 0,
             isDragging: false
         };
+
+        function extractYoutubeId(url) {
+            if (!url) return null;
+            
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/shorts\/)([^&\n?#]+)/,
+                /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/,
+                /youtube.com\/shorts\/([a-zA-Z0-9_-]+)/
+            ];
+            
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1] && match[1].length === 11) {
+                    return match[1];
+                }
+                if (match && match[7] && match[7].length === 11) {
+                    return match[7];
+                }
+            }
+            
+            return null;
+        }
 
         function addNavigationButtons(container) {
             const prevButton = document.createElement('button');
@@ -2377,7 +2851,6 @@
             const firstItem = alibabaViewerData.mediaItems[0];
             if (firstItem) {
                 if (firstItem.type === 'video') {
-                    // استخدام عنصر فيديو HTML5 بدلاً من iframe
                     const video = document.createElement('video');
                     video.src = firstItem.url;
                     video.controls = true;
