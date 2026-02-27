@@ -13,14 +13,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <!-- تحسين SEO -->
-    <meta name="description" content="شبابيك للستائر - أفضل الستائر المنزلية في العراق. ستائر بلاك أوت، ستائر رول، ستائر ديكورية. تفصيل حسب الطلب وتركيب مجاني.">
-    <meta name="keywords" content="ستائر, شبابيك, ستائر عراقية, ستائر منزلية, بلاك أوت, ستائر رول, تفصيل ستائر, ستائر بغداد, Shababek Curtains">
+    <meta name="description" content="شبابيك للستائر - أفضل الستائر المنزلية في العراق. ستائر بلاك أوت، ستائر رول، ستائر ديكورية. تفصيل حسب الطلب.">
+    <meta name="keywords" content="ستائر, شبابيك, ستائر عراقية, ستائر منزلية, بلاك أوت, ستائر رول, تفصيل ستائر">
     <meta name="author" content="شبابيك للستائر">
     <meta name="robots" content="index, follow">
     
     <!-- تحسين المشاركة على وسائل التواصل -->
     <meta property="og:title" content="شبابيك للستائر - ظل وذوق">
-    <meta property="og:description" content="أفخم الستائر المنزلية في العراق - توصيل مجاني وتركيب في المنزل">
+    <meta property="og:description" content="أفخم الستائر المنزلية في العراق - متجر إلكتروني">
     <meta property="og:image" content="https://i.ibb.co/3y1ZNCk0/1.png">
     <meta property="og:url" content="https://shababek.com">
     <meta property="og:type" content="website">
@@ -126,14 +126,6 @@
             --red: #ff4d4d; 
             --teal: #2A9D8F;
             --blue: #3498db;
-            --facebook: #1877f2;
-            --twitter: #1da1f2;
-            --instagram: #e4405f;
-            --tiktok: #000000;
-            --youtube: #ff0000;
-            --pinterest: #E60023;
-            --linkedin: #0077b5;
-            --telegram: #0088cc;
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -307,6 +299,7 @@
             border-radius: 12px; 
             display: flex; 
             align-items: center; 
+            background: white;
         }
         
         .search-box:hover, .search-box:focus-within { 
@@ -327,6 +320,8 @@
             padding: 10px; 
             color: var(--brown); 
             cursor: pointer; 
+            min-width: 40px;
+            text-align: center;
         }
         
         #searchSuggestions {
@@ -713,7 +708,7 @@
             transform: translateY(-3px);
         }
 
-        /* ===== روابط التواصل الاجتماعي ===== */
+        /* ===== روابط التواصل الاجتماعي الذهبية ===== */
         .social-links {
             display: flex;
             gap: 15px;
@@ -729,27 +724,33 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            background: var(--gold);
+            color: var(--brown);
             font-size: 1.5rem;
             transition: all 0.3s ease;
             text-decoration: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(217, 179, 130, 0.3);
+            border: 2px solid rgba(255,255,255,0.3);
         }
         
         .social-link:hover {
             transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: var(--brown);
+            color: var(--gold);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         
-        .social-link.facebook { background: var(--facebook); }
-        .social-link.twitter { background: var(--twitter); }
-        .social-link.instagram { background: var(--instagram); }
-        .social-link.tiktok { background: var(--tiktok); }
-        .social-link.youtube { background: var(--youtube); }
-        .social-link.pinterest { background: var(--pinterest); }
-        .social-link.linkedin { background: var(--linkedin); }
-        .social-link.telegram { background: var(--telegram); }
-        .social-link.whatsapp { background: var(--whatsapp); }
+        /* جعل الأزرار على خط واحد في الموبايل */
+        @media (max-width: 768px) {
+            .social-links {
+                gap: 10px;
+            }
+            .social-link {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
         
         /* ===== أزرار مشاركة المنتج ===== */
         .share-buttons {
@@ -760,6 +761,7 @@
             padding: 10px;
             background: #f8f8f8;
             border-radius: 50px;
+            flex-wrap: wrap;
         }
         
         .share-btn {
@@ -779,12 +781,12 @@
             transform: scale(1.2);
         }
         
-        .share-btn.facebook { background: var(--facebook); }
-        .share-btn.twitter { background: var(--twitter); }
-        .share-btn.whatsapp { background: var(--whatsapp); }
-        .share-btn.pinterest { background: var(--pinterest); }
-        .share-btn.linkedin { background: var(--linkedin); }
-        .share-btn.telegram { background: var(--telegram); }
+        .share-btn.facebook { background: #1877f2; }
+        .share-btn.twitter { background: #1da1f2; }
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.pinterest { background: #E60023; }
+        .share-btn.linkedin { background: #0077b5; }
+        .share-btn.telegram { background: #0088cc; }
 
         .features-section { 
             background: var(--bg); 
@@ -876,10 +878,13 @@
         footer { 
             background: var(--brown); 
             color: rgba(255,255,255,0.6); 
-            padding: 20px 5%; 
+            padding: 30px 5%; 
             text-align: center; 
             border-top: 1px solid rgba(255,255,255,0.1); 
-            font-size: 0.8rem; 
+        }
+        
+        footer p {
+            margin: 5px 0;
         }
         
         /* تنسيق أقسام المنتجات */
@@ -956,6 +961,10 @@
                 flex: 0 0 250px !important;
                 height: 300px;
                 scroll-snap-align: start;
+            }
+            
+            .header-left {
+                gap: 8px;
             }
         }
 
@@ -1662,12 +1671,7 @@
 
     <div class="top-banner">
         <span>🏆 شبابيك للستائر - المتجر الرسمي | ظل وذوق</span>
-        <div style="display: flex; gap: 15px;">
-            <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> واتساب</a>
-            <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" style="color: white;"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.instagram.com/shababek.curtains/" target="_blank" style="color: white;"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" style="color: white;"><i class="fab fa-tiktok"></i></a>
-        </div>
+        <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> واتساب</a>
     </div>
 
     <header>
@@ -1839,18 +1843,6 @@
                             <button onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-gold">تسوق الآن</button>
                             <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
                         </div>
-                        
-                        <!-- روابط التواصل الاجتماعي -->
-                        <div class="social-links">
-                            <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://www.instagram.com/shababek.curtains/" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" class="social-link tiktok"><i class="fab fa-tiktok"></i></a>
-                            <a href="https://youtube.com/@shababek.curtains" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
-                            <a href="https://x.com/ShababekCurtain" target="_blank" class="social-link twitter"><i class="fab fa-x-twitter"></i></a>
-                            <a href="https://www.snapchat.com/add/shababekcurtin" target="_blank" class="social-link snapchat"><i class="fab fa-snapchat"></i></a>
-                            <a href="https://wa.me/9647883002797" target="_blank" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a>
-                            <a href="https://t.me/shababekcurtains" target="_blank" class="social-link telegram"><i class="fab fa-telegram"></i></a>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -1869,6 +1861,19 @@
                     <div class="f-card"><i class="fa-solid fa-palette" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ذوق رفيع</h3><p>أحدث الموديلات العصرية</p></div>
                 </div>
             </section>
+            
+            <!-- روابط التواصل الاجتماعي الذهبية (مرة واحدة فقط) -->
+            <div class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/shababek.curtains/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@shababek.curtains" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+                <a href="https://x.com/ShababekCurtain" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://www.snapchat.com/add/shababekcurtin" target="_blank" class="social-link"><i class="fab fa-snapchat"></i></a>
+                <a href="https://wa.me/9647883002797" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://t.me/shababekcurtains" target="_blank" class="social-link"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.pinterest.com/shababekcurtains" target="_blank" class="social-link"><i class="fab fa-pinterest"></i></a>
+            </div>
         </div>
 
         <div id="adminPanel" class="page">
@@ -1930,7 +1935,7 @@
                     </div>
                     
                     <!-- إدارة المشتركين -->
-                    <div class="admin-box" style="background: #f8f8f8; padding: 25px; border-radius: 20px;">
+                    <div class="admin-box" style="background: #f8f8f8; padding: 25px; border-radius: 20px; grid-column: span 3;">
                         <h3 style="margin-bottom:20px; color:var(--gold); font-weight:900;">📧 المشتركين في النشرة البريدية</h3>
                         <div id="subscribersList" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
@@ -1954,16 +1959,7 @@
             <div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;">
                 <h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">📞 تواصل معنا</h2>
                 <div style="font-size:1.5rem; margin-bottom:20px;"><i class="fa-solid fa-phone"></i> 07883002797</div>
-                <div style="font-size:1.2rem; margin-bottom:20px;"><i class="fa-solid fa-location-dot"></i> العراق - بغداد - الكرادة</div>
-                <div style="font-size:1.2rem; margin-bottom:30px;"><i class="fa-regular fa-clock"></i> ساعات العمل: 9 صباحاً - 9 مساءً</div>
-                
-                <div class="social-links" style="margin-top:30px;">
-                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" class="social-link tiktok"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://youtube.com/@shababek.curtains" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://wa.me/9647883002797" target="_blank" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a>
-                </div>
+                <div style="font-size:1.2rem; margin-bottom:30px;"><i class="fa-regular fa-envelope"></i> info@shababek.com</div>
                 
                 <a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px; padding:15px 40px;">
                     <i class="fab fa-whatsapp"></i> مراسلة واتساب مباشر
@@ -2024,21 +2020,9 @@
 
     <footer>
         <div style="font-size:2rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div>
-        <p style="margin-bottom:20px;">شبابيك للستائر - ظل وذوق © 2026</p>
-        
-        <div class="social-links" style="margin:20px 0;">
-            <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/shababek.curtains/" target="_blank" class="social-link instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" class="social-link tiktok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://youtube.com/@shababek.curtains" target="_blank" class="social-link youtube"><i class="fab fa-youtube"></i></a>
-            <a href="https://x.com/ShababekCurtain" target="_blank" class="social-link twitter"><i class="fab fa-x-twitter"></i></a>
-            <a href="https://wa.me/9647883002797" target="_blank" class="social-link whatsapp"><i class="fab fa-whatsapp"></i></a>
-        </div>
-        
-        <p style="font-size:0.9rem; color:rgba(255,255,255,0.8); margin-bottom:10px;">
-            <i class="fas fa-map-marker-alt"></i> العراق - بغداد - الكرادة
-        </p>
-        <p style="font-size:0.9rem; color:rgba(255,255,255,0.8);">
+        <p style="margin-bottom:5px;">شبابيك للستائر - متجر إلكتروني</p>
+        <p style="margin-bottom:5px;">© 2026 جميع الحقوق محفوظة</p>
+        <p style="font-size:0.9rem; color:rgba(255,255,255,0.8); margin-top:10px;">
             <i class="fas fa-phone"></i> 07883002797 | <i class="fas fa-envelope"></i> info@shababek.com
         </p>
     </footer>
