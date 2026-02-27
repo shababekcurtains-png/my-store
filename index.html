@@ -1206,102 +1206,379 @@
             border-radius: 10px;
         }
 
-        /* ===== صفحة تعلم الطباعة المخفية ===== */
-        .key {
-            background: #444;
-            color: white;
-            padding: 15px 5px;
+        /* ===== صفحة تعلم الطباعة المتطورة - نسخة TypingClub ===== */
+        .typing-club-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #faf5f0 0%, #ffffff 100%);
+            border-radius: 50px 50px 0 0;
+            min-height: 100vh;
+        }
+
+        .typing-club-header {
             text-align: center;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 0 #222;
-            transition: 0.1s;
-            cursor: pointer;
+            margin-bottom: 40px;
         }
-        
-        .key.active {
-            background: var(--gold);
-            transform: translateY(4px);
-            box-shadow: 0 0 0 #222;
+
+        .typing-club-header h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--brown);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 rgba(217, 179, 130, 0.2);
         }
-        
-        .key.space {
-            background: #555;
-            padding: 15px;
-            grid-column: span 5;
-        }
-        
-        .key.space.active {
-            background: var(--gold);
-        }
-        
-        .level-btn {
-            transition: 0.3s;
-        }
-        
-        .level-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        .level-btn.active {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 3px white, 0 0 0 6px var(--gold);
-        }
-        
-        #typingArea {
-            transition: 0.3s;
-            width: 100%;
-            padding: 20px;
+
+        .typing-club-header p {
+            color: var(--gold);
             font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* شريط التقدم والنجوم */
+        .typing-progress-section {
+            background: white;
+            padding: 30px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border: 2px solid rgba(217, 179, 130, 0.2);
+        }
+
+        .progress-bar-club {
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 50px;
+            overflow: hidden;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .progress-fill-club {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), #c9a067);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 50px;
+            position: relative;
+        }
+
+        .stars-club {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            direction: ltr;
+        }
+
+        .star-club {
+            font-size: 3rem;
+            color: #ddd;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .star-club.active {
+            color: #ffc107;
+            text-shadow: 0 0 20px #ffb300;
+            transform: scale(1.1);
+        }
+
+        .star-club.completed {
+            color: #ffd700;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+
+        /* مستويات التعلم */
+        .levels-club {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .level-club {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            font-weight: 700;
+        }
+
+        .level-club[data-level="1"] { background: #ffe4cc; }
+        .level-club[data-level="2"] { background: #cce8ff; }
+        .level-club[data-level="3"] { background: #fff0cc; }
+        .level-club[data-level="4"] { background: #e8d5ff; }
+        .level-club[data-level="5"] { background: #ffd5d5; }
+
+        .level-club.active {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .level-club .level-number {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--brown);
+        }
+
+        .level-club .level-title {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* بطاقة الدرس */
+        .lesson-club-card {
+            background: white;
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            margin: 30px 0;
+            border: 2px solid var(--gold);
+        }
+
+        .lesson-club-title {
+            font-size: 1.5rem;
+            color: var(--brown);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lesson-club-title i {
+            color: var(--gold);
+            font-size: 2rem;
+        }
+
+        /* النص المستهدف */
+        .target-text-club {
+            background: linear-gradient(145deg, #faf5f0, #f0e9e0);
+            padding: 40px;
+            border-radius: 30px;
+            font-size: 2.5rem;
+            font-family: 'Courier New', monospace;
             direction: ltr;
             text-align: left;
-            font-family: monospace;
-            border: 3px solid #eee;
-            border-radius: 12px;
+            color: #333;
+            line-height: 1.8;
+            letter-spacing: 3px;
+            border: 3px dashed var(--gold);
+            margin-bottom: 25px;
+            word-break: break-all;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* دليل اليد */
+        .hand-guide-club {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            margin: 15px 0;
+            border: 2px solid var(--gold);
+            box-shadow: 0 5px 15px rgba(217, 179, 130, 0.2);
+        }
+
+        .hand-guide-club span {
+            background: var(--brown);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-weight: 700;
+        }
+
+        /* حقل الكتابة */
+        .typing-area-club {
+            width: 100%;
+            padding: 25px;
+            font-size: 2rem;
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+            border: 4px solid #e0e0e0;
+            border-radius: 30px;
             resize: none;
+            transition: 0.3s;
+            background: white;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
-        
-        #typingArea:focus {
-            border-color: var(--gold) !important;
+
+        .typing-area-club:focus {
+            border-color: var(--gold);
             outline: none;
-            box-shadow: 0 0 0 4px rgba(217, 179, 130, 0.3);
+            box-shadow: 0 0 0 8px rgba(217, 179, 130, 0.2);
         }
-        
-        .correct-char {
-            color: var(--teal);
-            font-weight: bold;
-        }
-        
-        .wrong-char {
-            color: var(--red);
-            text-decoration: underline wavy var(--red);
-        }
-        
-        .target-char {
-            transition: 0.2s;
-        }
-        
-        .keyboard-container {
-            margin-top: 30px;
-            background: #333;
-            padding: 20px;
-            border-radius: 20px;
+
+        /* لوحة المفاتيح المتطورة */
+        .keyboard-club-pro {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 40px;
+            margin: 40px 0;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5);
             direction: ltr;
         }
-        
-        .keyboard-row {
-            display: grid;
-            grid-template-columns: repeat(13, 1fr);
-            gap: 5px;
-            margin-bottom: 5px;
+
+        .keyboard-row-club {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
         }
-        
-        .keyboard-row.space-row {
+
+        .key-cap-club {
+            background: #333;
+            color: white;
+            padding: 18px 0;
+            min-width: 70px;
+            text-align: center;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 5px 0 #1a1a1a, 0 8px 15px rgba(0,0,0,0.5);
+            transition: all 0.05s ease;
+            border-bottom: 2px solid #555;
+            cursor: pointer;
+        }
+
+        .key-cap-club.active-key {
+            background: var(--gold);
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #b87e4a;
+            color: var(--brown);
+        }
+
+        .key-cap-club.space-club {
+            min-width: 400px;
+        }
+
+        /* إحصائيات متقدمة */
+        .stats-club-grid {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 5px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-club-card {
+            background: white;
+            padding: 25px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+            transition: 0.3s;
+        }
+
+        .stat-club-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .stat-value-club {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1.2;
+        }
+
+        .stat-label-club {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* أزرار التحكم */
+        .club-action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .club-btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .club-btn-primary {
+            background: var(--gold);
+            color: white;
+        }
+
+        .club-btn-primary:hover {
+            background: var(--brown);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .club-btn-secondary {
+            background: white;
+            color: var(--brown);
+            border: 2px solid var(--gold);
+        }
+
+        .club-btn-secondary:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        /* جدول التقدم */
+        .progress-table-club {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+        }
+
+        .progress-table-club h3 {
+            font-size: 1.8rem;
+            color: var(--brown);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .levels-club {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .target-text-club {
+                font-size: 1.5rem;
+                padding: 20px;
+            }
+            
+            .stats-club-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .key-cap-club {
+                min-width: 40px;
+                padding: 12px 0;
+                font-size: 0.9rem;
+            }
+            
+            .key-cap-club.space-club {
+                min-width: 200px;
+            }
         }
     </style>
 </head>
@@ -1603,88 +1880,174 @@
             </div>
         </div>
 
-        <!-- صفحة تعلم الطباعة المخفية -->
-        <div id="typingPage" class="page">
-            <div style="padding: 30px 5%; max-width: 1200px; margin: auto;">
+        <!-- صفحة تعلم الطباعة المخفية - نسخة TypingClub المتطورة -->
+        <div id="typingClubPage" class="page">
+            <div class="typing-club-wrapper">
                 <!-- رأس الصفحة -->
-                <div style="text-align: center; margin-bottom: 40px;">
-                    <h2 style="font-size: 2.5rem; font-weight: 900; color: var(--brown);">💻 تعلم الطباعة السريعة</h2>
-                    <p style="color: var(--gold); font-size: 1.2rem;">أكتب بسرعة وإتقان - تدرب يومياً 10 دقائق</p>
+                <div class="typing-club-header">
+                    <h2>🏆 TypingClub</h2>
+                    <p>تعلم الطباعة السريعة بسهولة ومتعة</p>
                 </div>
 
-                <!-- إحصائيات المتدرب -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                    <div style="background: linear-gradient(145deg, var(--gold), #c9a067); padding: 20px; border-radius: 20px; color: white; text-align: center;">
-                        <i class="fas fa-tachometer-alt" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <div style="font-size: 2rem; font-weight: 900;" id="wpmCounter">0</div>
-                        <div>كلمة في الدقيقة</div>
+                <!-- شريط التقدم والنجوم -->
+                <div class="typing-progress-section">
+                    <div class="progress-bar-club">
+                        <div class="progress-fill-club" id="progressFill" style="width: 0%;"></div>
                     </div>
-                    <div style="background: var(--brown); padding: 20px; border-radius: 20px; color: white; text-align: center;">
-                        <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <div style="font-size: 2rem; font-weight: 900;" id="accuracyCounter">100%</div>
-                        <div>دقة الكتابة</div>
-                    </div>
-                    <div style="background: var(--teal); padding: 20px; border-radius: 20px; color: white; text-align: center;">
-                        <i class="fas fa-clock" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <div style="font-size: 2rem; font-weight: 900;" id="timeCounter">0:00</div>
-                        <div>الوقت</div>
+                    <div class="stars-club" id="starsContainer">
+                        <span class="star-club" data-star="1">★</span>
+                        <span class="star-club" data-star="2">★</span>
+                        <span class="star-club" data-star="3">★</span>
+                        <span class="star-club" data-star="4">★</span>
+                        <span class="star-club" data-star="5">★</span>
                     </div>
                 </div>
 
-                <!-- اختيار المستوى -->
-                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
-                    <button onclick="setLevel('easy')" class="level-btn" style="background: var(--teal); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer;">🥚 مبتدئ</button>
-                    <button onclick="setLevel('medium')" class="level-btn" style="background: var(--gold); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer;">🚀 متوسط</button>
-                    <button onclick="setLevel('hard')" class="level-btn" style="background: var(--red); color: white; border: none; padding: 10px 25px; border-radius: 12px; font-weight: 700; cursor: pointer;">⚡ محترف</button>
-                </div>
-
-                <!-- النص المطلوب كتابته -->
-                <div style="background: #f8f8f8; padding: 30px; border-radius: 20px; margin-bottom: 20px; border: 3px solid var(--gold);">
-                    <h3 style="margin-bottom: 15px; color: var(--brown);">📝 انسخ هذا النص:</h3>
-                    <div id="targetText" style="font-size: 1.5rem; line-height: 2; direction: ltr; text-align: left; font-family: monospace; background: white; padding: 20px; border-radius: 12px; color: #333;">
-                        شبابيك للستائر - ظل وذوق
+                <!-- مستويات التعلم الخمسة -->
+                <div class="levels-club" id="levelsContainer">
+                    <div class="level-club active" data-level="1" onclick="setTypingLevel(1)">
+                        <div class="level-number">المستوى 1</div>
+                        <div class="level-title">الحروف الرئيسية</div>
+                    </div>
+                    <div class="level-club" data-level="2" onclick="setTypingLevel(2)">
+                        <div class="level-number">المستوى 2</div>
+                        <div class="level-title">الحروف العلوية</div>
+                    </div>
+                    <div class="level-club" data-level="3" onclick="setTypingLevel(3)">
+                        <div class="level-number">المستوى 3</div>
+                        <div class="level-title">كلمات بسيطة</div>
+                    </div>
+                    <div class="level-club" data-level="4" onclick="setTypingLevel(4)">
+                        <div class="level-number">المستوى 4</div>
+                        <div class="level-title">جمل قصيرة</div>
+                    </div>
+                    <div class="level-club" data-level="5" onclick="setTypingLevel(5)">
+                        <div class="level-number">المستوى 5</div>
+                        <div class="level-title">نصوص متقدمة</div>
                     </div>
                 </div>
 
-                <!-- منطقة الكتابة -->
-                <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                    <h3 style="margin-bottom: 15px; color: var(--brown);">⌨️ اكتب هنا:</h3>
-                    <textarea id="typingArea" rows="4" placeholder="ابدأ الكتابة هنا..." oninput="checkTyping()"></textarea>
-                </div>
+                <!-- بطاقة الدرس الحالي -->
+                <div class="lesson-club-card">
+                    <div class="lesson-club-title">
+                        <i class="fas fa-keyboard"></i>
+                        <span id="lessonTitle">الدرس 1: تعلم حرفي F و J</span>
+                    </div>
 
-                <!-- لوحة المفاتيح التفاعلية -->
-                <div class="keyboard-container">
-                    <div class="keyboard-row">
-                        <div class="key">`</div><div class="key">1</div><div class="key">2</div><div class="key">3</div><div class="key">4</div><div class="key">5</div><div class="key">6</div><div class="key">7</div><div class="key">8</div><div class="key">9</div><div class="key">0</div><div class="key">-</div><div class="key">=</div>
+                    <!-- دليل اليد -->
+                    <div class="hand-guide-club">
+                        <i class="fas fa-hand-pointer" style="color: var(--gold); font-size: 1.5rem;"></i>
+                        <span id="handGuide">ضع إصبعي السبابة على F و J</span>
                     </div>
-                    <div class="keyboard-row">
-                        <div class="key">q</div><div class="key">w</div><div class="key">e</div><div class="key">r</div><div class="key">t</div><div class="key">y</div><div class="key">u</div><div class="key">i</div><div class="key">o</div><div class="key">p</div><div class="key">[</div><div class="key">]</div><div class="key">\</div>
-                    </div>
-                    <div class="keyboard-row">
-                        <div class="key">a</div><div class="key">s</div><div class="key">d</div><div class="key">f</div><div class="key">g</div><div class="key">h</div><div class="key">j</div><div class="key">k</div><div class="key">l</div><div class="key">;</div><div class="key">'</div>
-                    </div>
-                    <div class="keyboard-row">
-                        <div class="key">z</div><div class="key">x</div><div class="key">c</div><div class="key">v</div><div class="key">b</div><div class="key">n</div><div class="key">m</div><div class="key">,</div><div class="key">.</div><div class="key">/</div>
-                    </div>
-                    <div class="keyboard-row space-row">
-                        <div class="key space">مسافة</div>
-                    </div>
-                </div>
 
-                <!-- أزرار التحكم -->
-                <div style="display: flex; gap: 15px; margin-top: 30px; justify-content: center;">
-                    <button onclick="resetTypingTest()" class="btn-gold" style="padding: 15px 30px;">
-                        <i class="fas fa-redo"></i> إعادة المحاولة
-                    </button>
-                    <button onclick="showNewText()" class="btn-gold" style="background: var(--teal); padding: 15px 30px;">
-                        <i class="fas fa-random"></i> نص جديد
-                    </button>
+                    <!-- النص المستهدف -->
+                    <div class="target-text-club" id="targetText">ff jj ff jj f j f j</div>
+
+                    <!-- منطقة الكتابة -->
+                    <textarea class="typing-area-club" id="typingArea" rows="2" placeholder="اكتب هنا..." oninput="checkTypingProgress()"></textarea>
+
+                    <!-- لوحة المفاتيح المتطورة -->
+                    <div class="keyboard-club-pro" id="keyboardVisual">
+                        <!-- الصف العلوي -->
+                        <div class="keyboard-row-club">
+                            <div class="key-cap-club" data-key="`">`</div>
+                            <div class="key-cap-club" data-key="1">1</div>
+                            <div class="key-cap-club" data-key="2">2</div>
+                            <div class="key-cap-club" data-key="3">3</div>
+                            <div class="key-cap-club" data-key="4">4</div>
+                            <div class="key-cap-club" data-key="5">5</div>
+                            <div class="key-cap-club" data-key="6">6</div>
+                            <div class="key-cap-club" data-key="7">7</div>
+                            <div class="key-cap-club" data-key="8">8</div>
+                            <div class="key-cap-club" data-key="9">9</div>
+                            <div class="key-cap-club" data-key="0">0</div>
+                            <div class="key-cap-club" data-key="-">-</div>
+                            <div class="key-cap-club" data-key="=">=</div>
+                        </div>
+                        <!-- الصف الثاني -->
+                        <div class="keyboard-row-club">
+                            <div class="key-cap-club" data-key="q">q</div>
+                            <div class="key-cap-club" data-key="w">w</div>
+                            <div class="key-cap-club" data-key="e">e</div>
+                            <div class="key-cap-club" data-key="r">r</div>
+                            <div class="key-cap-club" data-key="t">t</div>
+                            <div class="key-cap-club" data-key="y">y</div>
+                            <div class="key-cap-club" data-key="u">u</div>
+                            <div class="key-cap-club" data-key="i">i</div>
+                            <div class="key-cap-club" data-key="o">o</div>
+                            <div class="key-cap-club" data-key="p">p</div>
+                            <div class="key-cap-club" data-key="[">[</div>
+                            <div class="key-cap-club" data-key="]">]</div>
+                            <div class="key-cap-club" data-key="\">\</div>
+                        </div>
+                        <!-- الصف الثالث -->
+                        <div class="keyboard-row-club">
+                            <div class="key-cap-club" data-key="a">a</div>
+                            <div class="key-cap-club" data-key="s">s</div>
+                            <div class="key-cap-club" data-key="d">d</div>
+                            <div class="key-cap-club" data-key="f">f</div>
+                            <div class="key-cap-club" data-key="g">g</div>
+                            <div class="key-cap-club" data-key="h">h</div>
+                            <div class="key-cap-club" data-key="j">j</div>
+                            <div class="key-cap-club" data-key="k">k</div>
+                            <div class="key-cap-club" data-key="l">l</div>
+                            <div class="key-cap-club" data-key=";">;</div>
+                            <div class="key-cap-club" data-key="'">'</div>
+                        </div>
+                        <!-- الصف الرابع -->
+                        <div class="keyboard-row-club">
+                            <div class="key-cap-club" data-key="z">z</div>
+                            <div class="key-cap-club" data-key="x">x</div>
+                            <div class="key-cap-club" data-key="c">c</div>
+                            <div class="key-cap-club" data-key="v">v</div>
+                            <div class="key-cap-club" data-key="b">b</div>
+                            <div class="key-cap-club" data-key="n">n</div>
+                            <div class="key-cap-club" data-key="m">m</div>
+                            <div class="key-cap-club" data-key=",">,</div>
+                            <div class="key-cap-club" data-key=".">.</div>
+                            <div class="key-cap-club" data-key="/">/</div>
+                        </div>
+                        <!-- شريط المسافة -->
+                        <div class="keyboard-row-club">
+                            <div class="key-cap-club space-club" data-key=" ">مسافة</div>
+                        </div>
+                    </div>
+
+                    <!-- إحصائيات متقدمة -->
+                    <div class="stats-club-grid">
+                        <div class="stat-club-card">
+                            <div class="stat-value-club" id="wpmCounter">0</div>
+                            <div class="stat-label-club">كلمة/دقيقة</div>
+                        </div>
+                        <div class="stat-club-card">
+                            <div class="stat-value-club" id="accuracyCounter">100%</div>
+                            <div class="stat-label-club">الدقة</div>
+                        </div>
+                        <div class="stat-club-card">
+                            <div class="stat-value-club" id="timeCounter">0:00</div>
+                            <div class="stat-label-club">الوقت</div>
+                        </div>
+                        <div class="stat-club-card">
+                            <div class="stat-value-club" id="scoreCounter">0</div>
+                            <div class="stat-label-club">النقاط</div>
+                        </div>
+                    </div>
+
+                    <!-- أزرار التحكم -->
+                    <div class="club-action-buttons">
+                        <button class="club-btn club-btn-primary" onclick="resetTypingLesson()">
+                            <i class="fas fa-redo"></i> إعادة المحاولة
+                        </button>
+                        <button class="club-btn club-btn-secondary" onclick="nextTypingLesson()">
+                            الدرس التالي <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- جدول التقدم -->
-                <div style="margin-top: 40px; background: #f8f8f8; padding: 20px; border-radius: 20px;">
-                    <h3 style="margin-bottom: 20px; color: var(--brown);">📊 تقدم التعلم</h3>
-                    <div id="progressHistory"></div>
+                <div class="progress-table-club">
+                    <h3><i class="fas fa-chart-line" style="color: var(--gold);"></i> سجل التقدم</h3>
+                    <div id="typingHistory"></div>
                 </div>
             </div>
         </div>
@@ -1715,7 +2078,7 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // متغيرات عامة
+        // متغيرات عامة للمتجر
         const CLOUD_NAME = "dnkuwf8q9";
         const UPLOAD_PRESET = "afsx4w9k";
         const LOGO_ID = "shababek_logo";
@@ -1727,13 +2090,15 @@
         let currentEditType = null;
         
         // متغيرات صفحة التعلم
+        let typingLevel = 1;
+        let currentLesson = 1;
         let typingTimer;
         let startTime;
         let isTypingActive = false;
-        let currentLevel = 'easy';
         let typedChars = 0;
         let wrongChars = 0;
-        let completedExercises = JSON.parse(localStorage.getItem('typing_progress')) || [];
+        let totalScore = 0;
+        let completedLessons = JSON.parse(localStorage.getItem('typingclub_progress')) || [];
         
         // متغير للدخول المخفي
         let typingClicks = 0;
@@ -1747,29 +2112,37 @@
             lastFetch: 0
         };
 
-        // نصوص للتدريب حسب المستوى
-        const typingTexts = {
-            easy: [
-                "شبابيك للستائر - ظل وذوق",
-                "مرحباً بك في عالم الطباعة السريعة",
-                "القطط تحب اللعب بالكرات الصغيرة",
-                "أنا أتعلم الطباعة على لوحة المفاتيح",
-                "الكتابة السريعة مهارة رائعة",
-                "السماء زرقاء والشمس مشرقة اليوم",
-                "أحب القراءة والكتابة بالعربية"
+        // دروس تعلم الطباعة
+        const typingLessons = {
+            1: [ // المستوى 1: الحروف الرئيسية
+                { text: "ff jj ff jj f j f j", guide: "ضع إصبعي السبابة على F و J", title: "تعلم حرفي F و J" },
+                { text: "dd kk dd kk d k d k", guide: "حرك السبابة اليسرى لـ D واليمنى لـ K", title: "تعلم حرفي D و K" },
+                { text: "ss ll ss ll s l s l", guide: "حرك السبابة اليسرى لـ S واليمنى لـ L", title: "تعلم حرفي S و L" },
+                { text: "aa ;; aa ;; a ; a ;", guide: "حرك الخنصر الأيسر لـ A والأيمن لـ ;", title: "تعلم حرفي A و ;" }
             ],
-            medium: [
-                "شبابيك للستائر تقدم أفخم الستائر المنزلية في العراق",
-                "الطباعة السريعة تحتاج إلى تدريب يومي مستمر",
-                "القطط حيوانات أليفة نظيفة ولطيفة وتحب اللعب",
-                "الكتابة باللمس مهارة ضرورية في العصر الرقمي",
-                "التدريب المنتظم يحسن سرعة ودقة الطباعة بشكل ملحوظ"
+            2: [ // المستوى 2: الحروف العلوية
+                { text: "rr uu rr uu r u r u", guide: "حرك السبابة اليسرى للأعلى لـ R واليمنى لـ U", title: "تعلم حرفي R و U" },
+                { text: "ee ii ee ii e i e i", guide: "حرك الوسطى للأعلى لـ E واليمنى لـ I", title: "تعلم حرفي E و I" },
+                { text: "ww oo ww oo w o w o", guide: "حرك البنصر للأعلى لـ W واليمنى لـ O", title: "تعلم حرفي W و O" },
+                { text: "qq pp qq pp q p q p", guide: "حرك الخنصر للأعلى لـ Q واليمنى لـ P", title: "تعلم حرفي Q و P" }
             ],
-            hard: [
-                "شبابيك للستائر - ظل وذوق، تأسست بهدف تقديم أفخم وأجود أنواع الستائر",
-                "الطباعة السريعة هي فن إدخال النصوص بسرعة ودقة دون النظر إلى لوحة المفاتيح",
-                "التكنولوجيا الحديثة غيرت طريقة تواصلنا وأصبحت الكتابة مهارة أساسية للجميع",
-                "التدريب اليومي لمدة 10 دقائق يحسن سرعة الطباعة بنسبة 50% خلال شهر واحد"
+            3: [ // المستوى 3: كلمات بسيطة
+                { text: "ff jj dd kk ss ll", guide: "تدرب على الحروف الرئيسية معاً", title: "مراجعة الحروف" },
+                { text: "as df jk l", guide: "اكتب كلمات بسيطة", title: "كلمات قصيرة" },
+                { text: "red fed led", guide: "كلمات من ثلاثة أحرف", title: "كلمات ثلاثية" },
+                { text: "ask dad fall", guide: "كلمات شائعة", title: "كلمات يومية" }
+            ],
+            4: [ // المستوى 4: جمل قصيرة
+                { text: "the red dog ran", guide: "اكتب الجملة كاملة", title: "جملة 1" },
+                { text: "a big black cat", guide: "استمر في التدريب", title: "جملة 2" },
+                { text: "i love to type", guide: "ركز على الدقة", title: "جملة 3" },
+                { text: "practice every day", guide: "تدرب يومياً", title: "جملة 4" }
+            ],
+            5: [ // المستوى 5: نصوص متقدمة
+                { text: "the quick brown fox jumps over the lazy dog", guide: "هذه الجملة تحتوي على كل الحروف", title: "نص متقدم 1" },
+                { text: "learning to type is fun and useful", guide: "استمر في التدريب", title: "نص متقدم 2" },
+                { text: "speed and accuracy come with practice", guide: "السرعة والدقة تأتي مع التدريب", title: "نص متقدم 3" },
+                { text: "congratulations you are now a typing master", guide: "تهانينا! أنت الآن محترف", title: "نص متقدم 4" }
             ]
         };
 
@@ -1818,21 +2191,22 @@
             }
         }
 
-        // تعديل دالة النقر على الشعار لفتح صفحة التعلم بكلمة السر
+        // دالة النقر على الشعار - فتح صفحة التعلم بكلمة السر
         function handleLogoClick() {
+            // للدخول إلى صفحة التعلم
             typingClicks++;
             clearTimeout(typingClickTimer);
             
             typingClickTimer = setTimeout(() => {
                 if (typingClicks === 3) {
-                    const pass = prompt("🔐 أدخل كلمة السر لفتح صفحة تعلم الطباعة:");
+                    const pass = prompt("🔐 أدخل كلمة السر لفتح TypingClub:");
                     if (pass === "2016") {
-                        showPage('typingPage');
+                        showPage('typingClubPage');
                         confetti({ particleCount: 100, spread: 70 });
                         // تهيئة صفحة التعلم
                         setTimeout(() => {
-                            showNewText();
-                            updateProgressHistory();
+                            loadTypingLesson();
+                            updateTypingHistory();
                         }, 100);
                     } else if (pass !== null) {
                         alert("❌ كلمة السر غير صحيحة!");
@@ -1841,7 +2215,7 @@
                 typingClicks = 0;
             }, 500);
             
-            // للحفاظ على وظيفة adminPanel القديمة
+            // للدخول إلى لوحة الإدارة
             adminClicks++;
             clearTimeout(clickTimer);
             
@@ -2502,53 +2876,56 @@
             toggleCartModal();
         }
 
-        // ===== دوال صفحة تعلم الطباعة =====
-        function setLevel(level) {
-            currentLevel = level;
+        // ===== دوال صفحة تعلم الطباعة المتطورة =====
+        function setTypingLevel(level) {
+            typingLevel = level;
+            currentLesson = 1;
             
-            document.querySelectorAll('.level-btn').forEach(btn => {
-                btn.classList.remove('active');
-                btn.style.transform = '';
+            // تحديث شكل المستويات
+            document.querySelectorAll('.level-club').forEach(lvl => {
+                lvl.classList.remove('active');
             });
-            event.target.classList.add('active');
+            document.querySelector(`.level-club[data-level="${level}"]`).classList.add('active');
             
-            showNewText();
+            loadTypingLesson();
         }
 
-        function showNewText() {
-            const texts = typingTexts[currentLevel];
-            const randomIndex = Math.floor(Math.random() * texts.length);
-            const targetText = document.getElementById('targetText');
+        function loadTypingLesson() {
+            const lesson = typingLessons[typingLevel][currentLesson - 1];
+            if (!lesson) return;
             
-            targetText.innerHTML = texts[randomIndex].split('').map(char => 
+            document.getElementById('targetText').innerHTML = lesson.text.split('').map(char => 
                 `<span class="target-char">${char}</span>`
             ).join('');
             
+            document.getElementById('handGuide').textContent = lesson.guide;
+            document.getElementById('lessonTitle').textContent = `المستوى ${typingLevel} - ${lesson.title}`;
+            
             document.getElementById('typingArea').value = '';
-            document.getElementById('typingArea').focus();
-            resetTypingTest();
+            resetTypingTimer();
+            updateStars();
         }
 
-        function checkTyping() {
+        function checkTypingProgress() {
             const input = document.getElementById('typingArea').value;
-            const targetChars = document.querySelectorAll('.target-char');
+            const targetChars = document.querySelectorAll('#targetText .target-char');
             const targetText = Array.from(targetChars).map(span => span.textContent).join('');
             
             if (!isTypingActive && input.length > 0) {
                 startTypingTimer();
             }
             
-            let correctCount = 0;
-            let wrongCount = 0;
+            let correct = 0;
+            let wrong = 0;
             
             for (let i = 0; i < targetChars.length; i++) {
                 if (i < input.length) {
                     if (input[i] === targetText[i]) {
                         targetChars[i].className = 'target-char correct-char';
-                        correctCount++;
+                        correct++;
                     } else {
                         targetChars[i].className = 'target-char wrong-char';
-                        wrongCount++;
+                        wrong++;
                     }
                 } else {
                     targetChars[i].className = 'target-char';
@@ -2556,16 +2933,21 @@
             }
             
             typedChars = input.length;
-            wrongChars = wrongCount;
+            wrongChars = wrong;
             
+            // تحديث الإحصائيات
             const accuracy = typedChars > 0 ? ((typedChars - wrongChars) / typedChars * 100).toFixed(1) : 100;
             document.getElementById('accuracyCounter').textContent = accuracy + '%';
             
-            if (input.length === targetText.length && wrongCount === 0) {
-                completeExercise();
+            // تحديث لوحة المفاتيح
+            highlightKey(input.slice(-1));
+            
+            // التحقق من اكتمال الدرس
+            if (input.length === targetText.length && wrong === 0) {
+                completeLesson();
             }
             
-            highlightKeyboard(input.slice(-1));
+            updateProgressBar();
         }
 
         function startTypingTimer() {
@@ -2585,38 +2967,7 @@
             }, 1000);
         }
 
-        function completeExercise() {
-            clearInterval(typingTimer);
-            isTypingActive = false;
-            
-            const timeElapsed = Math.floor((Date.now() - startTime) / 1000);
-            const wpm = Math.round((typedChars / 5) / (timeElapsed / 60));
-            const accuracy = ((typedChars - wrongChars) / typedChars * 100).toFixed(1);
-            
-            const progress = {
-                date: new Date().toLocaleDateString('ar-IQ'),
-                level: currentLevel,
-                wpm: wpm,
-                accuracy: accuracy,
-                time: timeElapsed
-            };
-            
-            completedExercises.push(progress);
-            localStorage.setItem('typing_progress', JSON.stringify(completedExercises));
-            
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-            
-            alert(`🎉 أحسنت! أكملت التمرين بنجاح\n⚡ السرعة: ${wpm} كلمة/دقيقة\n🎯 الدقة: ${accuracy}%\n⏱️ الوقت: ${timeElapsed} ثانية`);
-            
-            updateProgressHistory();
-            showNewText();
-        }
-
-        function resetTypingTest() {
+        function resetTypingTimer() {
             clearInterval(typingTimer);
             isTypingActive = false;
             typedChars = 0;
@@ -2625,31 +2976,119 @@
             document.getElementById('timeCounter').textContent = '0:00';
             document.getElementById('wpmCounter').textContent = '0';
             document.getElementById('accuracyCounter').textContent = '100%';
-            
-            document.querySelectorAll('.target-char').forEach(span => {
-                span.className = 'target-char';
-            });
         }
 
-        function highlightKeyboard(lastChar) {
-            document.querySelectorAll('.key').forEach(key => {
-                key.classList.remove('active');
+        function completeLesson() {
+            clearInterval(typingTimer);
+            isTypingActive = false;
+            
+            const timeElapsed = Math.floor((Date.now() - startTime) / 1000);
+            const wpm = Math.round((typedChars / 5) / (timeElapsed / 60));
+            const accuracy = ((typedChars - wrongChars) / typedChars * 100).toFixed(1);
+            const points = Math.round(wpm * parseFloat(accuracy) / 10);
+            
+            totalScore += points;
+            document.getElementById('scoreCounter').textContent = totalScore;
+            
+            // حفظ التقدم
+            const progress = {
+                date: new Date().toLocaleDateString('ar-IQ'),
+                level: typingLevel,
+                lesson: currentLesson,
+                wpm: wpm,
+                accuracy: accuracy,
+                points: points
+            };
+            
+            completedLessons.push(progress);
+            localStorage.setItem('typingclub_progress', JSON.stringify(completedLessons));
+            
+            // تحديث النجوم
+            const stars = document.querySelectorAll('.star-club');
+            const completedInLevel = completedLessons.filter(l => l.level === typingLevel).length;
+            const starsToLight = Math.min(5, Math.ceil((completedInLevel / typingLessons[typingLevel].length) * 5));
+            
+            for (let i = 0; i < stars.length; i++) {
+                if (i < starsToLight) {
+                    stars[i].classList.add('completed');
+                    stars[i].classList.add('active');
+                }
+            }
+            
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
             });
             
-            if (lastChar) {
-                const key = Array.from(document.querySelectorAll('.key')).find(k => 
-                    k.textContent === lastChar || (lastChar === ' ' && k.classList.contains('space'))
-                );
-                if (key) {
-                    key.classList.add('active');
-                    setTimeout(() => key.classList.remove('active'), 100);
+            alert(`🎉 أحسنت! أكملت الدرس بنجاح\n⚡ السرعة: ${wpm} كلمة/دقيقة\n🎯 الدقة: ${accuracy}%\n🏆 النقاط: +${points}`);
+            
+            updateTypingHistory();
+            
+            // الانتقال للدرس التالي
+            if (currentLesson < typingLessons[typingLevel].length) {
+                currentLesson++;
+                loadTypingLesson();
+            } else {
+                alert(`🌟 تهانينا! أكملت المستوى ${typingLevel} بالكامل!`);
+            }
+        }
+
+        function updateProgressBar() {
+            const targetChars = document.querySelectorAll('#targetText .target-char').length;
+            const progress = (typedChars / targetChars) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateStars() {
+            const stars = document.querySelectorAll('.star-club');
+            const completedInLevel = completedLessons.filter(l => l.level === typingLevel).length;
+            const starsToLight = Math.min(5, Math.ceil((completedInLevel / typingLessons[typingLevel].length) * 5));
+            
+            for (let i = 0; i < stars.length; i++) {
+                if (i < starsToLight) {
+                    stars[i].classList.add('completed');
+                    stars[i].classList.add('active');
+                } else {
+                    stars[i].classList.remove('completed');
+                    stars[i].classList.remove('active');
                 }
             }
         }
 
-        function updateProgressHistory() {
-            const historyDiv = document.getElementById('progressHistory');
-            const recent = completedExercises.slice(-10).reverse();
+        function highlightKey(key) {
+            document.querySelectorAll('.key-cap-club').forEach(k => {
+                k.classList.remove('active-key');
+            });
+            
+            if (key && key !== '') {
+                const keyCap = Array.from(document.querySelectorAll('.key-cap-club')).find(k => 
+                    k.dataset.key === key || (key === ' ' && k.classList.contains('space-club'))
+                );
+                if (keyCap) {
+                    keyCap.classList.add('active-key');
+                    setTimeout(() => keyCap.classList.remove('active-key'), 100);
+                }
+            }
+        }
+
+        function resetTypingLesson() {
+            resetTypingTimer();
+            loadTypingLesson();
+        }
+
+        function nextTypingLesson() {
+            if (currentLesson < typingLessons[typingLevel].length) {
+                currentLesson++;
+                loadTypingLesson();
+            } else {
+                alert("🎯 هذا آخر درس في المستوى!");
+            }
+        }
+
+        function updateTypingHistory() {
+            const historyDiv = document.getElementById('typingHistory');
+            const recent = completedLessons.slice(-10).reverse();
             
             if (recent.length === 0) {
                 historyDiv.innerHTML = '<p style="text-align: center; color: #666;">لا توجد تدريبات سابقة. ابدأ الآن!</p>';
@@ -2663,21 +3102,21 @@
                             <tr style="background: var(--brown); color: white;">
                                 <th style="padding: 12px;">التاريخ</th>
                                 <th style="padding: 12px;">المستوى</th>
+                                <th style="padding: 12px;">الدرس</th>
                                 <th style="padding: 12px;">السرعة</th>
                                 <th style="padding: 12px;">الدقة</th>
-                                <th style="padding: 12px;">الوقت</th>
+                                <th style="padding: 12px;">النقاط</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${recent.map(p => `
                                 <tr style="border-bottom: 1px solid #eee;">
                                     <td style="padding: 10px;">${p.date}</td>
-                                    <td style="padding: 10px;">
-                                        ${p.level === 'easy' ? '🥚' : p.level === 'medium' ? '🚀' : '⚡'}
-                                    </td>
-                                    <td style="padding: 10px; font-weight: bold; color: var(--teal);">${p.wpm} ك/د</td>
+                                    <td style="padding: 10px;">${p.level}</td>
+                                    <td style="padding: 10px;">${p.lesson}</td>
+                                    <td style="padding: 10px; font-weight: bold; color: var(--teal);">${p.wpm}</td>
                                     <td style="padding: 10px; color: var(--gold);">${p.accuracy}%</td>
-                                    <td style="padding: 10px;">${p.time} ث</td>
+                                    <td style="padding: 10px;">${p.points}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -2686,11 +3125,12 @@
             `;
         }
 
+        // أحداث لوحة المفاتيح لصفحة التعلم
         document.addEventListener('keydown', (e) => {
-            if (document.getElementById('typingPage').classList.contains('active')) {
+            if (document.getElementById('typingClubPage').classList.contains('active')) {
                 e.preventDefault();
-                const key = e.key.length === 1 ? e.key : e.key === ' ' ? 'مسافة' : '';
-                highlightKeyboard(key === 'مسافة' ? ' ' : key);
+                const key = e.key.length === 1 ? e.key : e.key === ' ' ? ' ' : '';
+                highlightKey(key);
             }
         });
 
@@ -2777,7 +3217,6 @@
             document.getElementById('globalCartCount').innerText = cart.length;
             setupAlibabaViewerEvents();
             loadAdminData();
-            updateProgressHistory();
         });
 
         // ===== نظام المستعرض =====
