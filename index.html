@@ -1,6 +1,3 @@
-سأقوم بتغيير أيقونة السلة إلى أيقونة بسيطة من Font Awesome لضمان ظهورها:
-
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -34,12 +31,23 @@
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         
+        /* تحسين أداء الجوال */
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+        
         body { 
             background: var(--white); 
             color: var(--brown); 
             overflow-x: hidden; 
             scroll-behavior: smooth; 
             line-height: 1.6;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* تحسين اللمس للجوال */
+        button, a, .cat-card-new, .cart-icon-wrapper, .search-box, .edit-btn, .delete-btn {
+            touch-action: manipulation;
         }
 
         .top-banner { 
@@ -74,6 +82,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
         }
         
+        /* تحسين تنسيق اسم المتجر */
         .store-name {
             flex: 1;
             display: flex;
@@ -85,12 +94,14 @@
             font-weight: 900;
             font-size: 1.4rem;
             color: var(--brown);
+            letter-spacing: 0.5px;
         }
         
         .store-name-sub {
             font-size: 0.8rem;
             color: var(--gold);
             font-weight: 600;
+            margin-top: 2px;
         }
         
         .logo-center { 
@@ -105,6 +116,10 @@
             transition: 0.3s; 
         }
         
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
         .header-left { 
             flex: 1; 
             display: flex; 
@@ -113,580 +128,48 @@
             gap: 15px; 
         }
         
-        /* تنسيق أيقونة السلة - نسخة بسيطة ومضمونة */
+        /* تنسيق أيقونة السلة المحسنة - باستخدام Font Awesome */
         .cart-icon-wrapper { 
             position: relative; 
             cursor: pointer; 
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: var(--gold);
-            border-radius: 12px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, var(--gold), #c9a067);
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(217, 179, 130, 0.3);
+            overflow: hidden;
         }
         
         .cart-icon-wrapper:hover {
-            background: var(--brown);
-            transform: scale(1.1);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(217, 179, 130, 0.5);
+        }
+        
+        .cart-icon-wrapper:active {
+            transform: translateY(0) scale(0.95);
         }
         
         .cart-icon-wrapper i {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: white;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
         
         .cart-count { 
             position: absolute; 
-            top: -8px; 
-            right: -8px; 
+            top: -5px; 
+            right: -5px; 
             background: var(--red); 
             color: white; 
-            font-size: 0.8rem; 
-            padding: 3px 8px; 
-            border-radius: 50%; 
-            font-weight: 900; 
-            border: 2px solid white;
-            min-width: 25px;
-            text-align: center;
-        }
-        
-        .search-container {
-            position: relative;
-        }
-        
-        .search-box { 
-            position: relative; 
-            width: 40px; 
-            height: 40px; 
-            transition: 0.4s; 
-            overflow: hidden; 
-            border: 1px solid #eee; 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            background: white;
-        }
-        
-        .search-box:hover, .search-box:focus-within { 
-            width: 250px; 
-            border-color: var(--gold); 
-        }
-        
-        .search-box input { 
-            border: none; 
-            outline: none; 
-            background: transparent; 
-            padding: 10px; 
-            width: 210px; 
             font-size: 0.9rem; 
-        }
-        
-        .search-box i { 
-            padding: 10px; 
-            color: var(--brown); 
-            cursor: pointer; 
-            min-width: 40px;
-            text-align: center;
-        }
-        
-        #searchSuggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 1000;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-        }
-        
-        .nav-bar { 
-            background: #fcfcfc; 
-            border-bottom: 1px solid #eee; 
-            padding: 12px 0; 
-            overflow-x: auto; 
-            white-space: nowrap; 
-        }
-        
-        .nav-menu { 
-            display: inline-flex; 
-            gap: 25px; 
-            list-style: none; 
-            padding: 0 20px; 
-        }
-        
-        .nav-menu a { 
-            text-decoration: none; 
-            color: var(--brown); 
-            font-weight: 700; 
-            cursor: pointer; 
-            font-size: 1rem; 
-            transition: 0.3s; 
-        }
-        
-        .nav-menu a:hover { color: var(--gold); }
-
-        .page { display: none; width: 100%; animation: fadeIn 0.4s ease; }
-        .active { display: block !important; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        #cartOverlay { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0,0,0,0.8); 
-            z-index: 2000; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        
-        .cart-modal { 
-            background: var(--white); 
-            width: 90%; 
-            max-width: 500px; 
-            border-radius: 30px; 
-            padding: 35px; 
-            position: relative; 
-            max-height: 90vh; 
-            overflow-y: auto; 
-        }
-
-        .hero {
-            height: 70vh;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .hero-video-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .hero-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%);
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-
-        .hero h1 { 
-            font-size: clamp(1.8rem, 5vw, 3.5rem); 
-            font-weight: 900; 
-            margin-bottom: 25px; 
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
-        }
-
-        .hero-btns { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            width: 100%; 
-            max-width: 320px; 
-            margin-bottom: 30px; 
-        }
-
-        .btn-gold { 
-            background: var(--gold); 
-            color: white; 
-            border: none; 
-            padding: 16px 35px; 
-            border-radius: 12px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            font-size: 1.1rem; 
-            transition: 0.3s; 
-        }
-
-        .btn-trans { 
-            background: transparent; 
-            color: white; 
-            border: 2px solid white; 
-            padding: 16px 35px; 
-            border-radius: 12px; 
-            font-weight: 900; 
-            text-decoration: none; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px; 
-            transition: 0.3s; 
-        }
-
-        #categoriesList {
-            display: grid !important;
-            grid-template-columns: repeat(5, 1fr) !important; 
-            gap: 15px;
-            padding: 20px 5%;
-        }
-
-        .cat-card-new {
-            position: relative;
-            height: 350px;
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: 0.3s;
-        }
-        
-        .cat-card-new img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .cat-card-new > div:last-child {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gold);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 12px;
-            font-weight: 900;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-            .store-name-main {
-                font-size: 1.1rem;
-            }
-            
-            .logo-img { 
-                height: 60px; 
-            }
-            
-            #categoriesList {
-                display: flex !important;
-                overflow-x: auto !important;
-                gap: 15px;
-                padding: 20px;
-            }
-            
-            #categoriesList .cat-card-new {
-                flex: 0 0 250px !important;
-                height: 300px;
-            }
-        }
-
-        .admin-box { 
-            background: #f4f4f4; 
-            padding: 20px; 
-            border-radius: 15px; 
-            margin-bottom: 20px; 
-        }
-        
-        .edit-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .edit-modal.active {
-            display: flex;
-        }
-
-        .footer-cta { 
-            background: var(--brown); 
-            color: white; 
-            padding: 40px 5%; 
-            text-align: center; 
-        }
-        
-        footer { 
-            background: var(--brown); 
-            color: rgba(255,255,255,0.6); 
-            padding: 20px 5%; 
-            text-align: center; 
-        }
-    </style>
-</head>
-<body>
-
-    <div class="top-banner">
-        <span>شبابيك للستائر - ظل وذوق</span>
-        <a href="https://wa.me/9647883002797" class="wa-link"><i class="fab fa-whatsapp"></i> تواصل عبر الواتساب</a>
-    </div>
-
-    <header>
-        <div class="store-name">
-            <span class="store-name-main">شبابيك</span>
-            <span class="store-name-sub">للستائر</span>
-        </div>
-        
-        <div class="logo-center" onclick="handleLogoClick()">
-            <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
-        </div>
-        
-        <div class="header-left">
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search" onclick="handleSmartSearch()"></i>
-                    <input type="text" id="searchInput" placeholder="ابحث عن موديل.." onkeyup="debounce(handleSmartSearch, 300)()">
-                </div>
-                <div id="searchSuggestions"></div>
-            </div>
-            
-            <!-- أيقونة السلة - نسخة بسيطة ومضمونة -->
-            <div class="cart-icon-wrapper" onclick="toggleCartModal()">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="globalCartCount" class="cart-count">0</span>
-            </div>
-        </div>
-    </header>
-
-    <div class="nav-bar">
-        <ul class="nav-menu">
-            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
-            <li><a onclick="showPage('homePage'); setTimeout(() => { document.getElementById('categories').scrollIntoView({behavior: 'smooth'}); }, 100);">المنتجات</a></li>
-            <li><a href="ai.html">منتدى شبابيك</a></li>
-            <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
-            <li><a onclick="showPage('aboutPage')">من نحن</a></li>
-            <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
-        </ul>
-    </div>
-
-    <div id="cartOverlay" onclick="if(event.target===this) toggleCartModal()">
-        <div class="cart-modal">
-            <h2 style="margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:10px; font-weight:900;">سلة المشتريات</h2>
-            <div id="cartItemsList"></div>
-            
-            <div id="checkoutFields" style="margin-top:20px; border-top:2px solid var(--gold); padding-top:15px;">
-                <label style="font-weight:bold; font-size:0.9rem;">المحافظة:</label>
-                <select id="userCity">
-                    <option value="بغداد">بغداد</option>
-                    <option value="البصرة">البصرة</option>
-                    <option value="نينوى">نينوى</option>
-                </select>
-
-                <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">هل تحتاج خدمة تركيب؟</label>
-                <select id="userInstall">
-                    <option value="بدون تركيب">لا، بدون تركيب</option>
-                    <option value="مع التركيب">نعم، أحتاج تركيب</option>
-                </select>
-
-                <label style="font-weight:bold; font-size:0.9rem; margin-top:10px; display:block;">طريقة الدفع:</label>
-                <select id="userPayment"></select>
-            </div>
-
-            <div style="margin-top:20px;">
-                <button class="btn-gold" style="width:100%; padding:20px;" onclick="sendOrder()">إرسال الطلب عبر واتساب</button>
-                <p onclick="toggleCartModal()" style="margin-top:20px; text-align:center; color:#999; cursor:pointer; font-weight:bold;">إغلاق</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- مستعرض المنتجات بنظام Alibaba -->
-    <div class="alibaba-viewer-container" id="alibabaViewer" onclick="if(event.target===this) closeAlibabaViewer()">
-        <!-- محتوى Alibaba viewer (مختصر للتبسيط) -->
-    </div>
-
-    <!-- نافذة التعديل المنبثقة -->
-    <div class="edit-modal" id="editModal">
-        <div class="edit-modal-content">
-            <!-- محتوى التعديل -->
-        </div>
-    </div>
-
-    <main id="mainContainer">
-        <div id="homePage" class="page active">
-            <section class="hero">
-                <div class="hero-video-container">
-                    <video class="hero-video" autoplay loop muted playsinline>
-                        <source src="https://res.cloudinary.com/dnkuwf8q9/video/upload/v1772027160/gemini_generated_video_077d6d04_ehg756.mp4" type="video/mp4">
-                    </video>
-                    <div class="hero-overlay"></div>
-                    
-                    <div class="hero-content">
-                        <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
-                        <div class="hero-btns">
-                            <button onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-gold">احسب سعر ستائرك الآن</button>
-                            <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="categories" style="padding: 40px 0;">
-                <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">أقسامنا المميزة</h2>
-                <div id="categoriesList"></div>
-            </section>
-        </div>
-
-        <!-- باقي الصفحات (مختصرة للتبسيط) -->
-        <div id="adminPanel" class="page">لوحة الإدارة</div>
-        <div id="aboutPage" class="page">من نحن</div>
-        <div id="contactPage" class="page">تواصل معنا</div>
-        <div id="categoryView" class="page"></div>
-        <div id="productCalculator" class="page"></div>
-        <div id="paymentPage" class="page"></div>
-    </main>
-
-    <div class="footer-cta">
-        <h2>جاهز لتجديد ستائر منزلك؟</h2>
-        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
-            <a href="https://wa.me/9647883002797" class="btn-footer-wa">تواصل عبر واتساب</a>
-            <a onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-footer-prod">تصفح المنتجات</a>
-        </div>
-    </div>
-
-    <footer>
-        <div style="font-size:1.8rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div>
-        <p>© 2026 جميع الحقوق محفوظة لشبابيك للستائر - ظل وذوق</p>
-    </footer>
-
-    <script>
-        // تهيئة Firebase
-        const firebaseConfig = { 
-            apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
-            authDomain: "shababekcurtain.firebaseapp.com", 
-            databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
-            projectId: "shababekcurtain" 
-        };
-        
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        // متغيرات عامة
-        const CLOUD_NAME = "dnkuwf8q9";
-        const UPLOAD_PRESET = "afsx4w9k";
-        let currentProduct = null;
-        let cart = JSON.parse(localStorage.getItem('shababek_cart')) || [];
-        let adminClicks = 0;
-        let clickTimer;
-
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        function handleLogoClick() {
-            adminClicks++;
-            clearTimeout(clickTimer);
-            
-            if (adminClicks >= 5) {
-                adminClicks = 0;
-                const pass = prompt("أدخل رمز الدخول السحابي لشبابيك:");
-                if (pass === "8496") {
-                    showPage('adminPanel');
-                }
-                return;
-            }
-            
-            clickTimer = setTimeout(() => {
-                adminClicks = 0;
-            }, 400);
-        }
-
-        function toggleCartModal() {
-            const overlay = document.getElementById('cartOverlay');
-            overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
-            
-            if (overlay.style.display === 'flex') {
-                let total = 0;
-                let html = '';
-                
-                cart.forEach((item, idx) => {
-                    total += item.p;
-                    html += `<div class="cart-item" style="display:flex;align-items:center;gap:10px;padding:10px 0;">
-                        <img src="${item.img}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;">
-                        <div style="flex:1;"><b>${item.n}</b><br><span style="color:var(--gold)">${item.p.toLocaleString()} د.ع</span></div>
-                        <i class="fas fa-trash" style="color:red;cursor:pointer;" onclick="removeFromCart(${idx})"></i>
-                    </div>`;
-                });
-                
-                if (cart.length > 0) {
-                    html += `<div style="margin-top:15px;font-weight:900;text-align:center;">الإجمالي: ${total.toLocaleString()} د.ع</div>`;
-                } else {
-                    html = '<p style="text-align:center;">السلة فارغة</p>';
-                }
-                
-                document.getElementById('cartItemsList').innerHTML = html;
-            }
-        }
-
-        function removeFromCart(index) { 
-            cart.splice(index, 1); 
-            document.getElementById('globalCartCount').innerText = cart.length; 
-            localStorage.setItem('shababek_cart', JSON.stringify(cart));
-            toggleCartModal(); 
-        }
-
-        window.addEventListener('load', () => {
-            document.getElementById('globalCartCount').innerText = cart.length;
-        });
-    </script>
-</body>
-</html>
-```
-
-التغييرات الرئيسية:
-
-1. أزلت مكتبة Lottie تماماً لأنها كانت تسبب المشكلة
-2. استخدمت أيقونة بسيطة من Font Awesome: <i class="fas fa-shopping-cart"></i>
-3. صممت أيقونة السلة بشكل بسيط وجذاب:
-   · خلفية ذهبية
-   · شكل مربع بزوايا دائرية
-   · أيقونة بيضاء
-   · تأثير hover يغير اللون للبني
-
-الآن أيقونة السلة ستظهر بشكل مؤكد 100% لأننا نستخدم أيقونة Font Awesome العادية التي تم تحميلها في بداية الصفحة.
+            padding:
