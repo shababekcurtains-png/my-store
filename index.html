@@ -11,7 +11,6 @@
     <!-- Preload for critical resources -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style">
-    <link rel="preload" href="https://res.cloudinary.com/dnkuwf8q9/video/upload/v1772027160/gemini_generated_video_077d6d04_ehg756.mp4" as="video">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -439,14 +438,6 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-        }
-
-        .hero-video::-webkit-media-controls {
-            display: none !important;
-        }
-
-        .hero-video::-webkit-media-controls-start-playback-button {
-            display: none !important;
         }
 
         .hero-overlay {
@@ -1030,7 +1021,6 @@
             font-size: 1.1rem;
         }
         
-        /* ===== حقل الأمتار المحسن - أكبر وأوضح ===== */
         .alibaba-meters-input-group {
             display: flex;
             gap: 15px;
@@ -1146,7 +1136,6 @@
             transform: translateY(-3px);
         }
         
-        /* حقل الأمتار في الصفحة الرئيسية */
         #hIn {
             padding: 18px 20px !important;
             font-size: 1.4rem !important;
@@ -1192,6 +1181,21 @@
             .alibaba-total-value {
                 font-size: 1.5rem;
             }
+        }
+
+        /* تحسينات لإضافة الفيديو */
+        .video-upload-container {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+        
+        .video-preview {
+            width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -1321,7 +1325,7 @@
                         </div>
                     </div>
                     
-                    <!-- حقل الأمتار المحسن - أكبر وأوضح -->
+                    <!-- حقل الأمتار المحسن -->
                     <div class="alibaba-meters-section">
                         <div class="alibaba-meters-label">
                             <i class="fas fa-ruler"></i>
@@ -1410,7 +1414,7 @@
                         <div id="admCatsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
                     </div>
 
-                    <!-- إدارة المنتجات -->
+                    <!-- إدارة المنتجات مع رفع الفيديو -->
                     <div class="admin-box" style="background: #f8f8f8; padding: 25px; border-radius: 20px;">
                         <h3 style="margin-bottom:20px; color:var(--gold); font-weight:900;">🖼️ إدارة المنتجات</h3>
                         <select id="admProdCatSelect" style="margin-bottom:10px;"></select>
@@ -1422,14 +1426,14 @@
                             <input type="file" id="admProdImages" accept="image/*" multiple style="margin:10px 0;">
                         </div>
                         
-                        <div style="margin:15px 0;">
-                            <label style="font-weight:bold;">روابط فيديوهات</label>
-                            <div id="videoInputsContainer">
-                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                                    <input type="url" class="admProdVideo" placeholder="رابط فيديو 1" style="flex:1;">
-                                    <button onclick="addVideoInput()" style="background:var(--gold); color:white; border:none; width:40px; border-radius:8px;">+</button>
-                                </div>
-                            </div>
+                        <!-- رفع الفيديو مثل الصور -->
+                        <div class="video-upload-container">
+                            <label style="font-weight:bold; display:block; margin-bottom:10px;">
+                                <i class="fas fa-video"></i> فيديو المنتج (رفع مباشر)
+                            </label>
+                            <input type="file" id="admProdVideo" accept="video/*" style="margin-bottom:10px;">
+                            <small style="color: #666;">يمكنك رفع فيديو مباشرة وسيتم تحميله إلى Cloudinary</small>
+                            <video id="videoPreview" controls style="width:100%; max-height:200px; margin-top:10px; display:none; border-radius:10px;"></video>
                         </div>
                         
                         <button onclick="publishProd()" class="btn-gold" style="width:100%; margin-bottom:20px;">➕ إضافة منتج</button>
@@ -1479,7 +1483,7 @@
                 <img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;">
                 <h2 id="pName"></h2>
                 <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div>
-                <!-- حقل الأمتار المحسن في الصفحة الرئيسية -->
+                <!-- حقل الأمتار المحسن -->
                 <input type="number" id="hIn" placeholder="أدخل الطول بالمتر" min="0.5" step="0.5" style="text-align:center;">
                 <button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button>
                 <button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button>
@@ -1605,26 +1609,41 @@
             }, 400);
         }
 
-        async function uploadImage(file) {
+        // دالة رفع الصور والفيديو إلى Cloudinary
+        async function uploadFile(file) {
             if (!file) return "";
             
             const formData = new FormData();
             formData.append("file", file);
             formData.append("upload_preset", UPLOAD_PRESET);
             
+            // تحديد نوع الملف
+            const resourceType = file.type.startsWith('video/') ? 'video' : 'image';
+            
             try {
-                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { 
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, { 
                     method: "POST", 
                     body: formData 
                 });
                 const data = await res.json();
                 return data.secure_url;
             } catch (error) {
-                console.error("خطأ في رفع الصورة:", error);
-                alert("فشل في رفع الصورة");
+                console.error("خطأ في رفع الملف:", error);
+                alert("فشل في رفع الملف");
                 return "";
             }
         }
+
+        // معاينة الفيديو قبل الرفع
+        document.getElementById('admProdVideo')?.addEventListener('change', function(e) {
+            const video = document.getElementById('videoPreview');
+            if (e.target.files[0]) {
+                video.src = URL.createObjectURL(e.target.files[0]);
+                video.style.display = 'block';
+            } else {
+                video.style.display = 'none';
+            }
+        });
 
         function getWatermarkedUrl(url, type = 'image') {
             if (!url) return url;
@@ -1693,8 +1712,9 @@
                         </div>
                     </div>
                     <div class="edit-form-group">
-                        <label>رابط فيديو</label>
-                        <input type="url" id="editProdVideo" value="${data.video || (data.videos && data.videos[0]) || ''}">
+                        <label>فيديو المنتج</label>
+                        <input type="file" id="editProdVideo" accept="video/*">
+                        ${data.video ? `<video src="${data.video}" controls style="width:100%; max-height:200px; margin-top:10px; border-radius:10px;"></video>` : ''}
                     </div>
                     <button class="edit-save-btn" onclick="saveEdit()">
                         <i class="fas fa-save"></i> حفظ التعديلات
@@ -1751,7 +1771,7 @@
                     let updates = { name: newName };
                     
                     if (file) {
-                        const url = await uploadImage(file);
+                        const url = await uploadFile(file);
                         if (url) updates.img = url;
                     }
                     
@@ -1762,8 +1782,8 @@
                     const newName = document.getElementById('editProdName').value;
                     const newPrice = document.getElementById('editProdPrice').value;
                     const newCat = document.getElementById('editProdCatSelect').value;
-                    const newVideo = document.getElementById('editProdVideo').value;
-                    const file = document.getElementById('editProdFile').files[0];
+                    const videoFile = document.getElementById('editProdVideo').files[0];
+                    const imageFile = document.getElementById('editProdFile').files[0];
                     
                     let updates = { 
                         name: newName, 
@@ -1771,13 +1791,16 @@
                         category: newCat
                     };
                     
-                    if (newVideo) updates.video = newVideo;
+                    if (videoFile) {
+                        const videoUrl = await uploadFile(videoFile);
+                        if (videoUrl) updates.video = videoUrl;
+                    }
                     
-                    if (file) {
-                        const url = await uploadImage(file);
-                        if (url) {
-                            updates.img = url;
-                            updates.images = [url];
+                    if (imageFile) {
+                        const imgUrl = await uploadFile(imageFile);
+                        if (imgUrl) {
+                            updates.img = imgUrl;
+                            updates.images = [imgUrl];
                         }
                     }
                     
@@ -1791,7 +1814,7 @@
                     let updates = { name: newName };
                     
                     if (file) {
-                        const url = await uploadImage(file);
+                        const url = await uploadFile(file);
                         if (url) updates.img = url;
                     }
                     
@@ -1863,7 +1886,7 @@
                 return;
             }
             
-            const url = await uploadImage(file);
+            const url = await uploadFile(file);
             if (url) {
                 db.ref('categories').push({name: name, img: url}).then(() => {
                     alert("✅ تم إضافة القسم بنجاح");
@@ -1875,74 +1898,57 @@
             }
         }
 
-        function addVideoInput() {
-            const container = document.getElementById('videoInputsContainer');
-            const newIndex = container.children.length + 1;
-            
-            const div = document.createElement('div');
-            div.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px;';
-            
-            div.innerHTML = `
-                <input type="url" class="admProdVideo" placeholder="رابط فيديو ${newIndex}" style="flex:1;">
-                <button onclick="removeVideoInput(this)" style="background: var(--red); color: white; border: none; width: 40px; border-radius: 8px;">-</button>
-            `;
-            
-            container.appendChild(div);
-        }
-
-        function removeVideoInput(button) {
-            if (document.querySelectorAll('.admProdVideo').length > 1) {
-                button.parentElement.remove();
-            }
-        }
-
         async function publishProd() {
-            const files = document.getElementById('admProdImages').files;
+            const imageFiles = document.getElementById('admProdImages').files;
+            const videoFile = document.getElementById('admProdVideo').files[0];
             const cat = document.getElementById('admProdCatSelect').value;
             const name = getValue('admProdName');
             const price = getValue('admProdPrice');
             
-            const videoInputs = document.querySelectorAll('.admProdVideo');
-            const videos = [];
-            videoInputs.forEach(input => {
-                if (input.value.trim()) {
-                    videos.push(input.value.trim());
-                }
-            });
-            
-            if(files.length === 0 || !name || !price || !cat) {
+            if(imageFiles.length === 0 || !name || !price || !cat) {
                 alert("أكمل بيانات المنتج (صورة واحدة على الأقل)");
                 return;
             }
             
+            // رفع الصور
             const imageUrls = [];
-            for (let i = 0; i < files.length; i++) {
-                const url = await uploadImage(files[i]);
+            for (let i = 0; i < imageFiles.length; i++) {
+                const url = await uploadFile(imageFiles[i]);
                 if (url) {
                     imageUrls.push(url);
                 }
             }
             
+            // رفع الفيديو إذا وجد
+            let videoUrl = '';
+            if (videoFile) {
+                videoUrl = await uploadFile(videoFile);
+            }
+            
             if (imageUrls.length > 0) {
-                db.ref('products').push({ 
+                const productData = { 
                     category: cat, 
                     name: name, 
                     price: parseInt(price), 
                     images: imageUrls,
-                    videos: videos,
                     img: imageUrls[0]
-                }).then(() => {
+                };
+                
+                // إضافة الفيديو إذا وجد
+                if (videoUrl) {
+                    productData.video = videoUrl;
+                    productData.videos = [videoUrl];
+                }
+                
+                db.ref('products').push(productData).then(() => {
                     alert(`✅ تم نشر المنتج بنجاح!`);
                     
+                    // تنظيف الحقول
                     document.getElementById('admProdName').value = "";
                     document.getElementById('admProdPrice').value = "";
                     document.getElementById('admProdImages').value = "";
-                    document.getElementById('videoInputsContainer').innerHTML = `
-                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                            <input type="url" class="admProdVideo" placeholder="رابط فيديو 1" style="flex:1;">
-                            <button onclick="addVideoInput()" style="background:var(--gold); color:white; border:none; width:40px; border-radius:8px;">+</button>
-                        </div>
-                    `;
+                    document.getElementById('admProdVideo').value = "";
+                    document.getElementById('videoPreview').style.display = 'none';
                     
                     cache.products = null;
                     loadAdminData();
@@ -1959,7 +1965,7 @@
                 return;
             }
             
-            const url = await uploadImage(file);
+            const url = await uploadFile(file);
             if (url) {
                 db.ref('payments').push({ 
                     name: name, 
@@ -2015,6 +2021,7 @@
                                 <div>
                                     <strong>${prod.name}</strong><br>
                                     <small style="color:var(--gold);">${prod.price} د.ع</small>
+                                    ${prod.video ? '<small style="color:var(--blue);"><i class="fas fa-video"></i> فيديو</small>' : ''}
                                 </div>
                             </div>
                             <div>
@@ -2066,7 +2073,11 @@
                     document.getElementById('catGrid').innerHTML = items.map(x => `
                         <div class="cat-card-new" onclick='openCalc(${JSON.stringify(x).replace(/'/g, "&apos;")})'>
                             <img src="${getWatermarkedUrl(x.img || (x.images && x.images[0]), 'image')}" loading="lazy">
-                            <div style="padding:20px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div>
+                            <div style="padding:20px;text-align:center;">
+                                <h3>${x.name}</h3>
+                                ${x.video ? '<i class="fas fa-video" style="color:var(--gold); margin:5px 0;"></i>' : ''}
+                                <p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p>
+                            </div>
                         </div>`).join('');
                 }
                 showPage('categoryView'); 
@@ -2079,14 +2090,12 @@
 
             const mediaItems = [];
 
-            if (product.videos && Array.isArray(product.videos)) {
-                product.videos.forEach(video => {
-                    if (video) {
-                        mediaItems.push({ type: 'video', url: getWatermarkedUrl(video, 'video') });
-                    }
-                });
+            // إضافة الفيديو إذا وجد
+            if (product.video) {
+                mediaItems.push({ type: 'video', url: getWatermarkedUrl(product.video, 'video') });
             }
 
+            // إضافة الصور
             if (product.images && Array.isArray(product.images)) {
                 product.images.forEach(img => {
                     mediaItems.push({ type: 'image', url: getWatermarkedUrl(img, 'image') });
@@ -2182,7 +2191,6 @@
             cart.forEach((item, index) => {
                 msg += `*${index + 1}- الموديل:* ${item.n}\n`;
                 msg += `💰 *السعر:* ${item.p.toLocaleString()} د.ع\n`;
-                msg += `🖼 *صورة الموديل:* ${item.img}\n`;
                 msg += `------------------------------\n`;
                 total += item.p;
             });
@@ -2191,11 +2199,43 @@
             msg += `_شكراً لاختياركم شبابيك - ظل وذوق_`;
 
             const waNumber = "9647883002797";
-            // استخدام رابط واتساب مباشر بدون خيارات
-            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+            const encodedMsg = encodeURIComponent(msg);
             
-            // فتح الرابط مباشرة
-            window.location.href = waUrl;
+            // محاولة فتح التطبيق مباشرة على الموبايل
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            // استخدام رابط مباشر للتطبيق
+            const waIntentUrl = `intent://send?phone=${waNumber}&text=${encodedMsg}#Intent;package=com.whatsapp;scheme=whatsapp;end;`;
+            const waIosUrl = `whatsapp://send?phone=${waNumber}&text=${encodedMsg}`;
+            const waWebUrl = `https://wa.me/${waNumber}?text=${encodedMsg}`;
+            
+            if (isMobile) {
+                // للآيفون
+                if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    window.location.href = waIosUrl;
+                    // إذا لم يفتح التطبيق خلال ثانية، استخدم الويب
+                    setTimeout(() => {
+                        window.location.href = waWebUrl;
+                    }, 1000);
+                } 
+                // للأندرويد
+                else if (/Android/i.test(navigator.userAgent)) {
+                    // محاولة فتح التطبيق عبر intent
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = waIntentUrl;
+                    document.body.appendChild(iframe);
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                        // إذا لم يفتح، استخدم الويب
+                        window.location.href = waWebUrl;
+                    }, 1000);
+                }
+            } else {
+                // للكمبيوتر - فتح ويب واتساب
+                window.open(waWebUrl, '_blank');
+            }
 
             cart = []; 
             document.getElementById('globalCartCount').innerText = "0"; 
@@ -2300,28 +2340,6 @@
             isDragging: false
         };
 
-        function extractYoutubeId(url) {
-            if (!url) return null;
-            
-            const patterns = [
-                /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/shorts\/)([^&\n?#]+)/,
-                /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/,
-                /youtube.com\/shorts\/([a-zA-Z0-9_-]+)/
-            ];
-            
-            for (let pattern of patterns) {
-                const match = url.match(pattern);
-                if (match && match[1] && match[1].length === 11) {
-                    return match[1];
-                }
-                if (match && match[7] && match[7].length === 11) {
-                    return match[7];
-                }
-            }
-            
-            return null;
-        }
-
         function addNavigationButtons(container) {
             const prevButton = document.createElement('button');
             prevButton.className = 'alibaba-slide-nav prev';
@@ -2359,41 +2377,17 @@
             const firstItem = alibabaViewerData.mediaItems[0];
             if (firstItem) {
                 if (firstItem.type === 'video') {
-                    const videoId = extractYoutubeId(firstItem.url);
-                    if (videoId) {
-                        const iframe = document.createElement('iframe');
-                        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0`;
-                        iframe.allow = "autoplay; encrypted-media";
-                        iframe.allowFullscreen = true;
-                        iframe.style.width = '100%';
-                        iframe.style.height = '100%';
-                        iframe.style.border = 'none';
-                        container.appendChild(iframe);
-                        
-                        stopAlibabaAutoPlay();
-                        
-                        setTimeout(() => {
-                            startAlibabaAutoPlay();
-                        }, 30000);
-                    } else {
-                        const video = document.createElement('video');
-                        video.src = firstItem.url;
-                        video.controls = true;
-                        video.autoplay = true;
-                        video.muted = true;
-                        video.loop = false;
-                        video.style.width = '100%';
-                        video.style.height = '100%';
-                        video.style.objectFit = 'contain';
-                        
-                        video.addEventListener('ended', () => {
-                            startAlibabaAutoPlay();
-                        });
-                        
-                        container.appendChild(video);
-                        
-                        stopAlibabaAutoPlay();
-                    }
+                    // استخدام عنصر فيديو HTML5 بدلاً من iframe
+                    const video = document.createElement('video');
+                    video.src = firstItem.url;
+                    video.controls = true;
+                    video.autoplay = true;
+                    video.muted = true;
+                    video.loop = true;
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'contain';
+                    container.appendChild(video);
                 } else {
                     const img = document.createElement('img');
                     img.src = firstItem.url;
@@ -2443,41 +2437,16 @@
             container.innerHTML = '';
             
             if (item.type === 'video') {
-                const videoId = extractYoutubeId(item.url);
-                if (videoId) {
-                    const iframe = document.createElement('iframe');
-                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&rel=0`;
-                    iframe.allow = "autoplay; encrypted-media";
-                    iframe.allowFullscreen = true;
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = 'none';
-                    container.appendChild(iframe);
-                    
-                    stopAlibabaAutoPlay();
-                    
-                    setTimeout(() => {
-                        startAlibabaAutoPlay();
-                    }, 30000);
-                } else {
-                    const video = document.createElement('video');
-                    video.src = item.url;
-                    video.controls = true;
-                    video.autoplay = true;
-                    video.muted = true;
-                    video.loop = false;
-                    video.style.width = '100%';
-                    video.style.height = '100%';
-                    video.style.objectFit = 'contain';
-                    
-                    video.addEventListener('ended', () => {
-                        startAlibabaAutoPlay();
-                    });
-                    
-                    container.appendChild(video);
-                    
-                    stopAlibabaAutoPlay();
-                }
+                const video = document.createElement('video');
+                video.src = item.url;
+                video.controls = true;
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                video.style.width = '100%';
+                video.style.height = '100%';
+                video.style.objectFit = 'contain';
+                container.appendChild(video);
             } else {
                 const img = document.createElement('img');
                 img.src = item.url;
