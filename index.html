@@ -61,7 +61,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
         }
         
-        /* ===== اسم المتجر المحسن ===== */
+        /* اسم المتجر المحسن */
         .store-brand {
             flex: 1;
             display: flex;
@@ -104,7 +104,7 @@
             gap: 15px; 
         }
         
-        /* ===== أيقونة السلة المحسنة ===== */
+        /* أيقونة السلة المحسنة */
         .cart-icon { 
             position: relative; 
             cursor: pointer; 
@@ -285,7 +285,7 @@
         .cart-modal { background: var(--white); width: 90%; max-width: 500px; border-radius: 30px; padding: 35px; position: relative; max-height: 90vh; overflow-y: auto; }
         .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
 
-        /* ===== نافذة التعديل المنبثقة ===== */
+        /* نافذة التعديل المنبثقة */
         .edit-modal {
             display: none;
             position: fixed;
@@ -439,6 +439,14 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
+        }
+
+        .hero-video::-webkit-media-controls {
+            display: none !important;
+        }
+
+        .hero-video::-webkit-media-controls-start-playback-button {
+            display: none !important;
         }
 
         .hero-overlay {
@@ -1022,103 +1030,131 @@
             font-size: 1.1rem;
         }
         
+        /* ===== حقل الأمتار المحسن - أكبر وأوضح ===== */
         .alibaba-meters-input-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             align-items: center;
+            margin: 15px 0;
         }
         
         .alibaba-meters-input {
             flex: 1;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 18px 20px;
+            border: 3px solid var(--gold);
+            border-radius: 15px;
+            font-size: 1.4rem;
             font-family: 'Cairo', sans-serif;
+            font-weight: 700;
             transition: 0.3s;
+            text-align: center;
+            background: #fff9f0;
+            color: var(--brown);
+            box-shadow: 0 5px 15px rgba(217, 179, 130, 0.2);
         }
         
         .alibaba-meters-input:focus {
-            border-color: var(--gold);
+            border-color: var(--brown);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(217, 179, 130, 0.2);
+            box-shadow: 0 0 0 4px rgba(217, 179, 130, 0.3);
+            transform: scale(1.02);
         }
         
         .alibaba-meters-unit {
-            font-size: 1rem;
-            color: #666;
+            font-size: 1.3rem;
+            color: var(--gold);
             font-weight: 900;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--gold);
         }
         
         .alibaba-total-price {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #ccc;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gold);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #faf5f0;
+            padding: 15px 20px;
+            border-radius: 12px;
         }
         
         .alibaba-total-label {
             font-weight: 900;
             color: var(--brown);
-            font-size: 0.95rem;
+            font-size: 1.2rem;
         }
         
         .alibaba-total-value {
-            font-size: 1.3rem;
+            font-size: 2rem;
             font-weight: 900;
             color: var(--gold);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .alibaba-action-buttons {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .alibaba-add-to-cart-btn {
             background: var(--gold);
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 15px;
             font-weight: 900;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
         
         .alibaba-add-to-cart-btn:hover {
             background: var(--brown);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .alibaba-checkout-btn {
             background: white;
             color: var(--brown);
-            border: 2px solid var(--gold);
-            padding: 15px;
-            border-radius: 10px;
+            border: 3px solid var(--gold);
+            padding: 18px;
+            border-radius: 15px;
             font-weight: 900;
-            font-size: 1rem;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
         
         .alibaba-checkout-btn:hover {
             background: var(--gold);
             color: white;
+            transform: translateY(-3px);
+        }
+        
+        /* حقل الأمتار في الصفحة الرئيسية */
+        #hIn {
+            padding: 18px 20px !important;
+            font-size: 1.4rem !important;
+            border: 3px solid var(--gold) !important;
+            border-radius: 15px !important;
+            text-align: center !important;
+            background: #fff9f0 !important;
+            margin: 20px 0 !important;
         }
         
         @media (max-width: 768px) {
@@ -1146,6 +1182,15 @@
             .alibaba-thumbnail {
                 width: 60px;
                 height: 60px;
+            }
+            
+            .alibaba-meters-input {
+                padding: 15px !important;
+                font-size: 1.2rem !important;
+            }
+            
+            .alibaba-total-value {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -1276,6 +1321,7 @@
                         </div>
                     </div>
                     
+                    <!-- حقل الأمتار المحسن - أكبر وأوضح -->
                     <div class="alibaba-meters-section">
                         <div class="alibaba-meters-label">
                             <i class="fas fa-ruler"></i>
@@ -1433,6 +1479,7 @@
                 <img id="pImg" src="" style="width:100%; border-radius:25px; margin-bottom:25px;">
                 <h2 id="pName"></h2>
                 <div style="color:var(--gold); font-size:1.8rem; font-weight:900; margin-bottom:30px;"><span id="pPrice"></span> د.ع / متر</div>
+                <!-- حقل الأمتار المحسن في الصفحة الرئيسية -->
                 <input type="number" id="hIn" placeholder="أدخل الطول بالمتر" min="0.5" step="0.5" style="text-align:center;">
                 <button onclick="addToCart()" class="btn-gold" style="width:100%;">إضافة للسلة</button>
                 <button onclick="toggleCartModal()" style="background:transparent; border:2px solid var(--gold); color:var(--gold); width:100%; padding:18px; border-radius:12px; margin-top:10px;">إتمام الطلب الآن</button>
@@ -2144,9 +2191,11 @@
             msg += `_شكراً لاختياركم شبابيك - ظل وذوق_`;
 
             const waNumber = "9647883002797";
+            // استخدام رابط واتساب مباشر بدون خيارات
             const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
             
-            window.open(waUrl, '_blank');
+            // فتح الرابط مباشرة
+            window.location.href = waUrl;
 
             cart = []; 
             document.getElementById('globalCartCount').innerText = "0"; 
