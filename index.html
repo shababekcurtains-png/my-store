@@ -131,7 +131,7 @@
             gap: 15px; 
         }
         
-        /* تنسيق أيقونة السلة مع Lottie */
+        /* تنسيق أيقونة السلة مع Lottie المحسن */
         .cart-icon-wrapper { 
             position: relative; 
             cursor: pointer; 
@@ -139,10 +139,26 @@
             align-items: center;
             justify-content: center;
             transition: 0.3s;
+            width: 50px;
+            height: 50px;
+            background: var(--bg);
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
         
         .cart-icon-wrapper:hover {
             transform: translateY(-3px);
+            background: var(--gold);
+        }
+        
+        .cart-icon-wrapper lottie-player {
+            width: 60px !important;
+            height: 60px !important;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
         
         .cart-count { 
@@ -158,6 +174,8 @@
             border: 2px solid white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             z-index: 10;
+            min-width: 25px;
+            text-align: center;
         }
         
         /* تحسين البحث مع الاقتراحات */
@@ -1354,13 +1372,13 @@
                 <div id="searchSuggestions"></div>
             </div>
             
-            <!-- أيقونة السلة المتحركة Lottie -->
+            <!-- أيقونة السلة المتحركة Lottie بالرابط الجديد -->
             <div class="cart-icon-wrapper" onclick="toggleCartModal()">
                 <lottie-player
-                    src="https://assets-v2.lottiefiles.com/a/c93d4602-d5e5-11ed-b0c0-a35c237a375a/KbWccIxM6j.lottie.json"
+                    src="https://lottie.host/e092d467-cf5c-4aa1-a329-fe0ad751f818/hIUlYt4DCy.lottie"
                     background="transparent"
                     speed="1"
-                    style="width: 45px; height: 45px;"
+                    style="width: 60px; height: 60px;"
                     loop
                     autoplay>
                 </lottie-player>
@@ -2061,8 +2079,6 @@
                 suggestions.style.display = 'none';
             }
         }
-
-        // تم حذف دالة getRecommendations بالكامل لإزالة فقرة "قد يعجبك أيضاً"
 
         async function publishCat() {
             const file = document.getElementById('admCatFile').files[0];
