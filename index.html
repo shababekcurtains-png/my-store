@@ -709,49 +709,84 @@
         }
 
         /* ===== روابط التواصل الاجتماعي الذهبية ===== */
-        .social-links {
+        .social-hero { 
+            display: flex; 
+            gap: 20px; 
+            animation: fadeInUp 1s ease 0.3s both;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .social-hero a { 
+            color: var(--white); 
+            font-size: 1.8rem; 
+            transition: 0.4s; 
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .social-hero a:hover { 
+            color: var(--gold); 
+            transform: translateY(-8px) scale(1.2); 
+            background: var(--brown);
+            border-color: var(--gold);
+        }
+        
+        .social-links-below {
             display: flex;
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 30px 0;
+            margin: 40px 0 20px;
         }
         
-        .social-link {
-            width: 50px;
-            height: 50px;
+        .social-link-below {
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: var(--gold);
             color: var(--brown);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             transition: all 0.3s ease;
             text-decoration: none;
             box-shadow: 0 5px 15px rgba(217, 179, 130, 0.3);
             border: 2px solid rgba(255,255,255,0.3);
         }
         
-        .social-link:hover {
-            transform: translateY(-5px) scale(1.1);
+        .social-link-below:hover {
+            transform: translateY(-8px) scale(1.15);
             background: var(--brown);
             color: var(--gold);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
         
-        /* جعل الأزرار على خط واحد في الموبايل */
         @media (max-width: 768px) {
-            .social-links {
-                gap: 10px;
+            .social-hero {
+                gap: 12px;
             }
-            .social-link {
+            .social-hero a {
                 width: 45px;
                 height: 45px;
-                font-size: 1.3rem;
+                font-size: 1.5rem;
+            }
+            .social-link-below {
+                width: 50px;
+                height: 50px;
+                font-size: 1.4rem;
             }
         }
-        
+
         /* ===== أزرار مشاركة المنتج ===== */
         .share-buttons {
             display: flex;
@@ -1708,6 +1743,7 @@
         <ul class="nav-menu">
             <li><a onclick="showPage('homePage')">الرئيسية</a></li>
             <li><a onclick="showPage('homePage'); setTimeout(() => { document.getElementById('categories').scrollIntoView({behavior: 'smooth'}); }, 100);">المنتجات</a></li>
+            <li><a href="ai.html">منتدى شبابيك</a></li>
             <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
             <li><a onclick="showPage('aboutPage')">من نحن</a></li>
             <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
@@ -1843,6 +1879,18 @@
                             <button onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-gold">تسوق الآن</button>
                             <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
                         </div>
+                        
+                        <!-- أزرار التواصل في الهيرو بالتأثير القديم -->
+                        <div class="social-hero">
+                            <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://youtube.com/@shababek.curtains?si=KKsEbL98N0fq2e2U" target="_blank"><i class="fab fa-youtube"></i></a>
+                            <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.snapchat.com/add/shababekcurtin?share_id=B2Prmbx5_Xo&locale=en-IQ" target="_blank"><i class="fab fa-snapchat"></i></a>
+                            <a href="https://wa.me/9647883002797" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                            <a href="https://t.me/shababekcurtains" target="_blank"><i class="fab fa-telegram"></i></a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1856,23 +1904,22 @@
                 <h2 style="margin-bottom:35px; font-weight:900;">✨ لماذا شبابيك؟</h2>
                 <div class="features-grid">
                     <div class="f-card"><i class="fa-solid fa-shield-halved" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ضمان حقيقي</h3><p>أرقى الأقمشة بضمان رسمي</p></div>
-                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>توصيل مجاني</h3><p>لبغداد وجميع المحافظات</p></div>
-                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>قياس منزلي</h3><p>نصلكم للقياس مجاناً</p></div>
-                    <div class="f-card"><i class="fa-solid fa-palette" style="color:var(--gold); font-size:2.2rem; margin-bottom:10px;"></i><h3>ذوق رفيع</h3><p>أحدث الموديلات العصرية</p></div>
+                    <div class="f-card"><i class="fa-solid fa-truck-fast" style="color:var(--gold); font-size:2.2rem; margin-bottom-10px;"></i><h3>توصيل مجاني</h3><p>لبغداد وجميع المحافظات</p></div>
+                    <div class="f-card"><i class="fa-solid fa-ruler-combined" style="color:var(--gold); font-size:2.2rem; margin-bottom-10px;"></i><h3>قياس منزلي</h3><p>نصلكم للقياس مجاناً</p></div>
+                    <div class="f-card"><i class="fa-solid fa-palette" style="color:var(--gold); font-size:2.2rem; margin-bottom-10px;"></i><h3>ذوق رفيع</h3><p>أحدث الموديلات العصرية</p></div>
                 </div>
             </section>
             
-            <!-- روابط التواصل الاجتماعي الذهبية (مرة واحدة فقط) -->
-            <div class="social-links">
-                <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/shababek.curtains/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
-                <a href="https://youtube.com/@shababek.curtains" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
-                <a href="https://x.com/ShababekCurtain" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
-                <a href="https://www.snapchat.com/add/shababekcurtin" target="_blank" class="social-link"><i class="fab fa-snapchat"></i></a>
-                <a href="https://wa.me/9647883002797" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://t.me/shababekcurtains" target="_blank" class="social-link"><i class="fab fa-telegram"></i></a>
-                <a href="https://www.pinterest.com/shababekcurtains" target="_blank" class="social-link"><i class="fab fa-pinterest"></i></a>
+            <!-- أزرار التواصل تحت المميزات -->
+            <div class="social-links-below">
+                <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" class="social-link-below"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/shababek.curtains/" target="_blank" class="social-link-below"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@shababek.curtains" target="_blank" class="social-link-below"><i class="fab fa-tiktok"></i></a>
+                <a href="https://youtube.com/@shababek.curtains" target="_blank" class="social-link-below"><i class="fab fa-youtube"></i></a>
+                <a href="https://x.com/ShababekCurtain" target="_blank" class="social-link-below"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://www.snapchat.com/add/shababekcurtin" target="_blank" class="social-link-below"><i class="fab fa-snapchat"></i></a>
+                <a href="https://wa.me/9647883002797" target="_blank" class="social-link-below"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://t.me/shababekcurtains" target="_blank" class="social-link-below"><i class="fab fa-telegram"></i></a>
             </div>
         </div>
 
