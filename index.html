@@ -708,7 +708,7 @@
             transform: translateY(-3px);
         }
 
-        /* ===== روابط التواصل الاجتماعي الذهبية ===== */
+        /* ===== روابط التواصل الاجتماعي في الهيرو (لون أبيض مع خلفية شفافة) ===== */
         .social-hero { 
             display: flex; 
             gap: 20px; 
@@ -738,6 +738,36 @@
             transform: translateY(-8px) scale(1.2); 
             background: var(--brown);
             border-color: var(--gold);
+        }
+
+        /* ===== روابط التواصل الاجتماعي الشفافة (لصفحة تواصل معنا) ===== */
+        .social-contact { 
+            display: flex; 
+            gap: 20px; 
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .social-contact a { 
+            color: var(--brown); 
+            font-size: 1.8rem; 
+            transition: 0.4s; 
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--gold);
+        }
+
+        .social-contact a:hover { 
+            color: var(--gold); 
+            transform: translateY(-8px) scale(1.2); 
+            background: var(--brown);
+            border-color: var(--brown);
         }
         
         .social-links-below {
@@ -778,6 +808,14 @@
             .social-hero a {
                 width: 45px;
                 height: 45px;
+                font-size: 1.5rem;
+            }
+            .social-contact {
+                gap: 12px;
+            }
+            .social-contact a {
+                width: 50px;
+                height: 50px;
                 font-size: 1.5rem;
             }
             .social-link-below {
@@ -1880,7 +1918,7 @@
                             <a href="https://wa.me/9647883002797" class="btn-trans"><i class="fab fa-whatsapp"></i> استشارة مجانية</a>
                         </div>
                         
-                        <!-- أزرار التواصل في الهيرو بالتأثير القديم -->
+                        <!-- أزرار التواصل في الهيرو (تم إبقاؤها كما هي) -->
                         <div class="social-hero">
                             <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
                             <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -1910,7 +1948,7 @@
                 </div>
             </section>
             
-            <!-- أزرار التواصل تحت المميزات -->
+            <!-- أزرار التواصل تحت المميزات (ذهبية) -->
             <div class="social-links-below">
                 <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank" class="social-link-below"><i class="fab fa-facebook-f"></i></a>
                 <a href="https://www.instagram.com/shababek.curtains/" target="_blank" class="social-link-below"><i class="fab fa-instagram"></i></a>
@@ -2006,7 +2044,19 @@
             <div style="padding: 60px 5%; text-align: center; background: var(--bg); border-radius: 40px; margin: 40px 5%;">
                 <h2 style="margin-bottom:30px; font-weight: 900; font-size: 2.2rem;">📞 تواصل معنا</h2>
                 <div style="font-size:1.5rem; margin-bottom:20px;"><i class="fa-solid fa-phone"></i> 07883002797</div>
-                <div style="font-size:1.2rem; margin-bottom:30px;"><i class="fa-regular fa-envelope"></i> info@shababek.com</div>
+                <div style="font-size:1.2rem; margin-bottom:30px;"><i class="fa-regular fa-envelope"></i> info@shababekcurtains.com</div>
+                
+                <!-- أيقونات التواصل المنقولة من الفوتر (بتأثير شفاف) -->
+                <div class="social-contact">
+                    <a href="https://www.facebook.com/profile.php?id=61587692021311" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/shababek.curtains/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@shababek.curtains" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://youtube.com/@shababek.curtains" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://x.com/ShababekCurtain" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.snapchat.com/add/shababekcurtin" target="_blank"><i class="fab fa-snapchat"></i></a>
+                    <a href="https://wa.me/9647883002797" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/shababekcurtains" target="_blank"><i class="fab fa-telegram"></i></a>
+                </div>
                 
                 <a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px; padding:15px 40px;">
                     <i class="fab fa-whatsapp"></i> مراسلة واتساب مباشر
@@ -2070,9 +2120,9 @@
         <p style="margin-bottom:5px;">شبابيك للستائر - متجر إلكتروني</p>
         <p style="margin-bottom:5px;">© 2026 جميع الحقوق محفوظة</p>
         <p style="font-size:0.9rem; color:rgba(255,255,255,0.8); margin-top:10px;">
-            <i class="fas fa-phone"></i> 07883002797 | <i class="fas fa-envelope"></i> info@shababek.com
+            <i class="fas fa-phone"></i> 07883002797 | <i class="fas fa-envelope"></i> info@shababekcurtains.com
         </p>
-        <!-- تم حذف جميع أيقونات التواصل من الفوتر -->
+        <!-- تم حذف جميع أيقونات التواصل من الفوتر نهائياً -->
     </footer>
 
     <script>
