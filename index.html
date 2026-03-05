@@ -1,1 +1,842 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="PSQi9qbymm6PIWxeb6c5XIW-8Z5sUz5cIv6q11ONLQk" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>شبابيك للستائر - المتجر الرسمي | Shababek Curtains Official Store</title>
+    
+    <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <meta name="description" content="شبابيك للستائر - أفضل الستائر المنزلية في العراق.">
+    <meta property="og:title" content="شبابيك للستائر - ظل وذوق">
+    <meta property="og:image" content="https://i.ibb.co/3y1ZNCk0/1.png">
+    <meta property="og:url" content="https://shababek.com">
+    <meta property="og:type" content="website">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','5368713336708780');fbq('track','PageView');
+    </script>
+
+    <style>
+        :root{--gold:#d9b382;--brown:#3d2e24;--bg:#f9f6f2;--white:#ffffff;--whatsapp:#25D366;--red:#ff4d4d;--teal:#2A9D8F;--dark:#1c2331;}
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent;}
+        html{-webkit-text-size-adjust:100%;}
+        body{background:var(--white);color:var(--brown);overflow-x:hidden;scroll-behavior:smooth;line-height:1.6;-webkit-overflow-scrolling:touch;}
+        button,a,.cat-card-new,.cart-icon,.search-box{touch-action:manipulation;}
+
+        /* Header & Banner */
+        .top-banner{background:var(--brown);color:white;padding:10px 5%;text-align:center;font-size:13px;display:flex;justify-content:space-between;align-items:center;}
+        .wa-link{color:var(--whatsapp);text-decoration:none;font-weight:bold;display:flex;align-items:center;gap:5px;}
+        header{background:var(--white);padding:10px 5%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;box-shadow:0 4px 15px rgba(0,0,0,0.05);}
+        .store-brand{flex:1;display:flex;flex-direction:column;line-height:1.2;}
+        .store-name-ar{font-size:1.8rem;font-weight:900;color:var(--brown);}
+        .store-name-en{font-size:0.9rem;color:var(--gold);font-weight:600;margin-top:2px;text-transform:uppercase;}
+        .logo-center{flex:1;display:flex;justify-content:center;cursor:pointer;}
+        .logo-img{height:90px;transition:0.3s;}
+        .header-left{flex:1;display:flex;justify-content:flex-end;align-items:center;gap:15px;}
+
+        /* Icons in Header */
+        .cart-icon, .account-icon {position:relative;cursor:pointer;width:55px;height:55px;border-radius:18px;display:flex;align-items:center;justify-content:center;transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);border:2px solid rgba(255,255,255,0.3);}
+        .cart-icon { background:linear-gradient(145deg,var(--gold),#c9a067); box-shadow:0 6px 20px rgba(217,179,130,0.3);}
+        .account-icon { background:linear-gradient(145deg,var(--brown),#5a4035); box-shadow:0 6px 20px rgba(61,46,36,0.3);}
+        .cart-icon:hover, .account-icon:hover {transform:scale(1.1) rotate(-5deg);}
+        .cart-icon i, .account-icon i {font-size:1.8rem;color:white;}
+        
+        .cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:white;font-size:0.9rem;font-weight:900;min-width:28px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+        .account-dot{position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:var(--teal);border-radius:50%;border:2px solid white;display:none;}
+        .account-icon.logged-in .account-dot{display:block;}
+
+        /* Search */
+        .search-container{position:relative;}
+        .search-box{position:relative;width:40px;height:40px;transition:0.4s;overflow:hidden;border:1px solid #eee;border-radius:12px;display:flex;align-items:center;background:white;}
+        .search-box:hover,.search-box:focus-within{width:250px;border-color:var(--gold);}
+        .search-box input{border:none;outline:none;background:transparent;padding:10px;width:210px;font-size:0.9rem;}
+        .search-box i{padding:10px;color:var(--brown);cursor:pointer;min-width:40px;text-align:center;}
+        #searchSuggestions{position:absolute;top:100%;left:0;right:0;background:white;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:1000;max-height:300px;overflow-y:auto;display:none;}
+        #searchSuggestions div{display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer;transition:0.3s;border-bottom:1px solid #eee;}
+        #searchSuggestions div:hover{background:var(--bg);}
+        #searchSuggestions img{width:40px;height:40px;border-radius:8px;object-fit:cover;}
+        #searchSuggestions span{flex:1;font-weight:600;}
+
+        /* Navigation */
+        .nav-bar{background:#fcfcfc;border-bottom:1px solid #eee;padding:12px 0;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+        .nav-menu{display:inline-flex;gap:25px;list-style:none;padding:0 20px;}
+        .nav-menu a{text-decoration:none;color:var(--brown);font-weight:700;cursor:pointer;font-size:1rem;transition:0.3s;}
+        .nav-menu a:hover{color:var(--gold);}
+
+        /* Pages & Animations */
+        .page{display:none;width:100%;animation:fadeIn 0.4s ease;}
+        .active{display:block !important;}
+        @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+        @keyframes slideUp{from{transform:translateY(50px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+        /* ===== Modals (Popups) - Base ===== */
+        .modal-overlay {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:11000;justify-content:center;align-items:center;backdrop-filter:blur(5px);}
+        .modal-overlay.active {display:flex;}
+        .modal-content {background:var(--bg);width:95%;max-width:500px;border-radius:25px;padding:25px;position:relative;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.3);animation:slideUp 0.3s ease; -webkit-overflow-scrolling: touch;}
+        
+        .modal-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid var(--gold);}
+        .modal-header h3 {font-weight:900;color:var(--brown);font-size:1.4rem;}
+        .modal-close {background:var(--red);color:white;border:none;width:35px;height:35px;border-radius:50%;cursor:pointer;font-size:1.1rem;transition:0.3s;display:flex;align-items:center;justify-content:center;}
+        .modal-close:hover {transform:rotate(90deg);}
+        
+        .form-group{margin-bottom:15px;}
+        .form-group label{font-weight:700;display:block;margin-bottom:6px;color:var(--brown);font-size:0.95rem;}
+        .form-input{width:100%;padding:12px 15px;border:2px solid #ddd;border-radius:12px;font-family:'Cairo';font-size:1rem;transition:0.3s;outline:none;background:white;}
+        .form-input:focus{border-color:var(--gold);}
+        .btn-gold-full {background:var(--gold);color:white;border:none;padding:15px;border-radius:12px;font-weight:900;width:100%;cursor:pointer;font-size:1.1rem;transition:0.3s;display:flex;align-items:center;justify-content:center;gap:10px;}
+        .btn-gold-full:hover {background:var(--brown);transform:translateY(-2px);}
+
+        /* ===== Auth Modal ===== */
+        .auth-logo {text-align:center; margin-bottom:15px;}
+        .auth-logo img {height:80px;}
+        .auth-title {text-align:center; font-weight:900; color:var(--brown); margin-bottom:5px; font-size:1.5rem;}
+        .auth-desc {text-align:center; color:#666; font-size:0.95rem; margin-bottom:20px;}
+        .auth-divider{text-align:center;margin:20px 0;color:#999;font-size:0.9rem;position:relative;}
+        .auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:35%;height:1px;background:#ddd;}
+        .auth-divider::before{right:0;}.auth-divider::after{left:0;}
+        .google-signin-btn{width:100%;padding:15px;background:white;color:var(--brown);border:2px solid #ddd;border-radius:12px;font-weight:700;font-size:1.1rem;cursor:pointer;transition:0.3s;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Cairo';}
+        .google-signin-btn:hover{border-color:var(--gold);box-shadow:0 5px 15px rgba(0,0,0,0.05);}
+        .google-signin-btn img{width:25px;height:25px;}
+        .alert-msg {border-radius:10px;padding:10px 15px;margin-bottom:15px;font-size:0.95rem;display:none;text-align:center;font-weight:bold;}
+        .alert-error {background:#fff0f0;color:var(--red);border:1px solid #ffcccc;}
+        .alert-success {background:#f0fff4;color:#27ae60;border:1px solid #b2dfdb;}
+
+        /* ===== Account Modal (User Profile - المطابق للصورة) ===== */
+        .acc-profile-card {display:flex; align-items:center; gap:15px; margin-bottom:25px; background:transparent;}
+        .acc-avatar {width:75px; height:75px; border-radius:50%; background:linear-gradient(145deg, var(--gold), #c9a067); display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:white; border:3px solid white; box-shadow:0 4px 15px rgba(217,179,130,0.4); flex-shrink:0; overflow:hidden;}
+        .acc-avatar img {width:100%;height:100%;object-fit:cover;}
+        .acc-info {flex:1;}
+        .acc-info h3 {margin:0; font-weight:900; color:var(--brown); font-size:1.3rem;}
+        .acc-info p {margin:0; font-size:0.85rem; color:#666; direction:ltr; text-align:right;}
+        .acc-edit-btn {background:var(--dark); color:white; border:none; padding:6px 15px; border-radius:20px; font-size:0.85rem; cursor:pointer; margin-top:8px; font-family:sans-serif; transition:0.3s; display:inline-flex; align-items:center; gap:5px;}
+        
+        .acc-menu {display:flex; flex-direction:column; gap:12px;}
+        .acc-menu-item {background:white; padding:18px 20px; border-radius:15px; display:flex; align-items:center; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.03); transition:0.3s;}
+        .acc-menu-item:hover {transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,0.06);}
+        .acc-icon {color:#b88645; font-size:1.5rem; width:45px; text-align:center;}
+        .acc-texts {flex:1; padding:0 10px; line-height:1.2;}
+        .acc-title {font-weight:900; font-size:1.1rem; color:var(--brown);}
+        .acc-subtitle {font-size:0.85rem; color:#666; margin-top:3px;}
+        .acc-arrow {color:#b88645; font-size:1.2rem;}
+        
+        /* زر الخروج نفس لون الصورة */
+        .acc-logout-btn {width:100%; background:var(--dark); color:white; padding:15px; border-radius:15px; font-weight:900; font-size:1.2rem; border:none; cursor:pointer; margin-top:25px; transition:0.3s;}
+        .acc-logout-btn:hover {background:#111621;}
+
+        /* Sub-views inside Account Modal */
+        .acc-sub-view {display:none; animation:fadeIn 0.3s ease;}
+        .acc-back-btn {background:none; border:none; color:var(--brown); font-size:1.1rem; font-weight:900; cursor:pointer; font-family:'Cairo'; margin-bottom:20px; display:flex; align-items:center; gap:8px;}
+        .acc-back-btn:hover {color:var(--gold);}
+        .empty-state {text-align:center; padding:30px; color:#999;}
+        .empty-state i {font-size:3.5rem; display:block; margin-bottom:15px; color:#ddd;}
+        
+        /* تصميم المفضلة والطلبات داخل الحساب */
+        .fav-item, .order-item {display:flex; align-items:center; gap:15px; background:white; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #eee; box-shadow:0 2px 8px rgba(0,0,0,0.02);}
+        .fav-item img {width:70px; height:70px; border-radius:10px; object-fit:cover;}
+        .fav-item-info {flex:1; line-height:1.4;}
+        .fav-btns {display:flex; flex-direction:column; gap:8px;}
+        .fav-btns button {border:none; width:35px; height:35px; border-radius:8px; cursor:pointer; transition:0.3s; display:flex; align-items:center; justify-content:center; font-size:1.1rem;}
+
+        /* ===== سلة المشتريات ===== */
+        .cart-item{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid #eee;}
+
+        /* ===== Hero ===== */
+        .hero{height:70vh;position:relative;overflow:hidden;width:100%;}
+        .hero-video-container{position:relative;width:100%;height:100%;}
+        .hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+        .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.2) 100%);z-index:1;}
+        .hero-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:white;padding:20px;}
+        .hero h1{font-size:clamp(1.8rem,5vw,3.5rem);font-weight:900;margin-bottom:25px;text-shadow:0 2px 15px rgba(0,0,0,0.5);}
+
+        /* ===== Products Grid (الكود الأصلي المطلوب) ===== */
+        #categoriesList{display:grid !important;grid-template-columns:repeat(5,1fr) !important;gap:15px;padding:20px 5%;}
+        .cat-card-new{position:relative;height:350px;border-radius:20px;overflow:hidden;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,0.1);transition:0.3s;}
+        .cat-card-new:hover{transform:scale(1.02);box-shadow:0 8px 25px rgba(0,0,0,0.15);}
+        .cat-card-new img{width:100%;height:100%;object-fit:cover;transition:0.5s;}
+        .cat-card-new:hover img{transform:scale(1.1);}
+        .cat-card-new > div:last-child{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;white-space:nowrap;}
+        
+        #catGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:25px;padding:20px 5%;}
+
+        /* ===== Alibaba Viewer ===== */
+        .alibaba-viewer-container{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);z-index:12000;display:none;justify-content:center;align-items:center;opacity:0;transition:opacity 0.3s ease;}
+        .alibaba-viewer-container.active{display:flex;opacity:1;}
+        .alibaba-viewer-content{width:100vw;height:100vh;background:white;display:flex;flex-direction:column;overflow:hidden;}
+        .alibaba-viewer-header{background:var(--brown);color:white;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--gold);height:60px;}
+        .alibaba-viewer-body{display:flex;flex:1;min-height:0;height:calc(100vh - 60px);background:#f8f8f8;}
+        .alibaba-viewer-media{flex:1.5;padding:15px;background:white;display:flex;flex-direction:column;}
+        .alibaba-main-image-container{background:#f5f5f5;border-radius:15px;position:relative;height:calc(100% - 100px);display:flex;justify-content:center;align-items:center; overflow:hidden;}
+        .alibaba-thumbnail-gallery{display:flex;gap:10px;overflow-x:auto;padding:10px 0;height:90px;}
+        .alibaba-thumbnail{width:70px;height:70px;border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent; flex-shrink:0;}
+        .alibaba-thumbnail.active{border-color:var(--gold);}
+        .alibaba-viewer-info{flex:1;padding:20px;background:white;overflow-y:auto; -webkit-overflow-scrolling: touch;}
+        
+        /* أزرار المشاركة والمفضلة داخل المنتج */
+        .product-actions-row {display:flex; gap:10px; margin-top:20px;}
+        .alibaba-add-to-cart-btn {flex:1; background:var(--gold); color:white; border:none; padding:15px; border-radius:12px; font-weight:900; font-size:1.1rem; cursor:pointer; transition:0.3s; display:flex; align-items:center; justify-content:center; gap:8px;}
+        .alibaba-add-to-cart-btn:hover {background:var(--brown);}
+        .alibaba-fav-btn {width:60px; background:white; border:2px solid var(--gold); border-radius:12px; color:var(--gold); font-size:1.6rem; cursor:pointer; transition:0.3s; display:flex; align-items:center; justify-content:center;}
+        .alibaba-fav-btn:hover, .alibaba-fav-btn.active-fav {background:var(--gold); color:white;}
+        
+        .share-buttons {display:flex; gap:10px; justify-content:center; margin-top:20px; padding:15px 10px; background:#f9f9f9; border-radius:15px;}
+        .share-btn {width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; transition:0.3s; text-decoration:none;}
+        .share-btn:hover {transform:scale(1.1);}
+        .share-btn.facebook {background:#1877f2;} .share-btn.twitter {background:#1da1f2;} .share-btn.whatsapp {background:#25D366;} .share-btn.telegram {background:#0088cc;}
+
+        /* Mobile Adjustments */
+        @media(max-width:768px){
+            /* إرجاع كود المنتجات للموبايل كما كان تماماً */
+            #categoriesList{display:flex !important;grid-template-columns:none !important;overflow-x:auto !important;scroll-snap-type:x mandatory;gap:15px;padding:20px;-webkit-overflow-scrolling:touch;}
+            #categoriesList .cat-card-new{flex:0 0 250px !important;height:300px;scroll-snap-align:start;}
+            
+            .alibaba-viewer-body{flex-direction:column;}
+            .alibaba-main-image-container{height:300px;}
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="store-brand">
+        <span class="store-name-ar">شبابيك للستائر</span>
+        <span class="store-name-en">Shababek Curtains</span>
+    </div>
+    <div class="logo-center" onclick="handleLogoClick()">
+        <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
+    </div>
+    <div class="header-left">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search" onclick="execSearch()"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن موديل.." onkeyup="execSearch()">
+            </div>
+            <div id="searchSuggestions"></div>
+        </div>
+        <div class="account-icon" id="accountIconBtn" onclick="handleAuthClick()" title="حسابي">
+            <i class="fas fa-user" id="accountIconI"></i>
+            <span class="account-dot"></span>
+        </div>
+        <div class="cart-icon" onclick="toggleCartModal()">
+            <i class="fas fa-shopping-basket"></i>
+            <span id="globalCartCount" class="cart-count">0</span>
+        </div>
+    </div>
+</header>
+
+<div class="nav-bar">
+    <ul class="nav-menu">
+        <li><a onclick="showPage('homePage')">الرئيسية</a></li>
+        <li><a onclick="showPage('homePage');setTimeout(()=>{document.getElementById('categories').scrollIntoView({behavior:'smooth'})},100)">المنتجات</a></li>
+        <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
+        <li><a onclick="showPage('aboutPage')">من نحن</a></li>
+    </ul>
+</div>
+
+<div id="authOverlay" class="modal-overlay" onclick="if(event.target===this) closeAuthModal()">
+    <div class="modal-content" style="padding:0;">
+        <div class="auth-header">
+            <div class="auth-logo"><img src="https://i.ibb.co/3y1ZNCk0/1.png" alt="شبابيك"></div>
+            <h2 class="auth-title">أهلاً بك في شبابيك</h2>
+            <p class="auth-desc">اكتشفوا جودتنا الأولى لأجود أنواع الستائر</p>
+            <button class="auth-close-btn-top" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div style="padding:25px;">
+            <div id="authError" class="alert-msg alert-error"></div>
+            <div id="authSuccess" class="alert-msg alert-success"></div>
+            
+            <div id="phoneInputGroup">
+                <div class="form-group">
+                    <label>رقم الهاتف (مع رمز الدولة)</label>
+                    <input type="tel" id="authPhoneNumber" class="form-input" placeholder="مثال: +9647800000000" dir="ltr">
+                </div>
+                <button class="btn-gold-full" onclick="sendOTP()" id="sendOtpBtn">
+                    <i class="fas fa-sms"></i> إرسال رمز التحقق
+                </button>
+            </div>
+            
+            <div id="otpInputGroup" style="display:none; margin-top:15px;">
+                <div class="form-group">
+                    <label>رمز التحقق المرسل (OTP)</label>
+                    <input type="number" id="authOTP" class="form-input" placeholder="123456" dir="ltr">
+                </div>
+                <button class="btn-gold-full" onclick="verifyOTP()" id="verifyOtpBtn">
+                    <i class="fas fa-check-circle"></i> تأكيد الدخول
+                </button>
+            </div>
+            <div id="recaptcha-container" style="margin-top:10px; display:flex; justify-content:center;"></div>
+
+            <div class="auth-divider">أو المتابعة عبر</div>
+            
+            <button class="google-signin-btn" onclick="loginWithGoogle()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"> المتابعة باستخدام حساب جوجل
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="accountModal" class="modal-overlay" onclick="if(event.target===this) closeAccountModal()">
+    <div class="modal-content acc-modal-content">
+        
+        <div id="accMainView" style="display:block; padding:25px;">
+            <div class="modal-header" style="border:none; margin-bottom:10px;">
+                <div style="flex:1; text-align:center;"><img src="https://i.ibb.co/3y1ZNCk0/1.png" style="height:60px;"></div>
+                <button class="modal-close" style="position:absolute; left:20px; top:20px;" onclick="closeAccountModal()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="acc-profile-card">
+                <div class="acc-avatar" id="accAvatar"><i class="fas fa-user"></i></div>
+                <div class="acc-info">
+                    <h3 id="accName">أهلاً، المستخدم</h3>
+                    <p id="accPhone" dir="ltr">Hello, User</p>
+                </div>
+                <button class="acc-edit-btn" onclick="showAccView('address')">Edit Profile <i class="fas fa-pen" style="font-size:0.7rem;"></i></button>
+            </div>
+            
+            <div class="acc-menu">
+                <div class="acc-menu-item" onclick="showAccView('orders')">
+                    <i class="fas fa-box-open acc-icon"></i>
+                    <div class="acc-texts"><div class="acc-title">طلباتي -</div><div class="acc-subtitle">تاريخ الشراء -</div></div>
+                    <i class="fas fa-chevron-left acc-arrow"></i>
+                </div>
+                <div class="acc-menu-item" onclick="showAccView('address')">
+                    <i class="fas fa-map-marker-alt acc-icon"></i>
+                    <div class="acc-texts"><div class="acc-title">عناوين الشحن -</div><div class="acc-subtitle">تعديل العناوين -</div></div>
+                    <i class="fas fa-chevron-left acc-arrow"></i>
+                </div>
+                <div class="acc-menu-item" onclick="closeAccountModal(); showPage('paymentPage');">
+                    <i class="fas fa-credit-card acc-icon"></i>
+                    <div class="acc-texts"><div class="acc-title">طرق الدفع -</div><div class="acc-subtitle">تحديث البطاقات -</div></div>
+                    <i class="fas fa-chevron-left acc-arrow"></i>
+                </div>
+                <div class="acc-menu-item" onclick="showAccView('favorites')">
+                    <i class="fas fa-heart acc-icon"></i>
+                    <div class="acc-texts"><div class="acc-title">قائمة المفضلة -</div><div class="acc-subtitle">عرض المنتجات المفضلة -</div></div>
+                    <i class="fas fa-chevron-left acc-arrow"></i>
+                </div>
+                <div class="acc-menu-item" onclick="closeAccountModal(); window.open('https://wa.me/9647883002797','_blank');">
+                    <i class="fas fa-phone-alt acc-icon"></i>
+                    <div class="acc-texts"><div class="acc-title">تواصل معنا -</div><div class="acc-subtitle">دعم العملاء -</div></div>
+                    <i class="fas fa-chevron-left acc-arrow"></i>
+                </div>
+            </div>
+            <button class="acc-logout-btn" onclick="logoutUser()">تسجيل الخروج</button>
+        </div>
+
+        <div id="accAddressView" class="acc-sub-view" style="padding:25px;">
+            <button class="acc-back-btn" onclick="showAccView('main')"><i class="fas fa-arrow-right"></i> رجوع للقائمة</button>
+            <h3 style="color:var(--brown); font-weight:900; margin-bottom:15px;"><i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> عناوين الشحن</h3>
+            <p style="font-size:0.85rem; color:#666; margin-bottom:20px;">سيتم تعبئة هذه البيانات تلقائياً في سلة المشتريات لتسريع طلبك.</p>
+            
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="profName" class="form-input" placeholder="اسمك"></div>
+            <div class="form-group">
+                <label>المحافظة</label>
+                <select id="profCity" class="form-input">
+                    <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="كركوك">كركوك</option>
+                </select>
+            </div>
+            <div class="form-group"><label>العنوان التفصيلي الدقيق</label><input type="text" id="profAddress" class="form-input" placeholder="المنطقة، الشارع، أقرب نقطة دالة"></div>
+            <button class="btn-gold-full" onclick="saveProfileData()">حفظ التعديلات</button>
+        </div>
+
+        <div id="accOrdersView" class="acc-sub-view" style="padding:25px;">
+            <button class="acc-back-btn" onclick="showAccView('main')"><i class="fas fa-arrow-right"></i> رجوع</button>
+            <h3 style="color:var(--brown); font-weight:900; margin-bottom:20px;"><i class="fas fa-box-open" style="color:var(--gold);"></i> طلباتي السابقة</h3>
+            <div id="userOrdersList"></div>
+        </div>
+
+        <div id="accFavoritesView" class="acc-sub-view" style="padding:25px;">
+            <button class="acc-back-btn" onclick="showAccView('main')"><i class="fas fa-arrow-right"></i> رجوع</button>
+            <h3 style="color:var(--brown); font-weight:900; margin-bottom:20px;"><i class="fas fa-heart" style="color:var(--red);"></i> قائمة المفضلة</h3>
+            <div id="userFavoritesList"></div>
+        </div>
+
+    </div>
+</div>
+
+<div id="cartOverlay" class="modal-overlay" onclick="if(event.target===this) toggleCartModal()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>🛒 سلة المشتريات</h3>
+            <button class="modal-close" onclick="toggleCartModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cartItemsList"></div>
+        
+        <div id="checkoutFields" style="margin-top:20px;border-top:2px solid #eee;padding-top:15px;">
+            <h4 style="margin-bottom:15px; color:var(--brown); font-weight:900;"><i class="fas fa-truck" style="color:var(--gold);"></i> معلومات التوصيل (تُعبأ تلقائياً)</h4>
+            <div class="form-group">
+                <label>المحافظة:</label>
+                <select id="userCity" class="form-input">
+                    <option value="بغداد">بغداد</option><option value="البصرة">البصرة</option><option value="أربيل">أربيل</option><option value="النجف">النجف</option><option value="كربلاء">كربلاء</option><option value="بابل">بابل</option><option value="الأنبار">الأنبار</option><option value="ذي قار">ذي قار</option><option value="ديالى">ديالى</option><option value="كركوك">كركوك</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>العنوان التفصيلي الدقيق:</label>
+                <input type="text" id="userAddress" class="form-input" placeholder="المنطقة، الشارع، الدار...">
+            </div>
+            <div class="form-group">
+                <label>خدمة التركيب:</label>
+                <select id="userInstall" class="form-input">
+                    <option value="بدون تركيب">بدون تركيب</option><option value="مع التركيب">مع التركيب (+ 5000 د.ع)</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-gold-full" style="margin-top:15px;" onclick="sendOrder()">
+            <i class="fab fa-whatsapp" style="font-size:1.4rem;"></i> إرسال الطلب لإتمامه
+        </button>
+    </div>
+</div>
+
+<div class="alibaba-viewer-container" id="alibabaViewer">
+    <div class="alibaba-viewer-content">
+        <div class="alibaba-viewer-header">
+            <div>
+                <h2 id="alibabaProductName">اسم المنتج</h2>
+            </div>
+            <button class="alibaba-viewer-close" onclick="closeAlibabaViewer()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="alibaba-viewer-body">
+            <div class="alibaba-viewer-media">
+                <div class="alibaba-main-image-container" id="alibabaMainImageContainer"></div>
+                <div class="alibaba-thumbnail-gallery" id="alibabaThumbnailGallery"></div>
+            </div>
+            <div class="alibaba-viewer-info">
+                <h1 class="alibaba-product-title" id="alibabaProductTitle">اسم المنتج</h1>
+                <div class="alibaba-price-section">
+                    <div class="alibaba-price-label">سعر المتر</div>
+                    <div class="alibaba-price"><span id="alibabaProductPrice">0</span><span class="alibaba-price-unit">د.ع</span></div>
+                </div>
+                <div class="alibaba-meters-section">
+                    <div class="alibaba-meters-label"><i class="fas fa-ruler"></i> أدخل عدد الأمتار المطلوبة</div>
+                    <div class="alibaba-meters-input-group">
+                        <input type="number" id="alibabaMetersInput" class="form-input" style="width:60%;font-size:1.3rem;text-align:center;font-weight:bold;" value="1" min="0.5" step="0.5">
+                        <span style="font-weight:900;color:var(--gold); font-size:1.3rem;">متر</span>
+                    </div>
+                    <div style="margin-top:15px; font-weight:900; font-size:1.4rem; color:var(--brown);">
+                        الإجمالي: <span id="alibabaTotalPrice" style="color:var(--gold);">0 د.ع</span>
+                    </div>
+                </div>
+                
+                <div class="product-actions-row">
+                    <button class="alibaba-add-to-cart-btn" onclick="addFromAlibabaViewer()"><i class="fas fa-cart-plus"></i> إضافة للسلة</button>
+                    <button class="alibaba-fav-btn" onclick="toggleFavorite()" title="إضافة للمفضلة" id="alibabaFavBtn">
+                        <i class="far fa-heart" id="alibabaFavIcon"></i>
+                    </button>
+                </div>
+                
+                <div class="share-buttons" id="productShareButtons"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main id="mainContainer">
+    <div id="homePage" class="page active">
+        <section class="hero">
+            <div class="hero-video-container">
+                <video class="hero-video" autoplay loop muted playsinline>
+                    <source src="https://res.cloudinary.com/dnkuwf8q9/video/upload/v1772027160/gemini_generated_video_077d6d04_ehg756.mp4" type="video/mp4">
+                </video>
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h1>فخامة التفاصيل تبدأ من شبابيك منزلك</h1>
+                    <div class="hero-btns">
+                        <button onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})" class="btn-gold-full" style="width:auto; padding:16px 40px;">تسوق الآن</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="categories">
+            <h2 style="text-align:center;font-weight:900;margin:40px 0 20px 0;">📁 أقسامنا المميزة</h2>
+            <div id="categoriesList"></div>
+        </section>
+    </div>
+
+    <div id="adminPanel" class="page">
+        <h2 style="text-align:center; padding:50px;">لوحة التحكم تعمل في الخلفية</h2>
+    </div>
+    
+    <div id="categoryView" class="page">
+        <h2 id="catTitle" style="text-align:center;padding:40px 0;font-weight:900;"></h2>
+        <div id="catGrid"></div>
+    </div>
+</main>
+
+<script>
+// ===== إعداد Firebase =====
+const firebaseConfig = {
+  apiKey: "AIzaSyD1TENeV6RKWmrYIjV6seGx84VavsM_tvE",
+  authDomain: "shababekcurtain.firebaseapp.com",
+  databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "shababekcurtain"
+};
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const auth = firebase.auth();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+let cart = JSON.parse(localStorage.getItem('shababek_cart')) || [];
+let favorites = JSON.parse(localStorage.getItem('shababek_fav')) || [];
+// إعدادات المستخدم المحفوظة للتعبئة التلقائية
+let userPrefs = JSON.parse(localStorage.getItem('shababek_prefs')) || { name:'', city:'بغداد', address:'' };
+
+let currentUser = null;
+let currentProduct = null;
+let alibabaViewerData = {isOpen:false, currentIndex:0, mediaItems:[], product:null};
+let confirmationResult = null; // لـ OTP
+
+document.getElementById('globalCartCount').innerText = cart.length;
+
+// ===== المصادقة (Auth) =====
+auth.onAuthStateChanged(user => {
+    currentUser = user;
+    if(user){
+        document.getElementById('accountIconBtn').classList.add('logged-in');
+        document.getElementById('accountIconI').className = 'fas fa-user-check';
+        
+        db.ref('users/'+user.uid).once('value').then(snap=>{
+            let ud = snap.val()||{};
+            
+            // تحديث بيانات التفضيلات من السيرفر إذا وجدت
+            if(ud.city) userPrefs.city = ud.city;
+            if(ud.address) userPrefs.address = ud.address;
+            if(ud.name) userPrefs.name = ud.name;
+            localStorage.setItem('shababek_prefs', JSON.stringify(userPrefs));
+            
+            let displayName = ud.name || user.displayName || 'مستخدم شبابيك';
+            let displayContact = user.phoneNumber || user.email || '—';
+            
+            document.getElementById('accName').textContent = `أهلاً، ${displayName}`;
+            document.getElementById('accPhone').textContent = displayContact;
+            
+            if(user.photoURL){
+                document.getElementById('accAvatar').innerHTML=`<img src="${user.photoURL}">`;
+            } else {
+                document.getElementById('accAvatar').innerHTML=`<span>${displayName.charAt(0)}</span>`;
+            }
+            
+            // تعبئة حقول نموذج التعديل
+            document.getElementById('profName').value = userPrefs.name;
+            document.getElementById('profCity').value = userPrefs.city;
+            document.getElementById('profAddress').value = userPrefs.address;
+            
+            // تحميل الطلبات
+            db.ref('orders').orderByChild('uid').equalTo(user.uid).limitToLast(10).once('value').then(oSnap=>{
+                let ords = oSnap.val();
+                let c = document.getElementById('userOrdersList');
+                if(!ords){ c.innerHTML='<div class="empty-state"><i class="fas fa-box-open"></i><p>لا توجد طلبات سابقة</p></div>'; return; }
+                c.innerHTML = Object.entries(ords).reverse().map(([id,o])=>`
+                    <div class="order-item" style="display:block;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                            <strong style="color:var(--brown);">طلب #${id.slice(-5).toUpperCase()}</strong>
+                            <span style="color:var(--gold);font-weight:bold;">${parseInt(o.total).toLocaleString()} د.ع</span>
+                        </div>
+                        <small style="color:#666;line-height:1.4;">${o.summary}</small>
+                    </div>`).join('');
+            });
+        });
+    } else {
+        document.getElementById('accountIconBtn').classList.remove('logged-in');
+        document.getElementById('accountIconI').className = 'fas fa-user';
+    }
+});
+
+function handleAuthClick(){
+    if(currentUser) { 
+        document.getElementById('accountModal').classList.add('active'); 
+        showAccView('main');
+    } else { 
+        document.getElementById('authOverlay').classList.add('active'); 
+    }
+}
+
+function closeAuthModal(){ document.getElementById('authOverlay').classList.remove('active'); }
+function closeAccountModal(){ document.getElementById('accountModal').classList.remove('active'); }
+
+function showAccView(viewName){
+    document.querySelectorAll('.acc-sub-view, #accMainView').forEach(el=>el.style.display='none');
+    if(viewName==='main') document.getElementById('accMainView').style.display='block';
+    if(viewName==='address') document.getElementById('accAddressView').style.display='block';
+    if(viewName==='orders') document.getElementById('accOrdersView').style.display='block';
+    if(viewName==='favorites') {
+        document.getElementById('accFavoritesView').style.display='block';
+        renderFavoritesList();
+    }
+}
+
+function showAuthError(msg){
+    const el=document.getElementById('authError'); el.textContent=msg; el.style.display='block'; document.getElementById('authSuccess').style.display='none';
+}
+function showAuthSuccess(msg){
+    const el=document.getElementById('authSuccess'); el.textContent=msg; el.style.display='block'; document.getElementById('authError').style.display='none';
+}
+
+// ===== تسجيل الدخول بالهاتف وجوجل =====
+function initRecaptcha() {
+    if(!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
+    }
+}
+
+async function sendOTP() {
+    const phone = document.getElementById('authPhoneNumber').value.trim();
+    if(!phone || !phone.startsWith('+')) { showAuthError('أدخل رقم الهاتف مع رمز الدولة مثال: +964'); return; }
+    
+    initRecaptcha();
+    const btn = document.getElementById('sendOtpBtn');
+    btn.innerText = "جاري الإرسال..."; btn.disabled = true;
+    
+    try {
+        confirmationResult = await auth.signInWithPhoneNumber(phone, window.recaptchaVerifier);
+        showAuthSuccess('تم إرسال رمز التحقق إلى هاتفك 📱');
+        document.getElementById('phoneInputGroup').style.display = 'none';
+        document.getElementById('otpInputGroup').style.display = 'block';
+    } catch(e) {
+        showAuthError(e.message);
+        btn.innerHTML = '<i class="fas fa-sms"></i> إرسال رمز التحقق'; btn.disabled = false;
+        if(window.recaptchaVerifier) window.recaptchaVerifier.render().then(wId => grecaptcha.reset(wId));
+    }
+}
+
+async function verifyOTP() {
+    const code = document.getElementById('authOTP').value.trim();
+    if(!code) return showAuthError('أدخل رمز التحقق');
+    try {
+        const result = await confirmationResult.confirm(code);
+        const user = result.user;
+        const snap = await db.ref('users/'+user.uid).once('value');
+        if(!snap.exists()){
+            await db.ref('users/'+user.uid).set({ phone: user.phoneNumber, createdAt: new Date().toISOString() });
+        }
+        closeAuthModal(); handleAuthClick();
+    } catch(e) { showAuthError('رمز التحقق خاطئ'); }
+}
+
+async function loginWithGoogle(){
+    try{
+        let res = await auth.signInWithPopup(googleProvider);
+        const snap=await db.ref('users/'+res.user.uid).once('value');
+        if(!snap.exists()){ await db.ref('users/'+res.user.uid).update({name:res.user.displayName, email:res.user.email, createdAt:new Date().toISOString()}); }
+        closeAuthModal(); handleAuthClick();
+    } catch(err){}
+}
+
+function logoutUser(){ if(confirm('تسجيل الخروج؟')) auth.signOut().then(()=>closeAccountModal()); }
+
+// ===== حفظ التفضيلات والتعبئة التلقائية =====
+async function saveProfileData(){
+    const name=document.getElementById('profName').value.trim();
+    const city=document.getElementById('profCity').value;
+    const address=document.getElementById('profAddress').value.trim();
+    
+    userPrefs = {name, city, address};
+    localStorage.setItem('shababek_prefs', JSON.stringify(userPrefs));
+    
+    if(currentUser){
+        await db.ref('users/'+currentUser.uid).update(userPrefs);
+        if(name) await currentUser.updateProfile({displayName:name});
+        document.getElementById('accName').textContent = `أهلاً، ${name}`;
+    }
+    alert('✅ تم حفظ البيانات بنجاح، سيتم تعبئتها تلقائياً عند الطلب.');
+    showAccView('main');
+}
+
+// ===== نظام المفضلة =====
+function toggleFavorite(){
+    if(!alibabaViewerData.product) return;
+    let p = alibabaViewerData.product;
+    let idx = favorites.findIndex(x => x.name === p.name);
+    
+    if(idx > -1){
+        favorites.splice(idx, 1);
+        document.getElementById('alibabaFavIcon').className = 'far fa-heart';
+        document.getElementById('alibabaFavBtn').classList.remove('active-fav');
+    } else {
+        favorites.push(p);
+        document.getElementById('alibabaFavIcon').className = 'fas fa-heart';
+        document.getElementById('alibabaFavBtn').classList.add('active-fav');
+        confetti({particleCount: 50, spread: 40, origin: {y: 0.8}});
+    }
+    localStorage.setItem('shababek_fav', JSON.stringify(favorites));
+}
+
+function renderFavoritesList(){
+    const cont = document.getElementById('userFavoritesList');
+    if(!cont) return;
+    if(favorites.length === 0){
+        cont.innerHTML = '<div class="empty-state"><i class="far fa-heart"></i><p>لا توجد منتجات في المفضلة</p></div>';
+        return;
+    }
+    cont.innerHTML = favorites.map((p, i) => `
+        <div class="fav-item">
+            <img src="${p.img||(p.images&&p.images[0])}">
+            <div class="fav-item-info">
+                <strong style="color:var(--brown);">${p.name}</strong><br>
+                <span style="color:var(--gold); font-weight:bold;">${parseInt(p.price).toLocaleString()} د.ع / متر</span>
+            </div>
+            <div class="fav-btns">
+                <button onclick='openFavItem(${i})' style="color:white; background:var(--gold);"><i class="fas fa-cart-plus"></i></button>
+                <button onclick='removeFav(${i})'><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+function removeFav(i){ favorites.splice(i,1); localStorage.setItem('shababek_fav', JSON.stringify(favorites)); renderFavoritesList(); }
+function openFavItem(i){ closeAccountModal(); openAlibabaViewer(favorites[i]); }
+
+// ===== السلة وعملية الشراء =====
+function toggleCartModal(){
+    const ov = document.getElementById('cartOverlay');
+    ov.classList.toggle('active');
+    if(ov.classList.contains('active')){
+        let total=0;
+        let html = cart.map((item,i)=>{ total+=item.p; return `<div class="cart-item"><div style="display:flex;gap:10px;"><img src="${item.img}" style="width:60px;height:60px;border-radius:10px;object-fit:cover;"><div><b style="color:var(--brown);">${item.n}</b><br><small style="color:#666;">الكمية: ${item.length} متر</small><br><span style="color:var(--gold); font-weight:bold;">${item.p.toLocaleString()} د.ع</span></div></div><button onclick="removeFromCart(${i})" style="background:none;border:none;color:var(--red);font-size:1.4rem;cursor:pointer;"><i class="fas fa-trash"></i></button></div>`; }).join('');
+        html += cart.length>0 ? `<div style="margin-top:15px;background:#f8f8f8;padding:15px;border-radius:12px;text-align:center;font-weight:900;font-size:1.3rem;color:var(--brown);">الإجمالي: <span style="color:var(--gold);">${total.toLocaleString()} د.ع</span></div>` : '<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>السلة فارغة</p></div>';
+        document.getElementById('cartItemsList').innerHTML = html;
+
+        // ** تعبئة البيانات تلقائياً من صفحة المستخدم **
+        document.getElementById('userCity').value = userPrefs.city || 'بغداد';
+        document.getElementById('userAddress').value = userPrefs.address || '';
+    }
+}
+
+function removeFromCart(idx){ cart.splice(idx,1); document.getElementById('globalCartCount').innerText=cart.length; localStorage.setItem('shababek_cart',JSON.stringify(cart)); toggleCartModal(); }
+
+function sendOrder(){
+    if(cart.length===0) return alert("السلة فارغة");
+    
+    const cCity = document.getElementById('userCity').value;
+    const cAddr = document.getElementById('userAddress').value;
+    const cInst = document.getElementById('userInstall').value;
+    
+    // تحديث التفضيلات 
+    userPrefs.city = cCity; userPrefs.address = cAddr;
+    localStorage.setItem('shababek_prefs', JSON.stringify(userPrefs));
+
+    let msg=`*طلب شراء جديد من شبابيك* 🪟\n\n📍 المحافظة: ${cCity}\n🏠 العنوان الدقيق: ${cAddr}\n🛠 التركيب: ${cInst}\n`;
+    if(currentUser) msg+=`👤 العميل: ${currentUser.displayName||userPrefs.name||'مستخدم'} | ${currentUser.phoneNumber||currentUser.email||''}\n`;
+    else msg+=`👤 العميل: ${userPrefs.name||'زائر'}\n`;
+    msg+=`------------------\n`;
+    let total=0;
+    cart.forEach((it,i)=>{ msg+=`*${i+1}-* ${it.n} (${it.length} متر) - ${it.p.toLocaleString()} د.ع\n`; total+=it.p; });
+    msg+=`\n💰 الإجمالي: ${total.toLocaleString()} د.ع`;
+    
+    db.ref('orders').push({
+        uid: currentUser ? currentUser.uid : 'guest',
+        summary: cart.map(i=>i.n).join('، '),
+        total, city:cCity, address:cAddr, install:cInst,
+        date: new Date().toISOString()
+    });
+    
+    window.open(`https://wa.me/9647883002797?text=${encodeURIComponent(msg)}`,'_blank');
+    cart=[]; document.getElementById('globalCartCount').innerText="0"; localStorage.setItem('shababek_cart','[]');
+    document.getElementById('cartOverlay').classList.remove('active');
+}
+
+// ===== المتجر والواجهة =====
+function debounce(func,wait){let timeout;return function(...args){clearTimeout(timeout);timeout=setTimeout(()=>func(...args),wait);};}
+const execSearch = debounce(()=>{
+    const q=document.getElementById('searchInput').value.trim().toLowerCase(), s=document.getElementById('searchSuggestions');
+    if(q.length<2){s.style.display='none';return;}
+    db.ref('products').once('value').then(snap=>{
+        const res = Object.values(snap.val()||{}).filter(p=>p.name?.toLowerCase().includes(q));
+        if(res.length){ s.innerHTML=res.map(p=>`<div onclick='openAlibabaViewer(${JSON.stringify(p).replace(/'/g,"&apos;")});document.getElementById("searchSuggestions").style.display="none";'><img src="${p.img||p.images[0]}"><span>${p.name}</span></div>`).join(''); s.style.display='block';}
+        else s.style.display='none';
+    });
+}, 400);
+
+window.onload = ()=>{
+    db.ref('categories').once('value').then(s=>{
+        let c=s.val();
+        // كود المنتجات الخاص بك الذي أقسمت عليه رجع كما هو تماماً
+        if(c) document.getElementById('categoriesList').innerHTML=Object.values(c).map(x=>`<div class="cat-card-new" onclick="openCat('${x.name}')"><img src="${x.img}"><div>${x.name}</div></div>`).join('');
+    });
+};
+
+function openCat(cat){
+    db.ref('products').orderByChild('category').equalTo(cat).once('value').then(s=>{
+        let p=s.val(); document.getElementById('catTitle').innerText=cat;
+        document.getElementById('catGrid').innerHTML = p ? Object.values(p).map(x=>`<div class="cat-card-new" onclick='openAlibabaViewer(${JSON.stringify(x).replace(/'/g,"&apos;")})'><img src="${x.img||x.images[0]}"><div style="padding:15px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join('') : '<p style="grid-column:1/-1;text-align:center;">لا توجد منتجات</p>';
+        showPage('categoryView');
+    });
+}
+
+function openAlibabaViewer(product){
+    alibabaViewerData.product = product;
+    let media = product.images ? product.images.map(url=>({type:'image',url})) : [{type:'image',url:product.img}];
+    if(product.video) media.unshift({type:'video',url:product.video});
+    alibabaViewerData.mediaItems = media; alibabaViewerData.currentIndex = 0;
+    
+    document.getElementById('alibabaProductName').textContent = product.name;
+    document.getElementById('alibabaProductTitle').textContent = product.name;
+    document.getElementById('alibabaProductPrice').textContent = parseInt(product.price).toLocaleString();
+    document.getElementById('alibabaMetersInput').value = 1;
+    document.getElementById('alibabaTotalPrice').textContent = parseInt(product.price).toLocaleString() + ' د.ع';
+    
+    // التحقق من المفضلة
+    let isFav = favorites.some(x => x.name === product.name);
+    document.getElementById('alibabaFavIcon').className = isFav ? 'fas fa-heart' : 'far fa-heart';
+    if(isFav) document.getElementById('alibabaFavBtn').classList.add('active-fav');
+    else document.getElementById('alibabaFavBtn').classList.remove('active-fav');
+
+    // أزرار المشاركة
+    const shareUrl = window.location.href;
+    const shareText = `${product.name} - شبابيك للستائر`;
+    document.getElementById('productShareButtons').innerHTML = `
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" class="share-btn facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}" target="_blank" class="share-btn twitter"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://wa.me/?text=${encodeURIComponent(shareText+' '+shareUrl)}" target="_blank" class="share-btn whatsapp"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://telegram.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}" target="_blank" class="share-btn telegram"><i class="fab fa-telegram"></i></a>
+    `;
+    
+    renderAlibabaMedia();
+    document.getElementById('alibabaViewer').classList.add('active');
+}
+
+function renderAlibabaMedia(){
+    let item = alibabaViewerData.mediaItems[alibabaViewerData.currentIndex];
+    let cont = document.getElementById('alibabaMainImageContainer');
+    if(item.type==='video') cont.innerHTML = `<video src="${item.url}" controls autoplay muted loop style="width:100%;height:100%;object-fit:contain;background:#000;"></video>`;
+    else cont.innerHTML = `<img src="${item.url}" style="width:100%;height:100%;object-fit:contain;">`;
+    
+    document.getElementById('alibabaThumbnailGallery').innerHTML = alibabaViewerData.mediaItems.map((m,i)=>`<div class="alibaba-thumbnail ${i===alibabaViewerData.currentIndex?'active':''}" onclick="alibabaViewerData.currentIndex=${i};renderAlibabaMedia()"><img src="${m.url}" style="width:100%;height:100%;object-fit:cover;"></div>`).join('');
+}
+function closeAlibabaViewer(){ document.getElementById('alibabaViewer').classList.remove('active'); }
+
+document.getElementById('alibabaMetersInput').addEventListener('input', function(){
+    let m = parseFloat(this.value)||1;
+    document.getElementById('alibabaTotalPrice').textContent = (m * alibabaViewerData.product.price).toLocaleString() + ' د.ع';
+});
+
+function addFromAlibabaViewer(){
+    let m = parseFloat(document.getElementById('alibabaMetersInput').value);
+    if(!m||m<=0) return;
+    cart.push({n:alibabaViewerData.product.name, p:Math.round(m*alibabaViewerData.product.price), img:alibabaViewerData.product.img||alibabaViewerData.product.images[0], length:m});
+    document.getElementById('globalCartCount').innerText = cart.length;
+    localStorage.setItem('shababek_cart', JSON.stringify(cart));
+    alert("✅ تمت الإضافة للسلة");
+}
+
+function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+
+// الحماية والإدارة
+function handleLogoClick(){
+    adminClicks++; clearTimeout(clickTimer);
+    if(adminClicks>=5){ adminClicks=0; if(btoa(prompt("رمز الإدارة:"))==="ODQ5Ng==") showPage('adminPanel'); return; }
+    clickTimer=setTimeout(()=>{if(adminClicks===1) showPage('homePage'); adminClicks=0;},400);
+}
+</script>
+</body>
+</html>
