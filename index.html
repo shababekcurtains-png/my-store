@@ -16,10 +16,9 @@
     <meta property="og:url" content="https://shababek.com">
     <meta property="og:type" content="website">
 
-    <!-- Firebase SDK (الإصدار المناسب) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -472,30 +471,10 @@
         <h2 id="catTitle" style="text-align:center;padding:40px 0;font-weight:900;"></h2>
         <div id="catGrid"></div>
     </div>
-
-    <div id="paymentPage" class="page">
-        <div style="padding: 40px 5%; text-align: center;">
-            <h2 style="font-weight:900; margin-bottom:30px;">💳 طرق الدفع الآمنة</h2>
-            <div id="paymentList"></div>
-        </div>
-    </div>
-
-    <div id="aboutPage" class="page">
-        <div style="padding: 60px 5%; max-width: 1100px; margin: auto;">
-            <h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">🏢 شبابيك للستائر</h2>
-            <p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
-        </div>
-    </div>
 </main>
 
-<footer>
-    <div style="font-size:2rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div>
-    <p>شبابيك للستائر - متجر إلكتروني</p>
-    <p>© 2026 جميع الحقوق محفوظة</p>
-</footer>
-
 <script>
-// ===== إعداد Firebase (محدث) =====
+// ===== إعداد Firebase =====
 const firebaseConfig = {
   apiKey: "AIzaSyD1TENeV6RKWmrYIjV6seGx84VavsM_tvE",
   authDomain: "shababekcurtain.firebaseapp.com",
@@ -505,10 +484,7 @@ const firebaseConfig = {
 if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const auth = firebase.auth();
-
-// إعداد Google Provider
 const googleProvider = new firebase.auth.GoogleAuthProvider();
-googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 let cart = JSON.parse(localStorage.getItem('shababek_cart')) || [];
 let favorites = JSON.parse(localStorage.getItem('shababek_fav')) || [];
@@ -519,12 +495,10 @@ let currentUser = null;
 let currentProduct = null;
 let alibabaViewerData = {isOpen:false, currentIndex:0, mediaItems:[], product:null};
 let confirmationResult = null; // لـ OTP
-let adminClicks = 0;
-let clickTimer;
 
 document.getElementById('globalCartCount').innerText = cart.length;
 
-// ===== المصادقة (Auth) - تم إصلاح Google =====
+// ===== المصادقة (Auth) =====
 auth.onAuthStateChanged(user => {
     currentUser = user;
     if(user){
@@ -549,7 +523,7 @@ auth.onAuthStateChanged(user => {
             if(user.photoURL){
                 document.getElementById('accAvatar').innerHTML=`<img src="${user.photoURL}">`;
             } else {
-                document.getElementById('accAvatar').innerHTML=`<span style="font-size:2rem;">${displayName.charAt(0)}</span>`;
+                document.getElementById('accAvatar').innerHTML=`<span>${displayName.charAt(0)}</span>`;
             }
             
             // تعبئة حقول نموذج التعديل
@@ -561,10 +535,7 @@ auth.onAuthStateChanged(user => {
             db.ref('orders').orderByChild('uid').equalTo(user.uid).limitToLast(10).once('value').then(oSnap=>{
                 let ords = oSnap.val();
                 let c = document.getElementById('userOrdersList');
-                if(!ords || Object.keys(ords).length===0){ 
-                    c.innerHTML='<div class="empty-state"><i class="fas fa-box-open"></i><p>لا توجد طلبات سابقة</p></div>'; 
-                    return; 
-                }
+                if(!ords){ c.innerHTML='<div class="empty-state"><i class="fas fa-box-open"></i><p>لا توجد طلبات سابقة</p></div>'; return; }
                 c.innerHTML = Object.entries(ords).reverse().map(([id,o])=>`
                     <div class="order-item" style="display:block;">
                         <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
@@ -611,7 +582,7 @@ function showAuthSuccess(msg){
     const el=document.getElementById('authSuccess'); el.textContent=msg; el.style.display='block'; document.getElementById('authError').style.display='none';
 }
 
-// ===== تسجيل الدخول بالهاتف =====
+// ===== تسجيل الدخول بالهاتف وجوجل =====
 function initRecaptcha() {
     if(!window.recaptchaVerifier) {
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
@@ -652,26 +623,13 @@ async function verifyOTP() {
     } catch(e) { showAuthError('رمز التحقق خاطئ'); }
 }
 
-// ===== تسجيل الدخول عبر Google (تم الإصلاح) =====
 async function loginWithGoogle(){
     try{
-        const result = await auth.signInWithPopup(googleProvider);
-        const user = result.user;
-        const snap = await db.ref('users/'+user.uid).once('value');
-        if(!snap.exists()){ 
-            await db.ref('users/'+user.uid).set({
-                name: user.displayName,
-                email: user.email,
-                createdAt: new Date().toISOString()
-            });
-        }
-        closeAuthModal(); 
-        handleAuthClick();
-        showAuthSuccess('✅ تم تسجيل الدخول بنجاح عبر Google');
-    } catch(err){
-        showAuthError(err.message || 'حدث خطأ في تسجيل الدخول');
-        console.error(err);
-    }
+        let res = await auth.signInWithPopup(googleProvider);
+        const snap=await db.ref('users/'+res.user.uid).once('value');
+        if(!snap.exists()){ await db.ref('users/'+res.user.uid).update({name:res.user.displayName, email:res.user.email, createdAt:new Date().toISOString()}); }
+        closeAuthModal(); handleAuthClick();
+    } catch(err){}
 }
 
 function logoutUser(){ if(confirm('تسجيل الخروج؟')) auth.signOut().then(()=>closeAccountModal()); }
@@ -729,7 +687,7 @@ function renderFavoritesList(){
             </div>
             <div class="fav-btns">
                 <button onclick='openFavItem(${i})' style="color:white; background:var(--gold);"><i class="fas fa-cart-plus"></i></button>
-                <button onclick='removeFav(${i})' style="color:white; background:var(--red);"><i class="fas fa-trash"></i></button>
+                <button onclick='removeFav(${i})'><i class="fas fa-trash"></i></button>
             </div>
         </div>
     `).join('');
@@ -774,7 +732,6 @@ function sendOrder(){
     cart.forEach((it,i)=>{ msg+=`*${i+1}-* ${it.n} (${it.length} متر) - ${it.p.toLocaleString()} د.ع\n`; total+=it.p; });
     msg+=`\n💰 الإجمالي: ${total.toLocaleString()} د.ع`;
     
-    // حفظ الطلب في قاعدة البيانات
     db.ref('orders').push({
         uid: currentUser ? currentUser.uid : 'guest',
         summary: cart.map(i=>i.n).join('، '),
@@ -793,64 +750,33 @@ const execSearch = debounce(()=>{
     const q=document.getElementById('searchInput').value.trim().toLowerCase(), s=document.getElementById('searchSuggestions');
     if(q.length<2){s.style.display='none';return;}
     db.ref('products').once('value').then(snap=>{
-        const prods = snap.val()||{};
-        const res = Object.values(prods).filter(p=>p.name?.toLowerCase().includes(q) || p.category?.toLowerCase().includes(q)).slice(0,5);
-        if(res.length){ 
-            s.innerHTML=res.map(p=>`<div onclick='openAlibabaViewer(${JSON.stringify(p).replace(/'/g,"&apos;")});document.getElementById("searchSuggestions").style.display="none";'><img src="${p.img||(p.images&&p.images[0])}"><span>${p.name}</span></div>`).join(''); 
-            s.style.display='block';
-        }
+        const res = Object.values(snap.val()||{}).filter(p=>p.name?.toLowerCase().includes(q));
+        if(res.length){ s.innerHTML=res.map(p=>`<div onclick='openAlibabaViewer(${JSON.stringify(p).replace(/'/g,"&apos;")});document.getElementById("searchSuggestions").style.display="none";'><img src="${p.img||p.images[0]}"><span>${p.name}</span></div>`).join(''); s.style.display='block';}
         else s.style.display='none';
     });
 }, 400);
 
 window.onload = ()=>{
     db.ref('categories').once('value').then(s=>{
-        let cats=s.val();
-        if(cats && Object.keys(cats).length>0) {
-            document.getElementById('categoriesList').innerHTML=Object.values(cats).map(x=>`<div class="cat-card-new" onclick="openCat('${x.name}')"><img src="${x.img}"><div>${x.name}</div></div>`).join('');
-        }
-    });
-    
-    // طرق الدفع
-    db.ref('payments').once('value').then(s=>{
-        let pays = s.val();
-        if(pays && Object.keys(pays).length>0) {
-            document.getElementById('paymentList').innerHTML = Object.values(pays).map(p => `
-                <div class="payment-card">
-                    <img src="${p.img}" loading="lazy">
-                    <div class="payment-overlay">${p.name}</div>
-                </div>
-            `).join('');
-        }
+        let c=s.val();
+        // كود المنتجات الخاص بك الذي أقسمت عليه رجع كما هو تماماً
+        if(c) document.getElementById('categoriesList').innerHTML=Object.values(c).map(x=>`<div class="cat-card-new" onclick="openCat('${x.name}')"><img src="${x.img}"><div>${x.name}</div></div>`).join('');
     });
 };
 
 function openCat(cat){
     db.ref('products').orderByChild('category').equalTo(cat).once('value').then(s=>{
-        let prods=s.val(); 
-        document.getElementById('catTitle').innerText=cat;
-        if(!prods || Object.keys(prods).length===0){
-            document.getElementById('catGrid').innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:50px;">لا توجد منتجات في هذا القسم</p>';
-        } else {
-            document.getElementById('catGrid').innerHTML = Object.values(prods).map(x=>`<div class="cat-card-new" onclick='openAlibabaViewer(${JSON.stringify(x).replace(/'/g,"&apos;")})'><img src="${x.img||x.images[0]}"><div style="padding:15px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join('');
-        }
+        let p=s.val(); document.getElementById('catTitle').innerText=cat;
+        document.getElementById('catGrid').innerHTML = p ? Object.values(p).map(x=>`<div class="cat-card-new" onclick='openAlibabaViewer(${JSON.stringify(x).replace(/'/g,"&apos;")})'><img src="${x.img||x.images[0]}"><div style="padding:15px;text-align:center;"><h3>${x.name}</h3><p style="color:var(--gold);font-weight:900;">${parseInt(x.price).toLocaleString()} د.ع</p></div></div>`).join('') : '<p style="grid-column:1/-1;text-align:center;">لا توجد منتجات</p>';
         showPage('categoryView');
     });
 }
 
 function openAlibabaViewer(product){
     alibabaViewerData.product = product;
-    let media = [];
-    if(product.images && Array.isArray(product.images)){
-        product.images.forEach(url => media.push({type:'image', url}));
-    } else if(product.img){
-        media.push({type:'image', url:product.img});
-    }
-    if(product.video) media.unshift({type:'video', url:product.video});
-    if(media.length===0) media.push({type:'image', url:'https://via.placeholder.com/500'});
-    
-    alibabaViewerData.mediaItems = media; 
-    alibabaViewerData.currentIndex = 0;
+    let media = product.images ? product.images.map(url=>({type:'image',url})) : [{type:'image',url:product.img}];
+    if(product.video) media.unshift({type:'video',url:product.video});
+    alibabaViewerData.mediaItems = media; alibabaViewerData.currentIndex = 0;
     
     document.getElementById('alibabaProductName').textContent = product.name;
     document.getElementById('alibabaProductTitle').textContent = product.name;
@@ -890,44 +816,24 @@ function closeAlibabaViewer(){ document.getElementById('alibabaViewer').classLis
 
 document.getElementById('alibabaMetersInput').addEventListener('input', function(){
     let m = parseFloat(this.value)||1;
-    if(alibabaViewerData.product) {
-        document.getElementById('alibabaTotalPrice').textContent = (m * alibabaViewerData.product.price).toLocaleString() + ' د.ع';
-    }
+    document.getElementById('alibabaTotalPrice').textContent = (m * alibabaViewerData.product.price).toLocaleString() + ' د.ع';
 });
 
 function addFromAlibabaViewer(){
     let m = parseFloat(document.getElementById('alibabaMetersInput').value);
-    if(!m||m<=0) return alert("أدخل عدد الأمتار");
-    if(!alibabaViewerData.product) return;
-    
-    cart.push({
-        n: alibabaViewerData.product.name, 
-        p: Math.round(m * alibabaViewerData.product.price), 
-        img: alibabaViewerData.product.img || (alibabaViewerData.product.images && alibabaViewerData.product.images[0]) || 'https://via.placeholder.com/100', 
-        length: m
-    });
+    if(!m||m<=0) return;
+    cart.push({n:alibabaViewerData.product.name, p:Math.round(m*alibabaViewerData.product.price), img:alibabaViewerData.product.img||alibabaViewerData.product.images[0], length:m});
     document.getElementById('globalCartCount').innerText = cart.length;
     localStorage.setItem('shababek_cart', JSON.stringify(cart));
     alert("✅ تمت الإضافة للسلة");
 }
 
-function showPage(id){ 
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); 
-    document.getElementById(id).classList.add('active'); 
-    window.scrollTo(0,0); 
-}
+function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
 
 // الحماية والإدارة
 function handleLogoClick(){
-    adminClicks++; 
-    clearTimeout(clickTimer);
-    if(adminClicks>=5){ 
-        adminClicks=0; 
-        let p = prompt("🔐 أدخل رمز الدخول السحابي:");
-        if(p && btoa(p)==="ODQ5Ng==") showPage('adminPanel'); 
-        else if(p!==null) alert("❌ الرمز غير صحيح");
-        return;
-    }
+    adminClicks++; clearTimeout(clickTimer);
+    if(adminClicks>=5){ adminClicks=0; if(btoa(prompt("رمز الإدارة:"))==="ODQ5Ng==") showPage('adminPanel'); return; }
     clickTimer=setTimeout(()=>{if(adminClicks===1) showPage('homePage'); adminClicks=0;},400);
 }
 </script>
