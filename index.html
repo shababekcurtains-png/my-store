@@ -27,7 +27,7 @@
     </script>
 
     <style>
-        :root{--gold:#d9b382;--brown:#3d2e24;--bg:#f9f6f2;--white:#ffffff;--whatsapp:#25D366;--red:#ff4d4d;--teal:#2A9D8F;--dark:#1c2331;}
+        :root{--gold:#d9b382;--brown:#3d2e24;--bg:#f9f6f2;--white:#ffffff;--whatsapp:#25D366;--red:#ff4d4d;--teal:#2A9D8F;--dark:#1c2331;--blue:#3498db;}
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent;}
         html{-webkit-text-size-adjust:100%;}
         body{background:var(--white);color:var(--brown);overflow-x:hidden;scroll-behavior:smooth;line-height:1.6;-webkit-overflow-scrolling:touch;}
@@ -168,6 +168,80 @@
         
         #catGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:25px;padding:20px 5%;}
 
+        /* ===== طرق الدفع ===== */
+        #paymentList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .payment-card {
+            position: relative;
+            height: 400px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            background: white;
+            transition: 0.4s;
+        }
+        
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        
+        .payment-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 30px;
+            display: block;
+        }
+        
+        .payment-card .payment-overlay {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: var(--gold);
+            color: white;
+            padding: 8px 5px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 900;
+        }
+
+        /* ===== لوحة التحكم ===== */
+        .admin-box {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 20px;
+        }
+        
+        .admin-box h3 {
+            margin-bottom: 20px;
+            color: var(--gold);
+            font-weight: 900;
+        }
+        
+        .admin-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-family: 'Cairo';
+            font-size: 0.95rem;
+        }
+        
+        .admin-input:focus {
+            border-color: var(--gold);
+            outline: none;
+        }
+
         /* ===== Alibaba Viewer ===== */
         .alibaba-viewer-container{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);z-index:12000;display:none;justify-content:center;align-items:center;opacity:0;transition:opacity 0.3s ease;}
         .alibaba-viewer-container.active{display:flex;opacity:1;}
@@ -193,14 +267,74 @@
         .share-btn:hover {transform:scale(1.1);}
         .share-btn.facebook {background:#1877f2;} .share-btn.twitter {background:#1da1f2;} .share-btn.whatsapp {background:#25D366;} .share-btn.telegram {background:#0088cc;}
 
+        /* ===== الفوتر والأقسام السفلية ===== */
+        .footer-cta { 
+            background: var(--brown); 
+            color: white; 
+            padding: 40px 5%; 
+            text-align: center; 
+            border-radius: 40px 40px 0 0; 
+            margin-top: 50px;
+        }
+        
+        .footer-cta h2 { 
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            margin-bottom: 10px; 
+        }
+        
+        .btn-footer-wa { 
+            background: transparent; 
+            border: 1px solid rgba(255,255,255,0.4); 
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            display: inline-block; 
+            margin: 5px; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+        }
+        
+        .btn-footer-prod { 
+            background: var(--gold); 
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            display: inline-block; 
+            margin: 5px; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+        }
+
+        footer { 
+            background: var(--brown); 
+            color: rgba(255,255,255,0.6); 
+            padding: 30px 5%; 
+            text-align: center; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+        }
+        
+        footer p {
+            margin: 5px 0;
+        }
+
         /* Mobile Adjustments */
         @media(max-width:768px){
-            /* إرجاع كود المنتجات للموبايل كما كان تماماً */
             #categoriesList{display:flex !important;grid-template-columns:none !important;overflow-x:auto !important;scroll-snap-type:x mandatory;gap:15px;padding:20px;-webkit-overflow-scrolling:touch;}
             #categoriesList .cat-card-new{flex:0 0 250px !important;height:300px;scroll-snap-align:start;}
             
             .alibaba-viewer-body{flex-direction:column;}
             .alibaba-main-image-container{height:300px;}
+            
+            #paymentList {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            
+            .payment-card {
+                height: 320px;
+            }
         }
     </style>
 </head>
@@ -237,8 +371,10 @@
     <ul class="nav-menu">
         <li><a onclick="showPage('homePage')">الرئيسية</a></li>
         <li><a onclick="showPage('homePage');setTimeout(()=>{document.getElementById('categories').scrollIntoView({behavior:'smooth'})},100)">المنتجات</a></li>
+        <li><a href="ai.html">منتدى شبابيك</a></li>
         <li><a onclick="showPage('paymentPage')">طرق الدفع</a></li>
         <li><a onclick="showPage('aboutPage')">من نحن</a></li>
+        <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
     </ul>
 </div>
 
@@ -463,8 +599,68 @@
         </section>
     </div>
 
+    <!-- صفحة لوحة التحكم -->
     <div id="adminPanel" class="page">
-        <h2 style="text-align:center; padding:50px;">لوحة التحكم تعمل في الخلفية</h2>
+        <div style="padding: 40px 5%; max-width: 1200px; margin: auto;">
+            <h2 style="text-align:center; margin-bottom:40px; font-weight:900;">👑 لوحة التحكم - شبابيك</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div class="admin-box">
+                    <h3>📁 إدارة الأقسام</h3>
+                    <input type="text" class="admin-input" placeholder="اسم القسم الجديد">
+                    <input type="file" class="admin-input" accept="image/*">
+                    <button class="btn-gold-full" style="margin-bottom:20px;">➕ إضافة قسم</button>
+                    <div id="admCatsList"></div>
+                </div>
+
+                <div class="admin-box">
+                    <h3>🖼️ إدارة المنتجات</h3>
+                    <select class="admin-input">
+                        <option>اختر قسم</option>
+                    </select>
+                    <input type="text" class="admin-input" placeholder="اسم المنتج">
+                    <input type="number" class="admin-input" placeholder="السعر">
+                    <button class="btn-gold-full" style="margin-bottom:20px;">➕ إضافة منتج</button>
+                    <div id="admProdsList"></div>
+                </div>
+
+                <div class="admin-box">
+                    <h3>💳 إدارة طرق الدفع</h3>
+                    <input type="text" class="admin-input" placeholder="اسم طريقة الدفع">
+                    <input type="file" class="admin-input" accept="image/*">
+                    <button class="btn-gold-full">➕ إضافة طريقة دفع</button>
+                    <div id="admPaysList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- صفحة من نحن -->
+    <div id="aboutPage" class="page">
+        <div style="padding:60px 5%; max-width:1100px; margin:auto;">
+            <h2 style="font-weight:900; font-size:2.5rem; margin-bottom:30px; text-align:center;">🏢 شبابيك للستائر</h2>
+            <p style="font-size:1.2rem; line-height:2.2; color:#444; text-align:justify;">تأسست شبابيك للستائر بهدف تقديم أفخم وأجود أنواع الستائر المنزلية في العراق. نؤمن بأن الستائر ليست مجرد قطعة قماش، بل هي عنصر أساسي في تصميم المنزل يعكس ذوق أصحابه ويضيف لمسة من الأناقة والفخامة.</p>
+        </div>
+    </div>
+
+    <!-- صفحة تواصل معنا -->
+    <div id="contactPage" class="page">
+        <div style="padding:60px 5%; text-align:center; background:var(--bg); border-radius:40px; margin:40px 5%;">
+            <h2 style="margin-bottom:30px; font-weight:900; font-size:2.2rem;">📞 تواصل معنا</h2>
+            <div style="font-size:1.5rem; margin-bottom:20px;"><i class="fa-solid fa-phone"></i> 07883002797</div>
+            <div style="font-size:1.2rem; margin-bottom:30px;"><i class="fa-regular fa-envelope"></i> info@shababekcurtains.com</div>
+            <a href="https://wa.me/9647883002797" class="btn-gold" style="display:inline-block; text-decoration:none; margin-top:20px; padding:15px 40px;">
+                <i class="fab fa-whatsapp"></i> مراسلة واتساب مباشر
+            </a>
+        </div>
+    </div>
+
+    <!-- صفحة طرق الدفع -->
+    <div id="paymentPage" class="page">
+        <div style="padding: 40px 5%; text-align: center;">
+            <h2 style="font-weight:900; margin-bottom:30px;">💳 طرق الدفع الآمنة</h2>
+            <div id="paymentList"></div>
+        </div>
     </div>
     
     <div id="categoryView" class="page">
@@ -472,6 +668,24 @@
         <div id="catGrid"></div>
     </div>
 </main>
+
+<!-- الفوتر والأقسام السفلية -->
+<div class="footer-cta">
+    <h2>🏃‍♂️ جاهز لتجديد ستائر منزلك؟</h2>
+    <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
+        <a href="https://wa.me/9647883002797" class="btn-footer-wa"><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</a>
+        <a onclick="showPage('homePage'); document.getElementById('categories').scrollIntoView({behavior:'smooth'})" class="btn-footer-prod">🛍️ تصفح المنتجات</a>
+    </div>
+</div>
+
+<footer>
+    <div style="font-size:2rem; font-weight:900; color:var(--gold); margin-bottom:10px;">شبابيك</div>
+    <p>شبابيك للستائر - متجر إلكتروني</p>
+    <p>© 2026 جميع الحقوق محفوظة</p>
+    <p style="font-size:0.9rem; color:rgba(255,255,255,0.8); margin-top:10px;">
+        <i class="fas fa-phone"></i> 07883002797 | <i class="fas fa-envelope"></i> info@shababekcurtains.com
+    </p>
+</footer>
 
 <script>
 // ===== إعداد Firebase =====
@@ -488,17 +702,18 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 let cart = JSON.parse(localStorage.getItem('shababek_cart')) || [];
 let favorites = JSON.parse(localStorage.getItem('shababek_fav')) || [];
-// إعدادات المستخدم المحفوظة للتعبئة التلقائية
 let userPrefs = JSON.parse(localStorage.getItem('shababek_prefs')) || { name:'', city:'بغداد', address:'' };
 
 let currentUser = null;
 let currentProduct = null;
 let alibabaViewerData = {isOpen:false, currentIndex:0, mediaItems:[], product:null};
-let confirmationResult = null; // لـ OTP
+let confirmationResult = null;
+let adminClicks = 0;
+let clickTimer;
 
 document.getElementById('globalCartCount').innerText = cart.length;
 
-// ===== المصادقة (Auth) =====
+// ===== المصادقة (Auth) - كما هي بدون تغيير =====
 auth.onAuthStateChanged(user => {
     currentUser = user;
     if(user){
@@ -507,8 +722,6 @@ auth.onAuthStateChanged(user => {
         
         db.ref('users/'+user.uid).once('value').then(snap=>{
             let ud = snap.val()||{};
-            
-            // تحديث بيانات التفضيلات من السيرفر إذا وجدت
             if(ud.city) userPrefs.city = ud.city;
             if(ud.address) userPrefs.address = ud.address;
             if(ud.name) userPrefs.name = ud.name;
@@ -526,12 +739,10 @@ auth.onAuthStateChanged(user => {
                 document.getElementById('accAvatar').innerHTML=`<span>${displayName.charAt(0)}</span>`;
             }
             
-            // تعبئة حقول نموذج التعديل
             document.getElementById('profName').value = userPrefs.name;
             document.getElementById('profCity').value = userPrefs.city;
             document.getElementById('profAddress').value = userPrefs.address;
             
-            // تحميل الطلبات
             db.ref('orders').orderByChild('uid').equalTo(user.uid).limitToLast(10).once('value').then(oSnap=>{
                 let ords = oSnap.val();
                 let c = document.getElementById('userOrdersList');
@@ -582,7 +793,7 @@ function showAuthSuccess(msg){
     const el=document.getElementById('authSuccess'); el.textContent=msg; el.style.display='block'; document.getElementById('authError').style.display='none';
 }
 
-// ===== تسجيل الدخول بالهاتف وجوجل =====
+// ===== تسجيل الدخول بالهاتف وجوجل (كما هي) =====
 function initRecaptcha() {
     if(!window.recaptchaVerifier) {
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { 'size': 'invisible' });
@@ -705,7 +916,6 @@ function toggleCartModal(){
         html += cart.length>0 ? `<div style="margin-top:15px;background:#f8f8f8;padding:15px;border-radius:12px;text-align:center;font-weight:900;font-size:1.3rem;color:var(--brown);">الإجمالي: <span style="color:var(--gold);">${total.toLocaleString()} د.ع</span></div>` : '<div class="empty-state"><i class="fas fa-shopping-basket"></i><p>السلة فارغة</p></div>';
         document.getElementById('cartItemsList').innerHTML = html;
 
-        // ** تعبئة البيانات تلقائياً من صفحة المستخدم **
         document.getElementById('userCity').value = userPrefs.city || 'بغداد';
         document.getElementById('userAddress').value = userPrefs.address || '';
     }
@@ -720,7 +930,6 @@ function sendOrder(){
     const cAddr = document.getElementById('userAddress').value;
     const cInst = document.getElementById('userInstall').value;
     
-    // تحديث التفضيلات 
     userPrefs.city = cCity; userPrefs.address = cAddr;
     localStorage.setItem('shababek_prefs', JSON.stringify(userPrefs));
 
@@ -759,8 +968,20 @@ const execSearch = debounce(()=>{
 window.onload = ()=>{
     db.ref('categories').once('value').then(s=>{
         let c=s.val();
-        // كود المنتجات الخاص بك الذي أقسمت عليه رجع كما هو تماماً
         if(c) document.getElementById('categoriesList').innerHTML=Object.values(c).map(x=>`<div class="cat-card-new" onclick="openCat('${x.name}')"><img src="${x.img}"><div>${x.name}</div></div>`).join('');
+    });
+    
+    // تحميل طرق الدفع
+    db.ref('payments').once('value').then(s=>{
+        let pays = s.val();
+        if(pays && Object.keys(pays).length>0) {
+            document.getElementById('paymentList').innerHTML = Object.values(pays).map(p => `
+                <div class="payment-card">
+                    <img src="${p.img}" loading="lazy">
+                    <div class="payment-overlay">${p.name}</div>
+                </div>
+            `).join('');
+        }
     });
 };
 
@@ -784,13 +1005,11 @@ function openAlibabaViewer(product){
     document.getElementById('alibabaMetersInput').value = 1;
     document.getElementById('alibabaTotalPrice').textContent = parseInt(product.price).toLocaleString() + ' د.ع';
     
-    // التحقق من المفضلة
     let isFav = favorites.some(x => x.name === product.name);
     document.getElementById('alibabaFavIcon').className = isFav ? 'fas fa-heart' : 'far fa-heart';
     if(isFav) document.getElementById('alibabaFavBtn').classList.add('active-fav');
     else document.getElementById('alibabaFavBtn').classList.remove('active-fav');
 
-    // أزرار المشاركة
     const shareUrl = window.location.href;
     const shareText = `${product.name} - شبابيك للستائر`;
     document.getElementById('productShareButtons').innerHTML = `
@@ -830,7 +1049,6 @@ function addFromAlibabaViewer(){
 
 function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
 
-// الحماية والإدارة
 function handleLogoClick(){
     adminClicks++; clearTimeout(clickTimer);
     if(adminClicks>=5){ adminClicks=0; if(btoa(prompt("رمز الإدارة:"))==="ODQ5Ng==") showPage('adminPanel'); return; }
