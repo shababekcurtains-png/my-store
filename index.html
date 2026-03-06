@@ -7,41 +7,29 @@
     <title>شبابيك للستائر - المتجر الرسمي | Shababek Curtains Official Store</title>
     
     <link rel="icon" type="image/png" href="https://i.ibb.co/3y1ZNCk0/1.png">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
+        /* الحفاظ على نفس ستايل المتجر تماماً */
         :root { 
-            --gold: #d9b382; 
-            --brown: #3d2e24; 
-            --bg: #f9f6f2; 
-            --white: #ffffff; 
-            --whatsapp: #25D366; 
-            --red: #ff4d4d; 
-            --teal: #2A9D8F;
-            --blue: #3498db;
-            --dark: #1c2331;
+            --gold: #d9b382; --brown: #3d2e24; --bg: #f9f6f2; --white: #ffffff; 
+            --whatsapp: #25D366; --red: #ff4d4d; --teal: #2A9D8F; --blue: #3498db; --dark: #1c2331;
         }
-        
-        /* نفس التصميم الأصلي تماماً */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--white); color: var(--brown); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
-        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .wa-link { color: var(--whatsapp); text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         header { background: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .store-name-ar { font-size: 1.8rem; font-weight: 900; color: var(--brown); }
         .logo-img { height: 90px; }
-        .account-icon, .cart-icon { cursor: pointer; width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; transition: 0.4s; }
+        .top-banner { background: var(--brown); color: white; padding: 10px 5%; text-align: center; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .account-icon, .cart-icon { cursor: pointer; width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; transition: 0.4s; position: relative; }
         .account-icon { background: linear-gradient(145deg, var(--brown), #5a4035); }
-        .cart-icon { background: linear-gradient(145deg, var(--gold), #c9a067); position: relative; }
-        .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 14px; min-width: 28px; text-align: center; border: 2px solid white; }
+        .cart-icon { background: linear-gradient(145deg, var(--gold), #c9a067); }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: var(--red); color: white; border-radius: 14px; min-width: 25px; height: 25px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
         .nav-bar { background: #fcfcfc; border-bottom: 1px solid #eee; padding: 12px 0; overflow-x: auto; white-space: nowrap; }
         .nav-menu { display: inline-flex; gap: 25px; list-style: none; padding: 0 20px; }
         .nav-menu a { text-decoration: none; color: var(--brown); font-weight: 700; cursor: pointer; }
@@ -49,24 +37,20 @@
         .active { display: block !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* نافذة التسجيل */
-        .auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 11000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .auth-modal.active { display: flex; }
-        .auth-modal-content { background: var(--bg); width: 90%; max-width: 450px; border-radius: 25px; padding: 25px; position: relative; }
-        .auth-tab { flex: 1; padding: 12px; border: none; background: #f0f0f0; border-radius: 12px; font-weight: 700; cursor: pointer; }
-        .auth-tab.active { background: var(--gold); color: white; }
-        .auth-input { width: 100%; padding: 12px 15px; border: 2px solid #ddd; border-radius: 12px; margin-bottom: 15px; font-family: 'Cairo'; }
-        .auth-btn { width: 100%; padding: 15px; background: var(--gold); color: white; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 10px; }
-        .google-auth-btn { width: 100%; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; margin-top: 15px; }
+        /* ستايل نوافذ الدخول - نفس المظهر الأصلي */
+        .auth-modal, .account-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 11000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .auth-modal.active, .account-modal.active { display: flex; }
+        .auth-content { background: var(--bg); width: 90%; max-width: 450px; border-radius: 25px; padding: 25px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .auth-input { width: 100%; padding: 12px 15px; border: 2px solid #ddd; border-radius: 12px; margin-bottom: 15px; font-family: 'Cairo'; font-size: 1rem; }
+        .auth-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--gold), #c9a067); color: white; border: none; border-radius: 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+        .google-btn { width: 100%; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; margin-top: 15px; }
         
-        /* تصميم الأقسام والمنتجات */
-        #categoriesList { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; padding: 20px 5%; }
+        #categoriesList { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; padding: 20px 5%; }
         .cat-card-new { position: relative; height: 350px; border-radius: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .cat-card-new img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .cat-card-new img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* التذييل */
-        .footer-cta { background: var(--brown); color: white; padding: 40px 5%; text-align: center; border-radius: 40px 40px 0 0; }
         footer { background: var(--brown); color: rgba(255,255,255,0.6); padding: 30px 5%; text-align: center; }
+        .logged-in-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: #25D366; border-radius: 50%; border: 2px solid white; display: none; }
     </style>
 </head>
 <body>
@@ -78,14 +62,16 @@
 
     <header>
         <div class="store-brand">
-            <span class="store-name-ar">شبابيك للستائر</span>
+            <span style="font-size:1.8rem; font-weight:900; color:var(--brown);">شبابيك للستائر</span>
+            <span style="font-size:0.9rem; color:var(--gold); font-weight:600;">Shababek Curtains</span>
         </div>
         <div class="logo-center" onclick="showPage('homePage')">
             <img src="https://i.ibb.co/3y1ZNCk0/1.png" class="logo-img">
         </div>
-        <div class="header-left">
-            <div class="account-icon" id="accountIcon" onclick="openAccount()">
+        <div class="header-left" style="display:flex; gap:15px; align-items:center;">
+            <div class="account-icon" onclick="handleAccountBtn()">
                 <i class="fas fa-user"></i>
+                <div class="logged-in-dot" id="loginDot"></div>
             </div>
             <div class="cart-icon" onclick="toggleCartModal()">
                 <i class="fas fa-shopping-basket"></i>
@@ -94,139 +80,247 @@
         </div>
     </header>
 
+    <div class="nav-bar">
+        <ul class="nav-menu">
+            <li><a onclick="showPage('homePage')">الرئيسية</a></li>
+            <li><a onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})">المنتجات</a></li>
+            <li><a onclick="showPage('aboutPage')">من نحن</a></li>
+            <li><a onclick="showPage('contactPage')">تواصل معنا</a></li>
+        </ul>
+    </div>
+
     <div class="auth-modal" id="authModal">
-        <div class="auth-modal-content">
-            <button style="position:absolute; left:15px; top:15px; border:none; background:none; font-size:1.5rem;" onclick="closeAuthModal()">×</button>
+        <div class="auth-content">
+            <button style="position:absolute; left:15px; top:15px; border:none; background:none; font-size:1.5rem; cursor:pointer;" onclick="closeAuth()">×</button>
             <div style="text-align:center; margin-bottom:20px;">
-                <img src="https://i.ibb.co/3y1ZNCk0/1.png" style="height:60px;">
-                <h2 style="font-weight:900;">دخول شبابيك</h2>
+                <img src="https://i.ibb.co/3y1ZNCk0/1.png" style="height:70px; margin-bottom:10px;">
+                <h2 style="font-weight:900;">مرحباً بك في شبابيك</h2>
+                <p style="color:#666; font-size:0.9rem;">سجل دخولك لتتمكن من الطلب وحفظ بياناتك</p>
+            </div>
+
+            <div id="phoneStep">
+                <input type="tel" id="regPhone" class="auth-input" placeholder="رقم الهاتف (مثال: 078xxxxxxxx)" dir="ltr">
+                <button class="auth-btn" id="sendOtpBtn" onclick="sendWhatsAppVerification()">
+                    <i class="fab fa-whatsapp"></i> الحصول على كود التفعيل
+                </button>
+            </div>
+
+            <div id="otpStep" style="display:none;">
+                <p style="text-align:center; margin-bottom:10px; font-size:0.85rem; color:var(--teal);">أرسل الرسالة في واتساب ثم اكتب الكود هنا</p>
+                <input type="text" id="otpInput" class="auth-input" placeholder="أدخل الكود المكون من 4 أرقام" maxlength="4">
+                <button class="auth-btn" style="background:var(--teal);" onclick="verifyAndRegister()">تأكيد وتسجيل الحساب</button>
+            </div>
+
+            <div style="text-align:center; margin:15px 0; color:#999; position:relative;">
+                <span style="background:var(--bg); padding:0 10px; position:relative; z-index:1;">أو</span>
+                <hr style="position:absolute; top:50%; width:100%; border:0; border-top:1px solid #ddd;">
+            </div>
+
+            <button class="google-btn" onclick="loginWithGoogle()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
+                الدخول عبر Google
+            </button>
+        </div>
+    </div>
+
+    <div class="account-modal" id="accountModal">
+        <div class="auth-content">
+            <button style="position:absolute; left:15px; top:15px; border:none; background:none; font-size:1.5rem; cursor:pointer;" onclick="closeAccount()">×</button>
+            <div style="text-align:center; margin-bottom:20px; border-bottom:2px solid var(--gold); padding-bottom:15px;">
+                <div id="userAvatar" style="width:80px; height:80px; background:var(--gold); border-radius:50%; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem; overflow:hidden;">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 id="userNameDisplay" style="font-weight:900;">مستخدم شبابيك</h3>
+                <p id="userPhoneDisplay" style="color:#666; font-size:0.9rem;"></p>
             </div>
             
-            <div id="loginForm">
-                <label style="font-weight:bold; display:block; margin-bottom:5px;">رقم هاتفك:</label>
-                <input type="tel" id="loginPhone" class="auth-input" placeholder="07XXXXXXXX" dir="ltr">
-                
-                <div id="otpSection" style="display:none;">
-                    <label style="font-weight:bold; display:block; margin-bottom:5px;">كود التحقق المرسل لك:</label>
-                    <input type="text" id="otpCodeInput" class="auth-input" placeholder="أدخل الكود هنا" maxlength="4">
-                    <button class="auth-btn" style="background:var(--teal);" onclick="verifyManualOTP()">تفعيل الحساب الآن</button>
+            <div style="margin-bottom:20px;">
+                <div style="padding:10px; background:white; border-radius:12px; margin-bottom:10px; display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-shopping-bag" style="color:var(--gold);"></i>
+                    <span>طلباتي السابقة</span>
                 </div>
-
-                <button class="auth-btn" id="sendOtpBtn" onclick="sendWhatsAppOTP()">
-                    <i class="fab fa-whatsapp"></i> الحصول على كود التحقق
-                </button>
-                
-                <div style="text-align:center; margin:15px 0; color:#999;">أو</div>
-                
-                <button class="google-auth-btn" onclick="loginWithGoogle()">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-                    المتابعة مع Google
-                </button>
             </div>
+
+            <button class="auth-btn" style="background:var(--red);" onclick="logout()">تسجيل الخروج</button>
         </div>
     </div>
 
     <main id="mainContainer">
         <div id="homePage" class="page active">
-            <section style="padding:40px 5%; text-align:center; background:var(--bg);">
-                <h1 style="font-weight:900; font-size:2rem; color:var(--brown);">فخامة التفاصيل تبدأ من شبابيك</h1>
-                <p>أرقى الستائر في العراق بلمسة عصرية</p>
-                <button onclick="document.getElementById('categories').scrollIntoView({behavior: 'smooth'})" class="btn-gold" style="margin-top:20px; padding:15px 40px; border:none; border-radius:12px; color:white; font-weight:900; cursor:pointer;">تصفح الموديلات</button>
+            <section style="height:60vh; position:relative; overflow:hidden;">
+                <video autoplay loop muted playsinline style="position:absolute; width:100%; height:100%; object-fit:cover;">
+                    <source src="https://res.cloudinary.com/dnkuwf8q9/video/upload/v1772027160/gemini_generated_video_077d6d04_ehg756.mp4" type="video/mp4">
+                </video>
+                <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; text-align:center;">
+                    <h1 style="font-size:2.5rem; font-weight:900; text-shadow:2px 2px 10px rgba(0,0,0,0.5);">شبابيك للستائر</h1>
+                    <p style="font-size:1.2rem; font-weight:600;">فخامة التفاصيل .. ظل وذوق</p>
+                </div>
             </section>
 
             <section id="categories" style="padding: 40px 0;">
-                <h2 style="text-align:center; font-weight:900; margin-bottom:15px;">📁 الأقسام</h2>
+                <h2 style="text-align:center; font-weight:900; margin-bottom:25px;">📂 استكشف مجموعاتنا</h2>
                 <div id="categoriesList"></div>
             </section>
+        </div>
+
+        <div id="aboutPage" class="page">
+            <div style="padding:50px 10%; text-align:center;">
+                <h2 style="font-weight:900; color:var(--brown); margin-bottom:20px;">عن شبابيك</h2>
+                <p>نحن في شبابيك نقدم أرقى الحلول لتغطية النوافذ في العراق، نجمع بين الجودة العالية والتصاميم العصرية لتناسب ذوقكم الرفيع.</p>
+            </div>
         </div>
     </main>
 
     <script>
-        // إعدادات المتجر
-        const STORE_WA = "9647883002797"; // رقم متجرك
+        // --- الإعدادات ---
+        const STORE_WA = "9647883002797";
         let generatedOTP = null;
-        let userPhoneNumber = "";
 
-        // تهيئة Firebase (استخدم بياناتك الأصلية هنا)
+        // Firebase Config
         const firebaseConfig = { 
             apiKey: "AIzaSyD1TENeV6RkWmrYIjV6seGx84VavsM_tvE", 
             authDomain: "shababekcurtain.firebaseapp.com", 
             databaseURL: "https://shababekcurtain-default-rtdb.asia-southeast1.firebasedatabase.app/", 
             projectId: "shababekcurtain" 
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
 
-        // --- نظام التحقق عبر واتساب (بدون API) ---
+        // --- إدارة حالة المستخدم وقاعدة البيانات ---
+        let userData = JSON.parse(localStorage.getItem('shababek_user')) || null;
 
-        function sendWhatsAppOTP() {
-            const phone = document.getElementById('loginPhone').value.trim();
-            if (!phone || phone.length < 10) return alert("الرجاء إدخال رقم هاتف صحيح");
-
-            // 1. توليد كود عشوائي من 4 أرقام
-            generatedOTP = Math.floor(1000 + Math.random() * 9000);
-            userPhoneNumber = phone;
-
-            // 2. تجهيز الرسالة
-            const msg = `مرحباً متجر شبابيك للستائر، أود تفعيل حسابي برقم الهاتف: ${phone}. كود التحقق الخاص بي هو: ${generatedOTP}`;
-            const url = `https://wa.me/${STORE_WA}?text=${encodeURIComponent(msg)}`;
-
-            // 3. فتح واتساب وتغيير واجهة الموقع
-            alert("سيفتح واتساب الآن؛ يرجى ضغط 'إرسال' في واتساب ثم العودة هنا لكتابة الكود.");
-            window.open(url, '_blank');
-
-            document.getElementById('sendOtpBtn').style.display = 'none';
-            document.getElementById('otpSection').style.display = 'block';
-        }
-
-        function verifyManualOTP() {
-            const inputCode = document.getElementById('otpCodeInput').value.trim();
-            if (inputCode == generatedOTP) {
-                alert("✅ تم التحقق بنجاح! أهلاً بك في شبابيك.");
-                // هنا نقوم بإنشاء جلسة وهمية أو تسجيله في قاعدة البيانات كـ Verified
-                localStorage.setItem('user_verified_phone', userPhoneNumber);
-                closeAuthModal();
-                confetti({ particleCount: 150, spread: 70 });
+        function updateUIState() {
+            const loginDot = document.getElementById('loginDot');
+            if (userData) {
+                loginDot.style.display = 'block';
+                document.getElementById('userNameDisplay').textContent = userData.name || "مستخدم شبابيك";
+                document.getElementById('userPhoneDisplay').textContent = userData.phone || userData.email || "";
+                if (userData.photo) {
+                    document.getElementById('userAvatar').innerHTML = `<img src="${userData.photo}" style="width:100%; height:100%; object-fit:cover;">`;
+                }
             } else {
-                alert("❌ كود التحقق غير صحيح، يرجى التأكد من الرسالة التي أرسلتها في واتساب.");
+                loginDot.style.display = 'none';
             }
         }
 
-        // --- بقية دوال المتجر (كما هي في الكود الأصلي) ---
-
-        function openAccount() {
-            if (localStorage.getItem('user_verified_phone')) {
-                alert("أنت مسجل بالفعل برقم: " + localStorage.getItem('user_verified_phone'));
+        function handleAccountBtn() {
+            if (userData) {
+                document.getElementById('accountModal').classList.add('active');
             } else {
                 document.getElementById('authModal').classList.add('active');
             }
         }
 
-        function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+        // --- تسجيل واتساب (قاعدة بيانات لمرة واحدة) ---
+        function sendWhatsAppVerification() {
+            const phone = document.getElementById('regPhone').value.trim();
+            if (phone.length < 10) return alert("يرجى إدخال رقم هاتف صحيح");
 
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            const msg = `مرحباً شبابيك، كود تفعيل حسابي هو: ${generatedOTP}\nرقم الهاتف: ${phone}`;
+            
+            window.open(`https://wa.me/${STORE_WA}?text=${encodeURIComponent(msg)}`, '_blank');
+            
+            document.getElementById('phoneStep').style.display = 'none';
+            document.getElementById('otpStep').style.display = 'block';
+        }
+
+        async function verifyAndRegister() {
+            const input = document.getElementById('otpInput').value;
+            const phone = document.getElementById('regPhone').value;
+
+            if (input == generatedOTP) {
+                const newUser = {
+                    uid: "wa_" + Date.now(),
+                    name: "عميل شبابيك",
+                    phone: phone,
+                    method: "whatsapp",
+                    date: new Date().toISOString()
+                };
+
+                // حفظ في Firebase ليكون مرجع دائم
+                await db.ref('users/' + newUser.uid).set(newUser);
+                
+                // حفظ محلي ليبقى مسجلاً
+                saveUserLocally(newUser);
+                
+                alert("✅ تم التفعيل بنجاح! أهلاً بك في عائلة شبابيك.");
+                closeAuth();
+                confetti({ particleCount: 150, spread: 70 });
+            } else {
+                alert("الكود غير صحيح، يرجى التأكد من الرسالة المرسلة في واتساب");
+            }
+        }
+
+        // --- تسجيل جوجل (تفعيل الـ API) ---
         async function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
                 const result = await auth.signInWithPopup(provider);
-                alert("تم الدخول بنجاح عبر جوجل: " + result.user.displayName);
-                closeAuthModal();
-            } catch (e) { alert("خطأ في الدخول"); }
+                const user = result.user;
+                
+                const gUser = {
+                    uid: user.uid,
+                    name: user.displayName,
+                    email: user.email,
+                    photo: user.photoURL,
+                    method: "google"
+                };
+
+                await db.ref('users/' + user.uid).update(gUser);
+                saveUserLocally(gUser);
+                
+                closeAuth();
+                confetti({ particleCount: 100, spread: 50 });
+            } catch (error) {
+                console.error(error);
+                alert("حدث خطأ أثناء تسجيل الدخول عبر جوجل");
+            }
         }
 
-        // تحميل الأقسام
+        function saveUserLocally(data) {
+            userData = data;
+            localStorage.setItem('shababek_user', JSON.stringify(data));
+            updateUIState();
+        }
+
+        function logout() {
+            if(confirm("هل تريد تسجيل الخروج؟")) {
+                localStorage.removeItem('shababek_user');
+                auth.signOut();
+                userData = null;
+                updateUIState();
+                closeAccount();
+            }
+        }
+
+        // --- وظائف عامة للمتجر ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function closeAuth() { document.getElementById('authModal').classList.remove('active'); }
+        function closeAccount() { document.getElementById('accountModal').classList.remove('active'); }
+
+        // تحميل الأقسام من Firebase (تأكد من وجود بيانات في قسم categories)
         db.ref('categories').on('value', snap => {
-            const cats = snap.val();
             const list = document.getElementById('categoriesList');
-            if(cats) {
-                list.innerHTML = Object.values(cats).map(c => `
-                    <div class="cat-card-new" onclick="alert('سيتم فتح قسم: ${c.name}')">
+            const data = snap.val();
+            if(data) {
+                list.innerHTML = Object.values(data).map(c => `
+                    <div class="cat-card-new" onclick="alert('سيتم فتح قسم ${c.name}')">
                         <img src="${c.img}">
-                        <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--gold);color:white;padding:10px 25px;border-radius:12px;font-weight:900;">${c.name}</div>
+                        <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:var(--gold); color:white; padding:10px 25px; border-radius:12px; font-weight:900;">${c.name}</div>
                     </div>
                 `).join('');
             }
         });
+
+        // تشغيل الحالة عند التحميل
+        window.onload = updateUIState;
 
     </script>
 </body>
