@@ -439,12 +439,28 @@
             } else { alert("الكود غير صحيح"); }
         }
 
+      // --- التسجيل عبر جوجل ---
         async function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
             try {
-                await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+                // فتح نافذة جوجل
+                await auth.signInWithPopup(provider);
                 closeAuthModal();
-                confetti({ particleCount: 100 });
-            } catch (e) { alert("خطأ بالدخول: " + e.message); }
+                confetti({ particleCount: 100, spread: 50 });
+            } catch (error) {
+                console.error("تفاصيل الخطأ:", error);
+                
+                // رسائل توضيحية للمشكلة
+                if (error.code === 'auth/unauthorized-domain') {
+                    alert("❌ خطأ: رابط موقعك غير مضاف في قسم (Authorized domains) في إعدادات Firebase.");
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    alert("❌ خطأ: تسجيل الدخول بجوجل غير مفعل في Firebase Console.");
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    // المستخدم أغلق النافذة قبل إتمام الدخول
+                } else {
+                    alert("حدث خطأ أثناء تسجيل الدخول: " + error.message);
+                }
+            }
         }
 
         function logoutApp() {
